@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using NaughtyAttributes;
 using UnityEngine.SceneManagement;
@@ -27,13 +26,25 @@ namespace Kalkatos.Rpsls
                 return;
             }
 
-            currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
             DontDestroyOnLoad(this);
+            UnityEngine.SceneManagement.SceneManager.activeSceneChanged += HandleSceneChanged;
+            currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+        }
+
+        private void OnDestroy ()
+        {
+            UnityEngine.SceneManagement.SceneManager.activeSceneChanged -= HandleSceneChanged;
+        }
+
+        private void HandleSceneChanged (Scene oldScene, Scene newScene)
+        {
+            currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
         }
 
         private static void LoadScene (string sceneName)
         {
             UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
+            Debug.Log("Loading scene " + sceneName);
         }
 
         public static void EndScene (object parameter = null)

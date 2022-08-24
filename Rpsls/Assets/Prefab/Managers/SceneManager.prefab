@@ -43,8 +43,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4738538a224991a4baf85a82baa7f797, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  splashScene: Connection
   connectingScene: Connection
-  lobbyScene: Connection
-  roomScene: Connection
-  mainScene: Connection
+  lobbyScene: Lobby
+  roomScene: Room
+  mainScene: Main
