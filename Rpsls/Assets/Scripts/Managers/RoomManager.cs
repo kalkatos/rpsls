@@ -8,11 +8,19 @@ namespace Kalkatos.Rpsls
 {
     public class RoomManager : MonoBehaviourPunCallbacks
     {
+        public static RoomManager Instance { get; private set; }
+
         public static event Action<List<Player>> OnPlayerListReceived;
         public static event Action<Player> OnPlayerEntered;
         public static event Action<Player> OnPlayerLeft;
+        public static event Action<string, RoomStatus> OnPlayerStatusChanged;
 
         public List<Player> players = new List<Player>();
+
+        private void Awake ()
+        {
+            Instance = this;
+        }
 
         private void Start ()
         {
@@ -40,6 +48,21 @@ namespace Kalkatos.Rpsls
         public static void LeaveRoom ()
         {
             Debug.LogError("Leave Room not implemented.");
+        }
+
+        [PunRPC]
+        public static void SetAsReady (Player player)
+        {
+            if (!player.IsMasterClient)
+                OnPlayerStatusChanged?.Invoke(player.UserId, RoomStatus.Ready);
+            //TODO Finish Ready RPCs
+        }
+
+        [PunRPC]
+        public static void SetAsNotReady (Player player)
+        {
+            if (!player.IsMasterClient)
+                OnPlayerStatusChanged?.Invoke(player.UserId, RoomStatus.Idle);
         }
     }
 }

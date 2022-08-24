@@ -524,7 +524,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1817257399
 GameObject:
@@ -538,7 +538,7 @@ GameObject:
   - component: {fileID: 1817257402}
   - component: {fileID: 1817257401}
   m_Layer: 0
-  m_Name: Text (TMP)
+  m_Name: Connecting Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -560,8 +560,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 379, y: 68}
-  m_SizeDelta: {x: 468.17004, y: 117.04001}
+  m_AnchoredPosition: {x: 437.42, y: 68}
+  m_SizeDelta: {x: 585.01, y: 117.04}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1817257401
 MonoBehaviour:
@@ -690,7 +690,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1793815920246741719, guid: d20933e6551357d408126025eb781ce7, type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1793815920246741719, guid: d20933e6551357d408126025eb781ce7, type: 3}
       propertyPath: m_LocalPosition.x
