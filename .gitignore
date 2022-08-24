@@ -12,6 +12,7 @@
 **/_[Bb]uilds/
 **/_[Bb]ackup/
 **/_[Mm]edia/
+**/*[Tt]hird*[Pp]arty*
 
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
