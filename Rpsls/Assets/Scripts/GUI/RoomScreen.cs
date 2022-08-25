@@ -15,6 +15,7 @@ namespace Kalkatos.Rpsls
         [SerializeField, ChildGameObjectsOnly] private Button readyButton;
         [SerializeField, ChildGameObjectsOnly] private Button startGameButton;
         [SerializeField, ChildGameObjectsOnly] private Button exitButton;
+        [SerializeField, ChildGameObjectsOnly] private Button copyRoomIdButton;
 
         private Settings settings;
         private Dictionary<string, PlayerInfoSlot> slots = new Dictionary<string, PlayerInfoSlot>();
@@ -30,6 +31,7 @@ namespace Kalkatos.Rpsls
             readyButton.onClick.AddListener(HandleReadyButtonClicked);
             startGameButton.onClick.AddListener(HandleStartGameButtonClicked);
             exitButton.onClick.AddListener(HandleExitButtonClicked);
+            copyRoomIdButton.onClick.AddListener(HandleCopyRoomIdButtonClicked);
 
             settings = Resources.Load<Settings>("RpslsGameSettings");
         }
@@ -44,12 +46,13 @@ namespace Kalkatos.Rpsls
             readyButton.onClick.RemoveListener(HandleReadyButtonClicked);
             startGameButton.onClick.RemoveListener(HandleStartGameButtonClicked);
             exitButton.onClick.RemoveListener(HandleExitButtonClicked);
+            copyRoomIdButton.onClick.RemoveListener(HandleCopyRoomIdButtonClicked);
         }
 
         private void Start ()
         {
-            SetRoomName(RoomManager.RoomName);
-            SetupButtons(RoomManager.IAmTheMaster);
+            SetRoomName();
+            SetupButtons();
         }
 
         private void HandlePlayerListReceived (List<PlayerInfo> list)
@@ -85,11 +88,15 @@ namespace Kalkatos.Rpsls
         private void HandleIdleButtonClicked ()
         {
             RoomManager.SetStatus(RoomStatus.Ready);
+            isReady = true;
+            SetupButtons();
         }
 
         private void HandleReadyButtonClicked ()
         {
             RoomManager.SetStatus(RoomStatus.Idle);
+            isReady = false;
+            SetupButtons();
         }
 
         private void HandleStartGameButtonClicked ()
@@ -102,8 +109,14 @@ namespace Kalkatos.Rpsls
             RoomManager.ExitRoom();
         }
 
-        private void SetupButtons (bool isMaster)
+        private void HandleCopyRoomIdButtonClicked ()
         {
+            GUIUtility.systemCopyBuffer = RoomManager.RoomName;
+        }
+
+        private void SetupButtons ()
+        {
+            bool isMaster = RoomManager.IAmTheMaster;
             idleButton.gameObject.SetActive(!isMaster && !isReady);
             readyButton.gameObject.SetActive(!isMaster && isReady);
             startGameButton.gameObject.SetActive(isMaster);
@@ -114,9 +127,9 @@ namespace Kalkatos.Rpsls
             playerCountText.text = $"{slots.Count} / {settings.MaxPlayers}";
         }
 
-        private void SetRoomName (string name)
+        private void SetRoomName ()
         {
-            roomNameText.text = "Room: " + name;
+            roomNameText.text = "Room: " + RoomManager.RoomName;
         }
 
         private PlayerInfoSlot CreateSlot (string nick, bool isMaster)

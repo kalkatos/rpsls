@@ -33,7 +33,7 @@ namespace Kalkatos.Rpsls
             players.AddRange(PhotonNetwork.PlayerList);
             List<PlayerInfo> infos = new List<PlayerInfo>();
             for (int i = 0; i < players.Count; i++)
-                infos.Add(new PlayerInfo(players[i]));
+                infos.Add(PlayerInfo.From(players[i]));
             OnPlayerListReceived?.Invoke(infos);
         }
 
@@ -74,12 +74,6 @@ namespace Kalkatos.Rpsls
         public static void ExitRoom ()
         {
             Debug.LogError("Leave Room not implemented.");
-        }
-
-        public static void CopyRoomNameToClipboard ()
-        {
-            GUIUtility.systemCopyBuffer = RoomName;
-            //TODO IMplement
         }
     }
 
