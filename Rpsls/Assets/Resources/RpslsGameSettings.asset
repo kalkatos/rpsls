@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 502bcd9db609e704ba57aea3411af6d4, type: 3}
   m_Name: RpslsGameSettings
   m_EditorClassIdentifier: 
-  MaxPlayers: 8
+  MaxPlayers: 10
   PlayerInfoSlotPrefab: {fileID: 65353391401825626, guid: cbd2f5628b89fd74d8f51626c1fa8f72, type: 3}

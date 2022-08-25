@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using ParrelSync;
 
 namespace Kalkatos.Rpsls
 {
     public static class SaveManager
     {
+        private static string nicknameKey => "Nickname" + (ClonesManager.IsClone() ? ClonesManager.GetArgument() : "");
+
 #region Save Implementation
         public static bool HasKey (string key)
         {
@@ -35,12 +38,12 @@ namespace Kalkatos.Rpsls
 
         public static string GetNickname ()
         {
-            return GetString("Nickname", string.Empty);
+            return GetString(nicknameKey, string.Empty);
         }
 
         public static void SaveNickname (string nickname)
         {
-            SaveString("Nickname", nickname);
+            SaveString(nicknameKey, nickname);
         }
     }
 }
