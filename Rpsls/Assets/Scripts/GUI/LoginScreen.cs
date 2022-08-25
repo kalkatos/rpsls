@@ -4,7 +4,6 @@ using UnityEngine.Events;
 using UnityEngine.UI;
 using TMPro;
 using Random = UnityEngine.Random;
-using Photon.Pun;
 
 namespace Kalkatos.Rpsls
 {
@@ -79,7 +78,7 @@ namespace Kalkatos.Rpsls
         private void SetNickname (string nickname)
         {
             SaveManager.SaveNickname(nickname);
-            PhotonNetwork.LocalPlayer.NickName = nickname;
+            LobbyManager.SetPlayerNickName(nickname);
             Debug.Log("Nickname set: " + nickname);
         }
 

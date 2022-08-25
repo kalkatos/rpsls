@@ -24,7 +24,7 @@ namespace Kalkatos.Rpsls
             string letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
             string result = "";
             for (int i = 0; i < 6; i++)
-                result += Random.Range(0, letters.Length);
+                result += letters[Random.Range(0, letters.Length)];
             return result;
         }
 
@@ -42,6 +42,11 @@ namespace Kalkatos.Rpsls
         public static void CreateRoom ()
         {
             PhotonNetwork.CreateRoom(GetRandomRoomName());
+        }
+
+        public static void SetPlayerNickName (string nickname)
+        {
+            PhotonNetwork.LocalPlayer.NickName = nickname;
         }
     }
 }
