@@ -68,12 +68,13 @@ namespace Kalkatos.Rpsls
 
         public static void StartGame ()
         {
-            Debug.LogError("Start Game not implemented.");
+            SceneManager.EndScene("ToGame");
         }
 
         public static void ExitRoom ()
         {
-            Debug.LogError("Leave Room not implemented.");
+            PhotonNetwork.LeaveRoom();
+            SceneManager.EndScene("ToLobby");
         }
     }
 
