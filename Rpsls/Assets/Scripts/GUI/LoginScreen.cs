@@ -9,12 +9,13 @@ namespace Kalkatos.Rpsls
 {
     public class LoginScreen : MonoBehaviour
     {
-        public UnityEvent OnFailedToJoinRoom;
-
+        [Header("References")]
         [SerializeField] private TMP_InputField nicknameField;
         [SerializeField] private TMP_InputField roomNameField;
         [SerializeField] private Button joinRoomButton;
         [SerializeField] private Button createRoomButton;
+        [Header("Events")]
+        [SerializeField] private UnityEvent OnFailedToJoinRoom;
 
         private void Awake ()
         {

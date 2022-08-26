@@ -27,6 +27,7 @@ namespace Kalkatos.Rpsls
             RoomManager.OnPlayerEntered+= HandlePlayerEntered;
             RoomManager.OnPlayerLeft += HandlePlayerLeft;
             RoomManager.OnPlayerStatusChanged += HandlePlayerStatusChanged;
+            RoomManager.OnBecameMaster += HandleBecameMaster;
             idleButton.onClick.AddListener(HandleIdleButtonClicked);
             readyButton.onClick.AddListener(HandleReadyButtonClicked);
             startGameButton.onClick.AddListener(HandleStartGameButtonClicked);
@@ -42,6 +43,7 @@ namespace Kalkatos.Rpsls
             RoomManager.OnPlayerEntered -= HandlePlayerEntered;
             RoomManager.OnPlayerLeft -= HandlePlayerLeft;
             RoomManager.OnPlayerStatusChanged -= HandlePlayerStatusChanged;
+            RoomManager.OnBecameMaster -= HandleBecameMaster;
             idleButton.onClick.RemoveListener(HandleIdleButtonClicked);
             readyButton.onClick.RemoveListener(HandleReadyButtonClicked);
             startGameButton.onClick.RemoveListener(HandleStartGameButtonClicked);
@@ -59,13 +61,13 @@ namespace Kalkatos.Rpsls
         {
             slots.Clear();
             for (int i = 0; i < list.Count; i++)
-                slots.Add(list[i].Id, CreateSlot(list[i].Nickname, list[i].IsMasterClient));
+                slots.Add(list[i].Id, CreateSlot(list[i]));
             UpdatePlayerCount();
         }
 
         private void HandlePlayerEntered (PlayerInfo newPlayer)
         {
-            slots.Add(newPlayer.Id, CreateSlot(newPlayer.Nickname, newPlayer.IsMasterClient));
+            slots.Add(newPlayer.Id, CreateSlot(newPlayer));
             UpdatePlayerCount();
         }
 
@@ -83,6 +85,11 @@ namespace Kalkatos.Rpsls
         {
             if (slots.TryGetValue(userId, out PlayerInfoSlot slot))
                 slot.SetStatus(status);
+        }
+
+        private void HandleBecameMaster ()
+        {
+            SetupButtons();
         }
 
         private void HandleIdleButtonClicked ()
@@ -132,11 +139,11 @@ namespace Kalkatos.Rpsls
             roomNameText.text = "Room: " + RoomManager.RoomName;
         }
 
-        private PlayerInfoSlot CreateSlot (string nick, bool isMaster)
+        private PlayerInfoSlot CreateSlot (PlayerInfo info)
         {
             PlayerInfoSlot newSlot = Instantiate(settings.PlayerInfoSlotPrefab, playerSlotsListParent);
-            newSlot.SetNickname(nick);
-            newSlot.SetStatus(isMaster ? RoomStatus.Master : RoomStatus.Idle);
+            newSlot.SetNickname(info.Nickname + (info.IsMe ? "   (me)" : ""));
+            newSlot.SetStatus(info.Status);
             return newSlot;
         }
     }
