@@ -44,13 +44,15 @@ namespace Kalkatos.Rpsls
             SceneManager.EndScene();
         }
 
+        public override void OnJoinRoomFailed (short returnCode, string message)
+        {
+            OnFailedToJoinRoom?.Invoke();
+        }
+
         public static void TryJoiningRoom (string roomId)
         {
             if (!PhotonNetwork.JoinRoom(roomId))
-            {
                 OnFailedToJoinRoom?.Invoke();
-                Debug.LogError("Failed to join room " + roomId);
-            }
         }
 
         public static void CreateRoom ()

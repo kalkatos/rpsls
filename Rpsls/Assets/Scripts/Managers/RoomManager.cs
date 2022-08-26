@@ -15,6 +15,7 @@ namespace Kalkatos.Rpsls
         public static event Action<PlayerInfo> OnPlayerEntered;
         public static event Action<PlayerInfo> OnPlayerLeft;
         public static event Action<string, RoomStatus> OnPlayerStatusChanged;
+        public static event Action OnBecameMaster;
 
         public List<Player> players = new List<Player>();
 
@@ -35,6 +36,7 @@ namespace Kalkatos.Rpsls
             for (int i = 0; i < players.Count; i++)
                 infos.Add(PlayerInfo.From(players[i]));
             OnPlayerListReceived?.Invoke(infos);
+            SetStatus(IAmTheMaster ? RoomStatus.Master : RoomStatus.Idle);
         }
 
         public override void OnPlayerEnteredRoom (Player newPlayer)
@@ -52,7 +54,11 @@ namespace Kalkatos.Rpsls
         public override void OnMasterClientSwitched (Player newMasterClient)
         {
             if (newMasterClient.IsLocal)
+            {
                 SetStatus(RoomStatus.Master);
+                IAmTheMaster = true;
+                OnBecameMaster?.Invoke();
+            }
         }
 
         public override void OnPlayerPropertiesUpdate (Player targetPlayer, Hashtable changedProps)
@@ -73,8 +79,10 @@ namespace Kalkatos.Rpsls
 
         public static void ExitRoom ()
         {
-            PhotonNetwork.LeaveRoom();
+            RoomName = "";
+            IAmTheMaster = false;
             SceneManager.EndScene("ToLobby");
+            PhotonNetwork.LeaveRoom();
         }
     }
 
@@ -84,6 +92,8 @@ namespace Kalkatos.Rpsls
         public string Id;
         public string Nickname;
         public bool IsMasterClient;
+        public bool IsMe;
+        public RoomStatus Status;
 
         public static PlayerInfo From (Player player)
         {
@@ -95,6 +105,11 @@ namespace Kalkatos.Rpsls
             Id = player.UserId;
             Nickname = player.NickName;
             IsMasterClient = player.IsMasterClient;
+            IsMe = player.IsLocal;
+            if (player.CustomProperties.ContainsKey("RoomStatus"))
+                Status = (RoomStatus)player.CustomProperties["RoomStatus"];
+            else
+                Status = player.IsMasterClient ? RoomStatus.Master : RoomStatus.Idle;
         }
     }
 }
