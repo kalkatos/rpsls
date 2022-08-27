@@ -36,7 +36,7 @@ namespace Kalkatos.Rpsls
             PhotonNetwork.RemoveCallbackTarget(this);
         }
 
-        internal static PlayerInfo InfoFromPlayer (Player player)
+        internal static PlayerInfo InfoFromPlayer (Player player, RoomStatus status = RoomStatus.Idle)
         {
             return new PlayerInfo()
             {
@@ -44,15 +44,8 @@ namespace Kalkatos.Rpsls
                 Nickname = player.NickName,
                 IsMasterClient = player.IsMasterClient,
                 IsMe = player.IsLocal,
-                CustomData = player.CustomProperties.ToDictionary()
+                CustomData = status
             };
-        }
-
-
-
-        public void OnConnectedToMaster ()
-        {
-            PhotonNetwork.JoinLobby();
         }
 
         #region ==================  Requests  ===========================
@@ -92,7 +85,12 @@ namespace Kalkatos.Rpsls
             SceneManager.EndScene("Lobby");
         }
 
-        // --- Photon callbacks ---
+        // --- Photon ---
+
+        public void OnConnectedToMaster ()
+        {
+            PhotonNetwork.JoinLobby();
+        }
 
         public void OnJoinedRoom ()
         {
@@ -121,17 +119,23 @@ namespace Kalkatos.Rpsls
                 RaiseEventReceived(Keys.ChangedPlayerPropertiesEvt, InfoFromPlayer(targetPlayer));
         }
 
+        public void OnConnected () { }
+        public void OnDisconnected (DisconnectCause cause) { }
+        public void OnRegionListReceived (RegionHandler regionHandler) { }
+        public void OnCustomAuthenticationResponse (Dictionary<string, object> data) { }
+        public void OnCustomAuthenticationFailed (string debugMessage) { }
+        public void OnFriendListUpdate (List<FriendInfo> friendList) { }
+        public void OnCreatedRoom () { }
+        public void OnCreateRoomFailed (short returnCode, string message) { }
+        public void OnJoinRoomFailed (short returnCode, string message) { }
+        public void OnJoinRandomFailed (short returnCode, string message) { }
+        public void OnPlayerEnteredRoom (Player newPlayer) { }
+        public void OnPlayerLeftRoom (Player otherPlayer) { }
+        public void OnRoomPropertiesUpdate (Hashtable propertiesThatChanged) { }
+        public void OnJoinedLobby () { }
+        public void OnLeftLobby () { }
+        public void OnRoomListUpdate (List<RoomInfo> roomList) { }
+        public void OnLobbyStatisticsUpdate (List<TypedLobbyInfo> lobbyStatistics) { }
         #endregion
-    }
-
-    public static class PhotonConversionExtension
-    {
-        public static Dictionary<string, object> ToDictionary (this Hashtable hashtable)
-        {
-            Dictionary<string, object> resultDict = new Dictionary<string, object>();
-            foreach (var item in hashtable)
-                resultDict.Add(item.Key.ToString(), item.Value);
-            return resultDict;
-        }
     }
 }
