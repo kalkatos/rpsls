@@ -9,7 +9,7 @@ namespace Kalkatos.Rpsls
     {
         public static SceneManager Instance { get; private set; }
 
-        [SerializeField, Scene] private string connectingScene;
+        [SerializeField, Scene] private string connectionScene;
         [SerializeField, Scene] private string lobbyScene;
         [SerializeField, Scene] private string roomScene;
         [SerializeField, Scene] private string mainScene;
@@ -47,9 +47,16 @@ namespace Kalkatos.Rpsls
             Debug.Log("Loading scene " + sceneName);
         }
 
-        public static void EndScene (object parameter = null)
+        private static void CheckSceneBeingEnded (string scene)
         {
-            if (currentScene == Instance.connectingScene)
+            if (!string.IsNullOrEmpty(currentScene) && !string.IsNullOrEmpty(scene) && scene != currentScene)
+                Debug.LogWarning($"Invoked end of scene {scene} but the current scene is {currentScene}.");
+        }
+
+        public static void EndScene (string scene, object parameter = null)
+        {
+            CheckSceneBeingEnded(scene);
+            if (currentScene == Instance.connectionScene)
             {
                 LoadScene(Instance.lobbyScene); 
             }

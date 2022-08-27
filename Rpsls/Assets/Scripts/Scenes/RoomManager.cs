@@ -16,8 +16,10 @@ namespace Kalkatos.Rpsls
         public static event Action<PlayerInfo> OnPlayerLeft;
         public static event Action<string, RoomStatus> OnPlayerStatusChanged;
         public static event Action OnBecameMaster;
+        public static event Action OnGameAboutToStart;
 
         public List<Player> players = new List<Player>();
+        private RpslsGameSettings settings;
 
         public static string RoomName { get; private set; }
         public static bool IAmTheMaster { get; private set; }
@@ -25,8 +27,9 @@ namespace Kalkatos.Rpsls
         private void Awake ()
         {
             Instance = this;
-            RoomName = PhotonNetwork.CurrentRoom.Name;
-            IAmTheMaster = PhotonNetwork.IsMasterClient;
+            RoomName = (string)NetworkManager.Instance.GetData(Keys.RoomName);
+            IAmTheMaster = (bool)NetworkManager.Instance.GetData(Keys.RoomName);
+            settings = RpslsGameSettings.Instance;
         }
 
         private void Start ()
@@ -67,6 +70,16 @@ namespace Kalkatos.Rpsls
                 OnPlayerStatusChanged?.Invoke(targetPlayer.UserId, (RoomStatus)changedProps["RoomStatus"]);
         }
 
+        [PunRPC]
+        private void OnStartGameBroadcast ()
+        {
+            this.Wait(settings.DelayBeforeStarting, () =>
+            {
+                OnGameAboutToStart?.Invoke();
+                SceneManager.EndScene("Room", "ToGame");
+            });
+        }
+
         public static void SetStatus (RoomStatus status)
         {
             PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable() { { "RoomStatus", status } });
@@ -74,42 +87,18 @@ namespace Kalkatos.Rpsls
 
         public static void StartGame ()
         {
-            SceneManager.EndScene("ToGame");
+            if (IAmTheMaster)
+            {
+                //TODO Broadcast a start game call
+            }
         }
 
         public static void ExitRoom ()
         {
             RoomName = "";
             IAmTheMaster = false;
-            SceneManager.EndScene("ToLobby");
+            SceneManager.EndScene("Room", "ToLobby");
             PhotonNetwork.LeaveRoom();
-        }
-    }
-
-    [Serializable]
-    public struct PlayerInfo
-    {
-        public string Id;
-        public string Nickname;
-        public bool IsMasterClient;
-        public bool IsMe;
-        public RoomStatus Status;
-
-        public static PlayerInfo From (Player player)
-        {
-            return new PlayerInfo(player);
-        }
-
-        public PlayerInfo (Player player)
-        {
-            Id = player.UserId;
-            Nickname = player.NickName;
-            IsMasterClient = player.IsMasterClient;
-            IsMe = player.IsLocal;
-            if (player.CustomProperties.ContainsKey("RoomStatus"))
-                Status = (RoomStatus)player.CustomProperties["RoomStatus"];
-            else
-                Status = player.IsMasterClient ? RoomStatus.Master : RoomStatus.Idle;
         }
     }
 }

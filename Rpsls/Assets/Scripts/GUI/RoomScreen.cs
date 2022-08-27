@@ -17,12 +17,14 @@ namespace Kalkatos.Rpsls
         [SerializeField, ChildGameObjectsOnly] private Button exitButton;
         [SerializeField, ChildGameObjectsOnly] private Button copyRoomIdButton;
 
-        private Settings settings;
+        private RpslsGameSettings settings;
         private Dictionary<string, PlayerInfoSlot> slots = new Dictionary<string, PlayerInfoSlot>();
         private bool isReady;
 
         private void Awake ()
         {
+            NetworkManager.OnEventReceived += HandleEventReceived;
+
             RoomManager.OnPlayerListReceived += HandlePlayerListReceived;
             RoomManager.OnPlayerEntered+= HandlePlayerEntered;
             RoomManager.OnPlayerLeft += HandlePlayerLeft;
@@ -34,11 +36,13 @@ namespace Kalkatos.Rpsls
             exitButton.onClick.AddListener(HandleExitButtonClicked);
             copyRoomIdButton.onClick.AddListener(HandleCopyRoomIdButtonClicked);
 
-            settings = Resources.Load<Settings>("RpslsGameSettings");
+            settings = RpslsGameSettings.Instance;
         }
 
         private void OnDestroy ()
         {
+            NetworkManager.OnEventReceived -= HandleEventReceived;
+
             RoomManager.OnPlayerListReceived -= HandlePlayerListReceived;
             RoomManager.OnPlayerEntered -= HandlePlayerEntered;
             RoomManager.OnPlayerLeft -= HandlePlayerLeft;
@@ -55,6 +59,17 @@ namespace Kalkatos.Rpsls
         {
             SetRoomName();
             SetupButtons();
+        }
+
+        private void HandleEventReceived (string key, object parameter)
+        {
+            switch (key)
+            {
+                case Keys.ChangedPlayerPropertiesEvt:
+                    break;
+                case Keys.IBecameMasterEvt:
+                    break;
+            }
         }
 
         private void HandlePlayerListReceived (List<PlayerInfo> list)
@@ -123,7 +138,7 @@ namespace Kalkatos.Rpsls
 
         private void SetupButtons ()
         {
-            bool isMaster = RoomManager.IAmTheMaster;
+            bool isMaster = SessionData.IAmMasterClient;
             idleButton.gameObject.SetActive(!isMaster && !isReady);
             readyButton.gameObject.SetActive(!isMaster && isReady);
             startGameButton.gameObject.SetActive(isMaster);
@@ -136,7 +151,7 @@ namespace Kalkatos.Rpsls
 
         private void SetRoomName ()
         {
-            roomNameText.text = "Room: " + RoomManager.RoomName;
+            roomNameText.text = "Room: " + SessionData.RoomName;
         }
 
         private PlayerInfoSlot CreateSlot (PlayerInfo info)
