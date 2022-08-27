@@ -27,8 +27,8 @@ namespace Kalkatos.Rpsls
         private void Awake ()
         {
             Instance = this;
-            RoomName = (string)NetworkManager.Instance.GetData(Keys.RoomName);
-            IAmTheMaster = (bool)NetworkManager.Instance.GetData(Keys.RoomName);
+            //RoomName = (string)NetworkManager.Instance.GetData(Keys.RoomName);
+            //IAmTheMaster = (bool)NetworkManager.Instance.GetData(Keys.RoomName);
             settings = RpslsGameSettings.Instance;
         }
 
@@ -36,8 +36,8 @@ namespace Kalkatos.Rpsls
         {
             players.AddRange(PhotonNetwork.PlayerList);
             List<PlayerInfo> infos = new List<PlayerInfo>();
-            for (int i = 0; i < players.Count; i++)
-                infos.Add(PlayerInfo.From(players[i]));
+            //for (int i = 0; i < players.Count; i++)
+            //    infos.Add(PlayerInfo.From(players[i]));
             OnPlayerListReceived?.Invoke(infos);
             SetStatus(IAmTheMaster ? RoomStatus.Master : RoomStatus.Idle);
         }
@@ -45,13 +45,13 @@ namespace Kalkatos.Rpsls
         public override void OnPlayerEnteredRoom (Player newPlayer)
         {
             players.Add(newPlayer);
-            OnPlayerEntered?.Invoke(PlayerInfo.From(newPlayer));
+            //OnPlayerEntered?.Invoke(PlayerInfo.From(newPlayer));
         }
 
         public override void OnPlayerLeftRoom (Player otherPlayer)
         {
             players.Remove(otherPlayer);
-            OnPlayerLeft?.Invoke(PlayerInfo.From(otherPlayer));
+            //OnPlayerLeft?.Invoke(PlayerInfo.From(otherPlayer));
         }
 
         public override void OnMasterClientSwitched (Player newMasterClient)
