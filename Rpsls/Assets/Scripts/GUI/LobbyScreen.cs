@@ -14,12 +14,11 @@ namespace Kalkatos.Rpsls
         [SerializeField] private Button joinRoomButton;
         [SerializeField] private Button createRoomButton;
         [Header("Events")]
-        [SerializeField] private UnityEvent OnFailedToJoinRoom;
+        [SerializeField] private UnityEvent OnFailedToJoin;
 
         private void Awake ()
         {
-            NetworkManager.OnFindMatchFailure += HandleFindMatchFailure;
-
+            LobbyManager.OnFindMatchFailure += HandleFindMatchFailure;
             roomNameField.onValueChanged.AddListener(OnRoomNameBeignTyped);
             nicknameField.onEndEdit.AddListener(OnNicknameFieldChanged);
             joinRoomButton.onClick.AddListener(OnJoinRoomButtonClicked);
@@ -28,8 +27,7 @@ namespace Kalkatos.Rpsls
 
         private void OnDestroy ()
         {
-            NetworkManager.OnFindMatchFailure -= HandleFindMatchFailure;
-
+            LobbyManager.OnFindMatchFailure -= HandleFindMatchFailure;
             roomNameField.onValueChanged.RemoveListener(OnRoomNameBeignTyped);
             nicknameField.onEndEdit.RemoveListener(OnNicknameFieldChanged);
             joinRoomButton.onClick.RemoveListener(OnJoinRoomButtonClicked);
@@ -43,16 +41,16 @@ namespace Kalkatos.Rpsls
                 nickname = "Guest-" + GetRandomNumber();
             nicknameField.text = nickname;
             SetNickname(nickname);
-            if (!NetworkManager.Instance.IsConnected)
+            if (!LobbyManager.Instance.IsConnected)
             {
                 joinRoomButton.interactable = false;
                 createRoomButton.interactable = false;
             }
         }
 
-        private void HandleFindMatchFailure (object parameter)
+        private void HandleFindMatchFailure ()
         {
-            OnFailedToJoinRoom?.Invoke();
+            OnFailedToJoin?.Invoke();
         }
 
         private void OnRoomNameBeignTyped (string newName)
@@ -67,18 +65,18 @@ namespace Kalkatos.Rpsls
 
         private void OnJoinRoomButtonClicked ()
         {
-            NetworkManager.Instance.FindMatch(roomNameField.text);
+            LobbyManager.Instance.FindMatch(roomNameField.text);
         }
 
         private void OnCreateRoomButtonClicked ()
         {
-            NetworkManager.Instance.FindMatch();
+            LobbyManager.Instance.FindMatch();
         }
 
         private void SetNickname (string nickname)
         {
             SaveManager.SaveNickname(nickname);
-            NetworkManager.Instance.SetPlayerName(nickname);
+            LobbyManager.Instance.SendPlayerName(nickname);
             Debug.Log("Nickname set: " + nickname);
         }
 

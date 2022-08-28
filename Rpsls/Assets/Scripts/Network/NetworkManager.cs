@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace Kalkatos.Rpsls
+namespace Kalkatos.Network
 {
     public class NetworkManager : MonoBehaviour
     {
@@ -33,6 +33,8 @@ namespace Kalkatos.Rpsls
         protected Dictionary<string, object> data = new Dictionary<string, object>();
 
         public virtual bool IsConnected => false;
+        public virtual PlayerInfo MyPlayerInfo { get; protected set; }
+        public virtual LobbyInfo CurrentLobbyInfo { get; protected set; }
 
         private void Awake ()
         {
@@ -108,8 +110,17 @@ namespace Kalkatos.Rpsls
     [Serializable]
     public struct LobbyOptions
     {
+        public int MaxPlayers;
+        public object CustomData;
+    }
+
+    [Serializable]
+    public struct LobbyInfo
+    {
         public string Id;
         public int MaxPlayers;
+        public List<PlayerInfo> Players;
+        public int PlayerCount;
         public object CustomData;
     }
 }
