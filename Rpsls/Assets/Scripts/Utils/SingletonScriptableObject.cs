@@ -10,7 +10,17 @@ namespace Kalkatos.Rpsls
             get
             {
                 if (instance == null)
-                    instance = Resources.Load<T>(typeof(T).Name);
+                {
+                    T[] allInstances = Resources.LoadAll<T>("");
+                    if (allInstances == null || allInstances.Length == 0)
+                        Debug.LogError($"No instances of ScriptableObject {typeof(T).Name} were found!");
+                    else
+                    {
+                        instance = allInstances[0];
+                        if (allInstances.Length > 1)
+                            Debug.LogWarning($"More than one instance of ScriptableObject {typeof(T).Name} were found.");
+                    }
+                }
                 return instance;
             }
         }
