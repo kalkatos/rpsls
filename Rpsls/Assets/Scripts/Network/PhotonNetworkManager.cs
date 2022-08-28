@@ -4,7 +4,7 @@ using Photon.Realtime;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 using System.Collections.Generic;
 
-namespace Kalkatos.Rpsls
+namespace Kalkatos.Network
 {
     public class PhotonNetworkManager : NetworkManager, IConnectionCallbacks, IMatchmakingCallbacks, IInRoomCallbacks, ILobbyCallbacks
     {
@@ -25,6 +25,25 @@ namespace Kalkatos.Rpsls
         public virtual void OnDisable ()
         {
             PhotonNetwork.RemoveCallbackTarget(this);
+        }
+
+        public override LobbyInfo CurrentLobbyInfo
+        {
+            get
+            {
+                LobbyInfo info = new LobbyInfo();
+                if (PhotonNetwork.InRoom)
+                {
+                    Room room = PhotonNetwork.CurrentRoom;
+                    info.Id = room.Name;
+                    info.MaxPlayers = room.MaxPlayers;
+                    info.PlayerCount = room.PlayerCount;
+                    info.Players = new List<PlayerInfo>();
+                    foreach (var item in room.Players)
+                        info.Players.Add(InfoFromPlayer(item.Value));
+                }
+                return info;
+            }
         }
 
         private PlayerInfo InfoFromPlayer (Player player)
@@ -68,25 +87,21 @@ namespace Kalkatos.Rpsls
             {
                 if (parameter is LobbyOptions)
                 {
-                    LobbyOptions lobbyOptions = (LobbyOptions)parameter;
-                    if (string.IsNullOrEmpty(lobbyOptions.Id))
-                    {
-                        RoomOptions roomOptions = ConvertToRoomOptions((LobbyOptions)parameter);
-                        roomOptions.PublishUserId = true;
-                        PhotonNetwork.CreateRoom(CreateRandomRoomName(), roomOptions);
-                    }
-                    else
-                        PhotonNetwork.JoinRoom(lobbyOptions.Id);
+                    RoomOptions roomOptions = ConvertToRoomOptions((LobbyOptions)parameter);
+                    roomOptions.PublishUserId = true;
+                    PhotonNetwork.CreateRoom(CreateRandomRoomName(), roomOptions);
                 }
+                else if (parameter is string)
+                    PhotonNetwork.JoinRoom((string)parameter);
                 else
                 {
-                    Debug.LogError("Find Match expects a LobbyOptions object as parameter but it is something else.");
+                    Debug.LogError("Find Match expects a LobbyOptions or string object as parameter but it is something else.");
                     RaiseFindMatchFailure(); 
                 }
             }
             else
             {
-                Debug.LogError("Find Match expects a LobbyOptions object as parameter but it is null.");
+                Debug.LogError("Find Match expects a LobbyOptions or string object as parameter but it is null.");
                 RaiseFindMatchFailure();
             }
         }

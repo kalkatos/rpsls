@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Sirenix.OdinInspector;
+using Kalkatos.Network;
 
 namespace Kalkatos.Rpsls
 {
@@ -138,7 +139,7 @@ namespace Kalkatos.Rpsls
 
         private void SetupButtons ()
         {
-            bool isMaster = SessionData.IAmMasterClient;
+            bool isMaster = RoomManager.IAmTheMaster;
             idleButton.gameObject.SetActive(!isMaster && !isReady);
             readyButton.gameObject.SetActive(!isMaster && isReady);
             startGameButton.gameObject.SetActive(isMaster);
@@ -151,7 +152,7 @@ namespace Kalkatos.Rpsls
 
         private void SetRoomName ()
         {
-            roomNameText.text = "Room: " + SessionData.RoomName;
+            roomNameText.text = "Room: " + RoomManager.RoomName;
         }
 
         private PlayerInfoSlot CreateSlot (PlayerInfo info)

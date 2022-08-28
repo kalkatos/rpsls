@@ -1,4 +1,4 @@
-﻿namespace Kalkatos.Rpsls
+﻿namespace Kalkatos.Network
 {
     public static class Keys
     {

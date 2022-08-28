@@ -4,6 +4,7 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
+using Kalkatos.Network;
 
 namespace Kalkatos.Rpsls
 {
