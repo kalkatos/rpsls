@@ -22,13 +22,15 @@ namespace Kalkatos.Network
         public static event Action<object> OnLoginFailure;
         public static event Action<object> OnFindMatchSuccess;
         public static event Action<object> OnFindMatchFailure;
-        public static event Action<string, object> OnSendDataSuccess;
-        public static event Action<string, object> OnSendDataFailure;
-        public static event Action<string, object> OnRequestDataSuccess;
-        public static event Action<string, object> OnRequestDataFailure;
-        public static event Action<string, object> OnEventReceived;
+        public static event Action<object[]> OnSendDataSuccess;
+        public static event Action<object[]> OnSendDataFailure;
+        public static event Action<object[]> OnRequestDataSuccess;
+        public static event Action<object[]> OnRequestDataFailure;
+        public static event Action<byte, object> OnEventReceived;
         public static event Action<PlayerInfo> OnPlayerEnteredLobby;
         public static event Action<PlayerInfo> OnPlayerLeftLobby;
+        public static event Action<PlayerInfo, object[]> OnPlayerDataChanged;
+        public static event Action<PlayerInfo> OnMasterClientChanged;
 
         protected Dictionary<string, object> data = new Dictionary<string, object>();
 
@@ -74,9 +76,10 @@ namespace Kalkatos.Network
         public virtual void SetPlayerName (string name) => Debug.LogError("SetPlayerName not implemented!");
         public virtual void LogIn (object parameter = null) => Debug.LogError("LogIn not implemented!");
         public virtual void FindMatch (object parameter = null) => Debug.LogError("FindMatch not implemented!");
-        public virtual void SendData (string key, params object[] parameters) => Debug.LogError("SendData not implemented!");
-        public virtual void RequestData (string key, params object[] parameters) { Debug.LogError("RequestData not implemented!"); }
-        public virtual void ExecuteEvent (string key, params object[] parameters) { Debug.LogError("ExecuteEvent not implemented!"); }
+        public virtual void LeaveMatch (object parameter = null) => Debug.LogError("LeaveMatch not implemented!");
+        public virtual void SendData (params object[] parameters) => Debug.LogError("SendData not implemented!");
+        public virtual void RequestData (params object[] parameters) { Debug.LogError("RequestData not implemented!"); }
+        public virtual void ExecuteEvent (byte eventKey, params object[] parameters) { Debug.LogError("ExecuteEvent not implemented!"); }
 
         #endregion
 
@@ -86,13 +89,15 @@ namespace Kalkatos.Network
         public virtual void RaiseLogInFailure (object parameter = null) { OnLoginFailure?.Invoke(parameter); }
         public virtual void RaiseFindMatchSuccess (object parameter = null) { OnFindMatchSuccess?.Invoke(parameter); }
         public virtual void RaiseFindMatchFailure (object parameter = null) { OnFindMatchFailure?.Invoke(parameter); }
-        public virtual void RaiseSendDataSuccess (string key, object parameter = null) { OnSendDataSuccess?.Invoke(key, parameter); }
-        public virtual void RaiseSendDataFailure (string key, object parameter = null) { OnSendDataFailure?.Invoke(key, parameter); }
-        public virtual void RaiseRequestDataSuccess (string key, object parameter = null) { OnRequestDataSuccess?.Invoke(key, parameter); }
-        public virtual void RaiseRequestDataFailure (string key, object parameter = null) { OnRequestDataFailure?.Invoke(key, parameter); }
-        public virtual void RaiseEventReceived (string key, object parameter = null) { OnEventReceived?.Invoke(key, parameter); }
+        public virtual void RaiseSendDataSuccess (params object[] parameter) { OnSendDataSuccess?.Invoke(parameter); }
+        public virtual void RaiseSendDataFailure (params object[] parameter) { OnSendDataFailure?.Invoke(parameter); }
+        public virtual void RaiseRequestDataSuccess (params object[] parameter) { OnRequestDataSuccess?.Invoke(parameter); }
+        public virtual void RaiseRequestDataFailure (params object[] parameter) { OnRequestDataFailure?.Invoke(parameter); }
+        public virtual void RaiseEventReceived (byte eventKey, object parameter = null) { OnEventReceived?.Invoke(eventKey, parameter); }
         public virtual void RaisePlayerEnteredLobby (PlayerInfo playerInfo) { OnPlayerEnteredLobby?.Invoke(playerInfo); }
         public virtual void RaisePlayerLeftLobby (PlayerInfo playerInfo) { OnPlayerLeftLobby?.Invoke(playerInfo); }
+        public virtual void RaisePlayerDataChanged (PlayerInfo playerInfo, params object[] parameters) { OnPlayerDataChanged?.Invoke(playerInfo, parameters); }
+        public virtual void RaiseMasterClientChanged (PlayerInfo newMaster) => OnMasterClientChanged?.Invoke(newMaster);
 
         #endregion
     }

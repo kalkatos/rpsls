@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -24,8 +25,6 @@ namespace Kalkatos.Rpsls
 
         private void Awake ()
         {
-            NetworkManager.OnEventReceived += HandleEventReceived;
-
             RoomManager.OnPlayerListReceived += HandlePlayerListReceived;
             RoomManager.OnPlayerEntered+= HandlePlayerEntered;
             RoomManager.OnPlayerLeft += HandlePlayerLeft;
@@ -42,8 +41,6 @@ namespace Kalkatos.Rpsls
 
         private void OnDestroy ()
         {
-            NetworkManager.OnEventReceived -= HandleEventReceived;
-
             RoomManager.OnPlayerListReceived -= HandlePlayerListReceived;
             RoomManager.OnPlayerEntered -= HandlePlayerEntered;
             RoomManager.OnPlayerLeft -= HandlePlayerLeft;
@@ -60,17 +57,6 @@ namespace Kalkatos.Rpsls
         {
             SetRoomName();
             SetupButtons();
-        }
-
-        private void HandleEventReceived (string key, object parameter)
-        {
-            switch (key)
-            {
-                case Keys.ChangedPlayerPropertiesEvt:
-                    break;
-                case Keys.IBecameMasterEvt:
-                    break;
-            }
         }
 
         private void HandlePlayerListReceived (List<PlayerInfo> list)
@@ -100,7 +86,7 @@ namespace Kalkatos.Rpsls
         private void HandlePlayerStatusChanged (string userId, RoomStatus status)
         {
             if (slots.TryGetValue(userId, out PlayerInfoSlot slot))
-                slot.SetStatus(status);
+                slot.UpdateStatus(status);
         }
 
         private void HandleBecameMaster ()
@@ -159,7 +145,12 @@ namespace Kalkatos.Rpsls
         {
             PlayerInfoSlot newSlot = Instantiate(settings.PlayerInfoSlotPrefab, playerSlotsListParent);
             newSlot.SetNickname(info.Nickname + (info.IsMe ? "   (me)" : ""));
-            newSlot.SetStatus((RoomStatus)info.CustomData);
+            if (info.CustomData != null)
+            {
+                Dictionary<string, object> dict = (Dictionary<string, object>)info.CustomData;
+                if (dict.ContainsKey("Status"))
+                    newSlot.UpdateStatus((RoomStatus)dict["Status"]);
+            }
             return newSlot;
         }
     }

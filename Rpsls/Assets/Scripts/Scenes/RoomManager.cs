@@ -1,14 +1,11 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using Photon.Pun;
-using Photon.Realtime;
-using Hashtable = ExitGames.Client.Photon.Hashtable;
 using Kalkatos.Network;
 
 namespace Kalkatos.Rpsls
 {
-    public class RoomManager : MonoBehaviourPunCallbacks
+    public class RoomManager : MonoBehaviour
     {
         public static RoomManager Instance { get; private set; }
 
@@ -19,87 +16,99 @@ namespace Kalkatos.Rpsls
         public static event Action OnBecameMaster;
         public static event Action OnGameAboutToStart;
 
-        public List<Player> players = new List<Player>();
+        private List<PlayerInfo> players = new List<PlayerInfo>();
         private RpslsGameSettings settings;
+        private LobbyInfo lobbyInfo;
 
         public static string RoomName { get; private set; }
         public static bool IAmTheMaster { get; private set; }
+        private PlayerInfo myInfo => NetworkManager.Instance.MyPlayerInfo;
 
         private void Awake ()
         {
+            NetworkManager.OnPlayerEnteredLobby += HandlePlayerEntered;
+            NetworkManager.OnPlayerLeftLobby += HandlePlayerLeft;
+            NetworkManager.OnPlayerDataChanged += HandlePlayerDataChanged;
+            NetworkManager.OnMasterClientChanged += HandleMasterClientChanged;
             Instance = this;
-            //RoomName = (string)NetworkManager.Instance.GetData(Keys.RoomName);
-            //IAmTheMaster = (bool)NetworkManager.Instance.GetData(Keys.RoomName);
             settings = RpslsGameSettings.Instance;
+            IAmTheMaster = myInfo.IsMasterClient;
+            lobbyInfo = GetUpdatedLobbyInfo();
+            RoomName = lobbyInfo.Id;
+            SetStatus(IAmTheMaster ? RoomStatus.Master : RoomStatus.Idle);
+        }
+
+        private void OnDestroy ()
+        {
+            NetworkManager.OnPlayerEnteredLobby -= HandlePlayerEntered;
+            NetworkManager.OnPlayerLeftLobby -= HandlePlayerLeft;
+            NetworkManager.OnPlayerDataChanged -= HandlePlayerDataChanged;
+            NetworkManager.OnMasterClientChanged -= HandleMasterClientChanged;
         }
 
         private void Start ()
         {
-            players.AddRange(PhotonNetwork.PlayerList);
-            List<PlayerInfo> infos = new List<PlayerInfo>();
-            //for (int i = 0; i < players.Count; i++)
-            //    infos.Add(PlayerInfo.From(players[i]));
-            OnPlayerListReceived?.Invoke(infos);
-            SetStatus(IAmTheMaster ? RoomStatus.Master : RoomStatus.Idle);
+            List<PlayerInfo> playerList = lobbyInfo.Players;
+            for (int i = 0; i < playerList.Count; i++)
+            {
+                PlayerInfo info = playerList[i];
+                players.Add(info);
+            }
+            OnPlayerListReceived?.Invoke(players);
         }
 
-        public override void OnPlayerEnteredRoom (Player newPlayer)
+        private void HandlePlayerEntered (PlayerInfo newPlayer)
         {
             players.Add(newPlayer);
-            //OnPlayerEntered?.Invoke(PlayerInfo.From(newPlayer));
+            OnPlayerEntered?.Invoke(newPlayer);
         }
 
-        public override void OnPlayerLeftRoom (Player otherPlayer)
+        private void HandlePlayerLeft (PlayerInfo otherPlayer)
         {
             players.Remove(otherPlayer);
-            //OnPlayerLeft?.Invoke(PlayerInfo.From(otherPlayer));
+            OnPlayerLeft?.Invoke(otherPlayer);
         }
 
-        public override void OnMasterClientSwitched (Player newMasterClient)
+        private void HandlePlayerDataChanged (PlayerInfo playerInfo, object data)
         {
-            if (newMasterClient.IsLocal)
+            OnPlayerStatusChanged?.Invoke(playerInfo.Id, (RoomStatus)((Dictionary<string, object>)playerInfo.CustomData)["Status"]);
+        }
+
+        private void HandleMasterClientChanged (PlayerInfo newMaster)
+        {
+            if (newMaster.IsMe)
             {
-                SetStatus(RoomStatus.Master);
                 IAmTheMaster = true;
                 OnBecameMaster?.Invoke();
+                SetStatus(RoomStatus.Master);
             }
         }
 
-        public override void OnPlayerPropertiesUpdate (Player targetPlayer, Hashtable changedProps)
+        private LobbyInfo GetUpdatedLobbyInfo ()
         {
-            if (changedProps.ContainsKey("RoomStatus"))
-                OnPlayerStatusChanged?.Invoke(targetPlayer.UserId, (RoomStatus)changedProps["RoomStatus"]);
-        }
-
-        [PunRPC]
-        private void OnStartGameBroadcast ()
-        {
-            this.Wait(settings.DelayBeforeStarting, () =>
-            {
-                OnGameAboutToStart?.Invoke();
-                SceneManager.EndScene("Room", "ToGame");
-            });
+            return NetworkManager.Instance.CurrentLobbyInfo;
         }
 
         public static void SetStatus (RoomStatus status)
         {
-            PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable() { { "RoomStatus", status } });
+            NetworkManager.Instance.SendData("Status", status);
         }
 
         public static void StartGame ()
         {
+            Debug.Log("Calling start game");
             if (IAmTheMaster)
             {
+                OnGameAboutToStart?.Invoke();
+                Instance.Wait(Instance.settings.DelayBeforeStarting, () => Debug.Log("Start!"));
                 //TODO Broadcast a start game call
             }
         }
 
         public static void ExitRoom ()
         {
-            RoomName = "";
-            IAmTheMaster = false;
             SceneManager.EndScene("Room", "ToLobby");
-            PhotonNetwork.LeaveRoom();
+            NetworkManager.Instance.LeaveMatch();
         }
     }
 }
