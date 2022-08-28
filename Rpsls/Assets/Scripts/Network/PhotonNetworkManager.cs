@@ -3,19 +3,13 @@ using Photon.Pun;
 using Photon.Realtime;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 using System.Collections.Generic;
+using ExitGames.Client.Photon;
 
 namespace Kalkatos.Network
 {
-    public class PhotonNetworkManager : NetworkManager, IConnectionCallbacks, IMatchmakingCallbacks, IInRoomCallbacks, ILobbyCallbacks
+    public class PhotonNetworkManager : NetworkManager, IConnectionCallbacks, IMatchmakingCallbacks, IInRoomCallbacks, ILobbyCallbacks, IOnEventCallback
     {
-        private PhotonView photonView;
-
         public override bool IsConnected => PhotonNetwork.IsConnected;
-
-        protected override void OnAwake ()
-        {
-            photonView = gameObject.AddComponent<PhotonView>();
-        }
 
         public virtual void OnEnable ()
         {
@@ -25,6 +19,12 @@ namespace Kalkatos.Network
         public virtual void OnDisable ()
         {
             PhotonNetwork.RemoveCallbackTarget(this);
+        }
+
+        public override PlayerInfo MyPlayerInfo
+        {
+            get => InfoFromPlayer(PhotonNetwork.LocalPlayer);
+            protected set => base.MyPlayerInfo = value; 
         }
 
         public override LobbyInfo CurrentLobbyInfo
@@ -44,6 +44,7 @@ namespace Kalkatos.Network
                 }
                 return info;
             }
+            protected set => base.CurrentLobbyInfo = value;
         }
 
         private PlayerInfo InfoFromPlayer (Player player)
@@ -54,6 +55,7 @@ namespace Kalkatos.Network
                 Nickname = player.NickName,
                 IsMasterClient = player.IsMasterClient,
                 IsMe = player.IsLocal,
+                CustomData = player.CustomProperties.ToDictionary()
             };
         }
 
@@ -106,25 +108,30 @@ namespace Kalkatos.Network
             }
         }
 
-        public override void SendData (string key, params object[] parameters)
+        public override void LeaveMatch (object parameter = null)
         {
-            Debug.LogError("SendData not implemented!");
+            PhotonNetwork.LeaveRoom();
         }
 
-        public override void RequestData (string key, params object[] parameters)
+        public override void SendData (params object[] parameters)
         {
-            Debug.LogError("RequestData not implemented!"); 
+            PhotonNetwork.LocalPlayer.CustomProperties = parameters.ToHashtable();
         }
 
-        public override void ExecuteEvent (string key, params object[] parameters) 
+        public override void RequestData (params object[] parameters)
         {
-            Debug.LogError("ExecuteEvent not implemented!"); 
+            
+        }
+
+        public override void ExecuteEvent (byte eventKey, params object[] parameters) 
+        {
+            PhotonNetwork.RaiseEvent(eventKey, parameters, RaiseEventOptions.Default, SendOptions.SendReliable);
         }
 
         #endregion
 
         #region ==================  Callbacks  ===========================
-        
+
         public void OnConnectedToMaster ()
         {
             PhotonNetwork.JoinLobby();
@@ -137,6 +144,7 @@ namespace Kalkatos.Network
 
         public void OnJoinedRoom ()
         {
+            Debug.Log("Joined Room: " + PhotonNetwork.CurrentRoom.Name);
             RaiseFindMatchSuccess();
         }
 
@@ -152,12 +160,22 @@ namespace Kalkatos.Network
 
         public void OnMasterClientSwitched (Player newMasterClient)
         {
-            RaiseEventReceived(Keys.MasterClientSwitchEvt, InfoFromPlayer(newMasterClient));
+            RaiseMasterClientChanged(InfoFromPlayer(newMasterClient));
         }
 
         public void OnJoinRoomFailed (short returnCode, string message)
         {
             RaiseFindMatchFailure(message);
+        }
+
+        public void OnPlayerPropertiesUpdate (Player targetPlayer, Hashtable changedProps) 
+        {
+            RaisePlayerDataChanged(InfoFromPlayer(targetPlayer), changedProps?.ToDictionary());
+        }
+
+        public void OnEvent (EventData photonEvent)
+        {
+            RaiseEventReceived(photonEvent.Code, photonEvent.CustomData);
         }
 
         public void OnConnected () { }
@@ -170,11 +188,66 @@ namespace Kalkatos.Network
         public void OnCreateRoomFailed (short returnCode, string message) { }
         public void OnJoinRandomFailed (short returnCode, string message) { }
         public void OnRoomPropertiesUpdate (Hashtable propertiesThatChanged) { }
-        public void OnPlayerPropertiesUpdate (Player targetPlayer, Hashtable changedProps) { }
         public void OnLeftLobby () { }
         public void OnLeftRoom () { }
         public void OnRoomListUpdate (List<RoomInfo> roomList) { }
         public void OnLobbyStatisticsUpdate (List<TypedLobbyInfo> lobbyStatistics) { }
+
         #endregion
+    }
+
+    public static class PhotonCustomExtentions
+    {
+        public static Dictionary<string, object> ToDictionary (this Hashtable hashtable)
+        {
+            Dictionary<string, object> result = new Dictionary<string, object>();
+            foreach (var item in hashtable)
+                result.Add(item.Key.ToString(), item.Value);
+            return result;
+        }
+
+        public static Hashtable ToHashtable (this Dictionary<string, object> dictionary)
+        {
+            Hashtable result = new Hashtable();
+            foreach (var item in dictionary)
+                result.Add(item.Key, item.Value);
+            return result;
+        }
+
+        public static Hashtable ToHashtable (this object[] objArray)
+        {
+            Hashtable result = new Hashtable();
+            for (int i = 0; i < objArray.Length; i++)
+            {
+                if (i % 2 == 0)
+                    result.Add(objArray[i].ToString(), null);
+                else
+                    result[objArray[i - 1].ToString()] = objArray[i];
+            }
+            return result;
+        }
+
+        public static Hashtable Append (this Hashtable hashtable, object[] objArray)
+        {
+            for (int i = 0; i < objArray.Length; i++)
+            {
+                if (i % 2 == 0)
+                {
+                    if (!hashtable.ContainsKey(objArray[i]))
+                        hashtable.Add(objArray[i].ToString(), null);
+                }
+                else
+                    hashtable[objArray[i - 1]] = objArray[i];
+            }
+            return hashtable;
+        }
+
+        public static Hashtable HashtableClone (this Hashtable hashtable)
+        {
+            Hashtable result = new Hashtable();
+            foreach (var item in hashtable)
+                result.Add(item.Key, item.Value);
+            return result;
+        }
     }
 }

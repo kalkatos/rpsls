@@ -14,10 +14,10 @@ namespace Kalkatos.Rpsls
 
         private void Awake ()
         {
-            SetStatus(currentStatus, true);
+            UpdateStatus(currentStatus, true);
         }
 
-        public void SetStatus (RoomStatus status, bool force = false)
+        public void UpdateStatus (RoomStatus status, bool force = false)
         {
             if (force || status != currentStatus)
             {
