@@ -28,12 +28,12 @@ namespace Kalkatos.Rpsls
 
         public override void OnPlayerEnteredRoom (Player newPlayer)
         {
-            manager.RaisePlayerEnteredLobby(PhotonNetworkManager.InfoFromPlayer(newPlayer));
+            //manager.RaisePlayerEnteredLobby(PhotonNetworkManager.InfoFromPlayer(newPlayer));
         }
 
         public override void OnPlayerLeftRoom (Player otherPlayer)
         {
-            manager.RaisePlayerLeftLobby(PhotonNetworkManager.InfoFromPlayer(otherPlayer));
+            //manager.RaisePlayerLeftLobby(PhotonNetworkManager.InfoFromPlayer(otherPlayer));
         }
 
         public override void OnJoinedRoom ()

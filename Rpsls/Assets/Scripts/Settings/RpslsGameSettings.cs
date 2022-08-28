@@ -13,8 +13,5 @@ namespace Kalkatos.Rpsls
         public float DelayBeforeStarting;
         [Header("Prefabs")]
         public PlayerInfoSlot PlayerInfoSlotPrefab;
-        [Header("Session Info")]
-        public string CurrentRoomName;
-        public bool IAmMasterClient;
     }
 }

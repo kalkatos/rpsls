@@ -40,7 +40,7 @@ namespace Kalkatos.Rpsls
                 instance = this;
             else if (instance != this)
             {
-                Destroy(this);
+                Destroy(gameObject);
                 return;
             }
             DontDestroyOnLoad(gameObject);
