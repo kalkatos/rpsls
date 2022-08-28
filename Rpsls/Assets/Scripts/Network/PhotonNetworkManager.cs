@@ -8,15 +8,13 @@ namespace Kalkatos.Rpsls
 {
     public class PhotonNetworkManager : NetworkManager, IConnectionCallbacks, IMatchmakingCallbacks, IInRoomCallbacks, ILobbyCallbacks
     {
-        private RpslsGameSettings settings;
-        //private PhotonView photonView;
+        private PhotonView photonView;
 
         public override bool IsConnected => PhotonNetwork.IsConnected;
 
         protected override void OnAwake ()
         {
-            settings = RpslsGameSettings.Instance;
-            //photonView = gameObject.AddComponent<PhotonView>();
+            photonView = gameObject.AddComponent<PhotonView>();
         }
 
         public virtual void OnEnable ()
@@ -29,12 +27,7 @@ namespace Kalkatos.Rpsls
             PhotonNetwork.RemoveCallbackTarget(this);
         }
 
-        private void Start ()
-        {
-            PhotonNetwork.ConnectUsingSettings();
-        }
-
-        private static PlayerInfo InfoFromPlayer (Player player, RoomStatus status = RoomStatus.Idle)
+        private PlayerInfo InfoFromPlayer (Player player)
         {
             return new PlayerInfo()
             {
@@ -42,50 +35,81 @@ namespace Kalkatos.Rpsls
                 Nickname = player.NickName,
                 IsMasterClient = player.IsMasterClient,
                 IsMe = player.IsLocal,
-                CustomData = status
+            };
+        }
+
+        private RoomOptions ConvertToRoomOptions (LobbyOptions lobbyOptions)
+        {
+            return new RoomOptions()
+            {
+                MaxPlayers = (byte)lobbyOptions.MaxPlayers
             };
         }
 
         #region ==================  Requests  ===========================
+
+        public override void Connect () 
+        {
+            PhotonNetwork.ConnectUsingSettings();
+        }
+
+        public override string GetPlayerName () => CreateGuestName();
 
         public override void SetPlayerName (string name)
         {
             PhotonNetwork.LocalPlayer.NickName = name;
         }
 
+        public override void LogIn (object parameter = null) { }
+
         public override void FindMatch (object parameter = null)
         {
-            if (parameter == null)
+            if (parameter != null)
             {
-                RoomOptions roomOptions = new RoomOptions();
-                roomOptions.MaxPlayers = (byte)settings.MaxPlayers;
-                roomOptions.PublishUserId = true;
-                PhotonNetwork.CreateRoom(CreateRandomRoomName(), roomOptions);
+                if (parameter is LobbyOptions)
+                {
+                    LobbyOptions lobbyOptions = (LobbyOptions)parameter;
+                    if (string.IsNullOrEmpty(lobbyOptions.Id))
+                    {
+                        RoomOptions roomOptions = ConvertToRoomOptions((LobbyOptions)parameter);
+                        roomOptions.PublishUserId = true;
+                        PhotonNetwork.CreateRoom(CreateRandomRoomName(), roomOptions);
+                    }
+                    else
+                        PhotonNetwork.JoinRoom(lobbyOptions.Id);
+                }
+                else
+                {
+                    Debug.LogError("Find Match expects a LobbyOptions object as parameter but it is something else.");
+                    RaiseFindMatchFailure(); 
+                }
             }
             else
-                PhotonNetwork.JoinRoom((string)parameter);
+            {
+                Debug.LogError("Find Match expects a LobbyOptions object as parameter but it is null.");
+                RaiseFindMatchFailure();
+            }
+        }
+
+        public override void SendData (string key, params object[] parameters)
+        {
+            Debug.LogError("SendData not implemented!");
+        }
+
+        public override void RequestData (string key, params object[] parameters)
+        {
+            Debug.LogError("RequestData not implemented!"); 
+        }
+
+        public override void ExecuteEvent (string key, params object[] parameters) 
+        {
+            Debug.LogError("ExecuteEvent not implemented!"); 
         }
 
         #endregion
 
         #region ==================  Callbacks  ===========================
-
-        public override void RaiseLogInSuccess (object parameter = null)
-        {
-            base.RaiseLogInSuccess(parameter);
-            SceneManager.EndScene("Connection");
-        }
-
-        public override void RaiseFindMatchSuccess (object parameter = null)
-        {
-            SessionData.RoomName = PhotonNetwork.CurrentRoom.Name;
-            SessionData.IAmMasterClient = PhotonNetwork.IsMasterClient;
-            base.RaiseFindMatchSuccess(parameter);
-            SceneManager.EndScene("Lobby");
-        }
-
-        // --- Photon ---
-
+        
         public void OnConnectedToMaster ()
         {
             PhotonNetwork.JoinLobby();
@@ -98,40 +122,27 @@ namespace Kalkatos.Rpsls
 
         public void OnJoinedRoom ()
         {
-            RoomStatus status = RoomStatus.Idle;
-            if (PhotonNetwork.IsMasterClient)
-                status = RoomStatus.Master;
-            PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable() { { Keys.RoomStatus, status } });
             RaiseFindMatchSuccess();
-        }
-
-        public void OnLeftRoom ()
-        {
-            PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable() { { Keys.RoomStatus, RoomStatus.Idle } });
         }
 
         public void OnPlayerEnteredRoom (Player newPlayer) 
         {
-
+            RaisePlayerEnteredLobby(InfoFromPlayer(newPlayer));
         }
 
         public void OnPlayerLeftRoom (Player otherPlayer) 
         {
-
+            RaisePlayerLeftLobby(InfoFromPlayer(otherPlayer));
         }
 
         public void OnMasterClientSwitched (Player newMasterClient)
         {
-            bool iBecameMaster = newMasterClient.IsLocal;
-            SessionData.IAmMasterClient = iBecameMaster;
-            if (iBecameMaster)
-                RaiseEventReceived(Keys.IBecameMasterEvt);
+            RaiseEventReceived(Keys.MasterClientSwitchEvt, InfoFromPlayer(newMasterClient));
         }
 
-        public void OnPlayerPropertiesUpdate (Player targetPlayer, Hashtable changedProps)
+        public void OnJoinRoomFailed (short returnCode, string message)
         {
-            if (changedProps.ContainsKey(Keys.RoomStatus))
-                RaiseEventReceived(Keys.ChangedPlayerPropertiesEvt, InfoFromPlayer(targetPlayer));
+            RaiseFindMatchFailure(message);
         }
 
         public void OnConnected () { }
@@ -142,10 +153,11 @@ namespace Kalkatos.Rpsls
         public void OnFriendListUpdate (List<FriendInfo> friendList) { }
         public void OnCreatedRoom () { }
         public void OnCreateRoomFailed (short returnCode, string message) { }
-        public void OnJoinRoomFailed (short returnCode, string message) { }
         public void OnJoinRandomFailed (short returnCode, string message) { }
         public void OnRoomPropertiesUpdate (Hashtable propertiesThatChanged) { }
+        public void OnPlayerPropertiesUpdate (Player targetPlayer, Hashtable changedProps) { }
         public void OnLeftLobby () { }
+        public void OnLeftRoom () { }
         public void OnRoomListUpdate (List<RoomInfo> roomList) { }
         public void OnLobbyStatisticsUpdate (List<TypedLobbyInfo> lobbyStatistics) { }
         #endregion

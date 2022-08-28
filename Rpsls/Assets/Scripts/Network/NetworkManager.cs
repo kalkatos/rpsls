@@ -67,6 +67,7 @@ namespace Kalkatos.Rpsls
 
         #region ==================  Requests  ===========================
 
+        public virtual void Connect () { }
         public virtual string GetPlayerName () => CreateGuestName();
         public virtual void SetPlayerName (string name) => Debug.LogError("SetPlayerName not implemented!");
         public virtual void LogIn (object parameter = null) => Debug.LogError("LogIn not implemented!");
@@ -101,6 +102,14 @@ namespace Kalkatos.Rpsls
         public string Nickname;
         public bool IsMasterClient;
         public bool IsMe;
+        public object CustomData;
+    }
+
+    [Serializable]
+    public struct LobbyOptions
+    {
+        public string Id;
+        public int MaxPlayers;
         public object CustomData;
     }
 }

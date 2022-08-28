@@ -1,6 +1,6 @@
 ﻿namespace Kalkatos.Rpsls
 {
-    internal static class Keys
+    public static class Keys
     {
         //Events
         public const string MasterClientSwitchEvt = "MCS";
