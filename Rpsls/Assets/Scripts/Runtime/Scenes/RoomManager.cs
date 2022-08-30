@@ -83,7 +83,7 @@ namespace Kalkatos.Rpsls
 
         private void HandleMasterClientChanged (PlayerInfo newMaster)
         {
-            if (newMaster.IsMe)
+            if (newMaster.Id == MyId)
             {
                 IAmTheMaster = true;
                 OnBecameMaster?.Invoke();

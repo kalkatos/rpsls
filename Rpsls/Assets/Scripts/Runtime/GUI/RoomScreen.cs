@@ -145,7 +145,7 @@ namespace Kalkatos.Rpsls
         private PlayerInfoSlot CreateSlot (PlayerInfo info)
         {
             PlayerInfoSlot newSlot = Instantiate(settings.PlayerInfoSlotPrefab, playerSlotsListParent);
-            newSlot.SetNickname(info.Nickname + (info.IsMe ? "   (me)" : ""));
+            newSlot.SetNickname(info.Nickname + (info.Id == RoomManager.MyId ? "  (me)" : ""));
             if (info.CustomData != null)
             {
                 Dictionary<string, object> dict = (Dictionary<string, object>)info.CustomData;
