@@ -20,7 +20,7 @@ namespace Kalkatos.Rpsls
         private RpslsGameSettings settings;
         private RoomInfo roomInfo;
 
-        private const string setRoomStatusKey = "Srsts";
+        private const string setRoomStatusKey = "SRSts";
 
         public static string RoomName { get; private set; }
         public static bool IAmTheMaster { get; private set; }
@@ -32,15 +32,15 @@ namespace Kalkatos.Rpsls
             NetworkManager.OnPlayerEnteredRoom += HandlePlayerEntered;
             NetworkManager.OnPlayerLeftRoom += HandlePlayerLeft;
             NetworkManager.OnMasterClientChanged += HandleMasterClientChanged;
+            NetworkManager.OnPlayerDataChanged += HandlePlayerDataChanged;
             NetworkManager.OnEventReceived += HandleEventReceived;
             Instance = this;
             settings = RpslsGameSettings.Instance;
             PlayerInfo myInfo = this.myInfo;
             IAmTheMaster = myInfo.IsMasterClient;
             MyId = myInfo.Id;
-            roomInfo = GetUpdatedLobbyInfo();
+            roomInfo = GetUpdatedRoomInfo();
             RoomName = roomInfo.Id;
-            SetStatus(IAmTheMaster ? RoomStatus.Master : RoomStatus.Idle);
         }
 
         private void OnDestroy ()
@@ -48,6 +48,7 @@ namespace Kalkatos.Rpsls
             NetworkManager.OnPlayerEnteredRoom -= HandlePlayerEntered;
             NetworkManager.OnPlayerLeftRoom -= HandlePlayerLeft;
             NetworkManager.OnMasterClientChanged -= HandleMasterClientChanged;
+            NetworkManager.OnPlayerDataChanged -= HandlePlayerDataChanged;
             NetworkManager.OnEventReceived -= HandleEventReceived;
         }
 
@@ -61,6 +62,7 @@ namespace Kalkatos.Rpsls
                 players.Add(info.Id, info);
             }
             OnPlayerListReceived?.Invoke(playerList);
+            SetStatus(IAmTheMaster ? RoomStatus.Master : RoomStatus.Idle);
         }
 
         private void HandlePlayerEntered (PlayerInfo newPlayer)
@@ -72,12 +74,12 @@ namespace Kalkatos.Rpsls
             }
         }
 
-        private void HandlePlayerLeft (PlayerInfo otherPlayer)
+        private void HandlePlayerLeft (PlayerInfo player)
         {
-            if (players.ContainsKey(otherPlayer.Id))
+            if (players.ContainsKey(player.Id))
             {
-                players.Remove(otherPlayer.Id);
-                OnPlayerLeft?.Invoke(otherPlayer);
+                players.Remove(player.Id);
+                OnPlayerLeft?.Invoke(player);
             }
         }
 
@@ -88,6 +90,17 @@ namespace Kalkatos.Rpsls
                 IAmTheMaster = true;
                 OnBecameMaster?.Invoke();
                 SetStatus(RoomStatus.Master);
+            }
+        }
+
+        private void HandlePlayerDataChanged (PlayerInfo player, object[] parameters)
+        {
+            if (players.ContainsKey(player.Id))
+            {
+                PlayerInfo infoHere = players[player.Id];
+                if (player.CustomData != infoHere.CustomData)
+                    OnPlayerStatusChanged?.Invoke(player.Id, (RoomStatus)int.Parse(player.CustomData.ToString()));
+                players[player.Id] = player;
             }
         }
 
@@ -107,14 +120,14 @@ namespace Kalkatos.Rpsls
             }
         }
 
-        private RoomInfo GetUpdatedLobbyInfo ()
+        private RoomInfo GetUpdatedRoomInfo ()
         {
             return NetworkManager.Instance.CurrentRoomInfo;
         }
 
         public static void SetStatus (RoomStatus status)
         {
-            NetworkManager.Instance.ExecuteEvent(setRoomStatusKey, MyId, status);
+            NetworkManager.Instance.SetMyCustomData((int)status);
         }
 
         public static void StartGame ()
