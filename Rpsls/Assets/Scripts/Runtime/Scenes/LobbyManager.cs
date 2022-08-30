@@ -42,7 +42,7 @@ namespace Kalkatos.Rpsls
         {
             if (string.IsNullOrEmpty(lobbyName))
             {
-                LobbyOptions options = new LobbyOptions() { MaxPlayers = settings.MaxPlayers };
+                RoomOptions options = new RoomOptions() { MaxPlayers = settings.MaxPlayers };
                 NetworkManager.Instance.FindMatch(options);
             }
             else

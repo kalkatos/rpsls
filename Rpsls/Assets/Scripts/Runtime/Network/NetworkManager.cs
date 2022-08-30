@@ -26,17 +26,16 @@ namespace Kalkatos.Network
         public static event Action<object[]> OnSendDataFailure;
         public static event Action<object[]> OnRequestDataSuccess;
         public static event Action<object[]> OnRequestDataFailure;
-        public static event Action<byte, object> OnEventReceived;
-        public static event Action<PlayerInfo> OnPlayerEnteredLobby;
-        public static event Action<PlayerInfo> OnPlayerLeftLobby;
+        public static event Action<string, object[]> OnEventReceived;
+        public static event Action<PlayerInfo> OnPlayerEnteredRoom;
+        public static event Action<PlayerInfo> OnPlayerLeftRoom;
         public static event Action<PlayerInfo, object[]> OnPlayerDataChanged;
         public static event Action<PlayerInfo> OnMasterClientChanged;
 
-        protected Dictionary<string, object> data = new Dictionary<string, object>();
-
-        public virtual bool IsConnected => false;
+        public virtual bool IsConnected { get; protected set; } = false;
+        public virtual bool IsInRoom { get; protected set; } = false;
         public virtual PlayerInfo MyPlayerInfo { get; protected set; }
-        public virtual LobbyInfo CurrentLobbyInfo { get; protected set; }
+        public virtual RoomInfo CurrentRoomInfo { get; protected set; }
 
         private void Awake ()
         {
@@ -79,7 +78,7 @@ namespace Kalkatos.Network
         public virtual void LeaveMatch (object parameter = null) => Debug.LogError("LeaveMatch not implemented!");
         public virtual void SendData (params object[] parameters) => Debug.LogError("SendData not implemented!");
         public virtual void RequestData (params object[] parameters) { Debug.LogError("RequestData not implemented!"); }
-        public virtual void ExecuteEvent (byte eventKey, params object[] parameters) { Debug.LogError("ExecuteEvent not implemented!"); }
+        public virtual void ExecuteEvent (string eventKey, params object[] parameters) { Debug.LogError("ExecuteEvent not implemented!"); }
 
         #endregion
 
@@ -93,9 +92,9 @@ namespace Kalkatos.Network
         public virtual void RaiseSendDataFailure (params object[] parameter) { OnSendDataFailure?.Invoke(parameter); }
         public virtual void RaiseRequestDataSuccess (params object[] parameter) { OnRequestDataSuccess?.Invoke(parameter); }
         public virtual void RaiseRequestDataFailure (params object[] parameter) { OnRequestDataFailure?.Invoke(parameter); }
-        public virtual void RaiseEventReceived (byte eventKey, object parameter = null) { OnEventReceived?.Invoke(eventKey, parameter); }
-        public virtual void RaisePlayerEnteredLobby (PlayerInfo playerInfo) { OnPlayerEnteredLobby?.Invoke(playerInfo); }
-        public virtual void RaisePlayerLeftLobby (PlayerInfo playerInfo) { OnPlayerLeftLobby?.Invoke(playerInfo); }
+        public virtual void RaiseEventReceived (string eventKey, params object[] parameters) { OnEventReceived?.Invoke(eventKey, parameters); }
+        public virtual void RaisePlayerEnteredRoom (PlayerInfo playerInfo) { OnPlayerEnteredRoom?.Invoke(playerInfo); }
+        public virtual void RaisePlayerLeftRoom (PlayerInfo playerInfo) { OnPlayerLeftRoom?.Invoke(playerInfo); }
         public virtual void RaisePlayerDataChanged (PlayerInfo playerInfo, params object[] parameters) { OnPlayerDataChanged?.Invoke(playerInfo, parameters); }
         public virtual void RaiseMasterClientChanged (PlayerInfo newMaster) => OnMasterClientChanged?.Invoke(newMaster);
 
@@ -113,14 +112,14 @@ namespace Kalkatos.Network
     }
 
     [Serializable]
-    public struct LobbyOptions
+    public struct RoomOptions
     {
         public int MaxPlayers;
         public object CustomData;
     }
 
     [Serializable]
-    public struct LobbyInfo
+    public struct RoomInfo
     {
         public string Id;
         public int MaxPlayers;

@@ -669,7 +669,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 208963396289589569, guid: 7939899439f241f48ad10e8e997e7498, type: 3}
       propertyPath: m_Name
-      value: PhotonNetworkManager
+      value: NetworkManager
       objectReference: {fileID: 0}
     - target: {fileID: 208963396289589583, guid: 7939899439f241f48ad10e8e997e7498, type: 3}
       propertyPath: m_RootOrder
