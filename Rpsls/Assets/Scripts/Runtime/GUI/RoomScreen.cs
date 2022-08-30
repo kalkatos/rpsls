@@ -69,7 +69,8 @@ namespace Kalkatos.Rpsls
 
         private void HandlePlayerEntered (PlayerInfo newPlayer)
         {
-            slots.Add(newPlayer.Id, CreateSlot(newPlayer));
+            if (!slots.ContainsKey(newPlayer.Id))
+                slots.Add(newPlayer.Id, CreateSlot(newPlayer));
             UpdatePlayerCount();
         }
 

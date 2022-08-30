@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Kalkatos.Rpsls
+namespace Kalkatos
 {
     public class SingletonScriptableObject<T> : ScriptableObject where T : SingletonScriptableObject<T>
     {

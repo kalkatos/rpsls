@@ -9,6 +9,8 @@ namespace Kalkatos.Network
 {
     public class PhotonNetworkManager : NetworkManager, IConnectionCallbacks, IMatchmakingCallbacks, IInRoomCallbacks, ILobbyCallbacks, IOnEventCallback
     {
+        private List<string> functionNamesToByte = new List<string>() { "xreservex" };
+
         public override bool IsConnected => PhotonNetwork.IsConnected;
 
         public virtual void OnEnable ()
@@ -27,11 +29,11 @@ namespace Kalkatos.Network
             protected set => base.MyPlayerInfo = value; 
         }
 
-        public override LobbyInfo CurrentLobbyInfo
+        public override RoomInfo CurrentRoomInfo
         {
             get
             {
-                LobbyInfo info = new LobbyInfo();
+                RoomInfo info = new RoomInfo();
                 if (PhotonNetwork.InRoom)
                 {
                     Room room = PhotonNetwork.CurrentRoom;
@@ -44,7 +46,7 @@ namespace Kalkatos.Network
                 }
                 return info;
             }
-            protected set => base.CurrentLobbyInfo = value;
+            protected set => base.CurrentRoomInfo = value;
         }
 
         private PlayerInfo InfoFromPlayer (Player player)
@@ -59,9 +61,9 @@ namespace Kalkatos.Network
             };
         }
 
-        private RoomOptions ConvertToRoomOptions (LobbyOptions lobbyOptions)
+        private Photon.Realtime.RoomOptions ConvertToRoomOptions (RoomOptions lobbyOptions)
         {
-            return new RoomOptions()
+            return new Photon.Realtime.RoomOptions()
             {
                 MaxPlayers = (byte)lobbyOptions.MaxPlayers
             };
@@ -87,9 +89,9 @@ namespace Kalkatos.Network
         {
             if (parameter != null)
             {
-                if (parameter is LobbyOptions)
+                if (parameter is RoomOptions)
                 {
-                    RoomOptions roomOptions = ConvertToRoomOptions((LobbyOptions)parameter);
+                    Photon.Realtime.RoomOptions roomOptions = ConvertToRoomOptions((RoomOptions)parameter);
                     roomOptions.PublishUserId = true;
                     PhotonNetwork.CreateRoom(CreateRandomRoomName(), roomOptions);
                 }
@@ -123,9 +125,17 @@ namespace Kalkatos.Network
             
         }
 
-        public override void ExecuteEvent (byte eventKey, params object[] parameters) 
+        public override void ExecuteEvent (string eventKey, params object[] parameters) 
         {
-            PhotonNetwork.RaiseEvent(eventKey, parameters, RaiseEventOptions.Default, SendOptions.SendReliable);
+            byte byteKey;
+            if (functionNamesToByte.Contains(eventKey))
+                byteKey = (byte)functionNamesToByte.IndexOf(eventKey);
+            else
+            {
+                byteKey = (byte)functionNamesToByte.Count;
+                functionNamesToByte.Add(eventKey);
+            }
+            PhotonNetwork.RaiseEvent(byteKey, parameters, RaiseEventOptions.Default, SendOptions.SendReliable);
         }
 
         #endregion
@@ -148,14 +158,14 @@ namespace Kalkatos.Network
             RaiseFindMatchSuccess();
         }
 
-        public void OnPlayerEnteredRoom (Player newPlayer) 
+        void IInRoomCallbacks.OnPlayerEnteredRoom (Player newPlayer) 
         {
-            RaisePlayerEnteredLobby(InfoFromPlayer(newPlayer));
+            RaisePlayerEnteredRoom(InfoFromPlayer(newPlayer));
         }
 
-        public void OnPlayerLeftRoom (Player otherPlayer) 
+        void IInRoomCallbacks.OnPlayerLeftRoom (Player otherPlayer) 
         {
-            RaisePlayerLeftLobby(InfoFromPlayer(otherPlayer));
+            RaisePlayerLeftRoom(InfoFromPlayer(otherPlayer));
         }
 
         public void OnMasterClientSwitched (Player newMasterClient)
@@ -175,7 +185,7 @@ namespace Kalkatos.Network
 
         public void OnEvent (EventData photonEvent)
         {
-            RaiseEventReceived(photonEvent.Code, photonEvent.CustomData);
+            RaiseEventReceived(functionNamesToByte[photonEvent.Code], (object[])photonEvent.CustomData);
         }
 
         public void OnConnected () { }
@@ -190,7 +200,7 @@ namespace Kalkatos.Network
         public void OnRoomPropertiesUpdate (Hashtable propertiesThatChanged) { }
         public void OnLeftLobby () { }
         public void OnLeftRoom () { }
-        public void OnRoomListUpdate (List<RoomInfo> roomList) { }
+        public void OnRoomListUpdate (List<Photon.Realtime.RoomInfo> roomList) { }
         public void OnLobbyStatisticsUpdate (List<TypedLobbyInfo> lobbyStatistics) { }
 
         #endregion
