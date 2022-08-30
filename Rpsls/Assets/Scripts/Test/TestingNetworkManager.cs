@@ -363,7 +363,7 @@ namespace Kalkatos.Rpsls.Test
                 }
             }
             string newBoard = SaveManager.GetString(executeFunctionKey, "");
-            newBoard += $"[{eventKey}-{DateTime.Now.ToBinary()}({parametersSerialization})]";
+            newBoard += $"[{eventKey}-{DateTime.Now.Ticks}({parametersSerialization})]";
             SaveManager.SaveString(executeFunctionKey, newBoard);
         }
     }
