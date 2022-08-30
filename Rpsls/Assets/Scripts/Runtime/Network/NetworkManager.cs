@@ -107,7 +107,6 @@ namespace Kalkatos.Network
         public string Id;
         public string Nickname;
         public bool IsMasterClient;
-        public bool IsMe;
         public object CustomData;
     }
 

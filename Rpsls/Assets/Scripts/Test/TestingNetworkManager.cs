@@ -30,30 +30,10 @@ namespace Kalkatos.Rpsls.Test
             {
                 List<PlayerInfo> list = new List<PlayerInfo>();
                 if (SaveManager.HasKey(connectedPlayersKey))
-                {
-                    string receivedStr = SaveManager.GetString(connectedPlayersKey, "");
-                    Debug.Log(receivedStr);
-                    list.AddRange(JsonConvert.DeserializeObject<PlayerInfo[]>(receivedStr));
-                }
-                for (int i = 0; i < list.Count; i++)
-                {
-                    PlayerInfo info = list[i];
-                    info.IsMe = playerLoginId == info.Id;
-                    list[i] = info;
-                }
+                    list.AddRange(JsonConvert.DeserializeObject<PlayerInfo[]>(SaveManager.GetString(connectedPlayersKey, "")));
                 return list;
             }
-            set
-            {
-                List<PlayerInfo> list = value;
-                for (int i = 0; i < list.Count; i++)
-                {
-                    PlayerInfo info = list[i];
-                    info.IsMe = false;
-                    list[i] = info;
-                }
-                SaveManager.SaveString(connectedPlayersKey, JsonConvert.SerializeObject(list));
-            }
+            set => SaveManager.SaveString(connectedPlayersKey, JsonConvert.SerializeObject(value));
         }
         private List<RoomInfo> activeRooms
         {
@@ -70,12 +50,26 @@ namespace Kalkatos.Rpsls.Test
 
         private void OnApplicationQuit ()
         {
-            LeaveMatch();
-            if (connectedPlayers.Count <= 1)
+            if (IsConnected && IsInRoom)
+                LeaveMatch();
+            var listOfPlayers = connectedPlayers;
+            if (listOfPlayers.Count <= 1)
             {
                 Debug.Log("[Testing] Cleaning up to quit.");
                 SaveManager.DeleteKey(connectedPlayersKey);
                 SaveManager.DeleteKey(activeRoomsKey);
+            }
+            else
+            {
+                for (int i = 0; i < listOfPlayers.Count; i++)
+                {
+                    if (listOfPlayers[i].Id == playerLoginId)
+                    {
+                        listOfPlayers.RemoveAt(i);
+                        connectedPlayers = listOfPlayers;
+                        break;
+                    }
+                }
             }
         }
 
@@ -104,22 +98,22 @@ namespace Kalkatos.Rpsls.Test
                         if (i < currentPlayerList.Count)
                         {
                             PlayerInfo newPlayer = currentPlayerList[i];
+                            PlayerInfo found = lastKnownPlayerList.Find((info) => info.Id == newPlayer.Id);
                             if (newPlayer.Id == MyPlayerInfo.Id)
                                 MyPlayerInfo = newPlayer;
-                            else
-                            {
-                                PlayerInfo found = lastKnownPlayerList.Find((info) => info.Id == newPlayer.Id);
-                                if (string.IsNullOrEmpty(found.Id))
-                                    RaisePlayerEnteredRoom(newPlayer);
-                                else if (newPlayer.IsMasterClient && !found.IsMasterClient)
-                                    RaiseMasterClientChanged(newPlayer);
-                            }
+                            else if (string.IsNullOrEmpty(found.Id))
+                                RaisePlayerEnteredRoom(newPlayer);
+                            if (newPlayer.IsMasterClient && !found.IsMasterClient)
+                                RaiseMasterClientChanged(found);
                         }
                         if (i < lastKnownPlayerList.Count)
                         {
                             PlayerInfo formerPlayer = lastKnownPlayerList[i];
-                            if (formerPlayer.Id != MyPlayerInfo.Id && string.IsNullOrEmpty(currentPlayerList.Find((info) => info.Id == formerPlayer.Id).Id))
+                            PlayerInfo found = currentPlayerList.Find((info) => info.Id == formerPlayer.Id);
+                            if (formerPlayer.Id != MyPlayerInfo.Id && string.IsNullOrEmpty(found.Id))
                                 RaisePlayerLeftRoom(formerPlayer);
+                            if (!formerPlayer.IsMasterClient && found.IsMasterClient)
+                                RaiseMasterClientChanged(found);
                         }
                     }
                     lastKnownPlayerList.Clear();
@@ -198,7 +192,6 @@ namespace Kalkatos.Rpsls.Test
                     Id = playerLoginId,
                     Nickname = SaveManager.GetNickname(),
                     IsMasterClient = isFirst,
-                    IsMe = false,
                 };
                 MyPlayerInfo = playerInfo;
                 listOfPlayers.Add(playerInfo);
@@ -304,23 +297,26 @@ namespace Kalkatos.Rpsls.Test
                                 PlayerInfo newMasterInfo = players[0];
                                 newMasterInfo.IsMasterClient = true;
                                 players[0] = newMasterInfo;
-                                RaiseMasterClientChanged(newMasterInfo);
                             }
                             break;
                         }
                     }
                     room.Players = players;
                     room.PlayerCount = players.Count;
-                    listOfRooms[i] = room;
                     if (players.Count == 0)
                     {
                         listOfRooms.RemoveAt(i);
                         SaveManager.DeleteKey(executeFunctionKey);
                     }
+                    else
+                        listOfRooms[i] = room;
                     break;
                 }
             }
-            activeRooms = listOfRooms;
+            if (listOfRooms.Count == 0)
+                SaveManager.DeleteKey(activeRoomsKey);
+            else
+                activeRooms = listOfRooms;
             CurrentRoomInfo = new RoomInfo();
             Debug.Log("[Testing] Left Room.");
         }

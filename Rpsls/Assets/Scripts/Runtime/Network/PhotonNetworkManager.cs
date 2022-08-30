@@ -56,7 +56,6 @@ namespace Kalkatos.Network
                 Id = player.UserId,
                 Nickname = player.NickName,
                 IsMasterClient = player.IsMasterClient,
-                IsMe = player.IsLocal,
                 CustomData = player.CustomProperties.ToDictionary()
             };
         }
