@@ -60,11 +60,11 @@ namespace Kalkatos.Network
             };
         }
 
-        private Photon.Realtime.RoomOptions ConvertToRoomOptions (RoomOptions lobbyOptions)
+        private Photon.Realtime.RoomOptions ConvertToRoomOptions (RoomOptions roomOptions)
         {
             return new Photon.Realtime.RoomOptions()
             {
-                MaxPlayers = (byte)lobbyOptions.MaxPlayers
+                MaxPlayers = (byte)roomOptions.MaxPlayers
             };
         }
 

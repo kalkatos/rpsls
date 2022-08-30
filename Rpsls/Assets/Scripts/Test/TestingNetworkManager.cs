@@ -17,6 +17,8 @@ namespace Kalkatos.Rpsls.Test
         private char[] functionDataSeparator = new char[] { ';' };
         private char[] functionArgumentsSeparator = new char[] { '(', ',', ')' };
 
+        private PlayerInfo myPlayerInfo;
+        private RoomInfo currentRoomInfo;
         private string playerLoginId;
         private List<PlayerInfo> lastKnownPlayerList = new List<PlayerInfo>();
         private Dictionary<string, object> data = new Dictionary<string, object>();
@@ -47,6 +49,8 @@ namespace Kalkatos.Rpsls.Test
             set => SaveManager.SaveString(activeRoomsKey, JsonConvert.SerializeObject(value));
         }
         public override bool IsInRoom { get => !string.IsNullOrEmpty(CurrentRoomInfo.Id); }
+        public override PlayerInfo MyPlayerInfo { get => myPlayerInfo; protected set => myPlayerInfo = value; }
+        public override RoomInfo CurrentRoomInfo { get => currentRoomInfo; protected set => currentRoomInfo = value; }
 
         private void OnApplicationQuit ()
         {
@@ -81,8 +85,8 @@ namespace Kalkatos.Rpsls.Test
                 yield return wait;
                 if (IsInRoom)
                 {
-                    //Check rooms
-                    var roomList = activeRooms;
+                    // Get updated room
+                    List<RoomInfo> roomList = activeRooms;
                     foreach (var room in roomList)
                     {
                         if (room.Id == CurrentRoomInfo.Id)
@@ -92,32 +96,51 @@ namespace Kalkatos.Rpsls.Test
                         }
                     }
                     //Check players
-                    List<PlayerInfo> currentPlayerList = CurrentRoomInfo.Players;
-                    for (int i = 0; i < currentPlayerList.Count || i < lastKnownPlayerList.Count; i++)
+                    List<PlayerInfo> allPlayers = connectedPlayers;
+                    List<PlayerInfo> roomPlayers = CurrentRoomInfo.Players;
+                    for (int i = 0; i < roomPlayers.Count || i < lastKnownPlayerList.Count; i++)
                     {
-                        if (i < currentPlayerList.Count)
+                        if (i < roomPlayers.Count)
                         {
-                            PlayerInfo newPlayer = currentPlayerList[i];
+                            roomPlayers[i] = allPlayers.Find((player) => player.Id == roomPlayers[i].Id);
+                            PlayerInfo newPlayer = roomPlayers[i];
                             PlayerInfo found = lastKnownPlayerList.Find((info) => info.Id == newPlayer.Id);
-                            if (newPlayer.Id == MyPlayerInfo.Id)
-                                MyPlayerInfo = newPlayer;
-                            else if (string.IsNullOrEmpty(found.Id))
-                                RaisePlayerEnteredRoom(newPlayer);
-                            if (newPlayer.IsMasterClient && !found.IsMasterClient)
-                                RaiseMasterClientChanged(found);
+                            if (string.IsNullOrEmpty(found.Id))
+                            {
+                                if (newPlayer.Id != myPlayerInfo.Id)
+                                    RaisePlayerEnteredRoom(newPlayer);
+                            }
+                            else
+                            {
+                                if (newPlayer.IsMasterClient && !found.IsMasterClient)
+                                    RaiseMasterClientChanged(found);
+                                if (newPlayer.CustomData != found.CustomData && newPlayer.Id != myPlayerInfo.Id)
+                                    RaisePlayerDataChanged(newPlayer);
+                            }
                         }
                         if (i < lastKnownPlayerList.Count)
                         {
                             PlayerInfo formerPlayer = lastKnownPlayerList[i];
-                            PlayerInfo found = currentPlayerList.Find((info) => info.Id == formerPlayer.Id);
-                            if (formerPlayer.Id != MyPlayerInfo.Id && string.IsNullOrEmpty(found.Id))
+                            PlayerInfo found = roomPlayers.Find((info) => info.Id == formerPlayer.Id);
+                            if (formerPlayer.Id != myPlayerInfo.Id && string.IsNullOrEmpty(found.Id))
                                 RaisePlayerLeftRoom(formerPlayer);
                             if (!formerPlayer.IsMasterClient && found.IsMasterClient)
                                 RaiseMasterClientChanged(found);
                         }
+                        currentRoomInfo.Players = roomPlayers;
                     }
                     lastKnownPlayerList.Clear();
-                    lastKnownPlayerList.AddRange(currentPlayerList);
+                    lastKnownPlayerList.AddRange(roomPlayers);
+                    // Update room
+                    for (int i = 0; i < roomList.Count; i++)
+                    {
+                        if (roomList[i].Id == currentRoomInfo.Id)
+                        {
+                            roomList[i] = currentRoomInfo;
+                            break;
+                        }
+                    }
+                    activeRooms = roomList;
                     //Check functions
                     // [ChangePlayerStatus-hq3j6ieuna151mn(Master);ccieguya12gh5;schch2h213ghm5][ChangePlayerStatus-k24wdht8ocjdoo(Idle);ccieguya12gh5]
                     string functionBoard = SaveManager.GetString(executeFunctionKey, "");
@@ -149,6 +172,18 @@ namespace Kalkatos.Rpsls.Test
             }
         }
 
+        private void UpdateMyInfo ()
+        {
+            var players = connectedPlayers;
+            for (int i = 0; i < players.Count; i++)
+                if (players[i].Id == myPlayerInfo.Id)
+                {
+                    players[i] = myPlayerInfo;
+                    break;
+                }
+            connectedPlayers = players;
+        }
+
         public override void Connect ()
         {
             this.Wait(randomTime, () =>
@@ -172,9 +207,8 @@ namespace Kalkatos.Rpsls.Test
 
         public override void SetPlayerName (string name)
         {
-            PlayerInfo info = MyPlayerInfo;
-            info.Nickname = name;
-            MyPlayerInfo = info;
+            myPlayerInfo.Nickname = name;
+            UpdateMyInfo();
             SaveManager.SaveNickname(name);
         }
 
@@ -187,14 +221,13 @@ namespace Kalkatos.Rpsls.Test
                 List<PlayerInfo> listOfPlayers = connectedPlayers;
                 bool isFirst = listOfPlayers == null || listOfPlayers.Count == 0;
                 playerLoginId = smallGuid;
-                PlayerInfo playerInfo = new PlayerInfo()
+                myPlayerInfo = new PlayerInfo()
                 {
                     Id = playerLoginId,
                     Nickname = SaveManager.GetNickname(),
-                    IsMasterClient = isFirst,
+                    IsMasterClient = false,
                 };
-                MyPlayerInfo = playerInfo;
-                listOfPlayers.Add(playerInfo);
+                listOfPlayers.Add(myPlayerInfo);
                 connectedPlayers = listOfPlayers;
                 StartCoroutine(CheckCoroutine());
                 Debug.Log("[Testing] Logged In");
@@ -212,21 +245,25 @@ namespace Kalkatos.Rpsls.Test
                 RoomOptions options = new RoomOptions();
                 options = (RoomOptions)parameter;
                 Debug.Log("[Testing] Creating Room");
+                Debug.Log("BEFORE: " + JsonConvert.SerializeObject(myPlayerInfo));
+                myPlayerInfo.IsMasterClient = true;
+                Debug.Log("AFTER: " + JsonConvert.SerializeObject(myPlayerInfo));
                 this.Wait(randomTime, () =>
                 {
                     RoomInfo newRoom = new RoomInfo()
                     {
                         Id = CreateRandomRoomName(),
                         MaxPlayers = options.MaxPlayers,
-                        Players = new List<PlayerInfo>() { MyPlayerInfo },
+                        Players = new List<PlayerInfo>() { myPlayerInfo },
                         PlayerCount = 1
                     };
                     CurrentRoomInfo = newRoom;
                     List<RoomInfo> roomList = activeRooms;
                     roomList.Add(newRoom);
                     activeRooms = roomList;
+                    UpdateMyInfo();
                     RaiseFindMatchSuccess();
-                    RaisePlayerEnteredRoom(MyPlayerInfo);
+                    RaisePlayerEnteredRoom(myPlayerInfo);
                     Debug.Log($"[Testing] Room created: {newRoom.Id}");
                 });
             }
@@ -249,14 +286,16 @@ namespace Kalkatos.Rpsls.Test
                     {
                         RoomInfo room = roomList[foundIndex];
                         List<PlayerInfo> playersInRoom = room.Players;
-                        playersInRoom.Add(MyPlayerInfo);
+                        myPlayerInfo.IsMasterClient = false;
+                        playersInRoom.Add(myPlayerInfo);
                         room.Players = playersInRoom;
                         room.PlayerCount = roomList.Count;
                         roomList[foundIndex] = room;
                         CurrentRoomInfo = room;
                         activeRooms = roomList;
+                        UpdateMyInfo();
                         RaiseFindMatchSuccess();
-                        RaisePlayerEnteredRoom(MyPlayerInfo);
+                        RaisePlayerEnteredRoom(myPlayerInfo);
                         Debug.Log($"[Testing] Entering room: {room.Id}");
                     }
                     else
@@ -282,22 +321,14 @@ namespace Kalkatos.Rpsls.Test
                     List<PlayerInfo> players = room.Players;
                     for (int j = players.Count - 1; j >= 0; j--)
                     {
-                        if (players[j].Id == MyPlayerInfo.Id)
+                        if (players[j].Id == myPlayerInfo.Id)
                         {
                             players.RemoveAt(j);
-                            RaisePlayerLeftRoom(MyPlayerInfo);
-                            if (MyPlayerInfo.IsMasterClient)
-                            {
-                                PlayerInfo myInfo = MyPlayerInfo;
-                                myInfo.IsMasterClient = false;
-                                MyPlayerInfo = myInfo;
-                            }
+                            RaisePlayerLeftRoom(myPlayerInfo);
+                            myPlayerInfo.IsMasterClient = false;
+                            UpdateMyInfo();
                             if (players.Count > 0)
-                            {
-                                PlayerInfo newMasterInfo = players[0];
-                                newMasterInfo.IsMasterClient = true;
-                                players[0] = newMasterInfo;
-                            }
+                                players[0] = new PlayerInfo(players[0]) { IsMasterClient = true };
                             break;
                         }
                     }
@@ -319,6 +350,13 @@ namespace Kalkatos.Rpsls.Test
                 activeRooms = listOfRooms;
             CurrentRoomInfo = new RoomInfo();
             Debug.Log("[Testing] Left Room.");
+        }
+
+        public override void SetMyCustomData (object parameter = null)
+        {
+            myPlayerInfo.CustomData = parameter;
+            UpdateMyInfo();
+            RaisePlayerDataChanged(myPlayerInfo, parameter);
         }
 
         public override void SendData (params object[] parameters)
