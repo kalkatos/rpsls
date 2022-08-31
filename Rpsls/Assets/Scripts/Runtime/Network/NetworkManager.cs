@@ -103,14 +103,16 @@ namespace Kalkatos.Network
     }
 
     [Serializable]
-    public struct PlayerInfo
+    public class PlayerInfo
     {
         public string Id;
         public string Nickname;
         public bool IsMasterClient;
         public object CustomData;
 
-        public PlayerInfo (PlayerInfo other) : this()
+        public PlayerInfo () { }
+
+        public PlayerInfo (PlayerInfo other)
         {
             Id = other.Id;
             Nickname = other.Nickname;
@@ -120,14 +122,14 @@ namespace Kalkatos.Network
     }
 
     [Serializable]
-    public struct RoomOptions
+    public class RoomOptions
     {
         public int MaxPlayers;
         public object CustomData;
     }
 
     [Serializable]
-    public struct RoomInfo
+    public class RoomInfo
     {
         public string Id;
         public int MaxPlayers;
