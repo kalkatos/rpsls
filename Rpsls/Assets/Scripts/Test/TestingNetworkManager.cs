@@ -17,47 +17,27 @@ namespace Kalkatos.Rpsls.Test
         private char[] functionDataSeparator = new char[] { ';' };
         private char[] functionArgumentsSeparator = new char[] { '(', ',', ')' };
 
-        private PlayerInfo myPlayerInfo;
-        private RoomInfo currentRoomInfo;
-        private string playerLoginId;
-        private List<PlayerInfo> lastKnownPlayerList = new List<PlayerInfo>();
+        private string playerId;
+        private string roomId;
         private Dictionary<string, object> data = new Dictionary<string, object>();
+        private Dictionary<string, PlayerInfo> lastKnownPlayers = new Dictionary<string, PlayerInfo>();
 
-        private string executeFunctionKey => "ExFct" + CurrentRoomInfo.Id;
-        private string smallGuid => Guid.NewGuid().ToString().Split('-')[0];
+        private string executeFunctionKey => "ExFct" + roomId;
+        private string newSmallGuid => Guid.NewGuid().ToString().Split('-')[0];
         private float randomTime => Random.Range(0.3f, 1f);
-        private List<PlayerInfo> connectedPlayers
-        {
-            get
-            {
-                List<PlayerInfo> list = new List<PlayerInfo>();
-                if (SaveManager.HasKey(connectedPlayersKey))
-                    list.AddRange(JsonConvert.DeserializeObject<PlayerInfo[]>(SaveManager.GetString(connectedPlayersKey, "")));
-                return list;
-            }
-            set => SaveManager.SaveString(connectedPlayersKey, JsonConvert.SerializeObject(value));
-        }
-        private List<RoomInfo> activeRooms
-        {
-            get
-            {
-                List<RoomInfo> list = new List<RoomInfo>();
-                if (SaveManager.HasKey(activeRoomsKey))
-                    list.AddRange(JsonConvert.DeserializeObject<RoomInfo[]>(SaveManager.GetString(activeRoomsKey, "")));
-                return list;
-            }
-            set => SaveManager.SaveString(activeRoomsKey, JsonConvert.SerializeObject(value));
-        }
-        public override bool IsInRoom { get => !string.IsNullOrEmpty(CurrentRoomInfo.Id); }
-        public override PlayerInfo MyPlayerInfo { get => myPlayerInfo; protected set => myPlayerInfo = value; }
-        public override RoomInfo CurrentRoomInfo { get => currentRoomInfo; protected set => currentRoomInfo = value; }
+        private Dictionary<string, PlayerInfo> connectedPlayers = new Dictionary<string, PlayerInfo>();
+        private Dictionary<string, RoomInfo> activeRooms = new Dictionary<string, RoomInfo>();
+
+        public override bool IsInRoom { get => !string.IsNullOrEmpty(roomId); }
+        public override PlayerInfo MyPlayerInfo { get => connectedPlayers[playerId]; protected set => connectedPlayers[playerId] = value; }
+        public override RoomInfo CurrentRoomInfo { get => activeRooms[roomId]; protected set => activeRooms[roomId] = value; }
 
         private void OnApplicationQuit ()
         {
+            LoadLists();
             if (IsConnected && IsInRoom)
-                LeaveMatch();
-            var listOfPlayers = connectedPlayers;
-            if (listOfPlayers.Count <= 1)
+                LeaveRoom();
+            if (connectedPlayers.Count <= 1)
             {
                 Debug.Log("[Testing] Cleaning up to quit.");
                 SaveManager.DeleteKey(connectedPlayersKey);
@@ -65,16 +45,50 @@ namespace Kalkatos.Rpsls.Test
             }
             else
             {
-                for (int i = 0; i < listOfPlayers.Count; i++)
+                connectedPlayers.Remove(playerId);
+                SaveLists();
+            }
+        }
+
+        private void LoadLists ()
+        {
+            if (SaveManager.HasKey(connectedPlayersKey))
+            {
+                object[] objArray = JsonConvert.DeserializeObject<object[]>(SaveManager.GetString(connectedPlayersKey, ""));
+                connectedPlayers = new Dictionary<string, PlayerInfo>();
+                string currentKey = "";
+                for (int i = 0; i < objArray.Length; i++)
                 {
-                    if (listOfPlayers[i].Id == playerLoginId)
+                    if (i % 2 == 0)
+                        currentKey = objArray[i].ToString();
+                    else
+                        connectedPlayers.Add(currentKey, JsonConvert.DeserializeObject<PlayerInfo>(objArray[i].ToString()));
+                }
+            }
+            if (SaveManager.HasKey(activeRoomsKey))
+            {
+                object[] objArray = JsonConvert.DeserializeObject<object[]>(SaveManager.GetString(activeRoomsKey, ""));
+                activeRooms = new Dictionary<string, RoomInfo>();
+                string currentKey = "";
+                for (int i = 0; i < objArray.Length; i++)
+                {
+                    if (i % 2 == 0)
+                        currentKey = objArray[i].ToString();
+                    else
                     {
-                        listOfPlayers.RemoveAt(i);
-                        connectedPlayers = listOfPlayers;
-                        break;
+                        RoomInfo room = JsonConvert.DeserializeObject<RoomInfo>(objArray[i].ToString());
+                        for (int j = 0; j < room.Players.Count; j++)
+                            room.Players[j] = connectedPlayers[room.Players[j].Id];
+                        activeRooms.Add(currentKey, room);
                     }
                 }
             }
+        }
+
+        private void SaveLists ()
+        {
+            SaveManager.SaveString(connectedPlayersKey, JsonConvert.SerializeObject(connectedPlayers.ToObjArray(), Formatting.None));
+            SaveManager.SaveString(activeRoomsKey, JsonConvert.SerializeObject(activeRooms.ToObjArray(), Formatting.None));
         }
 
         private IEnumerator CheckCoroutine ()
@@ -85,64 +99,32 @@ namespace Kalkatos.Rpsls.Test
                 yield return wait;
                 if (IsInRoom)
                 {
-                    // Get updated room
-                    List<RoomInfo> roomList = activeRooms;
-                    foreach (var room in roomList)
-                    {
-                        if (room.Id == CurrentRoomInfo.Id)
-                        {
-                            CurrentRoomInfo = room;
-                            break;
-                        }
-                    }
+                    LoadLists();
                     //Check players
-                    List<PlayerInfo> allPlayers = connectedPlayers;
-                    List<PlayerInfo> roomPlayers = CurrentRoomInfo.Players;
-                    for (int i = 0; i < roomPlayers.Count || i < lastKnownPlayerList.Count; i++)
+                    List<PlayerInfo> roomPlayerList = CurrentRoomInfo.Players;
+                    foreach (var player in roomPlayerList)
                     {
-                        if (i < roomPlayers.Count)
+                        bool isKnownPlayer = lastKnownPlayers.ContainsKey(player.Id);
+                        if (player.Id != playerId)
                         {
-                            roomPlayers[i] = allPlayers.Find((player) => player.Id == roomPlayers[i].Id);
-                            PlayerInfo newPlayer = roomPlayers[i];
-                            PlayerInfo found = lastKnownPlayerList.Find((info) => info.Id == newPlayer.Id);
-                            if (string.IsNullOrEmpty(found.Id))
-                            {
-                                if (newPlayer.Id != myPlayerInfo.Id)
-                                    RaisePlayerEnteredRoom(newPlayer);
-                            }
-                            else
-                            {
-                                if (newPlayer.IsMasterClient && !found.IsMasterClient)
-                                    RaiseMasterClientChanged(found);
-                                if (newPlayer.CustomData != found.CustomData && newPlayer.Id != myPlayerInfo.Id)
-                                    RaisePlayerDataChanged(newPlayer);
-                            }
+                            if (!isKnownPlayer)
+                                RaisePlayerEnteredRoom(player);
+                            else if (player.CustomData != lastKnownPlayers[player.Id].CustomData ||
+                                player.Nickname != lastKnownPlayers[player.Id].Nickname)
+                                RaisePlayerDataChanged(player);
                         }
-                        if (i < lastKnownPlayerList.Count)
-                        {
-                            PlayerInfo formerPlayer = lastKnownPlayerList[i];
-                            PlayerInfo found = roomPlayers.Find((info) => info.Id == formerPlayer.Id);
-                            if (formerPlayer.Id != myPlayerInfo.Id && string.IsNullOrEmpty(found.Id))
-                                RaisePlayerLeftRoom(formerPlayer);
-                            if (!formerPlayer.IsMasterClient && found.IsMasterClient)
-                                RaiseMasterClientChanged(found);
-                        }
-                        currentRoomInfo.Players = roomPlayers;
+                        if (isKnownPlayer && player.IsMasterClient && !lastKnownPlayers[player.Id].IsMasterClient)
+                            RaiseMasterClientChanged(player);
                     }
-                    lastKnownPlayerList.Clear();
-                    lastKnownPlayerList.AddRange(roomPlayers);
-                    // Update room
-                    for (int i = 0; i < roomList.Count; i++)
-                    {
-                        if (roomList[i].Id == currentRoomInfo.Id)
-                        {
-                            roomList[i] = currentRoomInfo;
-                            break;
-                        }
-                    }
-                    activeRooms = roomList;
+                    foreach (var item in lastKnownPlayers)
+                        if (item.Key != playerId && roomPlayerList.Find((player) => player.Id == item.Key) == null)
+                            RaisePlayerLeftRoom(item.Value);
+                    lastKnownPlayers.Clear();
+                    for (int i = 0; i < roomPlayerList.Count; i++)
+                        lastKnownPlayers.Add(roomPlayerList[i].Id, roomPlayerList[i]);
+
                     //Check functions
-                    // [ChangePlayerStatus-hq3j6ieuna151mn(Master);ccieguya12gh5;schch2h213ghm5][ChangePlayerStatus-k24wdht8ocjdoo(Idle);ccieguya12gh5]
+                    //e.g. [ChangePlayerStatus-154688468(Master);ccieguya12gh5;schch2h213ghm5][ChangePlayerStatus-154688499(Idle);ccieguya12gh5]
                     string functionBoard = SaveManager.GetString(executeFunctionKey, "");
                     if (!string.IsNullOrEmpty(functionBoard))
                     {
@@ -150,7 +132,7 @@ namespace Kalkatos.Rpsls.Test
                         foreach (string line in split)
                         {
                             string[] parts = line.Split(functionDataSeparator, StringSplitOptions.RemoveEmptyEntries);
-                            if (!line.Substring(line.IndexOf(')')).Contains(playerLoginId))
+                            if (!line.Substring(line.IndexOf(')')).Contains(playerId))
                             {
                                 int indexOfPar = parts[0].IndexOf('(');
                                 int indexOfDash = parts[0].IndexOf('-');
@@ -162,7 +144,7 @@ namespace Kalkatos.Rpsls.Test
                                         arguments[i] = JsonConvert.DeserializeObject(argumentsSerial[i]);
                                 RaiseEventReceived(functionName, arguments);
                                 string newLine = line;
-                                newLine += $";{playerLoginId}";
+                                newLine += $";{playerId}";
                                 functionBoard.Replace(line, newLine);
                                 SaveManager.SaveString(executeFunctionKey, functionBoard);
                             }
@@ -172,16 +154,34 @@ namespace Kalkatos.Rpsls.Test
             }
         }
 
-        private void UpdateMyInfo ()
+        private void LeaveRoom ()
         {
-            var players = connectedPlayers;
-            for (int i = 0; i < players.Count; i++)
-                if (players[i].Id == myPlayerInfo.Id)
+            RoomInfo room = activeRooms[roomId];
+            List<PlayerInfo> players = room.Players;
+            for (int i = players.Count - 1; i >= 0; i--)
+            {
+                if (players[i].Id == playerId)
                 {
-                    players[i] = myPlayerInfo;
+                    PlayerInfo myPlayerInfo = players[i];
+                    players.RemoveAt(i);
+                    if (players.Count > 0 && myPlayerInfo.IsMasterClient)
+                        connectedPlayers[players[0].Id].IsMasterClient = true;
+                    myPlayerInfo.IsMasterClient = false;
+                    RaisePlayerLeftRoom(myPlayerInfo);
                     break;
                 }
-            connectedPlayers = players;
+            }
+            roomId = "";
+            room.PlayerCount = players.Count;
+            if (players.Count == 0)
+            {
+                activeRooms.Remove(room.Id);
+                SaveManager.DeleteKey(executeFunctionKey);
+                if (activeRooms.Count == 0)
+                    SaveManager.DeleteKey(activeRoomsKey);
+            }
+            else
+                activeRooms[room.Id] = room;
         }
 
         public override void Connect ()
@@ -207,8 +207,9 @@ namespace Kalkatos.Rpsls.Test
 
         public override void SetPlayerName (string name)
         {
-            myPlayerInfo.Nickname = name;
-            UpdateMyInfo();
+            LoadLists();
+            connectedPlayers[playerId].Nickname = name;
+            SaveLists();
             SaveManager.SaveNickname(name);
         }
 
@@ -216,23 +217,23 @@ namespace Kalkatos.Rpsls.Test
         {
             Assert.IsTrue(IsConnected);
 
-            this.Wait(randomTime, () =>
+            this.Wait(randomTime, (Action)(() =>
             {
-                List<PlayerInfo> listOfPlayers = connectedPlayers;
-                bool isFirst = listOfPlayers == null || listOfPlayers.Count == 0;
-                playerLoginId = smallGuid;
-                myPlayerInfo = new PlayerInfo()
+                LoadLists();
+                bool isFirst = connectedPlayers == null || connectedPlayers.Count == 0;
+                playerId = newSmallGuid;
+                PlayerInfo myPlayerInfo = new PlayerInfo()
                 {
-                    Id = playerLoginId,
+                    Id = playerId,
                     Nickname = SaveManager.GetNickname(),
                     IsMasterClient = false,
                 };
-                listOfPlayers.Add(myPlayerInfo);
-                connectedPlayers = listOfPlayers;
+                connectedPlayers.Add(playerId, myPlayerInfo);
+                SaveLists();
                 StartCoroutine(CheckCoroutine());
                 Debug.Log("[Testing] Logged In");
-                RaiseLogInSuccess();
-            });
+                base.RaiseLogInSuccess();
+            }));
         }
 
         public override void FindMatch (object parameter = null)
@@ -242,68 +243,52 @@ namespace Kalkatos.Rpsls.Test
 
             if (parameter is RoomOptions)
             {
-                RoomOptions options = new RoomOptions();
-                options = (RoomOptions)parameter;
+                RoomOptions options = (RoomOptions)parameter;
                 Debug.Log("[Testing] Creating Room");
-                Debug.Log("BEFORE: " + JsonConvert.SerializeObject(myPlayerInfo));
-                myPlayerInfo.IsMasterClient = true;
-                Debug.Log("AFTER: " + JsonConvert.SerializeObject(myPlayerInfo));
-                this.Wait(randomTime, () =>
+                this.Wait(randomTime, (Action)(() =>
                 {
+                    LoadLists();
+                    connectedPlayers[playerId].IsMasterClient = true;
                     RoomInfo newRoom = new RoomInfo()
                     {
                         Id = CreateRandomRoomName(),
                         MaxPlayers = options.MaxPlayers,
-                        Players = new List<PlayerInfo>() { myPlayerInfo },
+                        Players = new List<PlayerInfo>() { MyPlayerInfo },
                         PlayerCount = 1
                     };
-                    CurrentRoomInfo = newRoom;
-                    List<RoomInfo> roomList = activeRooms;
-                    roomList.Add(newRoom);
-                    activeRooms = roomList;
-                    UpdateMyInfo();
-                    RaiseFindMatchSuccess();
-                    RaisePlayerEnteredRoom(myPlayerInfo);
+                    roomId = newRoom.Id;
+                    activeRooms.Add(newRoom.Id, newRoom);
+                    SaveLists();
+                    base.RaiseFindMatchSuccess();
+                    base.RaisePlayerEnteredRoom(MyPlayerInfo);
                     Debug.Log($"[Testing] Room created: {newRoom.Id}");
-                });
+                }));
             }
             else if (parameter is string)
             {
-                this.Wait(randomTime, () =>
+                this.Wait(randomTime, (Action)(() =>
                 {
                     string wantedRoom = (string)parameter;
-                    List<RoomInfo> roomList = activeRooms;
-                    int foundIndex = -1;
-                    for (int i = 0; i < roomList.Count; i++)
+                    LoadLists();
+                    if (activeRooms.ContainsKey(wantedRoom))
                     {
-                        if (roomList[i].Id == wantedRoom)
-                        {
-                            foundIndex = i;
-                            break;
-                        }
-                    }
-                    if (foundIndex >= 0)
-                    {
-                        RoomInfo room = roomList[foundIndex];
+                        RoomInfo room = activeRooms[wantedRoom];
                         List<PlayerInfo> playersInRoom = room.Players;
-                        myPlayerInfo.IsMasterClient = false;
-                        playersInRoom.Add(myPlayerInfo);
-                        room.Players = playersInRoom;
-                        room.PlayerCount = roomList.Count;
-                        roomList[foundIndex] = room;
-                        CurrentRoomInfo = room;
-                        activeRooms = roomList;
-                        UpdateMyInfo();
-                        RaiseFindMatchSuccess();
-                        RaisePlayerEnteredRoom(myPlayerInfo);
+                        connectedPlayers[playerId].IsMasterClient = false;
+                        playersInRoom.Add(MyPlayerInfo);
+                        room.PlayerCount = playersInRoom.Count;
+                        roomId = room.Id;
+                        SaveLists();
+                        base.RaiseFindMatchSuccess();
+                        base.RaisePlayerEnteredRoom(MyPlayerInfo);
                         Debug.Log($"[Testing] Entering room: {room.Id}");
                     }
                     else
                     {
-                        RaiseFindMatchFailure();
+                        base.RaiseFindMatchFailure();
                         Debug.Log($"[Testing] Room not found: {wantedRoom}");
                     }
-                });
+                }));
             }
         }
 
@@ -312,64 +297,39 @@ namespace Kalkatos.Rpsls.Test
             Assert.IsTrue(IsConnected);
             Assert.IsTrue(IsInRoom);
 
-            List<RoomInfo> listOfRooms = activeRooms;
-            for (int i = 0; i < listOfRooms.Count; i++)
-            {
-                RoomInfo room = listOfRooms[i];
-                if (room.Id == CurrentRoomInfo.Id)
-                {
-                    List<PlayerInfo> players = room.Players;
-                    for (int j = players.Count - 1; j >= 0; j--)
-                    {
-                        if (players[j].Id == myPlayerInfo.Id)
-                        {
-                            players.RemoveAt(j);
-                            RaisePlayerLeftRoom(myPlayerInfo);
-                            myPlayerInfo.IsMasterClient = false;
-                            UpdateMyInfo();
-                            if (players.Count > 0)
-                                players[0] = new PlayerInfo(players[0]) { IsMasterClient = true };
-                            break;
-                        }
-                    }
-                    room.Players = players;
-                    room.PlayerCount = players.Count;
-                    if (players.Count == 0)
-                    {
-                        listOfRooms.RemoveAt(i);
-                        SaveManager.DeleteKey(executeFunctionKey);
-                    }
-                    else
-                        listOfRooms[i] = room;
-                    break;
-                }
-            }
-            if (listOfRooms.Count == 0)
-                SaveManager.DeleteKey(activeRoomsKey);
-            else
-                activeRooms = listOfRooms;
-            CurrentRoomInfo = new RoomInfo();
+            LoadLists();
+            LeaveRoom();
+            SaveLists();
             Debug.Log("[Testing] Left Room.");
         }
 
         public override void SetMyCustomData (object parameter = null)
         {
-            myPlayerInfo.CustomData = parameter;
-            UpdateMyInfo();
-            RaisePlayerDataChanged(myPlayerInfo, parameter);
+            Assert.IsTrue(IsConnected);
+
+            LoadLists();
+            connectedPlayers[playerId].CustomData = parameter;
+            SaveLists();
+            RaisePlayerDataChanged(MyPlayerInfo, parameter);
         }
 
         public override void SendData (params object[] parameters)
         {
             Assert.IsTrue(IsConnected);
-            Dictionary<string, object> paramDict = parameters.ToDictionary();
-            List<object> successKeys = new List<object>();
-            foreach (var item in paramDict)
+            this.Wait(randomTime, () =>
             {
-                SaveManager.SaveString(item.Key, JsonConvert.SerializeObject(item.Value));
-                successKeys.Add(item.Key);
-            }
-            this.Wait(randomTime, () => RaiseSendDataSuccess(successKeys.ToArray()));
+                string key = "";
+                for (int i = 0; i < parameters.Length; i++)
+                {
+                    if (i % 2 == 0)
+                        key = (string)parameters[i];
+                    else if (!data.ContainsKey(key))
+                        data.Add(key, parameters[i]);
+                    else
+                        data[key] = parameters[i];
+                }
+                RaiseSendDataSuccess();
+            });
         }
 
         public override void RequestData (params object[] parameters)

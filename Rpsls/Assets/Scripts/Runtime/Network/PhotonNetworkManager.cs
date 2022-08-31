@@ -26,7 +26,6 @@ namespace Kalkatos.Network
         public override PlayerInfo MyPlayerInfo
         {
             get => InfoFromPlayer(PhotonNetwork.LocalPlayer);
-            protected set => base.MyPlayerInfo = value; 
         }
 
         public override RoomInfo CurrentRoomInfo
@@ -46,7 +45,6 @@ namespace Kalkatos.Network
                 }
                 return info;
             }
-            protected set => base.CurrentRoomInfo = value;
         }
 
         private PlayerInfo InfoFromPlayer (Player player)
