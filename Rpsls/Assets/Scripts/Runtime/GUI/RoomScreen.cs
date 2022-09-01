@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 using TMPro;
 using Sirenix.OdinInspector;
@@ -18,6 +19,8 @@ namespace Kalkatos.Rpsls
         [SerializeField, ChildGameObjectsOnly] private Button startGameButton;
         [SerializeField, ChildGameObjectsOnly] private Button exitButton;
         [SerializeField, ChildGameObjectsOnly] private Button copyRoomIdButton;
+        [SerializeField] private UnityEvent onNotEveryoneReady;
+        [SerializeField] private UnityEvent onNotEnoughPlayers;
 
         private RpslsGameSettings settings;
         private Dictionary<string, PlayerInfoSlot> slots = new Dictionary<string, PlayerInfoSlot>();
@@ -30,11 +33,13 @@ namespace Kalkatos.Rpsls
             RoomManager.OnPlayerLeft += HandlePlayerLeft;
             RoomManager.OnPlayerStatusChanged += HandlePlayerStatusChanged;
             RoomManager.OnBecameMaster += HandleBecameMaster;
-            idleButton.onClick.AddListener(HandleIdleButtonClicked);
-            readyButton.onClick.AddListener(HandleReadyButtonClicked);
-            startGameButton.onClick.AddListener(HandleStartGameButtonClicked);
-            exitButton.onClick.AddListener(HandleExitButtonClicked);
-            copyRoomIdButton.onClick.AddListener(HandleCopyRoomIdButtonClicked);
+            RoomManager.OnGameAboutToStart += HandleGameAboutToStart;
+            RoomManager.OnGameNotReady += HandleGameNotReady;
+            idleButton.onClick.AddListener(ClickedOnIdleButton);
+            readyButton.onClick.AddListener(ClickedOnReadyButton);
+            startGameButton.onClick.AddListener(ClickedOnStartGameButton);
+            exitButton.onClick.AddListener(ClickedOnExitButton);
+            copyRoomIdButton.onClick.AddListener(ClickedOnCopyRoomIdButton);
 
             settings = RpslsGameSettings.Instance;
         }
@@ -46,11 +51,13 @@ namespace Kalkatos.Rpsls
             RoomManager.OnPlayerLeft -= HandlePlayerLeft;
             RoomManager.OnPlayerStatusChanged -= HandlePlayerStatusChanged;
             RoomManager.OnBecameMaster -= HandleBecameMaster;
-            idleButton.onClick.RemoveListener(HandleIdleButtonClicked);
-            readyButton.onClick.RemoveListener(HandleReadyButtonClicked);
-            startGameButton.onClick.RemoveListener(HandleStartGameButtonClicked);
-            exitButton.onClick.RemoveListener(HandleExitButtonClicked);
-            copyRoomIdButton.onClick.RemoveListener(HandleCopyRoomIdButtonClicked);
+            RoomManager.OnGameAboutToStart -= HandleGameAboutToStart;
+            RoomManager.OnGameNotReady -= HandleGameNotReady;
+            idleButton.onClick.RemoveListener(ClickedOnIdleButton);
+            readyButton.onClick.RemoveListener(ClickedOnReadyButton);
+            startGameButton.onClick.RemoveListener(ClickedOnStartGameButton);
+            exitButton.onClick.RemoveListener(ClickedOnExitButton);
+            copyRoomIdButton.onClick.RemoveListener(ClickedOnCopyRoomIdButton);
         }
 
         private void Start ()
@@ -95,31 +102,49 @@ namespace Kalkatos.Rpsls
             SetupButtons();
         }
 
-        private void HandleIdleButtonClicked ()
+        private void HandleGameAboutToStart ()
+        {
+            startGameButton.interactable = false;
+        }
+
+        private void HandleGameNotReady (NotReadyErrorCode errorCode)
+        {
+            switch (errorCode)
+            {
+                case NotReadyErrorCode.NotEnoughPlayers:
+                    onNotEnoughPlayers?.Invoke();
+                    break;
+                case NotReadyErrorCode.NotEveryoneReady:
+                    onNotEveryoneReady?.Invoke();
+                    break;
+            }
+        }
+
+        private void ClickedOnIdleButton ()
         {
             RoomManager.SetStatus(RoomStatus.Ready);
             isReady = true;
             SetupButtons();
         }
 
-        private void HandleReadyButtonClicked ()
+        private void ClickedOnReadyButton ()
         {
             RoomManager.SetStatus(RoomStatus.Idle);
             isReady = false;
             SetupButtons();
         }
 
-        private void HandleStartGameButtonClicked ()
+        private void ClickedOnStartGameButton ()
         {
             RoomManager.StartGame();
         }
 
-        private void HandleExitButtonClicked ()
+        private void ClickedOnExitButton ()
         {
             RoomManager.ExitRoom();
         }
 
-        private void HandleCopyRoomIdButtonClicked ()
+        private void ClickedOnCopyRoomIdButton ()
         {
             GUIUtility.systemCopyBuffer = RoomManager.RoomName;
         }
