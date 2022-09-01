@@ -66,14 +66,10 @@ namespace Kalkatos.Rpsls
             }
             else if (currentScene == Instance.roomScene)
             {
-                if (parameter != null)
-                {
-                    string destination = (string)parameter;
-                    if (destination == "ToGame")
-                        LoadScene(Instance.mainScene);
-                    else
-                        LoadScene(Instance.lobbyScene);
-                }
+                if (parameter == null || (string)parameter == "ToGame")
+                    LoadScene(Instance.mainScene);
+                else
+                    LoadScene(Instance.lobbyScene);
             }
         }
     }

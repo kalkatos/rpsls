@@ -112,9 +112,14 @@ namespace Kalkatos.Network
             PhotonNetwork.LeaveRoom();
         }
 
+        public override void SetMyCustomData (object parameter = null)
+        {
+            PhotonNetwork.LocalPlayer.CustomProperties = ((object[])parameter).ToHashtable();
+        }
+
         public override void SendData (params object[] parameters)
         {
-            PhotonNetwork.LocalPlayer.CustomProperties = parameters.ToHashtable();
+            
         }
 
         public override void RequestData (params object[] parameters)

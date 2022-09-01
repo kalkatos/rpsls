@@ -15,12 +15,14 @@ namespace Kalkatos.Rpsls
         public static event Action<string, RoomStatus> OnPlayerStatusChanged;
         public static event Action OnBecameMaster;
         public static event Action OnGameAboutToStart;
+        public static event Action<NotReadyErrorCode> OnGameNotReady;
 
         private Dictionary<string, PlayerInfo> players = new Dictionary<string, PlayerInfo>();
         private RpslsGameSettings settings;
         private RoomInfo roomInfo;
 
         private const string setRoomStatusKey = "SRSts";
+        private const string startGameKey = "Start";
 
         public static string RoomName { get; private set; }
         public static bool IAmTheMaster { get; private set; }
@@ -118,6 +120,10 @@ namespace Kalkatos.Rpsls
                     OnPlayerStatusChanged?.Invoke(playerId, status);
                 }
             }
+            else if (eventKey == startGameKey)
+            {
+                SceneManager.EndScene("Room");
+            }
         }
 
         private RoomInfo GetUpdatedRoomInfo ()
@@ -132,12 +138,35 @@ namespace Kalkatos.Rpsls
 
         public static void StartGame ()
         {
-            Debug.Log("Calling start game");
+
             if (IAmTheMaster)
             {
-                OnGameAboutToStart?.Invoke();
-                Instance.Wait(Instance.settings.DelayBeforeStarting, () => Debug.Log("Start!"));
-                //TODO Broadcast a start game call
+                if (Instance.players.Count <= 1)
+                {
+                    OnGameNotReady?.Invoke(NotReadyErrorCode.NotEnoughPlayers);
+                }
+                else
+                {
+                    bool isEveryoneReady = true;
+                    foreach (var item in Instance.players)
+                    {
+                        RoomStatus playerStatus = (RoomStatus)int.Parse(item.Value.CustomData.ToString());
+                        isEveryoneReady &= playerStatus == RoomStatus.Ready || playerStatus == RoomStatus.Master;
+                    }
+                    if (isEveryoneReady)
+                    {
+                        Debug.Log("Calling start game");
+                        OnGameAboutToStart?.Invoke();
+                        Instance.Wait(Instance.settings.DelayBeforeStarting, () =>
+                        {
+                            Debug.Log("Start!");
+                            NetworkManager.Instance.ExecuteEvent(startGameKey);
+                        });
+                        
+                    }
+                    else
+                        OnGameNotReady?.Invoke(NotReadyErrorCode.NotEveryoneReady);
+                }
             }
         }
 
@@ -147,4 +176,6 @@ namespace Kalkatos.Rpsls
             NetworkManager.Instance.LeaveMatch();
         }
     }
+
+    public enum NotReadyErrorCode { NotEnoughPlayers, NotEveryoneReady }
 }

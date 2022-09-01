@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 using UnityEngine.Assertions;
 using Random = UnityEngine.Random;
@@ -21,12 +22,13 @@ namespace Kalkatos.Rpsls.Test
         private string roomId;
         private Dictionary<string, object> data = new Dictionary<string, object>();
         private Dictionary<string, PlayerInfo> lastKnownPlayers = new Dictionary<string, PlayerInfo>();
-
-        private string executeFunctionKey => "ExFct" + roomId;
-        private string newSmallGuid => Guid.NewGuid().ToString().Split('-')[0];
-        private float randomTime => Random.Range(0.3f, 1f);
         private Dictionary<string, PlayerInfo> connectedPlayers = new Dictionary<string, PlayerInfo>();
         private Dictionary<string, RoomInfo> activeRooms = new Dictionary<string, RoomInfo>();
+        private Dictionary<string, EventExecution> eventExecutions = new Dictionary<string, EventExecution>();
+
+        private string executeEventKey => "ExEvt" + roomId;
+        private string newSmallGuid => Guid.NewGuid().ToString().Split('-')[0];
+        private float randomTime => Random.Range(0.3f, 1f);
 
         public override bool IsInRoom { get => !string.IsNullOrEmpty(roomId); }
         public override PlayerInfo MyPlayerInfo { get => connectedPlayers[playerId]; protected set => connectedPlayers[playerId] = value; }
@@ -91,6 +93,28 @@ namespace Kalkatos.Rpsls.Test
             SaveManager.SaveString(activeRoomsKey, JsonConvert.SerializeObject(activeRooms.ToObjArray(), Formatting.None));
         }
 
+        private void LoadEventExecutions ()
+        {
+            if (SaveManager.HasKey(executeEventKey))
+            {
+                object[] objArray = JsonConvert.DeserializeObject<object[]>(SaveManager.GetString(executeEventKey, ""));
+                eventExecutions = new Dictionary<string, EventExecution>();
+                string currentKey = "";
+                for (int i = 0; i < objArray.Length; i++)
+                {
+                    if (i % 2 == 0)
+                        currentKey = objArray[i].ToString();
+                    else
+                        eventExecutions.Add(currentKey, JsonConvert.DeserializeObject<EventExecution>(objArray[i].ToString()));
+                }
+            }
+        }
+
+        private void SaveEventExecutions ()
+        {
+            SaveManager.SaveString(executeEventKey, JsonConvert.SerializeObject(eventExecutions.ToObjArray(), Formatting.None));
+        }
+
         private IEnumerator CheckCoroutine ()
         {
             WaitForSeconds wait = new WaitForSeconds(0.5f);
@@ -123,31 +147,20 @@ namespace Kalkatos.Rpsls.Test
                     for (int i = 0; i < roomPlayerList.Count; i++)
                         lastKnownPlayers.Add(roomPlayerList[i].Id, roomPlayerList[i]);
 
-                    //Check functions
-                    //e.g. [ChangePlayerStatus-154688468(Master);ccieguya12gh5;schch2h213ghm5][ChangePlayerStatus-154688499(Idle);ccieguya12gh5]
-                    string functionBoard = SaveManager.GetString(executeFunctionKey, "");
-                    if (!string.IsNullOrEmpty(functionBoard))
+                    //Check events
+                    LoadEventExecutions();
+                    foreach (var item in eventExecutions)
                     {
-                        string[] split = functionBoard.Split(functionCallSeparator, StringSplitOptions.RemoveEmptyEntries);
-                        foreach (string line in split)
+                        if (!item.Value.PlayersWhoExecuted.Contains(playerId))
                         {
-                            string[] parts = line.Split(functionDataSeparator, StringSplitOptions.RemoveEmptyEntries);
-                            if (!line.Substring(line.IndexOf(')')).Contains(playerId))
-                            {
-                                int indexOfPar = parts[0].IndexOf('(');
-                                int indexOfDash = parts[0].IndexOf('-');
-                                string functionName = parts[0].Substring(0, indexOfDash);
-                                string[] argumentsSerial = parts[0].Substring(indexOfPar + 1).Split(functionArgumentsSeparator, StringSplitOptions.RemoveEmptyEntries);
-                                object[] arguments = argumentsSerial != null ? new object[argumentsSerial.Length] : null;
-                                if (arguments != null)
-                                    for (int i = 0; i < arguments.Length; i++)
-                                        arguments[i] = JsonConvert.DeserializeObject(argumentsSerial[i]);
-                                RaiseEventReceived(functionName, arguments);
-                                string newLine = line;
-                                newLine += $";{playerId}";
-                                functionBoard.Replace(line, newLine);
-                                SaveManager.SaveString(executeFunctionKey, functionBoard);
-                            }
+                            Debug.Log("Event received " + item.Value.EventKey);
+                            RaiseEventReceived(item.Value.EventKey, item.Value.Parameters);
+                            string[] newPlayers = new string[item.Value.PlayersWhoExecuted.Length + 1];
+                            newPlayers[0] = playerId;
+                            for (int i = 0; i < item.Value.PlayersWhoExecuted.Length; i++)
+                                newPlayers[i + 1] = item.Value.PlayersWhoExecuted[i];
+                            item.Value.PlayersWhoExecuted = newPlayers;
+                            SaveEventExecutions();
                         }
                     }
                 }
@@ -176,7 +189,7 @@ namespace Kalkatos.Rpsls.Test
             if (players.Count == 0)
             {
                 activeRooms.Remove(room.Id);
-                SaveManager.DeleteKey(executeFunctionKey);
+                SaveManager.DeleteKey(executeEventKey);
                 if (activeRooms.Count == 0)
                     SaveManager.DeleteKey(activeRoomsKey);
             }
@@ -350,19 +363,26 @@ namespace Kalkatos.Rpsls.Test
             Assert.IsTrue(IsConnected);
             Assert.IsTrue(IsInRoom);
 
-            string parametersSerialization = "";
-            if (parameters != null)
+            Debug.Log("Sent event: " + eventKey);
+            EventExecution execution = new EventExecution()
             {
-                for (int i = 0; i < parameters.Length; i++)
-                {
-                    if (i > 0)
-                        parametersSerialization += ",";
-                    parametersSerialization += JsonConvert.SerializeObject(parameters[i]);
-                }
-            }
-            string newBoard = SaveManager.GetString(executeFunctionKey, "");
-            newBoard += $"[{eventKey}-{DateTime.Now.Ticks}({parametersSerialization})]";
-            SaveManager.SaveString(executeFunctionKey, newBoard);
+                Id = newSmallGuid,
+                EventKey = eventKey,
+                Parameters = parameters,
+                PlayersWhoExecuted = new string[] { playerId }
+            };
+            RaiseEventReceived(eventKey, parameters);
+            LoadEventExecutions();
+            eventExecutions.Add(execution.Id, execution);
+            SaveEventExecutions();
         }
+    }
+
+    internal class EventExecution
+    {
+        public string Id;
+        public string EventKey;
+        public object[] Parameters;
+        public string[] PlayersWhoExecuted;
     }
 }
