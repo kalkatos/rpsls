@@ -182,7 +182,7 @@ namespace Kalkatos.Network
 
         public void OnPlayerPropertiesUpdate (Player targetPlayer, Hashtable changedProps) 
         {
-            RaisePlayerDataChanged(InfoFromPlayer(targetPlayer), changedProps?.ToDictionary());
+            RaisePlayerDataChanged(InfoFromPlayer(targetPlayer));
         }
 
         public void OnEvent (EventData photonEvent)

@@ -7,6 +7,7 @@ namespace Kalkatos
 {
     public static class CustomExtensions
     {
+        // MonoBehaviour
         private static IEnumerator Wait (float time, Action callback)
         {
             float startTime = Time.time;
@@ -19,6 +20,56 @@ namespace Kalkatos
         {
             mono.StartCoroutine(Wait(time, callback));
         }
+
+        public static void Log (this MonoBehaviour mono, string message)
+        {
+            Debug.Log($"[{mono.GetType().Name}] {message}");
+        }
+
+        public static void LogError (this MonoBehaviour mono, string message)
+        {
+            Debug.LogError($"[{mono.GetType().Name}] {message}");
+        }
+
+        public static void LogWarning (this MonoBehaviour mono, string message)
+        {
+            Debug.LogWarning($"[{mono.GetType().Name}] {message}");
+        }
+
+        #region Dictionary & List
+
+        public static Dictionary<string, T> CloneDictionary<T> (this Dictionary<string, T> source)
+        {
+            Dictionary<string, T> dict = new Dictionary<string, T>();
+            foreach (var item in source)
+                dict.Add(item.Key, item.Value);
+            return dict;
+        }
+
+        public static List<T> CloneList<T> (this List<T> source)
+        {
+            List<T> list = new List<T>();
+            foreach (var item in source)
+                list.Add(item);
+            return list;
+        }
+
+        public static object[] ToObjArray<T> (this Dictionary<string, T> dict)
+        {
+            object[] result = new object[dict.Count * 2];
+            int index = 0;
+            foreach (var item in dict)
+            {
+                result[index] = item.Key;
+                result[index + 1] = item.Value;
+                index += 2;
+            }
+            return result;
+        }
+
+        #endregion
+
+        // Arrays
 
         public static Dictionary<string, object> ToDictionary (this object[] objArray)
         {
@@ -47,31 +98,94 @@ namespace Kalkatos
             return dict;
         }
 
-        public static Dictionary<string, T> CloneDictionary<T> (this Dictionary<string, T> source)
+        public static bool ContainsKey (this object[] objArray, string key)
         {
-            Dictionary<string, T> dict = new Dictionary<string, T>();
-            foreach (var item in source)
-                dict.Add(item.Key, item.Value);
-            return dict;
-        }
-
-        public static List<T> CloneList<T> (this List<T> source)
-        {
-            List<T> list = new List<T>();
-            foreach (var item in source)
-                list.Add(item);
-            return list;
-        }
-
-        public static object[] ToObjArray<T> (this Dictionary<string, T> dict)
-        {
-            object[] result = new object[dict.Count * 2];
-            int index = 0;
-            foreach (var item in dict)
+            for (int i = 0; i < objArray.Length; i++)
             {
-                result[index] = item.Key;
-                result[index + 1] = item.Value;
-                index += 2;
+                object item = objArray[i];
+                if (item != null && item is string && (string)item == key)
+                    return true;
+            }
+            return false;
+        }
+
+        public static object GetByKey (this object[] objArray, string key)
+        {
+            for (int i = 0; i < objArray.Length; i++)
+            {
+                object item = objArray[i];
+                if (item != null && item is string && (string)item == key && objArray.Length > i + 1)
+                    return objArray[i + 1];
+            }
+            return null;
+        }
+
+        //public static void SetByKey (this object[] objArray, string key, object value)
+        //{
+        //    if (ReferenceEquals(objArray, null))
+        //    {
+        //        objArray = new object[2] { key, value };
+        //        return;
+        //    }
+        //    for (int i = 0; i < objArray.Length; i++)
+        //    {
+        //        object item = objArray[i];
+        //        if (item != null && item is string && (string)item == key && objArray.Length > i + 1)
+        //            objArray[i + 1] = value;
+        //    }
+        //}
+
+        public static object[] SetOrCloneWithAddition (this object[] objArray, string key, object value)
+        {
+            object[] newArray;
+            if (ReferenceEquals(objArray, null))
+            {
+                newArray = new object[2];
+                newArray[0] = key;
+                newArray[1] = value;
+                return newArray;
+            }
+            if (objArray.ContainsKey(key))
+                for (int i = 0; i < objArray.Length; i++)
+                {
+                    object item = objArray[i];
+                    if (item != null && item is string && (string)item == key && objArray.Length > i + 1)
+                    {
+                        objArray[i + 1] = value;
+                        return objArray; 
+                    }
+                }
+            newArray = new object[objArray.Length + 2];
+            for (int i = 0; i < objArray.Length; i++)
+            {
+                if (objArray[i].ToString() == key && i + 1 < objArray.Length)
+                {
+                    objArray[i + 1] = value;
+                    return objArray;
+                }
+                newArray[i] = objArray[i];
+            }
+            newArray[newArray.Length - 2] = key;
+            newArray[newArray.Length - 1] = value;
+            return newArray;
+        }
+
+        public static string AsKeyValueString (this object[] objArray)
+        {
+            string result = "";
+            if (!ReferenceEquals(objArray, null))
+            {
+                for (int i = 0; i < objArray.Length; i++)
+                {
+                    if (i % 2 == 0)
+                    {
+                        if (i > 0)
+                            result += ";";
+                        result += $"[{objArray[i]}] ";
+                    }
+                    else
+                        result += objArray[i].ToString();
+                }
             }
             return result;
         }
