@@ -173,8 +173,8 @@ namespace Kalkatos.Rpsls
         {
             PlayerInfoSlot newSlot = Instantiate(settings.PlayerInfoSlotPrefab, playerSlotsListParent);
             newSlot.SetNickname(info.Nickname + (info.Id == RoomManager.MyId ? "  (me)" : ""));
-            if (info.CustomData != null)
-                newSlot.UpdateStatus((RoomStatus)int.Parse(((object[])info.CustomData).GetByKey(RoomManager.RoomStatusKey).ToString()));
+            if (info.CustomData.ContainsKey(RoomManager.RoomStatusKey))
+                newSlot.UpdateStatus((RoomStatus)int.Parse(info.CustomData[RoomManager.RoomStatusKey].ToString()));
             return newSlot;
         }
     }
