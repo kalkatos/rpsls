@@ -20,6 +20,7 @@ namespace Kalkatos.Rpsls.Test
 
         private string playerId;
         private string roomId;
+        private EventRemovalOption eventRemovalOption = EventRemovalOption.AfterAllReceived;
         private Dictionary<string, object> data = new Dictionary<string, object>();
         private Dictionary<string, PlayerInfo> lastKnownPlayers = new Dictionary<string, PlayerInfo>();
         private Dictionary<string, PlayerInfo> connectedPlayers = new Dictionary<string, PlayerInfo>();
@@ -149,6 +150,7 @@ namespace Kalkatos.Rpsls.Test
 
                     //Check events
                     LoadEventExecutions();
+                    List<string> executionsToRemove = new List<string>();
                     foreach (var item in eventExecutions)
                     {
                         if (!item.Value.PlayersWhoExecuted.Contains(playerId))
@@ -159,10 +161,25 @@ namespace Kalkatos.Rpsls.Test
                             newPlayers[0] = playerId;
                             for (int i = 0; i < item.Value.PlayersWhoExecuted.Length; i++)
                                 newPlayers[i + 1] = item.Value.PlayersWhoExecuted[i];
+
+                            if (eventRemovalOption == EventRemovalOption.AfterAllReceived)
+                            {
+                                int countOfPlayersFound = 0;
+                                List<PlayerInfo> playersInRoom = activeRooms[roomId].Players;
+                                for (int i = 0; i < playersInRoom.Count; i++)
+                                    if (newPlayers.Contains(playersInRoom[i].Id))
+                                        countOfPlayersFound++;
+                                if (countOfPlayersFound == newPlayers.Length)
+                                    executionsToRemove.Add(item.Key);
+                            }
+
                             item.Value.PlayersWhoExecuted = newPlayers;
-                            SaveEventExecutions();
                         }
                     }
+                    if (eventRemovalOption == EventRemovalOption.AfterAllReceived)
+                        for (int i = 0; i < executionsToRemove.Count; i++)
+                            eventExecutions.Remove(executionsToRemove[i]);
+                    SaveEventExecutions();
                 }
             }
         }
@@ -384,5 +401,11 @@ namespace Kalkatos.Rpsls.Test
         public string EventKey;
         public object[] Parameters;
         public string[] PlayersWhoExecuted;
+    }
+
+    internal enum EventRemovalOption
+    {
+        AfterAllReceived,
+        Delayed
     }
 }

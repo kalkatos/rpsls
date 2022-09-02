@@ -749,10 +749,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: SceneManager
       objectReference: {fileID: 0}
-    - target: {fileID: 1793815920246741718, guid: d20933e6551357d408126025eb781ce7, type: 3}
-      propertyPath: connectionScene
-      value: Connection
-      objectReference: {fileID: 0}
     - target: {fileID: 1793815920246741719, guid: d20933e6551357d408126025eb781ce7, type: 3}
       propertyPath: m_RootOrder
       value: 3
