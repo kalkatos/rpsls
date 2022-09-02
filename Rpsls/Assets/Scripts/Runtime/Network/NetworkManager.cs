@@ -76,7 +76,7 @@ namespace Kalkatos.Network
         public virtual void LogIn (object parameter = null) => Debug.LogError("LogIn not implemented!");
         public virtual void FindMatch (object parameter = null) => Debug.LogError("FindMatch not implemented!");
         public virtual void LeaveMatch (object parameter = null) => Debug.LogError("LeaveMatch not implemented!");
-        public virtual void SetMyCustomData (object parameter = null) => Debug.LogError("SetMyCustomData not implemented!");
+        public virtual void SetMyCustomData (Dictionary<string, object> data) => Debug.LogError("SetMyCustomData not implemented!");
         public virtual void SendData (params object[] parameters) => Debug.LogError("SendData not implemented!");
         public virtual void RequestData (params object[] parameters) { Debug.LogError("RequestData not implemented!"); }
         public virtual void ExecuteEvent (string eventKey, params object[] parameters) { Debug.LogError("ExecuteEvent not implemented!"); }
@@ -108,7 +108,7 @@ namespace Kalkatos.Network
         public string Id;
         public string Nickname;
         public bool IsMasterClient;
-        public object CustomData;
+        public Dictionary<string, object> CustomData = new Dictionary<string, object>();
 
         public PlayerInfo () { }
 
@@ -125,7 +125,7 @@ namespace Kalkatos.Network
     public class RoomOptions
     {
         public int MaxPlayers;
-        public object CustomData;
+        public Dictionary<string, object> CustomData = new Dictionary<string, object>();
     }
 
     [Serializable]

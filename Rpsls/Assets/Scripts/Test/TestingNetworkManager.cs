@@ -35,6 +35,7 @@ namespace Kalkatos.Rpsls.Test
         private void OnApplicationQuit ()
         {
             LoadLists();
+            string savedExecEventKey = executeEventKey;
             if (IsConnected && IsInRoom)
                 LeaveRoom();
             if (connectedPlayers.Count <= 1)
@@ -42,7 +43,7 @@ namespace Kalkatos.Rpsls.Test
                 Debug.Log("[Testing] Cleaning up to quit.");
                 SaveManager.DeleteKey(connectedPlayersKey);
                 SaveManager.DeleteKey(activeRoomsKey);
-                SaveManager.DeleteKey(executeEventKey);
+                SaveManager.DeleteKey(savedExecEventKey);
             }
             else
             {
@@ -65,8 +66,8 @@ namespace Kalkatos.Rpsls.Test
                     else
                     {
                         PlayerInfo info = JsonConvert.DeserializeObject<PlayerInfo>(objArray[i].ToString());
-                        if (info.CustomData != null)
-                            info.CustomData = JsonConvert.DeserializeObject<object[]>(info.CustomData.ToString());
+                        //if (info.CustomData != null)
+                        //    info.CustomData = JsonConvert.DeserializeObject<object[]>(info.CustomData.ToString());
                         connectedPlayers.Add(currentKey, info);
                     }
                 }
@@ -83,6 +84,8 @@ namespace Kalkatos.Rpsls.Test
                     else
                     {
                         RoomInfo room = JsonConvert.DeserializeObject<RoomInfo>(objArray[i].ToString());
+                        //if (room.CustomData != null)
+                        //    room.CustomData = JsonConvert.DeserializeObject<object[]>(room.CustomData.ToString()).ToDictionary();
                         for (int j = 0; j < room.Players.Count; j++)
                             room.Players[j] = connectedPlayers[room.Players[j].Id];
                         activeRooms.Add(currentKey, room);
@@ -335,12 +338,12 @@ namespace Kalkatos.Rpsls.Test
             Debug.Log("[Testing] Left Room.");
         }
 
-        public override void SetMyCustomData (object parameter = null)
+        public override void SetMyCustomData (Dictionary<string, object> data)
         {
             Assert.IsTrue(IsConnected);
 
             LoadLists();
-            connectedPlayers[playerId].CustomData = parameter;
+            connectedPlayers[playerId].CustomData = data;
             SaveLists();
             RaisePlayerDataChanged(MyPlayerInfo);
         }

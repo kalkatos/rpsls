@@ -23,6 +23,7 @@ namespace Kalkatos.Rpsls
         private RpslsGameSettings settings;
         private RoomInfo roomInfo;
         private const string startGameKey = "Start";
+        private const string aboutToStartKey = "AbSrt";
 
         public static string RoomName { get; private set; }
         public static bool IAmTheMaster { get; private set; }
@@ -99,7 +100,7 @@ namespace Kalkatos.Rpsls
         {
             if (players.ContainsKey(player.Id))
             {
-                if (int.TryParse(((object[])player.CustomData)?.GetByKey(RoomStatusKey)?.ToString(), out int value))
+                if (int.TryParse(player.CustomData[RoomStatusKey].ToString(), out int value))
                     OnPlayerStatusChanged?.Invoke(player.Id, (RoomStatus)value);
                 players[player.Id] = player;
             }
@@ -109,6 +110,8 @@ namespace Kalkatos.Rpsls
 
         private void HandleEventReceived (string eventKey, object[] parameters)
         {
+            if (eventKey == aboutToStartKey)
+                OnGameAboutToStart?.Invoke();
             if (eventKey == startGameKey)
                 SceneManager.EndScene("Room");
         }
@@ -121,7 +124,10 @@ namespace Kalkatos.Rpsls
         public static void SetStatus (RoomStatus status)
         {
             PlayerInfo myInfo = NetworkManager.Instance.MyPlayerInfo;
-            myInfo.CustomData = ((object[])myInfo.CustomData).SetOrCloneWithAddition(RoomStatusKey, (int)status);
+            if (myInfo.CustomData.ContainsKey(RoomStatusKey))
+                myInfo.CustomData[RoomStatusKey] = (int)status;
+            else
+                myInfo.CustomData.Add(RoomStatusKey, (int)status);
             NetworkManager.Instance.SetMyCustomData(myInfo.CustomData);
         }
 
@@ -139,13 +145,13 @@ namespace Kalkatos.Rpsls
                 bool isEveryoneReady = true;
                 foreach (var item in Instance.players)
                 {
-                    RoomStatus playerStatus = (RoomStatus)int.Parse(((object[])item.Value.CustomData).GetByKey(RoomStatusKey).ToString());
+                    RoomStatus playerStatus = (RoomStatus)int.Parse(item.Value.CustomData[RoomStatusKey].ToString());
                     isEveryoneReady &= playerStatus == RoomStatus.Ready || playerStatus == RoomStatus.Master;
                 }
                 if (isEveryoneReady)
                 {
                     Instance.Log("Calling start game");
-                    OnGameAboutToStart?.Invoke();
+                    NetworkManager.Instance.ExecuteEvent(aboutToStartKey);
                     Instance.Wait(Instance.settings.DelayBeforeStarting, () =>
                     {
                         Instance.Log("Start!");
