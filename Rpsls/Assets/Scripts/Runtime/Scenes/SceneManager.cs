@@ -12,7 +12,7 @@ namespace Kalkatos.Rpsls
         [SerializeField, Scene] private string connectionScene;
         [SerializeField, Scene] private string lobbyScene;
         [SerializeField, Scene] private string roomScene;
-        [SerializeField, Scene] private string mainScene;
+        [SerializeField, Scene] private string gameScene;
 
         private static string currentScene;
 
@@ -67,7 +67,7 @@ namespace Kalkatos.Rpsls
             else if (currentScene == Instance.roomScene)
             {
                 if (parameter == null || (string)parameter == "ToGame")
-                    LoadScene(Instance.mainScene);
+                    LoadScene(Instance.gameScene);
                 else
                     LoadScene(Instance.lobbyScene);
             }

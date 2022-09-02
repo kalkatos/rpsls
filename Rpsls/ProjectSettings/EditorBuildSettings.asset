@@ -15,7 +15,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Room.unity
     guid: 599817ade17b0df46b22520d31e6dd86
   - enabled: 1
-    path: Assets/Scenes/Main.unity
+    path: Assets/Scenes/Game.unity
     guid: d8529015c53684646b6dbb952aaf43aa
   - enabled: 1
     path: Assets/zThirdParty/GUIPackCartoon/Demo/Scenes/Home.unity
