@@ -5,7 +5,7 @@ using Random = UnityEngine.Random;
 
 namespace Kalkatos.Network
 {
-    public class NetworkManager : MonoBehaviour
+    public abstract class NetworkManager : MonoBehaviour
     {
         private static NetworkManager instance;
         public static NetworkManager Instance
@@ -29,7 +29,7 @@ namespace Kalkatos.Network
         public static event Action<string, object[]> OnEventReceived;
         public static event Action<PlayerInfo> OnPlayerEnteredRoom;
         public static event Action<PlayerInfo> OnPlayerLeftRoom;
-        public static event Action<PlayerInfo, object[]> OnPlayerDataChanged;
+        public static event Action<PlayerInfo> OnPlayerDataChanged;
         public static event Action<PlayerInfo> OnMasterClientChanged;
 
         public virtual bool IsConnected { get; protected set; } = false;
@@ -96,7 +96,7 @@ namespace Kalkatos.Network
         public virtual void RaiseEventReceived (string eventKey, params object[] parameters) { OnEventReceived?.Invoke(eventKey, parameters); }
         public virtual void RaisePlayerEnteredRoom (PlayerInfo playerInfo) { OnPlayerEnteredRoom?.Invoke(playerInfo); }
         public virtual void RaisePlayerLeftRoom (PlayerInfo playerInfo) { OnPlayerLeftRoom?.Invoke(playerInfo); }
-        public virtual void RaisePlayerDataChanged (PlayerInfo playerInfo, params object[] parameters) { OnPlayerDataChanged?.Invoke(playerInfo, parameters); }
+        public virtual void RaisePlayerDataChanged (PlayerInfo playerInfo) { OnPlayerDataChanged?.Invoke(playerInfo); }
         public virtual void RaiseMasterClientChanged (PlayerInfo newMaster) => OnMasterClientChanged?.Invoke(newMaster);
 
         #endregion

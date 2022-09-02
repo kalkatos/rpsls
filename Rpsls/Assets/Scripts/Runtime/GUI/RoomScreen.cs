@@ -104,6 +104,8 @@ namespace Kalkatos.Rpsls
 
         private void HandleGameAboutToStart ()
         {
+            idleButton.interactable = false;
+            readyButton.interactable = false;
             startGameButton.interactable = false;
         }
 
@@ -172,7 +174,7 @@ namespace Kalkatos.Rpsls
             PlayerInfoSlot newSlot = Instantiate(settings.PlayerInfoSlotPrefab, playerSlotsListParent);
             newSlot.SetNickname(info.Nickname + (info.Id == RoomManager.MyId ? "  (me)" : ""));
             if (info.CustomData != null)
-                newSlot.UpdateStatus((RoomStatus)int.Parse(info.CustomData.ToString()));
+                newSlot.UpdateStatus((RoomStatus)int.Parse(((object[])info.CustomData).GetByKey(RoomManager.RoomStatusKey).ToString()));
             return newSlot;
         }
     }

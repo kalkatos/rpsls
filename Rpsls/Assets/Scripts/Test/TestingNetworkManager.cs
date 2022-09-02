@@ -14,9 +14,6 @@ namespace Kalkatos.Rpsls.Test
     {
         private const string connectedPlayersKey = "CntPl";
         private const string activeRoomsKey = "AtvRm";
-        private char[] functionCallSeparator = new char[] { '[', ']' };
-        private char[] functionDataSeparator = new char[] { ';' };
-        private char[] functionArgumentsSeparator = new char[] { '(', ',', ')' };
 
         private string playerId;
         private string roomId;
@@ -45,6 +42,7 @@ namespace Kalkatos.Rpsls.Test
                 Debug.Log("[Testing] Cleaning up to quit.");
                 SaveManager.DeleteKey(connectedPlayersKey);
                 SaveManager.DeleteKey(activeRoomsKey);
+                SaveManager.DeleteKey(executeEventKey);
             }
             else
             {
@@ -65,7 +63,12 @@ namespace Kalkatos.Rpsls.Test
                     if (i % 2 == 0)
                         currentKey = objArray[i].ToString();
                     else
-                        connectedPlayers.Add(currentKey, JsonConvert.DeserializeObject<PlayerInfo>(objArray[i].ToString()));
+                    {
+                        PlayerInfo info = JsonConvert.DeserializeObject<PlayerInfo>(objArray[i].ToString());
+                        if (info.CustomData != null)
+                            info.CustomData = JsonConvert.DeserializeObject<object[]>(info.CustomData.ToString());
+                        connectedPlayers.Add(currentKey, info);
+                    }
                 }
             }
             if (SaveManager.HasKey(activeRoomsKey))
@@ -172,7 +175,6 @@ namespace Kalkatos.Rpsls.Test
                                 if (countOfPlayersFound == newPlayers.Length)
                                     executionsToRemove.Add(item.Key);
                             }
-
                             item.Value.PlayersWhoExecuted = newPlayers;
                         }
                     }
@@ -340,7 +342,7 @@ namespace Kalkatos.Rpsls.Test
             LoadLists();
             connectedPlayers[playerId].CustomData = parameter;
             SaveLists();
-            RaisePlayerDataChanged(MyPlayerInfo, parameter);
+            RaisePlayerDataChanged(MyPlayerInfo);
         }
 
         public override void SendData (params object[] parameters)

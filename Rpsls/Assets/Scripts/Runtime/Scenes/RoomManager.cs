@@ -17,11 +17,11 @@ namespace Kalkatos.Rpsls
         public static event Action OnGameAboutToStart;
         public static event Action<NotReadyErrorCode> OnGameNotReady;
 
+        public const string RoomStatusKey = "RmSts";
+
         private Dictionary<string, PlayerInfo> players = new Dictionary<string, PlayerInfo>();
         private RpslsGameSettings settings;
         private RoomInfo roomInfo;
-
-        private const string setRoomStatusKey = "SRSts";
         private const string startGameKey = "Start";
 
         public static string RoomName { get; private set; }
@@ -95,35 +95,22 @@ namespace Kalkatos.Rpsls
             }
         }
 
-        private void HandlePlayerDataChanged (PlayerInfo player, object[] parameters)
+        private void HandlePlayerDataChanged (PlayerInfo player)
         {
             if (players.ContainsKey(player.Id))
             {
-                PlayerInfo infoHere = players[player.Id];
-                if (player.CustomData != infoHere.CustomData)
-                    OnPlayerStatusChanged?.Invoke(player.Id, (RoomStatus)int.Parse(player.CustomData.ToString()));
+                if (int.TryParse(((object[])player.CustomData)?.GetByKey(RoomStatusKey)?.ToString(), out int value))
+                    OnPlayerStatusChanged?.Invoke(player.Id, (RoomStatus)value);
                 players[player.Id] = player;
             }
+            else
+                this.LogError("Received data changed from a player, but they are not in my known list of players.");
         }
 
         private void HandleEventReceived (string eventKey, object[] parameters)
         {
-            if (eventKey == setRoomStatusKey)
-            {
-                string playerId = (string)parameters[0];
-                RoomStatus status = (RoomStatus)int.Parse(parameters[1].ToString());
-                if (players.ContainsKey(playerId))
-                {
-                    PlayerInfo info = players[playerId];
-                    info.CustomData = status;
-                    players[playerId] = info;
-                    OnPlayerStatusChanged?.Invoke(playerId, status);
-                }
-            }
-            else if (eventKey == startGameKey)
-            {
+            if (eventKey == startGameKey)
                 SceneManager.EndScene("Room");
-            }
         }
 
         private RoomInfo GetUpdatedRoomInfo ()
@@ -133,40 +120,41 @@ namespace Kalkatos.Rpsls
 
         public static void SetStatus (RoomStatus status)
         {
-            NetworkManager.Instance.SetMyCustomData((int)status);
+            PlayerInfo myInfo = NetworkManager.Instance.MyPlayerInfo;
+            myInfo.CustomData = ((object[])myInfo.CustomData).SetOrCloneWithAddition(RoomStatusKey, (int)status);
+            NetworkManager.Instance.SetMyCustomData(myInfo.CustomData);
         }
 
         public static void StartGame ()
         {
+            if (!IAmTheMaster)
+                return;
 
-            if (IAmTheMaster)
+            if (Instance.players.Count <= 1)
             {
-                if (Instance.players.Count <= 1)
+                OnGameNotReady?.Invoke(NotReadyErrorCode.NotEnoughPlayers);
+            }
+            else
+            {
+                bool isEveryoneReady = true;
+                foreach (var item in Instance.players)
                 {
-                    OnGameNotReady?.Invoke(NotReadyErrorCode.NotEnoughPlayers);
+                    RoomStatus playerStatus = (RoomStatus)int.Parse(((object[])item.Value.CustomData).GetByKey(RoomStatusKey).ToString());
+                    isEveryoneReady &= playerStatus == RoomStatus.Ready || playerStatus == RoomStatus.Master;
+                }
+                if (isEveryoneReady)
+                {
+                    Instance.Log("Calling start game");
+                    OnGameAboutToStart?.Invoke();
+                    Instance.Wait(Instance.settings.DelayBeforeStarting, () =>
+                    {
+                        Instance.Log("Start!");
+                        NetworkManager.Instance.ExecuteEvent(startGameKey);
+                    });
+
                 }
                 else
-                {
-                    bool isEveryoneReady = true;
-                    foreach (var item in Instance.players)
-                    {
-                        RoomStatus playerStatus = (RoomStatus)int.Parse(item.Value.CustomData.ToString());
-                        isEveryoneReady &= playerStatus == RoomStatus.Ready || playerStatus == RoomStatus.Master;
-                    }
-                    if (isEveryoneReady)
-                    {
-                        Debug.Log("Calling start game");
-                        OnGameAboutToStart?.Invoke();
-                        Instance.Wait(Instance.settings.DelayBeforeStarting, () =>
-                        {
-                            Debug.Log("Start!");
-                            NetworkManager.Instance.ExecuteEvent(startGameKey);
-                        });
-                        
-                    }
-                    else
-                        OnGameNotReady?.Invoke(NotReadyErrorCode.NotEveryoneReady);
-                }
+                    OnGameNotReady?.Invoke(NotReadyErrorCode.NotEveryoneReady);
             }
         }
 
