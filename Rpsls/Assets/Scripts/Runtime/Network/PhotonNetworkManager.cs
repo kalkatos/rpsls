@@ -1,15 +1,22 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
+using UnityEngine.Assertions;
 using Photon.Pun;
 using Photon.Realtime;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 using System.Collections.Generic;
 using ExitGames.Client.Photon;
+using Newtonsoft.Json;
 
 namespace Kalkatos.Network
 {
     public class PhotonNetworkManager : NetworkManager, IConnectionCallbacks, IMatchmakingCallbacks, IInRoomCallbacks, ILobbyCallbacks, IOnEventCallback
     {
-        private List<string> functionNamesToByte = new List<string>() { "xreservex" };
+        private const string lastByteUsedForEvents = "LstBt";
+        private const string executeEventKey = "EvKey";
+        private const byte customEvent = 1;
+
+        private List<Tuple<string, object[]>> delayedEvtExecutionData = new List<Tuple<string, object[]>>();
 
         public override bool IsConnected => PhotonNetwork.IsConnected;
 
@@ -21,6 +28,11 @@ namespace Kalkatos.Network
         public virtual void OnDisable ()
         {
             PhotonNetwork.RemoveCallbackTarget(this);
+        }
+
+        private void OnApplicationQuit ()
+        {
+            PhotonNetwork.Disconnect();
         }
 
         public override PlayerInfo MyPlayerInfo
@@ -90,6 +102,7 @@ namespace Kalkatos.Network
                 {
                     Photon.Realtime.RoomOptions roomOptions = ConvertToRoomOptions((RoomOptions)parameter);
                     roomOptions.PublishUserId = true;
+                    roomOptions.CustomRoomProperties = new Hashtable() { { lastByteUsedForEvents, (byte)0 } };
                     PhotonNetwork.CreateRoom(CreateRandomRoomName(), roomOptions);
                 }
                 else if (parameter is string)
@@ -114,7 +127,7 @@ namespace Kalkatos.Network
 
         public override void SetMyCustomData (Dictionary<string, object> data)
         {
-            PhotonNetwork.LocalPlayer.CustomProperties = data.ToHashtable();
+            PhotonNetwork.LocalPlayer.SetCustomProperties(data.ToHashtable());
         }
 
         public override void SendData (params object[] parameters)
@@ -129,15 +142,11 @@ namespace Kalkatos.Network
 
         public override void ExecuteEvent (string eventKey, params object[] parameters) 
         {
-            byte byteKey;
-            if (functionNamesToByte.Contains(eventKey))
-                byteKey = (byte)functionNamesToByte.IndexOf(eventKey);
-            else
-            {
-                byteKey = (byte)functionNamesToByte.Count;
-                functionNamesToByte.Add(eventKey);
-            }
-            PhotonNetwork.RaiseEvent(byteKey, parameters, RaiseEventOptions.Default, SendOptions.SendReliable);
+            Assert.IsTrue(PhotonNetwork.InRoom);
+
+            parameters = parameters.CloneWithChange(executeEventKey, eventKey);
+            PhotonNetwork.RaiseEvent(customEvent, parameters, RaiseEventOptions.Default, SendOptions.SendReliable);
+            RaiseEventReceived(eventKey, parameters);
         }
 
         #endregion
@@ -187,7 +196,19 @@ namespace Kalkatos.Network
 
         public void OnEvent (EventData photonEvent)
         {
-            RaiseEventReceived(functionNamesToByte[photonEvent.Code], (object[])photonEvent.CustomData);
+            if (PhotonNetwork.InRoom)
+            {
+                if (photonEvent.CustomData != null)
+                {
+                    Dictionary<string, object> parameterDict = ((object[])photonEvent.CustomData).ToDictionary();
+                    if (parameterDict.ContainsKey(executeEventKey))
+                    {
+                        string evtName = (string)parameterDict[executeEventKey];
+                        parameterDict.Remove(executeEventKey);
+                        RaiseEventReceived(evtName, parameterDict.ToObjArray());
+                    }
+                }
+            }
         }
 
         public void OnConnected () { }
