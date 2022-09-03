@@ -135,7 +135,7 @@ namespace Kalkatos
         //    }
         //}
 
-        public static object[] SetOrCloneWithAddition (this object[] objArray, string key, object value)
+        public static object[] CloneWithChange (this object[] objArray, string key, object value)
         {
             object[] newArray;
             if (ReferenceEquals(objArray, null))

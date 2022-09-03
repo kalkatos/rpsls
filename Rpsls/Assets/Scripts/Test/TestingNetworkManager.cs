@@ -219,6 +219,8 @@ namespace Kalkatos.Rpsls.Test
                 activeRooms[room.Id] = room;
         }
 
+        #region ==================  Requests  ===========================
+
         public override void Connect ()
         {
             this.Wait(randomTime, () =>
@@ -398,6 +400,8 @@ namespace Kalkatos.Rpsls.Test
             eventExecutions.Add(execution.Id, execution);
             SaveEventExecutions();
         }
+
+        #endregion
     }
 
     internal class EventExecution
