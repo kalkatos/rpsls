@@ -59,6 +59,7 @@ namespace Kalkatos.Rpsls
         {
             List<PlayerInfo> playerList = new List<PlayerInfo>();
             playerList.AddRange(roomInfo.Players);
+            playerList.Sort(SortPlayers);
             for (int i = 0; i < playerList.Count; i++)
             {
                 PlayerInfo info = playerList[i];
@@ -66,6 +67,15 @@ namespace Kalkatos.Rpsls
             }
             OnPlayerListReceived?.Invoke(playerList);
             SetStatus(IAmTheMaster ? RoomStatus.Master : RoomStatus.Idle);
+
+            int SortPlayers (PlayerInfo a, PlayerInfo b)
+            {
+                if (a.IsMasterClient && !b.IsMasterClient)
+                    return -1;
+                if (b.IsMasterClient && !a.IsMasterClient)
+                    return 1;
+                return 0;
+            }
         }
 
         private void HandlePlayerEntered (PlayerInfo newPlayer)
