@@ -30,6 +30,7 @@ namespace Kalkatos.Network
         public static event Action<PlayerInfo> OnPlayerEnteredRoom;
         public static event Action<PlayerInfo> OnPlayerLeftRoom;
         public static event Action<PlayerInfo> OnPlayerDataChanged;
+        public static event Action<RoomInfo> OnRoomDataChanged;
         public static event Action<PlayerInfo> OnMasterClientChanged;
 
         public virtual bool IsConnected { get; protected set; } = false;
@@ -77,6 +78,7 @@ namespace Kalkatos.Network
         public virtual void FindMatch (object parameter = null) => Debug.LogError("FindMatch not implemented!");
         public virtual void LeaveMatch (object parameter = null) => Debug.LogError("LeaveMatch not implemented!");
         public virtual void SetMyCustomData (Dictionary<string, object> data) => Debug.LogError("SetMyCustomData not implemented!");
+        public virtual void SetRoomData (Dictionary<string, object> data) => Debug.LogError("SetRoomData not implemented!");
         public virtual void SendData (params object[] parameters) => Debug.LogError("SendData not implemented!");
         public virtual void RequestData (params object[] parameters) { Debug.LogError("RequestData not implemented!"); }
         public virtual void ExecuteEvent (string eventKey, params object[] parameters) { Debug.LogError("ExecuteEvent not implemented!"); }
@@ -97,6 +99,7 @@ namespace Kalkatos.Network
         public virtual void RaisePlayerEnteredRoom (PlayerInfo playerInfo) { OnPlayerEnteredRoom?.Invoke(playerInfo); }
         public virtual void RaisePlayerLeftRoom (PlayerInfo playerInfo) { OnPlayerLeftRoom?.Invoke(playerInfo); }
         public virtual void RaisePlayerDataChanged (PlayerInfo playerInfo) { OnPlayerDataChanged?.Invoke(playerInfo); }
+        public virtual void RaiseRoomDataChanged (RoomInfo roomInfo) { OnRoomDataChanged?.Invoke(roomInfo); }
         public virtual void RaiseMasterClientChanged (PlayerInfo newMaster) => OnMasterClientChanged?.Invoke(newMaster);
 
         #endregion
@@ -135,6 +138,6 @@ namespace Kalkatos.Network
         public int MaxPlayers;
         public List<PlayerInfo> Players;
         public int PlayerCount;
-        public object CustomData;
+        public Dictionary<string, object> CustomData = new Dictionary<string, object>();
     }
 }

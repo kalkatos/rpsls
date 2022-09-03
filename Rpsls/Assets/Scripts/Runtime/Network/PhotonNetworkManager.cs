@@ -19,6 +19,7 @@ namespace Kalkatos.Network
         private List<Tuple<string, object[]>> delayedEvtExecutionData = new List<Tuple<string, object[]>>();
 
         public override bool IsConnected => PhotonNetwork.IsConnected;
+        public override bool IsInRoom => PhotonNetwork.CurrentRoom != null;
 
         public virtual void OnEnable ()
         {
@@ -128,6 +129,12 @@ namespace Kalkatos.Network
         public override void SetMyCustomData (Dictionary<string, object> data)
         {
             PhotonNetwork.LocalPlayer.SetCustomProperties(data.ToHashtable());
+        }
+
+        public override void SetRoomData (Dictionary<string, object> data)
+        {
+            if (IsInRoom)
+                PhotonNetwork.CurrentRoom.SetCustomProperties(data.ToHashtable());
         }
 
         public override void SendData (params object[] parameters)

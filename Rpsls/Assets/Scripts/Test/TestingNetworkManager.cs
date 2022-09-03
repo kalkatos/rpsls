@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Text;
 using UnityEngine;
 using UnityEngine.Assertions;
 using Random = UnityEngine.Random;
@@ -14,6 +13,7 @@ namespace Kalkatos.Rpsls.Test
     {
         private const string connectedPlayersKey = "CntPl";
         private const string activeRoomsKey = "AtvRm";
+        private const string roomChangedKey = "RmChd";
 
         private string playerId;
         private string roomId;
@@ -345,9 +345,27 @@ namespace Kalkatos.Rpsls.Test
             Assert.IsTrue(IsConnected);
 
             LoadLists();
-            connectedPlayers[playerId].CustomData = data;
+            Dictionary<string, object> myData = connectedPlayers[playerId].CustomData;
+            if (myData != null)
+                connectedPlayers[playerId].CustomData = myData.UpdateOrAdd(data);
+            else
+                connectedPlayers[playerId].CustomData = data;
             SaveLists();
             RaisePlayerDataChanged(MyPlayerInfo);
+        }
+
+        public override void SetRoomData (Dictionary<string, object> data)
+        {
+            if (IsInRoom && CurrentRoomInfo.Players.Find((player) => player.Id == playerId) != null)
+            {
+                LoadLists();
+                Dictionary<string, object> roomData = activeRooms[roomId].CustomData;
+                if (roomData != null)
+                    roomData = roomData.UpdateOrAdd(data);
+                else
+                    roomData = data;
+                ExecuteEvent(roomChangedKey, roomData.ToObjArray());
+            }
         }
 
         public override void SendData (params object[] parameters)
@@ -402,6 +420,13 @@ namespace Kalkatos.Rpsls.Test
         }
 
         #endregion
+
+        public override void RaiseEventReceived (string eventKey, params object[] parameters)
+        {
+            if (eventKey == roomChangedKey)
+                CurrentRoomInfo.CustomData = parameters.ToDictionary();
+            base.RaiseEventReceived(eventKey, parameters);
+        }
     }
 
     internal class EventExecution

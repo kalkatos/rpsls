@@ -7,7 +7,8 @@ namespace Kalkatos
 {
     public static class CustomExtensions
     {
-        // MonoBehaviour
+        #region MonoBehaviour ================================================
+
         private static IEnumerator Wait (float time, Action callback)
         {
             float startTime = Time.time;
@@ -36,7 +37,27 @@ namespace Kalkatos
             Debug.LogWarning($"[{mono.GetType().Name}] {message}");
         }
 
-        #region Dictionary & List
+        #endregion
+
+        #region Dictionary & List ================================================
+
+        public static Dictionary<string, T> UpdateOrAdd<T> (this Dictionary<string, T> dict, string key, T value)
+        {
+            if (dict.ContainsKey(key))
+            {
+                dict[key] = value;
+                return dict;
+            }
+            dict.Add(key, value);
+            return dict;
+        }
+
+        public static Dictionary<string, T> UpdateOrAdd<T> (this Dictionary<string, T> dict, Dictionary<string, T> otherDict)
+        {
+            foreach (var item in otherDict)
+                dict = dict.UpdateOrAdd(item.Key, item.Value);
+            return dict;
+        }
 
         public static Dictionary<string, T> CloneDictionary<T> (this Dictionary<string, T> source)
         {
@@ -69,7 +90,7 @@ namespace Kalkatos
 
         #endregion
 
-        // Arrays
+        #region Arrays ================================================
 
         public static Dictionary<string, object> ToDictionary (this object[] objArray)
         {
@@ -202,5 +223,7 @@ namespace Kalkatos
         {
             return Array.IndexOf(array, value) >= 0;
         }
+
+        #endregion
     }
 }
