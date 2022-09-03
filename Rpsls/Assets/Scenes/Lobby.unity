@@ -245,6 +245,117 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 2864486697453313632, guid: beacd15a131834893afe77890d8c73e9, type: 3}
   m_PrefabInstance: {fileID: 20370285}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &408551106
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 952649029}
+    m_Modifications:
+    - target: {fileID: 8150834034961367907, guid: 1b36dc75723dc1645887ea383c8e6c0b, type: 3}
+      propertyPath: m_text
+      value: Room is closed!
+      objectReference: {fileID: 0}
+    - target: {fileID: 8150834035543280744, guid: 1b36dc75723dc1645887ea383c8e6c0b, type: 3}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8150834035543280744, guid: 1b36dc75723dc1645887ea383c8e6c0b, type: 3}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8150834035543280744, guid: 1b36dc75723dc1645887ea383c8e6c0b, type: 3}
+      propertyPath: m_RootOrder
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 8150834035543280744, guid: 1b36dc75723dc1645887ea383c8e6c0b, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8150834035543280744, guid: 1b36dc75723dc1645887ea383c8e6c0b, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8150834035543280744, guid: 1b36dc75723dc1645887ea383c8e6c0b, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8150834035543280744, guid: 1b36dc75723dc1645887ea383c8e6c0b, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8150834035543280744, guid: 1b36dc75723dc1645887ea383c8e6c0b, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 316.55078
+      objectReference: {fileID: 0}
+    - target: {fileID: 8150834035543280744, guid: 1b36dc75723dc1645887ea383c8e6c0b, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 56.299988
+      objectReference: {fileID: 0}
+    - target: {fileID: 8150834035543280744, guid: 1b36dc75723dc1645887ea383c8e6c0b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8150834035543280744, guid: 1b36dc75723dc1645887ea383c8e6c0b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8150834035543280744, guid: 1b36dc75723dc1645887ea383c8e6c0b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8150834035543280744, guid: 1b36dc75723dc1645887ea383c8e6c0b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8150834035543280744, guid: 1b36dc75723dc1645887ea383c8e6c0b, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8150834035543280744, guid: 1b36dc75723dc1645887ea383c8e6c0b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8150834035543280744, guid: 1b36dc75723dc1645887ea383c8e6c0b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8150834035543280744, guid: 1b36dc75723dc1645887ea383c8e6c0b, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8150834035543280744, guid: 1b36dc75723dc1645887ea383c8e6c0b, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 28
+      objectReference: {fileID: 0}
+    - target: {fileID: 8150834035543280744, guid: 1b36dc75723dc1645887ea383c8e6c0b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8150834035543280744, guid: 1b36dc75723dc1645887ea383c8e6c0b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8150834035543280744, guid: 1b36dc75723dc1645887ea383c8e6c0b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8150834035543280747, guid: 1b36dc75723dc1645887ea383c8e6c0b, type: 3}
+      propertyPath: m_Name
+      value: Room Closed Error
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 1b36dc75723dc1645887ea383c8e6c0b, type: 3}
+--- !u!224 &408551107 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 8150834035543280744, guid: 1b36dc75723dc1645887ea383c8e6c0b, type: 3}
+  m_PrefabInstance: {fileID: 408551106}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &408551108 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 8150834035543280745, guid: 1b36dc75723dc1645887ea383c8e6c0b, type: 3}
+  m_PrefabInstance: {fileID: 408551106}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &417191112
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -745,6 +856,7 @@ RectTransform:
   - {fileID: 745168364}
   - {fileID: 20370286}
   - {fileID: 884800702}
+  - {fileID: 408551107}
   m_Father: {fileID: 1681785067}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -769,10 +881,25 @@ MonoBehaviour:
   roomNameField: {fileID: 1936444893}
   joinRoomButton: {fileID: 1439800697}
   createRoomButton: {fileID: 2083848537}
-  OnFailedToJoin:
+  OnRoomNotFound:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 884800703}
+        m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+        m_MethodName: SetTrigger
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Play
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnRoomClosed:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 408551108}
         m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
         m_MethodName: SetTrigger
         m_Mode: 5

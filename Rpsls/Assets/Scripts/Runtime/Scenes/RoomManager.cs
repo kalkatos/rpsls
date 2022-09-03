@@ -162,6 +162,7 @@ namespace Kalkatos.Rpsls
                 {
                     Instance.Log("Calling start game");
                     NetworkManager.Instance.ExecuteEvent(aboutToStartKey);
+                    NetworkManager.Instance.CloseRoom();
                     Instance.Wait(Instance.settings.DelayBeforeStarting, () =>
                     {
                         Instance.Log("Start!");
