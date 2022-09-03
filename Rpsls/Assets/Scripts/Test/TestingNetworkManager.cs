@@ -14,6 +14,8 @@ namespace Kalkatos.Rpsls.Test
         private const string connectedPlayersKey = "CntPl";
         private const string activeRoomsKey = "AtvRm";
         private const string roomChangedKey = "RmChd";
+        private const string roomOpenKey = "RmOpn";
+        private const string roomCloseKey = "RmCls";
 
         private string playerId;
         private string roomId;
@@ -269,7 +271,7 @@ namespace Kalkatos.Rpsls.Test
                 SaveLists();
                 StartCoroutine(CheckCoroutine());
                 Debug.Log("[Testing] Logged In");
-                base.RaiseLogInSuccess();
+                RaiseLogInSuccess();
             }));
         }
 
@@ -282,7 +284,7 @@ namespace Kalkatos.Rpsls.Test
             {
                 RoomOptions options = (RoomOptions)parameter;
                 Debug.Log("[Testing] Creating Room");
-                this.Wait(randomTime, (Action)(() =>
+                this.Wait(randomTime, () =>
                 {
                     LoadLists();
                     connectedPlayers[playerId].IsMasterClient = true;
@@ -296,36 +298,51 @@ namespace Kalkatos.Rpsls.Test
                     roomId = newRoom.Id;
                     activeRooms.Add(newRoom.Id, newRoom);
                     SaveLists();
-                    base.RaiseFindMatchSuccess();
-                    base.RaisePlayerEnteredRoom(MyPlayerInfo);
+                    RaiseFindMatchSuccess();
+                    RaisePlayerEnteredRoom(MyPlayerInfo);
                     Debug.Log($"[Testing] Room created: {newRoom.Id}");
-                }));
+                });
             }
             else if (parameter is string)
             {
-                this.Wait(randomTime, (Action)(() =>
+                this.Wait(randomTime, () =>
                 {
                     string wantedRoom = (string)parameter;
                     LoadLists();
                     if (activeRooms.ContainsKey(wantedRoom))
                     {
                         RoomInfo room = activeRooms[wantedRoom];
-                        List<PlayerInfo> playersInRoom = room.Players;
-                        connectedPlayers[playerId].IsMasterClient = false;
-                        playersInRoom.Add(MyPlayerInfo);
-                        room.PlayerCount = playersInRoom.Count;
-                        roomId = room.Id;
-                        SaveLists();
-                        base.RaiseFindMatchSuccess();
-                        base.RaisePlayerEnteredRoom(MyPlayerInfo);
-                        Debug.Log($"[Testing] Entering room: {room.Id}");
+                        if (!room.IsClosed)
+                        {
+                            List<PlayerInfo> playersInRoom = room.Players;
+                            connectedPlayers[playerId].IsMasterClient = false;
+                            playersInRoom.Add(MyPlayerInfo);
+                            room.PlayerCount = playersInRoom.Count;
+                            roomId = room.Id;
+                            if (room.PlayerCount >= room.MaxPlayers)
+                                room.IsClosed = true;
+                            SaveLists();
+                            RaiseFindMatchSuccess();
+                            RaisePlayerEnteredRoom(MyPlayerInfo);
+                            Debug.Log($"[Testing] Entering room: {room.Id}");
+                        }
+                        else
+                        {
+                            RaiseFindMatchFailure(FindMatchError.RoomIsClosed);
+                            Debug.Log($"[Testing] Room is closed: {wantedRoom}");
+                        }
                     }
                     else
                     {
-                        base.RaiseFindMatchFailure();
+                        RaiseFindMatchFailure(FindMatchError.RoomNotFound);
                         Debug.Log($"[Testing] Room not found: {wantedRoom}");
                     }
-                }));
+                });
+            }
+            else
+            {
+                RaiseFindMatchFailure(FindMatchError.WrongParameters);
+                this.LogError("Find Match expects a RoomOptions or string object as parameter but it is something else."); 
             }
         }
 
@@ -419,12 +436,39 @@ namespace Kalkatos.Rpsls.Test
             SaveEventExecutions();
         }
 
+        public override void OpenRoom (params object[] parameters)
+        {
+            Assert.IsTrue(IsInRoom);
+
+            LoadLists();
+            CurrentRoomInfo.IsClosed = false;
+            SaveLists();
+            ExecuteEvent(roomOpenKey, parameters);
+        }
+
+        public override void CloseRoom (params object[] parameters)
+        {
+            Assert.IsTrue(IsInRoom);
+
+            LoadLists();
+            CurrentRoomInfo.IsClosed = true;
+            SaveLists();
+            ExecuteEvent(roomCloseKey, parameters);
+        }
+
         #endregion
 
         public override void RaiseEventReceived (string eventKey, params object[] parameters)
         {
-            if (eventKey == roomChangedKey)
-                CurrentRoomInfo.CustomData = parameters.ToDictionary();
+            if (IsInRoom)
+            {
+                if (eventKey == roomChangedKey)
+                    CurrentRoomInfo.CustomData = parameters.ToDictionary();
+                else if (eventKey == roomOpenKey)
+                    RaiseRoomOpened(parameters);
+                else if (eventKey == roomCloseKey)
+                    RaiseRoomClosed(parameters);
+            }
             base.RaiseEventReceived(eventKey, parameters);
         }
     }

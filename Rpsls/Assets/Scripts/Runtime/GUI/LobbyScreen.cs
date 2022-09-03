@@ -14,11 +14,13 @@ namespace Kalkatos.Rpsls
         [SerializeField] private Button joinRoomButton;
         [SerializeField] private Button createRoomButton;
         [Header("Events")]
-        [SerializeField] private UnityEvent OnFailedToJoin;
+        [SerializeField] private UnityEvent OnRoomNotFound;
+        [SerializeField] private UnityEvent OnRoomClosed;
 
         private void Awake ()
         {
-            LobbyManager.OnFindMatchFailure += HandleFindMatchFailure;
+            LobbyManager.OnRoomNotFoundError += HandleRoomNotFoundError;
+            LobbyManager.OnRoomClosedError += HandleRoomClosedError;
             roomNameField.onValueChanged.AddListener(OnRoomNameBeignTyped);
             nicknameField.onEndEdit.AddListener(OnNicknameFieldChanged);
             joinRoomButton.onClick.AddListener(OnJoinRoomButtonClicked);
@@ -27,7 +29,8 @@ namespace Kalkatos.Rpsls
 
         private void OnDestroy ()
         {
-            LobbyManager.OnFindMatchFailure -= HandleFindMatchFailure;
+            LobbyManager.OnRoomNotFoundError -= HandleRoomNotFoundError;
+            LobbyManager.OnRoomClosedError -= HandleRoomClosedError;
             roomNameField.onValueChanged.RemoveListener(OnRoomNameBeignTyped);
             nicknameField.onEndEdit.RemoveListener(OnNicknameFieldChanged);
             joinRoomButton.onClick.RemoveListener(OnJoinRoomButtonClicked);
@@ -41,16 +44,21 @@ namespace Kalkatos.Rpsls
                 nickname = "Guest-" + GetRandomNumber();
             nicknameField.text = nickname;
             SetNickname(nickname);
-            if (!LobbyManager.Instance.IsConnected)
+            if (!LobbyManager.IsConnected)
             {
                 joinRoomButton.interactable = false;
                 createRoomButton.interactable = false;
             }
         }
 
-        private void HandleFindMatchFailure ()
+        private void HandleRoomNotFoundError ()
         {
-            OnFailedToJoin?.Invoke();
+            OnRoomNotFound?.Invoke();
+        }
+
+        private void HandleRoomClosedError ()
+        {
+            OnRoomClosed?.Invoke();
         }
 
         private void OnRoomNameBeignTyped (string newName)
@@ -65,12 +73,15 @@ namespace Kalkatos.Rpsls
 
         private void OnJoinRoomButtonClicked ()
         {
-            LobbyManager.Instance.FindMatch(roomNameField.text);
+            if (string.IsNullOrEmpty(roomNameField.text))
+                LobbyManager.FindMatch("-");
+            else
+                LobbyManager.FindMatch(roomNameField.text);
         }
 
         private void OnCreateRoomButtonClicked ()
         {
-            LobbyManager.Instance.FindMatch();
+            LobbyManager.FindMatch();
         }
 
         private void SetNickname (string nickname)

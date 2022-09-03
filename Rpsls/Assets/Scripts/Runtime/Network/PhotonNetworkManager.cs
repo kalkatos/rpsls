@@ -111,13 +111,13 @@ namespace Kalkatos.Network
                 else
                 {
                     Debug.LogError("Find Match expects a LobbyOptions or string object as parameter but it is something else.");
-                    RaiseFindMatchFailure(); 
+                    RaiseFindMatchFailure(FindMatchError.WrongParameters); 
                 }
             }
             else
             {
                 Debug.LogError("Find Match expects a LobbyOptions or string object as parameter but it is null.");
-                RaiseFindMatchFailure();
+                RaiseFindMatchFailure(FindMatchError.WrongParameters);
             }
         }
 
@@ -154,6 +154,20 @@ namespace Kalkatos.Network
             parameters = parameters.CloneWithChange(executeEventKey, eventKey);
             PhotonNetwork.RaiseEvent(customEvent, parameters, RaiseEventOptions.Default, SendOptions.SendReliable);
             RaiseEventReceived(eventKey, parameters);
+        }
+
+        public override void OpenRoom (params object[] parameters) 
+        {
+            Assert.IsTrue(PhotonNetwork.InRoom);
+
+            PhotonNetwork.CurrentRoom.IsOpen = true;
+        }
+
+        public override void CloseRoom (params object[] parameters) 
+        {
+            Assert.IsTrue(PhotonNetwork.InRoom);
+
+            PhotonNetwork.CurrentRoom.IsOpen = false;
         }
 
         #endregion
@@ -193,7 +207,8 @@ namespace Kalkatos.Network
 
         public void OnJoinRoomFailed (short returnCode, string message)
         {
-            RaiseFindMatchFailure(message);
+            this.Log("Join Room Error Received: " + message);
+            RaiseFindMatchFailure(FindMatchError.RoomNotFound);
         }
 
         public void OnPlayerPropertiesUpdate (Player targetPlayer, Hashtable changedProps) 

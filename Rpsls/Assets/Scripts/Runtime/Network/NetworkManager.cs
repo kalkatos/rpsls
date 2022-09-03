@@ -21,7 +21,7 @@ namespace Kalkatos.Network
         public static event Action<object> OnLoginSuccess;
         public static event Action<object> OnLoginFailure;
         public static event Action<object> OnFindMatchSuccess;
-        public static event Action<object> OnFindMatchFailure;
+        public static event Action<FindMatchError> OnFindMatchFailure;
         public static event Action<object[]> OnSendDataSuccess;
         public static event Action<object[]> OnSendDataFailure;
         public static event Action<object[]> OnRequestDataSuccess;
@@ -32,6 +32,8 @@ namespace Kalkatos.Network
         public static event Action<PlayerInfo> OnPlayerDataChanged;
         public static event Action<RoomInfo> OnRoomDataChanged;
         public static event Action<PlayerInfo> OnMasterClientChanged;
+        public static event Action<object[]> OnRoomOpened;
+        public static event Action<object[]> OnRoomClosed;
 
         public virtual bool IsConnected { get; protected set; } = false;
         public virtual bool IsInRoom { get; protected set; } = false;
@@ -82,6 +84,8 @@ namespace Kalkatos.Network
         public virtual void SendData (params object[] parameters) => Debug.LogError("SendData not implemented!");
         public virtual void RequestData (params object[] parameters) { Debug.LogError("RequestData not implemented!"); }
         public virtual void ExecuteEvent (string eventKey, params object[] parameters) { Debug.LogError("ExecuteEvent not implemented!"); }
+        public virtual void OpenRoom (params object[] parameters) { Debug.LogError("OpenRoom not implemented!"); }
+        public virtual void CloseRoom (params object[] parameters) { Debug.LogError("CloseRoom not implemented!"); }
 
         #endregion
 
@@ -90,7 +94,7 @@ namespace Kalkatos.Network
         public virtual void RaiseLogInSuccess (object parameter = null) { OnLoginSuccess?.Invoke(parameter); }
         public virtual void RaiseLogInFailure (object parameter = null) { OnLoginFailure?.Invoke(parameter); }
         public virtual void RaiseFindMatchSuccess (object parameter = null) { OnFindMatchSuccess?.Invoke(parameter); }
-        public virtual void RaiseFindMatchFailure (object parameter = null) { OnFindMatchFailure?.Invoke(parameter); }
+        public virtual void RaiseFindMatchFailure (FindMatchError error) { OnFindMatchFailure?.Invoke(error); }
         public virtual void RaiseSendDataSuccess (params object[] parameter) { OnSendDataSuccess?.Invoke(parameter); }
         public virtual void RaiseSendDataFailure (params object[] parameter) { OnSendDataFailure?.Invoke(parameter); }
         public virtual void RaiseRequestDataSuccess (params object[] parameter) { OnRequestDataSuccess?.Invoke(parameter); }
@@ -101,8 +105,18 @@ namespace Kalkatos.Network
         public virtual void RaisePlayerDataChanged (PlayerInfo playerInfo) { OnPlayerDataChanged?.Invoke(playerInfo); }
         public virtual void RaiseRoomDataChanged (RoomInfo roomInfo) { OnRoomDataChanged?.Invoke(roomInfo); }
         public virtual void RaiseMasterClientChanged (PlayerInfo newMaster) => OnMasterClientChanged?.Invoke(newMaster);
+        public virtual void RaiseRoomOpened (params object[] parameters) => OnRoomOpened?.Invoke(parameters);
+        public virtual void RaiseRoomClosed (params object[] parameters) => OnRoomClosed?.Invoke(parameters);
 
         #endregion
+    }
+
+    public enum FindMatchError
+    {
+        WrongParameters,
+        RoomNotFound,
+        RoomIsClosed,
+        RoomIsFull,
     }
 
     [Serializable]
@@ -136,6 +150,7 @@ namespace Kalkatos.Network
     {
         public string Id;
         public int MaxPlayers;
+        public bool IsClosed;
         public List<PlayerInfo> Players;
         public int PlayerCount;
         public Dictionary<string, object> CustomData = new Dictionary<string, object>();

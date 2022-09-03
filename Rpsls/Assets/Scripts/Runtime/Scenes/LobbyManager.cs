@@ -8,11 +8,13 @@ namespace Kalkatos.Rpsls
     {
         public static LobbyManager Instance;
 
-        public static event Action OnFindMatchFailure;
+        public static event Action OnRoomNotFoundError;
+        public static event Action OnRoomClosedError;
 
         private RpslsGameSettings settings;
+        private bool busy;
 
-        public bool IsConnected => NetworkManager.Instance.IsConnected;
+        public static bool IsConnected => NetworkManager.Instance.IsConnected;
 
         private void Awake ()
         {
@@ -33,16 +35,23 @@ namespace Kalkatos.Rpsls
             SceneManager.EndScene("Lobby");
         }
 
-        private void HandleFindMatchFailure (object obj)
+        private void HandleFindMatchFailure (FindMatchError error)
         {
-            OnFindMatchFailure?.Invoke();
+            busy = false;
+            if (error == FindMatchError.RoomIsClosed)
+                OnRoomClosedError?.Invoke();
+            else
+                OnRoomNotFoundError?.Invoke();
         }
 
-        public void FindMatch (string lobbyName = "")
+        public static void FindMatch (string lobbyName = "")
         {
+            if (Instance.busy)
+                return;
+            Instance.busy = true;
             if (string.IsNullOrEmpty(lobbyName))
             {
-                RoomOptions options = new RoomOptions() { MaxPlayers = settings.MaxPlayers };
+                RoomOptions options = new RoomOptions() { MaxPlayers = Instance.settings.MaxPlayers };
                 NetworkManager.Instance.FindMatch(options);
             }
             else
