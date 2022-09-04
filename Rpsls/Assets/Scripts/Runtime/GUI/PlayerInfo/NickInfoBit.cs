@@ -10,7 +10,7 @@ namespace Kalkatos.Rpsls
 
         public override void HandlePlayerInfo (PlayerInfo info)
         {
-            nicknameText.text = info.Nickname + (info.IsMe ? " (me)" : "");
+            nicknameText.text = info.Nickname;
         }
     }
 }

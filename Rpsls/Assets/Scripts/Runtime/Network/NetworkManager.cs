@@ -136,6 +136,7 @@ namespace Kalkatos.Network
             Id = other.Id;
             Nickname = other.Nickname;
             IsMasterClient = other.IsMasterClient;
+            IsMe = other.IsMe;
             CustomData = other.CustomData;
         }
     }
