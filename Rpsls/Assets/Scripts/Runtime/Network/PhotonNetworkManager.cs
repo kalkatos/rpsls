@@ -67,6 +67,7 @@ namespace Kalkatos.Network
                 Id = player.UserId,
                 Nickname = player.NickName,
                 IsMasterClient = player.IsMasterClient,
+                IsMe = player.IsLocal,
                 CustomData = player.CustomProperties.ToDictionary()
             };
         }
@@ -126,15 +127,15 @@ namespace Kalkatos.Network
             PhotonNetwork.LeaveRoom();
         }
 
-        public override void SetMyCustomData (Dictionary<string, object> data)
+        public override void UpdateMyCustomData (params object[] parameters)
         {
-            PhotonNetwork.LocalPlayer.SetCustomProperties(data.ToHashtable());
+            PhotonNetwork.LocalPlayer.SetCustomProperties(parameters.ToHashtable());
         }
 
-        public override void SetRoomData (Dictionary<string, object> data)
+        public override void UpdateRoomData (params object[] parameters)
         {
             if (IsInRoom)
-                PhotonNetwork.CurrentRoom.SetCustomProperties(data.ToHashtable());
+                PhotonNetwork.CurrentRoom.SetCustomProperties(parameters.ToHashtable());
         }
 
         public override void SendData (params object[] parameters)
@@ -207,8 +208,22 @@ namespace Kalkatos.Network
 
         public void OnJoinRoomFailed (short returnCode, string message)
         {
-            this.Log("Join Room Error Received: " + message);
-            RaiseFindMatchFailure(FindMatchError.RoomNotFound);
+            this.Log($"Join Room Error Received: {message} - Return code: {returnCode}");
+            switch (returnCode)
+            {
+                case 32765:
+                    RaiseFindMatchFailure(FindMatchError.RoomIsFull);
+                    break;
+                case 32764:
+                    RaiseFindMatchFailure(FindMatchError.RoomIsClosed);
+                    break;
+                case 32758:
+                    RaiseFindMatchFailure(FindMatchError.RoomNotFound);
+                    break;
+                default:
+                    RaiseFindMatchFailure(FindMatchError.Unknown);
+                    break;
+            }
         }
 
         public void OnPlayerPropertiesUpdate (Player targetPlayer, Hashtable changedProps) 

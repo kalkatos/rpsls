@@ -31,7 +31,7 @@ namespace Kalkatos.Rpsls
             RoomManager.OnPlayerListReceived += HandlePlayerListReceived;
             RoomManager.OnPlayerEntered+= HandlePlayerEntered;
             RoomManager.OnPlayerLeft += HandlePlayerLeft;
-            RoomManager.OnPlayerStatusChanged += HandlePlayerStatusChanged;
+            RoomManager.OnPlayerInfoChanged += HandlePlayerInfoChanged;
             RoomManager.OnBecameMaster += HandleBecameMaster;
             RoomManager.OnGameAboutToStart += HandleGameAboutToStart;
             RoomManager.OnGameNotReady += HandleGameNotReady;
@@ -49,7 +49,7 @@ namespace Kalkatos.Rpsls
             RoomManager.OnPlayerListReceived -= HandlePlayerListReceived;
             RoomManager.OnPlayerEntered -= HandlePlayerEntered;
             RoomManager.OnPlayerLeft -= HandlePlayerLeft;
-            RoomManager.OnPlayerStatusChanged -= HandlePlayerStatusChanged;
+            RoomManager.OnPlayerInfoChanged -= HandlePlayerInfoChanged;
             RoomManager.OnBecameMaster -= HandleBecameMaster;
             RoomManager.OnGameAboutToStart -= HandleGameAboutToStart;
             RoomManager.OnGameNotReady -= HandleGameNotReady;
@@ -91,10 +91,10 @@ namespace Kalkatos.Rpsls
             UpdatePlayerCount();
         }
 
-        private void HandlePlayerStatusChanged (string userId, RoomStatus status)
+        private void HandlePlayerInfoChanged (PlayerInfo info)
         {
-            if (slots.TryGetValue(userId, out PlayerInfoSlot slot))
-                slot.UpdateStatus(status);
+            if (slots.TryGetValue(info.Id, out PlayerInfoSlot slot))
+                slot.HandlePlayerInfo(info);
         }
 
         private void HandleBecameMaster ()
@@ -172,9 +172,7 @@ namespace Kalkatos.Rpsls
         private PlayerInfoSlot CreateSlot (PlayerInfo info)
         {
             PlayerInfoSlot newSlot = Instantiate(settings.PlayerInfoSlotPrefab, playerSlotsListParent);
-            newSlot.SetNickname(info.Nickname + (info.Id == RoomManager.MyId ? "  (me)" : ""));
-            if (info.CustomData.ContainsKey(RoomManager.RoomStatusKey))
-                newSlot.UpdateStatus((RoomStatus)int.Parse(info.CustomData[RoomManager.RoomStatusKey].ToString()));
+            newSlot.HandlePlayerInfo(info);
             return newSlot;
         }
     }

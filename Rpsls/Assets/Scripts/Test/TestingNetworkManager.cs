@@ -19,7 +19,7 @@ namespace Kalkatos.Rpsls.Test
 
         private string playerId;
         private string roomId;
-        private EventRemovalOption eventRemovalOption = EventRemovalOption.AfterAllReceived;
+        private float eventLifetime = 3;
         private Dictionary<string, object> data = new Dictionary<string, object>();
         private Dictionary<string, PlayerInfo> lastKnownPlayers = new Dictionary<string, PlayerInfo>();
         private Dictionary<string, PlayerInfo> connectedPlayers = new Dictionary<string, PlayerInfo>();
@@ -43,15 +43,14 @@ namespace Kalkatos.Rpsls.Test
             if (connectedPlayers.Count <= 1)
             {
                 Debug.Log("[Testing] Cleaning up to quit.");
+                connectedPlayers.Clear();
                 SaveManager.DeleteKey(connectedPlayersKey);
                 SaveManager.DeleteKey(activeRoomsKey);
                 SaveManager.DeleteKey(savedExecEventKey);
             }
             else
-            {
                 connectedPlayers.Remove(playerId);
-                SaveLists();
-            }
+            SaveLists();
         }
 
         private void LoadLists ()
@@ -68,8 +67,7 @@ namespace Kalkatos.Rpsls.Test
                     else
                     {
                         PlayerInfo info = JsonConvert.DeserializeObject<PlayerInfo>(objArray[i].ToString());
-                        //if (info.CustomData != null)
-                        //    info.CustomData = JsonConvert.DeserializeObject<object[]>(info.CustomData.ToString());
+                        info.IsMe = info.Id == playerId;
                         connectedPlayers.Add(currentKey, info);
                     }
                 }
@@ -98,6 +96,8 @@ namespace Kalkatos.Rpsls.Test
 
         private void SaveLists ()
         {
+            if (connectedPlayers.ContainsKey(playerId))
+                connectedPlayers[playerId].IsMe = false;
             SaveManager.SaveString(connectedPlayersKey, JsonConvert.SerializeObject(connectedPlayers.ToObjArray(), Formatting.None));
             SaveManager.SaveString(activeRoomsKey, JsonConvert.SerializeObject(activeRooms.ToObjArray(), Formatting.None));
         }
@@ -165,27 +165,25 @@ namespace Kalkatos.Rpsls.Test
                         {
                             Debug.Log("Event received " + item.Value.EventKey);
                             RaiseEventReceived(item.Value.EventKey, item.Value.Parameters);
-                            string[] newPlayers = new string[item.Value.PlayersWhoExecuted.Length + 1];
-                            newPlayers[0] = playerId;
-                            for (int i = 0; i < item.Value.PlayersWhoExecuted.Length; i++)
-                                newPlayers[i + 1] = item.Value.PlayersWhoExecuted[i];
+                            item.Value.PlayersWhoExecuted.Add(playerId);
 
-                            if (eventRemovalOption == EventRemovalOption.AfterAllReceived)
-                            {
-                                int countOfPlayersFound = 0;
-                                List<PlayerInfo> playersInRoom = activeRooms[roomId].Players;
-                                for (int i = 0; i < playersInRoom.Count; i++)
-                                    if (newPlayers.Contains(playersInRoom[i].Id))
-                                        countOfPlayersFound++;
-                                if (countOfPlayersFound == newPlayers.Length)
-                                    executionsToRemove.Add(item.Key);
-                            }
-                            item.Value.PlayersWhoExecuted = newPlayers;
+                            //if (eventRemovalOption == EventRemovalOption.AfterAllReceived)
+                            //{
+                            //    int countOfPlayersFound = 0;
+                            //    List<PlayerInfo> playersInRoom = activeRooms[roomId].Players;
+                            //    for (int i = 0; i < playersInRoom.Count; i++)
+                            //        if (newPlayers.Contains(playersInRoom[i].Id))
+                            //            countOfPlayersFound++;
+                            //    if (countOfPlayersFound == newPlayers.Length)
+                            //        executionsToRemove.Add(item.Key);
+                            //}
+                            //item.Value.PlayersWhoExecuted = newPlayers;
                         }
+                        if (DateTime.Now > item.Value.RemoveAt)
+                            executionsToRemove.Add(item.Value.Id);
                     }
-                    if (eventRemovalOption == EventRemovalOption.AfterAllReceived)
-                        for (int i = 0; i < executionsToRemove.Count; i++)
-                            eventExecutions.Remove(executionsToRemove[i]);
+                    for (int i = 0; i < executionsToRemove.Count; i++)
+                        eventExecutions.Remove(executionsToRemove[i]);
                     SaveEventExecutions();
                 }
             }
@@ -312,24 +310,27 @@ namespace Kalkatos.Rpsls.Test
                     if (activeRooms.ContainsKey(wantedRoom))
                     {
                         RoomInfo room = activeRooms[wantedRoom];
-                        if (!room.IsClosed)
+                        if (room.IsClosed)
+                        {
+                            RaiseFindMatchFailure(FindMatchError.RoomIsClosed);
+                            Debug.Log($"[Testing] Room is closed: {wantedRoom}");
+                        }
+                        else if (room.PlayerCount >= room.MaxPlayers)
+                        {
+                            RaiseFindMatchFailure(FindMatchError.RoomIsFull);
+                            Debug.Log($"[Testing] Room is full: {wantedRoom}");
+                        }
+                        else
                         {
                             List<PlayerInfo> playersInRoom = room.Players;
                             connectedPlayers[playerId].IsMasterClient = false;
                             playersInRoom.Add(MyPlayerInfo);
                             room.PlayerCount = playersInRoom.Count;
                             roomId = room.Id;
-                            if (room.PlayerCount >= room.MaxPlayers)
-                                room.IsClosed = true;
                             SaveLists();
                             RaiseFindMatchSuccess();
                             RaisePlayerEnteredRoom(MyPlayerInfo);
                             Debug.Log($"[Testing] Entering room: {room.Id}");
-                        }
-                        else
-                        {
-                            RaiseFindMatchFailure(FindMatchError.RoomIsClosed);
-                            Debug.Log($"[Testing] Room is closed: {wantedRoom}");
                         }
                     }
                     else
@@ -357,30 +358,24 @@ namespace Kalkatos.Rpsls.Test
             Debug.Log("[Testing] Left Room.");
         }
 
-        public override void SetMyCustomData (Dictionary<string, object> data)
+        public override void UpdateMyCustomData (params object[] parameters)
         {
             Assert.IsTrue(IsConnected);
 
             LoadLists();
             Dictionary<string, object> myData = connectedPlayers[playerId].CustomData;
-            if (myData != null)
-                connectedPlayers[playerId].CustomData = myData.UpdateOrAdd(data);
-            else
-                connectedPlayers[playerId].CustomData = data;
+            connectedPlayers[playerId].CustomData = myData.UpdateOrAdd(parameters.ToDictionary());
             SaveLists();
             RaisePlayerDataChanged(MyPlayerInfo);
         }
 
-        public override void SetRoomData (Dictionary<string, object> data)
+        public override void UpdateRoomData (params object[] parameters)
         {
             if (IsInRoom && CurrentRoomInfo.Players.Find((player) => player.Id == playerId) != null)
             {
                 LoadLists();
                 Dictionary<string, object> roomData = activeRooms[roomId].CustomData;
-                if (roomData != null)
-                    roomData = roomData.UpdateOrAdd(data);
-                else
-                    roomData = data;
+                roomData = roomData.UpdateOrAdd(parameters.ToDictionary());
                 ExecuteEvent(roomChangedKey, roomData.ToObjArray());
             }
         }
@@ -427,8 +422,9 @@ namespace Kalkatos.Rpsls.Test
             {
                 Id = newSmallGuid,
                 EventKey = eventKey,
+                RemoveAt = DateTime.Now.AddSeconds(eventLifetime),
                 Parameters = parameters,
-                PlayersWhoExecuted = new string[] { playerId }
+                PlayersWhoExecuted = new List<string>() { playerId }
             };
             RaiseEventReceived(eventKey, parameters);
             LoadEventExecutions();
@@ -477,13 +473,8 @@ namespace Kalkatos.Rpsls.Test
     {
         public string Id;
         public string EventKey;
+        public DateTime RemoveAt;
         public object[] Parameters;
-        public string[] PlayersWhoExecuted;
-    }
-
-    internal enum EventRemovalOption
-    {
-        AfterAllReceived,
-        Delayed
+        public List<string> PlayersWhoExecuted = new List<string>();
     }
 }
