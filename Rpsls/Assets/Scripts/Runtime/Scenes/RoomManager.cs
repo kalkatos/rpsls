@@ -26,9 +26,9 @@ namespace Kalkatos.Rpsls
         private RoomInfo roomInfo;
 
         public static string RoomName { get; private set; }
-        public static bool IAmTheMaster { get; private set; }
-        public static string MyId { get; private set; }
-        private PlayerInfo myInfo => NetworkManager.Instance.MyPlayerInfo;
+        public static bool IAmTheMaster => myInfo.IsMasterClient;
+        public static string MyId => myInfo.Id;
+        private static PlayerInfo myInfo => NetworkManager.Instance.MyPlayerInfo;
 
         private void Awake ()
         {
@@ -39,9 +39,6 @@ namespace Kalkatos.Rpsls
             NetworkManager.OnEventReceived += HandleEventReceived;
             Instance = this;
             settings = RpslsGameSettings.Instance;
-            PlayerInfo myInfo = this.myInfo;
-            IAmTheMaster = myInfo.IsMasterClient;
-            MyId = myInfo.Id;
             roomInfo = GetUpdatedRoomInfo();
             RoomName = roomInfo.Id;
         }
@@ -100,7 +97,6 @@ namespace Kalkatos.Rpsls
         {
             if (newMaster.Id == MyId)
             {
-                IAmTheMaster = true;
                 OnBecameMaster?.Invoke();
                 SetStatus(RoomStatus.Master);
             }

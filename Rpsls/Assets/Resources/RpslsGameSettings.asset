@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MaxPlayers: 8
   DelayBeforeStarting: 3
-  PlayerInfoSlotPrefab: {fileID: 6848698013080040627, guid: 2777249fb45407f4d87adb199b80bf32, type: 3}
+  PlayerInfoSlotPrefab: {fileID: 2484671227098352049, guid: ce25457a3ef788a4c9d7a05ea2f4ff48, type: 3}

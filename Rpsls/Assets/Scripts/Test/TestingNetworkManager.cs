@@ -99,6 +99,8 @@ namespace Kalkatos.Rpsls.Test
             if (connectedPlayers.ContainsKey(playerId))
                 connectedPlayers[playerId].IsMe = false;
             SaveManager.SaveString(connectedPlayersKey, JsonConvert.SerializeObject(connectedPlayers.ToObjArray(), Formatting.None));
+            if (connectedPlayers.ContainsKey(playerId))
+                connectedPlayers[playerId].IsMe = true;
             SaveManager.SaveString(activeRoomsKey, JsonConvert.SerializeObject(activeRooms.ToObjArray(), Formatting.None));
         }
 
@@ -244,6 +246,8 @@ namespace Kalkatos.Rpsls.Test
 
         public override void SetPlayerName (string name)
         {
+            Assert.IsTrue(IsConnected);
+
             LoadLists();
             connectedPlayers[playerId].Nickname = name;
             SaveLists();
@@ -254,7 +258,7 @@ namespace Kalkatos.Rpsls.Test
         {
             Assert.IsTrue(IsConnected);
 
-            this.Wait(randomTime, (Action)(() =>
+            this.Wait(randomTime, () =>
             {
                 LoadLists();
                 bool isFirst = connectedPlayers == null || connectedPlayers.Count == 0;
@@ -270,7 +274,7 @@ namespace Kalkatos.Rpsls.Test
                 StartCoroutine(CheckCoroutine());
                 Debug.Log("[Testing] Logged In");
                 RaiseLogInSuccess();
-            }));
+            });
         }
 
         public override void FindMatch (object parameter = null)
@@ -290,7 +294,7 @@ namespace Kalkatos.Rpsls.Test
                     {
                         Id = CreateRandomRoomName(),
                         MaxPlayers = options.MaxPlayers,
-                        Players = new List<PlayerInfo>() { MyPlayerInfo },
+                        Players = new List<PlayerInfo>() { connectedPlayers[playerId] },
                         PlayerCount = 1
                     };
                     roomId = newRoom.Id;
@@ -371,7 +375,10 @@ namespace Kalkatos.Rpsls.Test
 
         public override void UpdateRoomData (params object[] parameters)
         {
-            if (IsInRoom && CurrentRoomInfo.Players.Find((player) => player.Id == playerId) != null)
+            Assert.IsTrue(IsConnected);
+            Assert.IsTrue(IsInRoom);
+
+            if (CurrentRoomInfo.Players.Find((player) => player.Id == playerId) != null)
             {
                 LoadLists();
                 Dictionary<string, object> roomData = activeRooms[roomId].CustomData;
