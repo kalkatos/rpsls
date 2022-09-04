@@ -37,8 +37,8 @@ namespace Kalkatos.Network
 
         public virtual bool IsConnected { get; protected set; } = false;
         public virtual bool IsInRoom { get; protected set; } = false;
-        public virtual PlayerInfo MyPlayerInfo { get; protected set; }
-        public virtual RoomInfo CurrentRoomInfo { get; protected set; }
+        public virtual PlayerInfo MyPlayerInfo { get; protected set; } = new PlayerInfo();
+        public virtual RoomInfo CurrentRoomInfo { get; protected set; } = new RoomInfo();
 
         private void Awake ()
         {
@@ -73,14 +73,14 @@ namespace Kalkatos.Network
 
         #region ==================  Requests  ===========================
 
-        public virtual void Connect () { }
+        public virtual void Connect () => Debug.LogError("Connect not implemented!");
         public virtual string GetPlayerName () => CreateGuestName();
         public virtual void SetPlayerName (string name) => Debug.LogError("SetPlayerName not implemented!");
         public virtual void LogIn (object parameter = null) => Debug.LogError("LogIn not implemented!");
         public virtual void FindMatch (object parameter = null) => Debug.LogError("FindMatch not implemented!");
         public virtual void LeaveMatch (object parameter = null) => Debug.LogError("LeaveMatch not implemented!");
-        public virtual void SetMyCustomData (Dictionary<string, object> data) => Debug.LogError("SetMyCustomData not implemented!");
-        public virtual void SetRoomData (Dictionary<string, object> data) => Debug.LogError("SetRoomData not implemented!");
+        public virtual void UpdateMyCustomData (params object[] parameters) => Debug.LogError("SetMyCustomData not implemented!");
+        public virtual void UpdateRoomData (params object[] parameters) => Debug.LogError("SetRoomData not implemented!");
         public virtual void SendData (params object[] parameters) => Debug.LogError("SendData not implemented!");
         public virtual void RequestData (params object[] parameters) { Debug.LogError("RequestData not implemented!"); }
         public virtual void ExecuteEvent (string eventKey, params object[] parameters) { Debug.LogError("ExecuteEvent not implemented!"); }
@@ -113,6 +113,7 @@ namespace Kalkatos.Network
 
     public enum FindMatchError
     {
+        Unknown,
         WrongParameters,
         RoomNotFound,
         RoomIsClosed,
@@ -125,6 +126,7 @@ namespace Kalkatos.Network
         public string Id;
         public string Nickname;
         public bool IsMasterClient;
+        public bool IsMe;
         public Dictionary<string, object> CustomData = new Dictionary<string, object>();
 
         public PlayerInfo () { }

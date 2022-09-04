@@ -12,18 +12,18 @@ namespace Kalkatos.Rpsls
         public static event Action<List<PlayerInfo>> OnPlayerListReceived;
         public static event Action<PlayerInfo> OnPlayerEntered;
         public static event Action<PlayerInfo> OnPlayerLeft;
-        public static event Action<string, RoomStatus> OnPlayerStatusChanged;
+        public static event Action<PlayerInfo> OnPlayerInfoChanged;
         public static event Action OnBecameMaster;
         public static event Action OnGameAboutToStart;
         public static event Action<NotReadyErrorCode> OnGameNotReady;
 
         public const string RoomStatusKey = "RmSts";
+        private const string startGameKey = "Start";
+        private const string aboutToStartKey = "AbSrt";
 
         private Dictionary<string, PlayerInfo> players = new Dictionary<string, PlayerInfo>();
         private RpslsGameSettings settings;
         private RoomInfo roomInfo;
-        private const string startGameKey = "Start";
-        private const string aboutToStartKey = "AbSrt";
 
         public static string RoomName { get; private set; }
         public static bool IAmTheMaster { get; private set; }
@@ -110,8 +110,7 @@ namespace Kalkatos.Rpsls
         {
             if (players.ContainsKey(player.Id))
             {
-                if (int.TryParse(player.CustomData[RoomStatusKey].ToString(), out int value))
-                    OnPlayerStatusChanged?.Invoke(player.Id, (RoomStatus)value);
+                OnPlayerInfoChanged?.Invoke(player);
                 players[player.Id] = player;
             }
             else
@@ -133,12 +132,7 @@ namespace Kalkatos.Rpsls
 
         public static void SetStatus (RoomStatus status)
         {
-            PlayerInfo myInfo = NetworkManager.Instance.MyPlayerInfo;
-            if (myInfo.CustomData.ContainsKey(RoomStatusKey))
-                myInfo.CustomData[RoomStatusKey] = (int)status;
-            else
-                myInfo.CustomData.Add(RoomStatusKey, (int)status);
-            NetworkManager.Instance.SetMyCustomData(myInfo.CustomData);
+            NetworkManager.Instance.UpdateMyCustomData(RoomStatusKey, (int)status);
         }
 
         public static void StartGame ()
@@ -183,4 +177,11 @@ namespace Kalkatos.Rpsls
     }
 
     public enum NotReadyErrorCode { NotEnoughPlayers, NotEveryoneReady }
+
+    public enum RoomStatus
+    {
+        Idle = 0,
+        Ready = 1,
+        Master = 2
+    }
 }

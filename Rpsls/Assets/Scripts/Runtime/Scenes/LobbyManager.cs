@@ -8,8 +8,7 @@ namespace Kalkatos.Rpsls
     {
         public static LobbyManager Instance;
 
-        public static event Action OnRoomNotFoundError;
-        public static event Action OnRoomClosedError;
+        public static event Action<FindMatchError> OnFindMatchError;
 
         private RpslsGameSettings settings;
         private bool busy;
@@ -38,10 +37,7 @@ namespace Kalkatos.Rpsls
         private void HandleFindMatchFailure (FindMatchError error)
         {
             busy = false;
-            if (error == FindMatchError.RoomIsClosed)
-                OnRoomClosedError?.Invoke();
-            else
-                OnRoomNotFoundError?.Invoke();
+            OnFindMatchError?.Invoke(error);
         }
 
         public static void FindMatch (string lobbyName = "")

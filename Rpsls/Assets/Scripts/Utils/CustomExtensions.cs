@@ -43,6 +43,8 @@ namespace Kalkatos
 
         public static Dictionary<string, T> UpdateOrAdd<T> (this Dictionary<string, T> dict, string key, T value)
         {
+            if (ReferenceEquals(dict, null))
+                dict = new Dictionary<string, T>();
             if (dict.ContainsKey(key))
             {
                 dict[key] = value;

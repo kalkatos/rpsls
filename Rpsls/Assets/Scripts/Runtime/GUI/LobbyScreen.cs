@@ -3,6 +3,7 @@ using UnityEngine.Events;
 using UnityEngine.UI;
 using TMPro;
 using Random = UnityEngine.Random;
+using Kalkatos.Network;
 
 namespace Kalkatos.Rpsls
 {
@@ -16,11 +17,11 @@ namespace Kalkatos.Rpsls
         [Header("Events")]
         [SerializeField] private UnityEvent OnRoomNotFound;
         [SerializeField] private UnityEvent OnRoomClosed;
+        [SerializeField] private UnityEvent OnRoomFull;
 
         private void Awake ()
         {
-            LobbyManager.OnRoomNotFoundError += HandleRoomNotFoundError;
-            LobbyManager.OnRoomClosedError += HandleRoomClosedError;
+            LobbyManager.OnFindMatchError += HandleFindMatchError;
             roomNameField.onValueChanged.AddListener(OnRoomNameBeignTyped);
             nicknameField.onEndEdit.AddListener(OnNicknameFieldChanged);
             joinRoomButton.onClick.AddListener(OnJoinRoomButtonClicked);
@@ -29,8 +30,7 @@ namespace Kalkatos.Rpsls
 
         private void OnDestroy ()
         {
-            LobbyManager.OnRoomNotFoundError -= HandleRoomNotFoundError;
-            LobbyManager.OnRoomClosedError -= HandleRoomClosedError;
+            LobbyManager.OnFindMatchError += HandleFindMatchError;
             roomNameField.onValueChanged.RemoveListener(OnRoomNameBeignTyped);
             nicknameField.onEndEdit.RemoveListener(OnNicknameFieldChanged);
             joinRoomButton.onClick.RemoveListener(OnJoinRoomButtonClicked);
@@ -51,14 +51,20 @@ namespace Kalkatos.Rpsls
             }
         }
 
-        private void HandleRoomNotFoundError ()
+        private void HandleFindMatchError (FindMatchError error)
         {
-            OnRoomNotFound?.Invoke();
-        }
-
-        private void HandleRoomClosedError ()
-        {
-            OnRoomClosed?.Invoke();
+            switch (error)
+            {
+                case FindMatchError.RoomIsClosed:
+                    OnRoomClosed?.Invoke();
+                    break;
+                case FindMatchError.RoomIsFull:
+                    OnRoomFull?.Invoke();
+                    break;
+                default:
+                    OnRoomNotFound?.Invoke();
+                    break;
+            }
         }
 
         private void OnRoomNameBeignTyped (string newName)
