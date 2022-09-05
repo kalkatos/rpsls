@@ -13,14 +13,14 @@ namespace Kalkatos.Rpsls.Test
     {
         private const string connectedPlayersKey = "CntPl";
         private const string activeRoomsKey = "AtvRm";
+        private const string customDataKey = "CtmDt";
         private const string roomChangedKey = "RmChd";
         private const string roomOpenKey = "RmOpn";
         private const string roomCloseKey = "RmCls";
 
         private string playerId;
         private string roomId;
-        private float eventLifetime = 3;
-        private Dictionary<string, object> data = new Dictionary<string, object>();
+        private float eventLifetime = 300;
         private Dictionary<string, PlayerInfo> lastKnownPlayers = new Dictionary<string, PlayerInfo>();
         private Dictionary<string, PlayerInfo> connectedPlayers = new Dictionary<string, PlayerInfo>();
         private Dictionary<string, RoomInfo> activeRooms = new Dictionary<string, RoomInfo>();
@@ -32,7 +32,24 @@ namespace Kalkatos.Rpsls.Test
 
         public override bool IsInRoom { get => !string.IsNullOrEmpty(roomId); }
         public override PlayerInfo MyPlayerInfo { get => connectedPlayers[playerId]; protected set => connectedPlayers[playerId] = value; }
-        public override RoomInfo CurrentRoomInfo { get => activeRooms[roomId]; protected set => activeRooms[roomId] = value; }
+        public override RoomInfo CurrentRoomInfo
+        {
+            get
+            {
+                RoomInfo room = activeRooms[roomId];
+                for (int i = 0; i < room.Players.Count; i++)
+                {
+                    PlayerInfo player = room.Players[i];
+                    player.IsMe = player.Id == playerId;
+                    room.Players[i] = connectedPlayers[player.Id]; 
+                }
+                return room;
+            }
+            protected set
+            {
+                activeRooms[roomId] = value;
+            }
+        }
 
         private void OnApplicationQuit ()
         {
@@ -168,18 +185,6 @@ namespace Kalkatos.Rpsls.Test
                             Debug.Log("Event received " + item.Value.EventKey);
                             RaiseEventReceived(item.Value.EventKey, item.Value.Parameters);
                             item.Value.PlayersWhoExecuted.Add(playerId);
-
-                            //if (eventRemovalOption == EventRemovalOption.AfterAllReceived)
-                            //{
-                            //    int countOfPlayersFound = 0;
-                            //    List<PlayerInfo> playersInRoom = activeRooms[roomId].Players;
-                            //    for (int i = 0; i < playersInRoom.Count; i++)
-                            //        if (newPlayers.Contains(playersInRoom[i].Id))
-                            //            countOfPlayersFound++;
-                            //    if (countOfPlayersFound == newPlayers.Length)
-                            //        executionsToRemove.Add(item.Key);
-                            //}
-                            //item.Value.PlayersWhoExecuted = newPlayers;
                         }
                         if (DateTime.Now > item.Value.RemoveAt)
                             executionsToRemove.Add(item.Value.Id);
@@ -392,16 +397,9 @@ namespace Kalkatos.Rpsls.Test
             Assert.IsTrue(IsConnected);
             this.Wait(randomTime, () =>
             {
-                string key = "";
-                for (int i = 0; i < parameters.Length; i++)
-                {
-                    if (i % 2 == 0)
-                        key = (string)parameters[i];
-                    else if (!data.ContainsKey(key))
-                        data.Add(key, parameters[i]);
-                    else
-                        data[key] = parameters[i];
-                }
+                object[] loadedData = JsonConvert.DeserializeObject<object[]>(SaveManager.GetString(customDataKey, ""));
+                loadedData = loadedData.CloneWithChange(parameters);
+                SaveManager.SaveString(customDataKey, JsonConvert.SerializeObject(loadedData));
                 RaiseSendDataSuccess();
             });
         }
@@ -411,11 +409,19 @@ namespace Kalkatos.Rpsls.Test
             Assert.IsTrue(IsConnected);
             this.Wait(randomTime, () =>
             {
-                string key = (string)parameters[0];
-                if (data.ContainsKey(key))
-                    RaiseRequestDataSuccess(key, data[key]);
+                Dictionary<string, object> loadedData = JsonConvert.DeserializeObject<object[]>(SaveManager.GetString(customDataKey, "")).ToDictionary();
+                Dictionary<string, object> resultData = new Dictionary<string, object>();
+
+                for (int i = 0; i < parameters.Length; i++)
+                {
+                    string key = (string)parameters[i];
+                    if (loadedData.ContainsKey(key))
+                        resultData.Add(key, loadedData[key]);
+                }
+                if (resultData.Count > 0)
+                    RaiseRequestDataSuccess(resultData.ToObjArray());
                 else
-                    RaiseRequestDataFailure(key);
+                    RaiseRequestDataFailure(parameters);
             });
         }
 

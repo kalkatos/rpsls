@@ -58,11 +58,11 @@ namespace Kalkatos.Rpsls
             CheckSceneBeingEnded(scene);
             if (currentScene == Instance.connectionScene)
             {
-                LoadScene(Instance.lobbyScene); 
+                LoadScene(Instance.lobbyScene);
             }
             else if (currentScene == Instance.lobbyScene)
             {
-                LoadScene(Instance.roomScene); 
+                LoadScene(Instance.roomScene);
             }
             else if (currentScene == Instance.roomScene)
             {
@@ -71,6 +71,12 @@ namespace Kalkatos.Rpsls
                 else
                     LoadScene(Instance.lobbyScene);
             }
+            else if (currentScene == Instance.gameScene)
+            {
+                LoadScene(Instance.lobbyScene);
+            }
+            else
+                Instance.LogError("Unknown scene trying to be ended.");
         }
     }
 }

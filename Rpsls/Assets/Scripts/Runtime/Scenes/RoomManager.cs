@@ -23,12 +23,12 @@ namespace Kalkatos.Rpsls
 
         private Dictionary<string, PlayerInfo> players = new Dictionary<string, PlayerInfo>();
         private RpslsGameSettings settings;
-        private RoomInfo roomInfo;
 
         public static string RoomName { get; private set; }
         public static bool IAmTheMaster => myInfo.IsMasterClient;
         public static string MyId => myInfo.Id;
         private static PlayerInfo myInfo => NetworkManager.Instance.MyPlayerInfo;
+        private RoomInfo roomInfo => NetworkManager.Instance.CurrentRoomInfo;
 
         private void Awake ()
         {
@@ -39,7 +39,6 @@ namespace Kalkatos.Rpsls
             NetworkManager.OnEventReceived += HandleEventReceived;
             Instance = this;
             settings = RpslsGameSettings.Instance;
-            roomInfo = GetUpdatedRoomInfo();
             RoomName = roomInfo.Id;
         }
 
@@ -119,11 +118,6 @@ namespace Kalkatos.Rpsls
                 OnGameAboutToStart?.Invoke();
             if (eventKey == startGameKey)
                 SceneManager.EndScene("Room");
-        }
-
-        private RoomInfo GetUpdatedRoomInfo ()
-        {
-            return NetworkManager.Instance.CurrentRoomInfo;
         }
 
         public static void SetStatus (RoomStatus status)
