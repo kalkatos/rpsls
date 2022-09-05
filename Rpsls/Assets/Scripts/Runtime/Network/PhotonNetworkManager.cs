@@ -16,8 +16,6 @@ namespace Kalkatos.Network
         private const string executeEventKey = "EvKey";
         private const byte customEvent = 1;
 
-        private List<Tuple<string, object[]>> delayedEvtExecutionData = new List<Tuple<string, object[]>>();
-
         public override bool IsConnected => PhotonNetwork.IsConnected;
         public override bool IsInRoom => PhotonNetwork.CurrentRoom != null;
 

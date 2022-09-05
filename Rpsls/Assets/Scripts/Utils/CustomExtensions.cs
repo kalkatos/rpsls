@@ -77,6 +77,18 @@ namespace Kalkatos
             return list;
         }
 
+        public static List<T> Shuffle<T> (this List<T> list)
+        {
+            for (int i = list.Count - 1; i > 0; i--)
+            {
+                T temp = list[i];
+                int randIndex = UnityEngine.Random.Range(0, i + 1);
+                list[i] = list[randIndex];
+                list[randIndex] = temp;
+            }
+            return list;
+        }
+
         public static object[] ToObjArray<T> (this Dictionary<string, T> dict)
         {
             object[] result = new object[dict.Count * 2];
@@ -132,6 +144,18 @@ namespace Kalkatos
             return false;
         }
 
+        public static T[] Shuffle<T> (this T[] array)
+        {
+            for (int i = array.Length - 1; i > 0; i--)
+            {
+                T temp = array[i];
+                int randIndex = UnityEngine.Random.Range(0, i + 1);
+                array[i] = array[randIndex];
+                array[randIndex] = temp;
+            }
+            return array;
+        }
+
         public static object GetByKey (this object[] objArray, string key)
         {
             for (int i = 0; i < objArray.Length; i++)
@@ -143,20 +167,16 @@ namespace Kalkatos
             return null;
         }
 
-        //public static void SetByKey (this object[] objArray, string key, object value)
-        //{
-        //    if (ReferenceEquals(objArray, null))
-        //    {
-        //        objArray = new object[2] { key, value };
-        //        return;
-        //    }
-        //    for (int i = 0; i < objArray.Length; i++)
-        //    {
-        //        object item = objArray[i];
-        //        if (item != null && item is string && (string)item == key && objArray.Length > i + 1)
-        //            objArray[i + 1] = value;
-        //    }
-        //}
+        public static object[] CloneWithChange (this object[] objArray, object[] other)
+        {
+            if (objArray == null)
+                return other;
+            if (other == null)
+                return objArray;
+            for (int i = 0; i + 1 < other.Length; i += 2)
+                objArray = objArray.CloneWithChange(other[i].ToString(), other[i + 1]);
+            return objArray;
+        }
 
         public static object[] CloneWithChange (this object[] objArray, string key, object value)
         {

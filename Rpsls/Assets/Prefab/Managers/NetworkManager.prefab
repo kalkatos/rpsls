@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 208963396289589583}
-  - component: {fileID: 8160289386789647398}
+  - component: {fileID: 2380359721366390740}
   m_Layer: 0
   m_Name: NetworkManager
   m_TagString: Untagged
@@ -31,7 +31,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8160289386789647398
+--- !u!114 &2380359721366390740
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
