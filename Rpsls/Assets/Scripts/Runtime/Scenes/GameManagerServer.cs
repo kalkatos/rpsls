@@ -11,21 +11,9 @@ namespace Kalkatos.Rpsls
     {
         private Dictionary<int, MatchInfo> matches = new Dictionary<int, MatchInfo>();
         private Dictionary<string, PlayerInfo> players = new Dictionary<string, PlayerInfo>();
-        private List<string> pingResponsePlayers = new List<string>();
-        private WaitForSeconds pingWait = new WaitForSeconds(0.5f);
         private byte currentMatchId = 0;
-        private byte currentPingId = 0;
-        private bool hasPingPassed;
 
         private byte nextMatchId => ++currentMatchId;
-        private byte nextPingId
-        {
-            get
-            {
-                currentPingId = (byte)((currentPingId + 1) % byte.MaxValue); 
-                return currentPingId; 
-            }
-        }
 
         private void Awake ()
         {
@@ -48,50 +36,10 @@ namespace Kalkatos.Rpsls
 
         private void Start ()
         {
-            PingAndWait(PrepareTournament);  
-        }
-
-        private void PingAndWait (Action callback)
-        {
-            NetworkManager.Instance.ExecuteEvent(Keys.ServerPing, Keys.PingSentId, nextPingId);
-            StartCoroutine(PingAndWaitCoroutine(callback));
-        }
-
-        private IEnumerator PingAndWaitCoroutine (Action callback)
-        {
-            hasPingPassed = false;
-            while (!hasPingPassed)
-            {
-                yield return pingWait;
-            }
-            callback.Invoke();
         }
 
         private void HandleEventReceived (string key, object[] parameters)
         {
-            var paramDict = parameters.ToDictionary();
-            if (key == Keys.ResponsePing)
-            {
-                if (paramDict.TryGetValue(Keys.PingRespondantInfo, out object respondant) && paramDict.TryGetValue(Keys.PingSentId, out object pingId))
-                {
-                    string respondantId = respondant.ToString();
-                    if (players.ContainsKey(respondantId) && currentPingId == byte.Parse(pingId.ToString()))
-                    {
-                        pingResponsePlayers.Add(respondantId);
-                        if (pingResponsePlayers.Count == players.Count)
-                        {
-                            pingResponsePlayers.Clear();
-                            PingPassed();
-                        }
-                    }
-                }
-            }
-        }
-
-        private void PingPassed ()
-        {
-            this.Log("Ping has passed: " + currentPingId);
-            hasPingPassed = true;
         }
 
         private void PrepareTournament ()
@@ -109,7 +57,7 @@ namespace Kalkatos.Rpsls
                 matches.Add(newMatch.Id, newMatch);
             }
             tournament.Matches = matchList.ToArray();
-            NetworkManager.Instance.ExecuteEvent(Keys.TournamentUpdate, Keys.TournamentInfo, JsonConvert.SerializeObject(tournament));
+            NetworkManager.Instance.ExecuteEvent(Keys.TournamentUpdateEvt, Keys.TournamentInfoKey, JsonConvert.SerializeObject(tournament));
         }
 
         private MatchInfo GetNewMatch (PlayerInfo player1, PlayerInfo player2)
