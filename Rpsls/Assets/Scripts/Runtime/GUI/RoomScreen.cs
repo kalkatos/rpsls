@@ -171,7 +171,7 @@ namespace Kalkatos.Rpsls
 
         private PlayerInfoSlot CreateSlot (PlayerInfo info)
         {
-            PlayerInfoSlot newSlot = Instantiate(settings.PlayerInfoSlotPrefab, playerSlotsListParent);
+            PlayerInfoSlot newSlot = Instantiate(settings.RoomInfoSlotPrefab, playerSlotsListParent);
             newSlot.HandlePlayerInfo(info);
             return newSlot;
         }

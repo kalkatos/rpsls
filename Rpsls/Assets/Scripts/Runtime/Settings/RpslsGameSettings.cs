@@ -12,6 +12,7 @@ namespace Kalkatos.Rpsls
         public int MaxPlayers;
         public float DelayBeforeStarting;
         [Header("Prefabs")]
-        public PlayerInfoSlot PlayerInfoSlotPrefab;
+        public PlayerInfoSlot RoomInfoSlotPrefab;
+        public PlayerInfoSlot GameInfoSlotPrefab;
     }
 }
