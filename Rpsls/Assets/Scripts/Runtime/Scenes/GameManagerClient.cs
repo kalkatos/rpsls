@@ -47,19 +47,15 @@ namespace Kalkatos.Rpsls
             Dictionary<string, object> paramDict = parameters.ToDictionary();
             switch (key)
             {
-                case Keys.ServerPing:
-                    if (paramDict.TryGetValue(Keys.PingSentId, out object pingId))
-                        NetworkManager.Instance.ExecuteEvent(Keys.ResponsePing, Keys.PingSentId, byte.Parse(pingId.ToString()), Keys.PingRespondantInfo, myInfo.Id);
-                    break;
-                case Keys.TournamentUpdate:
-                    if (paramDict.TryGetValue(Keys.TournamentInfo, out object value))
+                case Keys.TournamentUpdateEvt:
+                    if (paramDict.TryGetValue(Keys.TournamentInfoKey, out object value))
                     {
                         this.Log($"Tournament received: ({value})" + JsonConvert.SerializeObject(value));
                         TournamentInfo tournament = JsonConvert.DeserializeObject<TournamentInfo>(value.ToString());
                         //OnTournamentUpdated?.Invoke(tournament);
                     }
                     else
-                        this.LogWarning("Didn't receive the key " + Keys.TournamentInfo);
+                        this.LogWarning("Didn't receive the key " + Keys.TournamentInfoKey);
                     break;
             }
         }
@@ -74,13 +70,9 @@ namespace Kalkatos.Rpsls
     internal static class Keys
     {
         //Dictionary keys
-        public const string TournamentInfo = "TInfo";
-        public const string PingRespondantInfo = "PiRsp";
-        public const string PingSentId = "PngId";
+        public const string TournamentInfoKey = "TInfo";
         //Events
-        public const string TournamentUpdate = "TmtUp";
-        public const string ServerPing = "SPing";
-        public const string ResponsePing = "RPing";
+        public const string TournamentUpdateEvt = "TmtUp";
     }
 
     public class MatchInfo
