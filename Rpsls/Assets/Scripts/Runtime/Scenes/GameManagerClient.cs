@@ -13,6 +13,8 @@ namespace Kalkatos.Rpsls
         public static event Action<List<PlayerInfo>> OnPlayerListReceived;
         public static event Action<TournamentInfo> OnTournamentUpdated;
 
+        private string myId;
+        private ClientState currentState;
         private Dictionary<string, PlayerInfo> players = new Dictionary<string, PlayerInfo>();
 
         private static PlayerInfo myInfo => NetworkManager.Instance.MyPlayerInfo;
@@ -21,6 +23,7 @@ namespace Kalkatos.Rpsls
         private void Awake ()
         {
             Instance = this;
+            myId = myInfo.Id;
             NetworkManager.OnEventReceived += HandleEventReceived;
         }
 
@@ -39,6 +42,8 @@ namespace Kalkatos.Rpsls
                 players.Add(info.Id, info);
             }
             OnPlayerListReceived?.Invoke(playerList);
+            currentState = ClientState.GameReady;
+            NetworkManager.Instance.SendData($"{Keys.ClientCheckKey}-{myId}", (int)currentState);
         }
 
         private void HandleEventReceived (string key, object[] parameters)
@@ -50,7 +55,7 @@ namespace Kalkatos.Rpsls
                 case Keys.TournamentUpdateEvt:
                     if (paramDict.TryGetValue(Keys.TournamentInfoKey, out object value))
                     {
-                        this.Log($"Tournament received: ({value})" + JsonConvert.SerializeObject(value));
+                        this.Log($"Tournament received:     {value}");
                         TournamentInfo tournament = JsonConvert.DeserializeObject<TournamentInfo>(value.ToString());
                         //OnTournamentUpdated?.Invoke(tournament);
                     }
@@ -67,10 +72,19 @@ namespace Kalkatos.Rpsls
         }
     }
 
+    public enum ClientState
+    {
+        Undefined,
+        GameReady,
+        MatchPresentation,
+
+    }
+
     internal static class Keys
     {
         //Dictionary keys
         public const string TournamentInfoKey = "TInfo";
+        public const string ClientCheckKey = "CtRdy";
         //Events
         public const string TournamentUpdateEvt = "TmtUp";
     }
