@@ -13,7 +13,7 @@ namespace Kalkatos.Network
             get
             {
                 if (instance == null)
-                    instance = new GameObject("NetworkManager").AddComponent<NetworkManager>();
+                    instance = FindObjectOfType<NetworkManager>();
                 return instance;
             }
         }
@@ -144,6 +144,7 @@ namespace Kalkatos.Network
     [Serializable]
     public class RoomOptions
     {
+        public string DesiredName;
         public int MaxPlayers;
         public Dictionary<string, object> CustomData = new Dictionary<string, object>();
     }
