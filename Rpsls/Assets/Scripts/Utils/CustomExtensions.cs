@@ -19,6 +19,11 @@ namespace Kalkatos
 
         public static void Wait (this MonoBehaviour mono, float time, Action callback = null)
         {
+            if (Mathf.Approximately(time, 0))
+            {
+                callback?.Invoke();
+                return;
+            }
             mono.StartCoroutine(Wait(time, callback));
         }
 

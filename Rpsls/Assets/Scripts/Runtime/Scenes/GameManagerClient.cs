@@ -16,6 +16,7 @@ namespace Kalkatos.Rpsls
         private string myId;
         private ClientState currentState;
         private Dictionary<string, PlayerInfo> players = new Dictionary<string, PlayerInfo>();
+        private TournamentInfo tournament;
 
         private static PlayerInfo myInfo => NetworkManager.Instance.MyPlayerInfo;
         private static RoomInfo roomInfo => NetworkManager.Instance.CurrentRoomInfo;
@@ -56,8 +57,8 @@ namespace Kalkatos.Rpsls
                     if (paramDict.TryGetValue(Keys.TournamentInfoKey, out object value))
                     {
                         this.Log($"Tournament received:     {value}");
-                        TournamentInfo tournament = JsonConvert.DeserializeObject<TournamentInfo>(value.ToString());
-                        //OnTournamentUpdated?.Invoke(tournament);
+                        tournament = JsonConvert.DeserializeObject<TournamentInfo>(value.ToString());
+                        OnTournamentUpdated?.Invoke(tournament);
                     }
                     else
                         this.LogWarning("Didn't receive the key " + Keys.TournamentInfoKey);

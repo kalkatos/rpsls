@@ -9,13 +9,15 @@ namespace Kalkatos.Rpsls
 {
     public class GameManagerServer : MonoBehaviour
     {
-        private Dictionary<int, MatchInfo> matches = new Dictionary<int, MatchInfo>();
+        private TournamentInfo currentTournament;
         private Dictionary<string, PlayerInfo> players = new Dictionary<string, PlayerInfo>();
         private byte currentMatchId = 0;
         private List<Tuple<string, ClientState>> clientsChecked = new List<Tuple<string, ClientState>>();
         private WaitForSeconds delayToCheckClients = new WaitForSeconds(0.5f);
+        private WaitForSeconds wait = new WaitForSeconds(0.5f);
 
         private byte nextMatchId => ++currentMatchId;
+        private bool isConnectedAndInRoom => NetworkManager.Instance.IsConnected && NetworkManager.Instance.IsInRoom;
 
         private void Awake ()
         {
@@ -27,9 +29,7 @@ namespace Kalkatos.Rpsls
             NetworkManager.OnEventReceived += HandleEventReceived;
             NetworkManager.OnRequestDataSuccess += HandleRequestDataSuccess;
 
-            List<PlayerInfo> list = NetworkManager.Instance.CurrentRoomInfo.Players.CloneList();
-            for (int i = 0; i < list.Count; i++)
-                players.Add(list[i].Id, list[i]);
+            WaitUntil(() => isConnectedAndInRoom, GetPlayers);
         }
 
         private void OnDestroy ()
@@ -38,9 +38,25 @@ namespace Kalkatos.Rpsls
             NetworkManager.OnRequestDataSuccess -= HandleRequestDataSuccess;
         }
 
-        private void Start ()
+        private void GetPlayers ()
         {
-            CheckClientsState(ClientState.GameReady, PrepareTournament);
+            List<PlayerInfo> list = NetworkManager.Instance.CurrentRoomInfo.Players.CloneList();
+            for (int i = 0; i < list.Count; i++)
+                players.Add(list[i].Id, list[i]);
+            PrepareTournament();
+            CheckClientsState(ClientState.GameReady, SendTournament);
+        }
+
+        private void WaitUntil (Func<bool> condition, Action callback)
+        {
+            StartCoroutine(WaitUntilCoroutine(condition, callback));
+        }
+
+        private IEnumerator WaitUntilCoroutine (Func<bool> condition, Action callback)
+        {
+            while (!condition.Invoke())
+                yield return wait;
+            callback?.Invoke();
         }
 
         private void CheckClientsState (ClientState expectedState, Action callback)
@@ -91,7 +107,7 @@ namespace Kalkatos.Rpsls
 
         private void PrepareTournament ()
         {
-            TournamentInfo tournament = new TournamentInfo();
+            currentTournament = new TournamentInfo();
             string[] keys = new string[players.Count];
             players.Keys.CopyTo(keys, 0);
             keys = keys.Shuffle();
@@ -101,10 +117,13 @@ namespace Kalkatos.Rpsls
                 bool isByePlayer = i + 1 >= keys.Length;
                 MatchInfo newMatch = GetNewMatch(players[keys[i]], isByePlayer ? null : players[keys[i + 1]]);
                 matchList.Add(newMatch);
-                matches.Add(newMatch.Id, newMatch);
             }
-            tournament.Matches = matchList.ToArray();
-            NetworkManager.Instance.ExecuteEvent(Keys.TournamentUpdateEvt, Keys.TournamentInfoKey, JsonConvert.SerializeObject(tournament));
+            currentTournament.Matches = matchList.ToArray();
+        }
+
+        private void SendTournament ()
+        {
+            NetworkManager.Instance.ExecuteEvent(Keys.TournamentUpdateEvt, Keys.TournamentInfoKey, JsonConvert.SerializeObject(currentTournament));
         }
 
         private MatchInfo GetNewMatch (PlayerInfo player1, PlayerInfo player2)

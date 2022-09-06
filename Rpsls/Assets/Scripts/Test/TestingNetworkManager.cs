@@ -9,8 +9,14 @@ using Newtonsoft.Json;
 
 namespace Kalkatos.Rpsls.Test
 {
+    [DefaultExecutionOrder(-10)]
     public class TestingNetworkManager : NetworkManager
     {
+        [Header("Debug")]
+        [SerializeField] private bool bypassConnection;
+        [SerializeField] private int amountOfPlayersToWaitFor;
+        [SerializeField] private int amountOfPlayersToFillIn;
+
         private const string connectedPlayersKey = "CntPl";
         private const string activeRoomsKey = "AtvRm";
         private const string customDataKey = "CtmDt";
@@ -28,7 +34,7 @@ namespace Kalkatos.Rpsls.Test
 
         private string executeEventKey => "ExEvt" + roomId;
         private string newSmallGuid => Guid.NewGuid().ToString().Split('-')[0];
-        private float randomTime => Random.Range(0.3f, 1f);
+        private float randomTime => bypassConnection ? 0 : Random.Range(0.3f, 1f);
 
         public override bool IsInRoom { get => !string.IsNullOrEmpty(roomId); }
         public override PlayerInfo MyPlayerInfo { get => connectedPlayers[playerId]; protected set => connectedPlayers[playerId] = value; }
@@ -53,6 +59,15 @@ namespace Kalkatos.Rpsls.Test
 
         private void OnApplicationQuit ()
         {
+            if (bypassConnection && MyPlayerInfo.IsMasterClient)
+            {
+                SaveManager.DeleteKey(connectedPlayersKey);
+                SaveManager.DeleteKey(activeRoomsKey);
+                SaveManager.DeleteKey(executeEventKey);
+                SaveManager.DeleteKey(customDataKey);
+                return;
+            }
+
             LoadLists();
             string savedExecEventKey = executeEventKey;
             if (IsConnected && IsInRoom)
@@ -68,6 +83,12 @@ namespace Kalkatos.Rpsls.Test
             else
                 connectedPlayers.Remove(playerId);
             SaveLists();
+        }
+        
+        protected override void OnAwake ()
+        {
+            if (bypassConnection)
+                Connect();
         }
 
         private void LoadLists ()
@@ -285,7 +306,17 @@ namespace Kalkatos.Rpsls.Test
         public override void FindMatch (object parameter = null)
         {
             Assert.IsTrue(IsConnected);
-            Assert.IsNotNull(parameter);
+
+            if (bypassConnection)
+            {
+                LoadLists();
+                if (activeRooms.TryGetValue("DEBUG", out RoomInfo room))
+                    parameter = "DEBUG";
+                else
+                    parameter = new RoomOptions() { DesiredName = "DEBUG", MaxPlayers = 8 };
+            }
+            else
+                Assert.IsNotNull(parameter);
 
             if (parameter is RoomOptions)
             {
@@ -297,7 +328,7 @@ namespace Kalkatos.Rpsls.Test
                     connectedPlayers[playerId].IsMasterClient = true;
                     RoomInfo newRoom = new RoomInfo()
                     {
-                        Id = CreateRandomRoomName(),
+                        Id = string.IsNullOrEmpty(options.DesiredName) ? CreateRandomRoomName() : options.DesiredName,
                         MaxPlayers = options.MaxPlayers,
                         Players = new List<PlayerInfo>() { connectedPlayers[playerId] },
                         PlayerCount = 1
@@ -466,6 +497,42 @@ namespace Kalkatos.Rpsls.Test
         }
 
         #endregion
+
+        public override void RaiseLogInSuccess (object parameter = null)
+        {
+            base.RaiseLogInSuccess(parameter);
+            if (bypassConnection)
+            {
+                FindMatch();
+                if (amountOfPlayersToWaitFor > 1)
+                {
+                    while (true)
+                    {
+                        LoadLists();
+                        if (connectedPlayers.Count >= amountOfPlayersToWaitFor)
+                            break;
+                        float delayStart = Time.realtimeSinceStartup;
+                        while (Time.realtimeSinceStartup - delayStart < 0.2f) { }
+                    }
+                }
+                if (MyPlayerInfo.IsMasterClient && amountOfPlayersToFillIn > 0)
+                {
+                    LoadLists();
+                    for (int i = 0; i < amountOfPlayersToFillIn; i++)
+                    {
+                        string newPlayerId = newSmallGuid;
+                        PlayerInfo newPlayer = new PlayerInfo()
+                        {
+                            Id = newPlayerId,
+                            Nickname = CreateGuestName()
+                        };
+                        connectedPlayers.Add(newPlayerId, newPlayer);
+                        CurrentRoomInfo.Players.Add(newPlayer);
+                    }
+                    SaveLists();
+                }
+            }
+        }
 
         public override void RaiseEventReceived (string eventKey, params object[] parameters)
         {
