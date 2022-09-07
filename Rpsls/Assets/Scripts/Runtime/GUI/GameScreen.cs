@@ -12,10 +12,13 @@ namespace Kalkatos.Rpsls
     public class GameScreen : MonoBehaviour
     {
         [SerializeField, ChildGameObjectsOnly] private GridLayoutGroup playerSlotsListParent;
-        [SerializeField, ChildGameObjectsOnly] private Transform[] versusPositions;
+        [SerializeField] private Transform[] versusPositions;
+        [SerializeField] private Transform[] battlePositions;
+        [SerializeField] private Transform[] sidePositions;
+        [SerializeField] private Transform[] centerPositions;
         [SerializeField, ChildGameObjectsOnly] private Button exitButton;
+        [SerializeField] private RpslsGameSettings settings;
 
-        private RpslsGameSettings settings;
         private string myId;
         private string currentOpponentId;
         private Dictionary<string, PlayerInfoSlot> playerSlots = new Dictionary<string, PlayerInfoSlot>();
@@ -77,10 +80,39 @@ namespace Kalkatos.Rpsls
             }
         }
 
+#if UNITY_EDITOR
+        [Button]
+        private void AddSlotsForTesting ()
+        {
+            for (int i = 0; i < versusPositions.Length; i++)
+                UnityEditor.PrefabUtility.InstantiatePrefab(settings.GameInfoSlotPrefab, versusPositions[i]);
+            for (int i = 0; i < battlePositions.Length; i++)
+                UnityEditor.PrefabUtility.InstantiatePrefab(settings.GameInfoSlotPrefab, battlePositions[i]);
+            for (int i = 0; i < sidePositions.Length; i++)
+                UnityEditor.PrefabUtility.InstantiatePrefab(settings.GameInfoSlotPrefab, sidePositions[i]);
+            for (int i = 0; i < centerPositions.Length; i++)
+                UnityEditor.PrefabUtility.InstantiatePrefab(settings.GameInfoSlotPrefab, centerPositions[i]);
+        }
+
+        [Button]
+        private void RemoveSlotsForTesting ()
+        {
+            for (int i = 0; i < versusPositions.Length && versusPositions[i].childCount > 0; i++)
+                DestroyImmediate(versusPositions[i].GetChild(0).gameObject);
+            for (int i = 0; i < battlePositions.Length && battlePositions[i].childCount > 0; i++)
+                DestroyImmediate(battlePositions[i].GetChild(0).gameObject);
+            for (int i = 0; i < sidePositions.Length && sidePositions[i].childCount > 0; i++)
+                DestroyImmediate(sidePositions[i].GetChild(0).gameObject);
+            for (int i = 0; i < centerPositions.Length && centerPositions[i].childCount > 0; i++)
+                DestroyImmediate(centerPositions[i].GetChild(0).gameObject);
+        }
+#endif
+
         private IEnumerator PlayersEntryAnimation ()
         {
-            // Wait 2 seconds
-            yield return new WaitForSeconds(2f);
+            // TODO Play an intro animation
+
+            //yield return new WaitForSeconds(2f);
             // Wait for player slots being filled
             while (playerSlots.Count == 0)
                 yield return null;
@@ -106,51 +138,84 @@ namespace Kalkatos.Rpsls
             // Wait for tournament info
             while (tournamentInfo == null)
                 yield return null;
-            // Set the BYE player badge, if any
+            // TODO Set the BYE player badge, if any
             if (tournamentInfo.Matches.Length > 1)
             {
-                // Build tournament structure
-                // Move tournament structure to view
-                //      also Move each player slot to its position with a jump
-                //      also Pan the bottom of the tournament matches
-                // Move out to show the entire structure
+                // TODO Build tournament structure
+                // TODO Move tournament structure to view
+                // TODO      also Move each player slot to its position with a jump
+                // TODO      also Pan the bottom of the tournament matches
+                // TODO Move out to show the entire structure
             }
             StartCoroutine(MatchStartAnimation());
         }
 
         private IEnumerator MatchStartAnimation ()
         {
-            // Hide tournament structure
-            if (string.IsNullOrEmpty(currentOpponentId))
+            // TODO Hide tournament structure
+
+            bool haveOpponent = !string.IsNullOrEmpty(currentOpponentId);
+            if (haveOpponent)
             {
-                // Move my slot to the bottom of the screen
-                //      also Move each other battle to the center of the screen larger than usual
+                float moveToVersusTime = 1f;
+                int sidePositionsIndex = 0;
+                foreach (var item in tournamentInfo.Matches)
+                {
+                    if (item == myMatch)
+                    {
+                        // Move my opponent and mine slots to the center of the screen BIG
+                        MoveAndScaleTo(playerSlots[myId].transform, versusPositions[1], moveToVersusTime);
+                        MoveAndScaleTo(playerSlots[currentOpponentId].transform, versusPositions[0], moveToVersusTime);
+                    }
+                    else
+                    {
+                        //      also Move each other player to the sides of the screen (small) according to their matches
+                        MoveAndScaleTo(playerSlots[item.Player1.Id].transform, sidePositions[sidePositionsIndex++], moveToVersusTime);
+                        if (item.Player2 != null)
+                            MoveAndScaleTo(playerSlots[item.Player2.Id].transform, sidePositions[sidePositionsIndex++], moveToVersusTime);
+                    }
+                }
+                // TODO Play a versus animation
+                float versusAnimationTime = 2f;
+
+                yield return new WaitForSeconds(moveToVersusTime + versusAnimationTime);
             }
-            else
+            float prepareTime = 1f;
+            // Dock my opponent slot at the top of the screen and mine at the bottom
+            if (haveOpponent)
+                MoveAndScaleTo(playerSlots[currentOpponentId].transform, battlePositions[0], prepareTime);
+            MoveAndScaleTo(playerSlots[myId].transform, battlePositions[1], prepareTime);
+            if (!haveOpponent)
             {
-                // Move my opponent and mine slots to the center of the screen BIG
-                //      also Move each other player to the sides of the screen (small) according to their matches
-                Transform mySlot = playerSlots[myId].transform;
-                Transform opponentSlot = playerSlots[currentOpponentId].transform;
-                float moveToVersusTime = 2f;
-                opponentSlot.DOMove(versusPositions[0].position, moveToVersusTime);
-                opponentSlot.DOScale(versusPositions[0].localScale, moveToVersusTime);
-                mySlot.DOMove(versusPositions[1].position, moveToVersusTime);
-                mySlot.DOScale(versusPositions[1].localScale, moveToVersusTime);
-                yield return new WaitForSeconds(moveToVersusTime);
-                // Play a versus animation
-                // Dock my opponent slot at the top of the screen and mine at the bottom
-                // Play the Playmat intro animation (roll the playmat?)
-                // Bring in the cards to their positions
+                // If I am bye, move opponents' battles to the center of the screen
+                int centerPositionsIndex = 0;
+                foreach (var item in tournamentInfo.Matches)
+                {
+                    if (item == myMatch)
+                        continue;
+                    MoveAndScaleTo(playerSlots[item.Player1.Id].transform, centerPositions[centerPositionsIndex++], prepareTime);
+                    MoveAndScaleTo(playerSlots[item.Player2.Id].transform, centerPositions[centerPositionsIndex++], prepareTime);
+                }
+                // TODO Play a "relax there" animation while waiting
             }
+            // TODO Play the Playmat intro animation (roll the playmat?)
+            // TODO Bring in the cards to their positions
             StartCoroutine(MatchCoroutine());
         }
 
         private IEnumerator MatchCoroutine ()
         {
-            // Wait for hand
-            // Turn routine
+            // TODO Wait for hand
+            // TODO Turn routine
             yield return null;
+        }
+
+        private void MoveAndScaleTo (Transform obj, Transform destination, float time, bool setParent = true)
+        {
+            if (setParent)
+                obj.SetParent(destination);
+            obj.DOMove(destination.position, time);
+            obj.DOScale(setParent ? Vector3.one : destination.localScale, time);
         }
 
         private void OnExitButtonClicked ()
