@@ -11,12 +11,21 @@ namespace Kalkatos.Rpsls
 {
     public class GameScreen : MonoBehaviour
     {
+        [Header("References")]
         [SerializeField, ChildGameObjectsOnly] private GridLayoutGroup playerSlotsListParent;
+        [SerializeField] private GameObject timerBarObj;
+        [SerializeField] private RectTransform timerBar;
+        [SerializeField] private Transform tournamentStructure;
+        [SerializeField, ChildGameObjectsOnly] private Button exitButton;
+        [Header("Positions")]
         [SerializeField] private Transform[] versusPositions;
         [SerializeField] private Transform[] battlePositions;
         [SerializeField] private Transform[] sidePositions;
         [SerializeField] private Transform[] centerPositions;
-        [SerializeField, ChildGameObjectsOnly] private Button exitButton;
+        [SerializeField] private Transform[] playmatPositions;
+        [SerializeField] private Transform[] matchesPositions;
+        [SerializeField] private Transform[] tournamentPositions;
+        [Header("Config")]
         [SerializeField] private RpslsGameSettings settings;
 
         private string myId;
@@ -24,6 +33,8 @@ namespace Kalkatos.Rpsls
         private Dictionary<string, PlayerInfoSlot> playerSlots = new Dictionary<string, PlayerInfoSlot>();
         private TournamentInfo tournamentInfo;
         private MatchInfo myMatch;
+        private Transform[] playmats;
+        private Vector3 tournamentHiddenPosition;
 
         private void Awake ()
         {
@@ -32,6 +43,7 @@ namespace Kalkatos.Rpsls
             exitButton.onClick.AddListener(OnExitButtonClicked);
             settings = RpslsGameSettings.Instance;
             myId = NetworkManager.Instance.MyPlayerInfo.Id;
+            tournamentHiddenPosition = tournamentStructure.localPosition;
         }
 
         private void OnDestroy ()
@@ -108,16 +120,18 @@ namespace Kalkatos.Rpsls
         }
 #endif
 
+        #region ================= Animations ========================
+
         private IEnumerator PlayersEntryAnimation ()
         {
             // TODO Play an intro animation
 
-            //yield return new WaitForSeconds(2f);
+            //yield return new WaitForSeconds(settings.IntroAnimationTime);
             // Wait for player slots being filled
             while (playerSlots.Count == 0)
                 yield return null;
             // Present each player slot
-            float delay = 0.1f;
+            float delay = settings.DelayBetweenSlotsAppearing;
             float currentDelay = delay;
             foreach (var item in playerSlots)
             {
@@ -141,23 +155,36 @@ namespace Kalkatos.Rpsls
             // TODO Set the BYE player badge, if any
             if (tournamentInfo.Matches.Length > 1)
             {
-                // TODO Build tournament structure
-                // TODO Move tournament structure to view
-                // TODO      also Move each player slot to its position with a jump
-                // TODO      also Pan the bottom of the tournament matches
-                // TODO Move out to show the entire structure
+                // Build tournament structure
+                float moveToTournamentTime = settings.MoveToTournamentTime;
+                for (int i = 0; i < matchesPositions.Length; i++)
+                    matchesPositions[i].gameObject.SetActive(i < tournamentInfo.Matches.Length);
+                int index = 0;
+                // Move each player slot to its position with a jump
+                foreach (var item in tournamentInfo.Matches)
+                {
+                    string p1 = item.Player1.Id;
+                    string p2 = item.Player2?.Id ?? "";
+                    MoveAndScaleTo(playerSlots[p1].transform, tournamentPositions[index++], moveToTournamentTime, true);
+                    int p2Index = index++;
+                    if (!string.IsNullOrEmpty(p2))
+                        MoveAndScaleTo(playerSlots[p2].transform, tournamentPositions[p2Index], moveToTournamentTime, true);
+                }
+                //  Move tournament structure to view
+                tournamentStructure.DOLocalMove(Vector3.zero, moveToTournamentTime / 2f);
+                yield return new WaitForSeconds(moveToTournamentTime + settings.TournamentShowTime);
+                // Hide tournament structure
+                tournamentStructure.DOLocalMove(tournamentHiddenPosition, moveToTournamentTime / 2f);
             }
             StartCoroutine(MatchStartAnimation());
         }
 
         private IEnumerator MatchStartAnimation ()
         {
-            // TODO Hide tournament structure
-
             bool haveOpponent = !string.IsNullOrEmpty(currentOpponentId);
             if (haveOpponent)
             {
-                float moveToVersusTime = 1f;
+                float moveToVersusTime = settings.MoveToVersusTime;
                 int sidePositionsIndex = 0;
                 foreach (var item in tournamentInfo.Matches)
                 {
@@ -176,15 +203,15 @@ namespace Kalkatos.Rpsls
                     }
                 }
                 // TODO Play a versus animation
-                float versusAnimationTime = 2f;
+                float versusAnimationTime = settings.VersusAnimationTime;
 
                 yield return new WaitForSeconds(moveToVersusTime + versusAnimationTime);
             }
-            float prepareTime = 1f;
+            float dockingTime = settings.DockingTime;
             // Dock my opponent slot at the top of the screen and mine at the bottom
             if (haveOpponent)
-                MoveAndScaleTo(playerSlots[currentOpponentId].transform, battlePositions[0], prepareTime);
-            MoveAndScaleTo(playerSlots[myId].transform, battlePositions[1], prepareTime);
+                MoveAndScaleTo(playerSlots[currentOpponentId].transform, battlePositions[0], dockingTime);
+            MoveAndScaleTo(playerSlots[myId].transform, battlePositions[1], dockingTime);
             if (!haveOpponent)
             {
                 // If I am bye, move opponents' battles to the center of the screen
@@ -193,8 +220,8 @@ namespace Kalkatos.Rpsls
                 {
                     if (item == myMatch)
                         continue;
-                    MoveAndScaleTo(playerSlots[item.Player1.Id].transform, centerPositions[centerPositionsIndex++], prepareTime);
-                    MoveAndScaleTo(playerSlots[item.Player2.Id].transform, centerPositions[centerPositionsIndex++], prepareTime);
+                    MoveAndScaleTo(playerSlots[item.Player1.Id].transform, centerPositions[centerPositionsIndex++], dockingTime);
+                    MoveAndScaleTo(playerSlots[item.Player2.Id].transform, centerPositions[centerPositionsIndex++], dockingTime);
                 }
                 // TODO Play a "relax there" animation while waiting
             }
@@ -210,12 +237,16 @@ namespace Kalkatos.Rpsls
             yield return null;
         }
 
-        private void MoveAndScaleTo (Transform obj, Transform destination, float time, bool setParent = true)
+        #endregion
+
+        private void MoveAndScaleTo (Transform obj, Transform destination, float time, bool jump = false)
         {
-            if (setParent)
-                obj.SetParent(destination);
-            obj.DOMove(destination.position, time);
-            obj.DOScale(setParent ? Vector3.one : destination.localScale, time);
+            obj.SetParent(destination);
+            if (jump)
+                obj.DOLocalJump(Vector3.zero, 2, 1, time);
+            else
+                obj.DOLocalMove(Vector3.zero, time);
+            obj.DOScale(Vector3.one, time);
         }
 
         private void OnExitButtonClicked ()

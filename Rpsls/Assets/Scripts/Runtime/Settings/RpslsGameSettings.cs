@@ -14,5 +14,16 @@ namespace Kalkatos.Rpsls
         [Header("Prefabs")]
         public PlayerInfoSlot RoomInfoSlotPrefab;
         public PlayerInfoSlot GameInfoSlotPrefab;
+        public PlayerInfoSlot MatchSlotPrefab;
+        public GameObject PlaymatTopPrefab;
+        public GameObject PlaymatBottomPrefab;
+        [Header("Animation Time")]
+        public float IntroAnimationTime = 2f;
+        public float DelayBetweenSlotsAppearing = 0.1f;
+        public float MoveToTournamentTime = 1f;
+        public float TournamentShowTime = 2f;
+        public float MoveToVersusTime = 1f;
+        public float VersusAnimationTime = 2f;
+        public float DockingTime = 1f;
     }
 }
