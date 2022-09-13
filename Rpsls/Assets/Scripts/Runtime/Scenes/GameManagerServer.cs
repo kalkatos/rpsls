@@ -74,7 +74,7 @@ namespace Kalkatos.Rpsls
                 int index = 0;
                 foreach (var item in players)
                 {
-                    playerIds[index] = $"{Keys.ClientCheckKey}-{item.Key}";
+                    playerIds[index] = $"{Keys.ClientIdKey}-{item.Key}";
                     index++;
                 }
                 NetworkManager.Instance.RequestData(playerIds);
@@ -97,12 +97,13 @@ namespace Kalkatos.Rpsls
         {
             Dictionary<string, object> paramDict = parameters.ToDictionary();
             foreach (var item in players)
-                if (paramDict.TryGetValue($"{Keys.ClientCheckKey}-{item.Key}", out object state))
+                if (paramDict.TryGetValue($"{Keys.ClientIdKey}-{item.Key}", out object state))
                     clientsChecked.Add(new Tuple<string, ClientState>(item.Key, (ClientState)int.Parse(state.ToString())));
         }
 
         private void HandleEventReceived (string key, object[] parameters)
         {
+            //TODO Receive other players ready
         }
 
         private void PrepareTournament ()

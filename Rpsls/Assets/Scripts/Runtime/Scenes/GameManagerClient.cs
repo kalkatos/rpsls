@@ -12,11 +12,14 @@ namespace Kalkatos.Rpsls
 
         public static event Action<List<PlayerInfo>> OnPlayerListReceived;
         public static event Action<TournamentInfo> OnTournamentUpdated;
+        public static event Action OnOtherPlayerReadyForMatch;
 
         private string myId;
+        private string currentOpponentId;
         private ClientState currentState;
         private Dictionary<string, PlayerInfo> players = new Dictionary<string, PlayerInfo>();
         private TournamentInfo tournament;
+        private MatchInfo currentMatch;
 
         private static PlayerInfo myInfo => NetworkManager.Instance.MyPlayerInfo;
         private static RoomInfo roomInfo => NetworkManager.Instance.CurrentRoomInfo;
@@ -44,7 +47,7 @@ namespace Kalkatos.Rpsls
             }
             OnPlayerListReceived?.Invoke(playerList);
             currentState = ClientState.GameReady;
-            NetworkManager.Instance.SendData($"{Keys.ClientCheckKey}-{myId}", (int)currentState);
+            NetworkManager.Instance.SendData($"{Keys.ClientIdKey}-{myId}", (int)currentState);
         }
 
         private void HandleEventReceived (string key, object[] parameters)
@@ -59,9 +62,26 @@ namespace Kalkatos.Rpsls
                         this.Log($"Tournament received:     {value}");
                         tournament = JsonConvert.DeserializeObject<TournamentInfo>(value.ToString());
                         OnTournamentUpdated?.Invoke(tournament);
+                        foreach (var item in tournament.Matches)
+                        {
+                            if (item.Player1.Id == myId)
+                            {
+                                currentMatch = item;
+                                currentOpponentId = item.Player2?.Id ?? "";
+                            }
+                            else if (item.Player2 != null && item.Player2.Id == myId)
+                            {
+                                currentMatch = item;
+                                currentOpponentId = item.Player1.Id;
+                            }
+                        }
                     }
                     else
                         this.LogWarning("Didn't receive the key " + Keys.TournamentInfoKey);
+                    break;
+                case Keys.ReadyForMatchEvt:
+                    if (paramDict.TryGetValue(Keys.ClientIdKey, out object id) && id.ToString() == currentOpponentId)
+                        OnOtherPlayerReadyForMatch?.Invoke();
                     break;
             }
         }
@@ -71,6 +91,11 @@ namespace Kalkatos.Rpsls
             SceneManager.EndScene("Game");
             NetworkManager.Instance.LeaveMatch();
         }
+
+        public static void SetReadyToStartMatch ()
+        {
+            NetworkManager.Instance.ExecuteEvent(Keys.ReadyForMatchEvt, Keys.ClientIdKey, Instance.myId);
+        }
     }
 
     public enum ClientState
@@ -78,16 +103,16 @@ namespace Kalkatos.Rpsls
         Undefined,
         GameReady,
         MatchPresentation,
-
     }
 
     internal static class Keys
     {
         //Dictionary keys
         public const string TournamentInfoKey = "TInfo";
-        public const string ClientCheckKey = "CtRdy";
+        public const string ClientIdKey = "PlrId";
         //Events
         public const string TournamentUpdateEvt = "TmtUp";
+        public const string ReadyForMatchEvt = "RdyMt";
     }
 
     public class MatchInfo
