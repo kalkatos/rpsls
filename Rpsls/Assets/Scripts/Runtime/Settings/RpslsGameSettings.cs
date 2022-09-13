@@ -14,7 +14,6 @@ namespace Kalkatos.Rpsls
         [Header("Prefabs")]
         public PlayerInfoSlot RoomInfoSlotPrefab;
         public PlayerInfoSlot GameInfoSlotPrefab;
-        public PlayerInfoSlot MatchSlotPrefab;
         public GameObject PlaymatTopPrefab;
         public GameObject PlaymatBottomPrefab;
         [Header("Animation Time")]

@@ -376,7 +376,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2380359721366390740, guid: 7939899439f241f48ad10e8e997e7498, type: 3}
       propertyPath: amountOfPlayersToFillIn
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7939899439f241f48ad10e8e997e7498, type: 3}
