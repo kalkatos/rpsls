@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Kalkatos.Network;
 
-namespace Kalkatos.Rpsls
+namespace Kalkatos.Tournament
 {
     public class PlayerInfoSlot : PlayerInfoBit
     {

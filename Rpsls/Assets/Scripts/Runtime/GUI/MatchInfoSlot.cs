@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-namespace Kalkatos.Rpsls
+namespace Kalkatos.Tournament
 {
     public class MatchInfoSlot : MonoBehaviour
     {

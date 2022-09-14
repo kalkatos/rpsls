@@ -3,7 +3,7 @@ using UnityEngine;
 using NaughtyAttributes;
 using UnityEngine.SceneManagement;
 
-namespace Kalkatos.Rpsls
+namespace Kalkatos.Tournament
 {
     public class SceneManager : MonoBehaviour
     {

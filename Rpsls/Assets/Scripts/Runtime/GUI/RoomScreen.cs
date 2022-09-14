@@ -7,7 +7,7 @@ using TMPro;
 using Sirenix.OdinInspector;
 using Kalkatos.Network;
 
-namespace Kalkatos.Rpsls
+namespace Kalkatos.Tournament
 {
     public class RoomScreen : MonoBehaviour
     {
@@ -22,7 +22,7 @@ namespace Kalkatos.Rpsls
         [SerializeField] private UnityEvent onNotEveryoneReady;
         [SerializeField] private UnityEvent onNotEnoughPlayers;
 
-        private RpslsGameSettings settings;
+        private TournamentGameSettings settings;
         private Dictionary<string, PlayerInfoSlot> slots = new Dictionary<string, PlayerInfoSlot>();
         private bool isReady;
 
@@ -41,7 +41,7 @@ namespace Kalkatos.Rpsls
             exitButton.onClick.AddListener(ClickedOnExitButton);
             copyRoomIdButton.onClick.AddListener(ClickedOnCopyRoomIdButton);
 
-            settings = RpslsGameSettings.Instance;
+            settings = TournamentGameSettings.Instance;
         }
 
         private void OnDestroy ()

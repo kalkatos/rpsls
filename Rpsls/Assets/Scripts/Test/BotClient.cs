@@ -1,6 +1,6 @@
 ﻿using Kalkatos.Network;
 
-namespace Kalkatos.Rpsls
+namespace Kalkatos.Tournament
 {
     public class BotClient : Client
     {

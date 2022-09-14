@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Kalkatos.Network;
 
-namespace Kalkatos.Rpsls
+namespace Kalkatos.Tournament
 {
     public class RoomManager : MonoBehaviour
     {
@@ -22,7 +22,7 @@ namespace Kalkatos.Rpsls
         private const string aboutToStartKey = "AbSrt";
 
         private Dictionary<string, PlayerInfo> players = new Dictionary<string, PlayerInfo>();
-        private RpslsGameSettings settings;
+        private TournamentGameSettings settings;
 
         public static string RoomName { get; private set; }
         public static bool IAmTheMaster => myInfo.IsMasterClient;
@@ -38,7 +38,7 @@ namespace Kalkatos.Rpsls
             NetworkManager.OnPlayerDataChanged += HandlePlayerDataChanged;
             NetworkManager.OnEventReceived += HandleEventReceived;
             Instance = this;
-            settings = RpslsGameSettings.Instance;
+            settings = TournamentGameSettings.Instance;
             RoomName = roomInfo.Id;
         }
 

@@ -7,7 +7,7 @@ using Random = UnityEngine.Random;
 using Kalkatos.Network;
 using Newtonsoft.Json;
 
-namespace Kalkatos.Rpsls.Test
+namespace Kalkatos.Tournament.Test
 {
     [DefaultExecutionOrder(-10)]
     public class TestingNetworkManager : NetworkManager

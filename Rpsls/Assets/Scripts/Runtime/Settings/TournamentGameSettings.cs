@@ -2,15 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Kalkatos.Rpsls
+namespace Kalkatos.Tournament
 {
-
     [CreateAssetMenu(menuName = "Rpsls/Game Settings", fileName = "RpslsGameSettings")]
-    public class RpslsGameSettings : SingletonScriptableObject<RpslsGameSettings>
+    public class TournamentGameSettings : SingletonScriptableObject<TournamentGameSettings>
     {
         [Header("Game Configuration")]
         public int MaxPlayers;
-        public float DelayBeforeStarting;
+        public float DelayBeforeStarting = 3f;
         [Header("Prefabs")]
         public PlayerInfoSlot RoomInfoSlotPrefab;
         public PlayerInfoSlot GameInfoSlotPrefab;

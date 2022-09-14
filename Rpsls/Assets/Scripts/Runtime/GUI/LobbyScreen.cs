@@ -5,7 +5,7 @@ using TMPro;
 using Random = UnityEngine.Random;
 using Kalkatos.Network;
 
-namespace Kalkatos.Rpsls
+namespace Kalkatos.Tournament
 {
     public class LobbyScreen : MonoBehaviour
     {
