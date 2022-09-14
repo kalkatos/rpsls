@@ -2,7 +2,7 @@
 using TMPro;
 using Kalkatos.Network;
 
-namespace Kalkatos.Rpsls
+namespace Kalkatos.Tournament
 {
     public class NickInfoBit : PlayerInfoBit
     {

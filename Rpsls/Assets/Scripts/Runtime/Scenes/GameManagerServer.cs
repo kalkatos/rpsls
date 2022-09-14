@@ -5,7 +5,7 @@ using UnityEngine;
 using Kalkatos.Network;
 using Newtonsoft.Json;
 
-namespace Kalkatos.Rpsls
+namespace Kalkatos.Tournament
 {
     public class GameManagerServer : MonoBehaviour
     {

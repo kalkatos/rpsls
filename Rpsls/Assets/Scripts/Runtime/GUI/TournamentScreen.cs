@@ -7,7 +7,7 @@ using Sirenix.OdinInspector;
 using Kalkatos.Network;
 using DG.Tweening;
 
-namespace Kalkatos.Rpsls
+namespace Kalkatos.Tournament
 {
     public class TournamentScreen : MonoBehaviour
     {
@@ -26,7 +26,7 @@ namespace Kalkatos.Rpsls
         [SerializeField] private Transform[] matchesPositions;
         [SerializeField] private Transform[] tournamentPositions;
         [Header("Config")]
-        [SerializeField] private RpslsGameSettings settings;
+        [SerializeField] private TournamentGameSettings settings;
 
         private string myId;
         private int myMatchIndex;
@@ -40,7 +40,7 @@ namespace Kalkatos.Rpsls
         {
             GameManagerClient.OnPlayerListReceived += HandlePlayerListReceived;
             GameManagerClient.OnTournamentUpdated += HandleTournamentUpdated;
-            settings = RpslsGameSettings.Instance;
+            settings = TournamentGameSettings.Instance;
             myId = NetworkManager.Instance.MyPlayerInfo.Id;
             tournamentHiddenPosition = tournamentStructure.localPosition;
         }

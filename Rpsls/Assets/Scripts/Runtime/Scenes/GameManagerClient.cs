@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Kalkatos.Network;
 
-namespace Kalkatos.Rpsls
+namespace Kalkatos.Tournament
 {
     public class GameManagerClient : Client
     {

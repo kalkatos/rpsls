@@ -2,7 +2,7 @@ using Kalkatos.Network;
 using System;
 using UnityEngine;
 
-namespace Kalkatos.Rpsls
+namespace Kalkatos.Tournament
 {
     public class LobbyManager : MonoBehaviour
     {
@@ -10,7 +10,7 @@ namespace Kalkatos.Rpsls
 
         public static event Action<FindMatchError> OnFindMatchError;
 
-        private RpslsGameSettings settings;
+        private TournamentGameSettings settings;
         private bool busy;
 
         public static bool IsConnected => NetworkManager.Instance.IsConnected;
@@ -18,7 +18,7 @@ namespace Kalkatos.Rpsls
         private void Awake ()
         {
             Instance = this;
-            settings = RpslsGameSettings.Instance;
+            settings = TournamentGameSettings.Instance;
             NetworkManager.OnFindMatchSuccess += HandleFindMatchSuccess;
             NetworkManager.OnFindMatchFailure += HandleFindMatchFailure;
         }

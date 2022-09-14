@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using Kalkatos.Network;
 
-namespace Kalkatos.Rpsls
+namespace Kalkatos.Tournament
 {
     public class BoardInfoBit : PlayerInfoBit
     {

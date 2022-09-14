@@ -4,7 +4,7 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Kalkatos.Rpsls
+namespace Kalkatos.Tournament
 {
     public class GameScreen : MonoBehaviour
     {
@@ -15,13 +15,13 @@ namespace Kalkatos.Rpsls
         [Header("Positions")]
         [SerializeField] private Transform[] playmatPositions;
         [Header("Config")]
-        [SerializeField] private RpslsGameSettings settings;
+        [SerializeField] private TournamentGameSettings settings;
 
         private void Awake ()
         {
             TournamentScreen.OnTournamentIntroFinished += HandleTournamentIntroFinished;
             exitButton.onClick.AddListener(OnExitButtonClicked);
-            settings = RpslsGameSettings.Instance;
+            settings = TournamentGameSettings.Instance;
         }
 
         private void OnDestroy ()

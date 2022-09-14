@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 using Kalkatos.Network;
 
-namespace Kalkatos.Rpsls
+namespace Kalkatos.Tournament
 {
     public class AvatarInfoBit : PlayerInfoBit
     {
