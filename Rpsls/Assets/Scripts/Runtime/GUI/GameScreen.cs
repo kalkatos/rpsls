@@ -17,12 +17,9 @@ namespace Kalkatos.Rpsls
         [Header("Config")]
         [SerializeField] private RpslsGameSettings settings;
 
-        private bool isOtherPlayerReadyForMatch;
-
         private void Awake ()
         {
             TournamentScreen.OnTournamentIntroFinished += HandleTournamentIntroFinished;
-            GameManagerClient.OnOtherPlayerReadyForMatch += HandleOtherPlayerReady;
             exitButton.onClick.AddListener(OnExitButtonClicked);
             settings = RpslsGameSettings.Instance;
         }
@@ -30,7 +27,6 @@ namespace Kalkatos.Rpsls
         private void OnDestroy ()
         {
             TournamentScreen.OnTournamentIntroFinished -= HandleTournamentIntroFinished;
-            GameManagerClient.OnOtherPlayerReadyForMatch -= HandleOtherPlayerReady;
             exitButton.onClick.RemoveListener(OnExitButtonClicked);
         }
 
@@ -40,11 +36,6 @@ namespace Kalkatos.Rpsls
             StartCoroutine(GameSetupAnimations());
         }
 
-        private void HandleOtherPlayerReady ()
-        {
-            isOtherPlayerReadyForMatch = true;
-        }
-
         private IEnumerator GameSetupAnimations ()
         {
             yield return new WaitForSeconds(0.5f);
@@ -52,10 +43,8 @@ namespace Kalkatos.Rpsls
             //TODO Create and place the cards
 
             // Send ready event Action
-            GameManagerClient.SetReadyToStartMatch();
+            GameManagerClient.Instance.SetReadyToStartMatch();
             // Wait for other player ready
-            while (!isOtherPlayerReadyForMatch)
-                yield return null;
             StartCoroutine(TurnLoop());
         }
 

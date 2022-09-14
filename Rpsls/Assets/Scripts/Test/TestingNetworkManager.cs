@@ -74,7 +74,7 @@ namespace Kalkatos.Rpsls.Test
                 LeaveRoom();
             if (connectedPlayers.Count <= 1)
             {
-                Debug.Log("[Testing] Cleaning up to quit.");
+                this.Log("Cleaning up to quit.");
                 connectedPlayers.Clear();
                 SaveManager.DeleteKey(connectedPlayersKey);
                 SaveManager.DeleteKey(activeRoomsKey);
@@ -203,7 +203,7 @@ namespace Kalkatos.Rpsls.Test
                     {
                         if (!item.Value.PlayersWhoExecuted.Contains(playerId))
                         {
-                            Debug.Log("Event received " + item.Value.EventKey);
+                            this.Log("Event received " + item.Value.EventKey);
                             RaiseEventReceived(item.Value.EventKey, item.Value.Parameters);
                             item.Value.PlayersWhoExecuted.Add(playerId);
                         }
@@ -254,7 +254,7 @@ namespace Kalkatos.Rpsls.Test
             this.Wait(randomTime, () =>
             {
                 IsConnected = true;
-                Debug.Log("[Testing] Connected");
+                this.Log("Connected");
                 LogIn();
             });
         }
@@ -298,7 +298,7 @@ namespace Kalkatos.Rpsls.Test
                 connectedPlayers.Add(playerId, myPlayerInfo);
                 SaveLists();
                 StartCoroutine(CheckCoroutine());
-                Debug.Log("[Testing] Logged In");
+                this.Log("Logged In");
                 RaiseLogInSuccess();
             });
         }
@@ -321,7 +321,7 @@ namespace Kalkatos.Rpsls.Test
             if (parameter is RoomOptions)
             {
                 RoomOptions options = (RoomOptions)parameter;
-                Debug.Log("[Testing] Creating Room");
+                this.Log("Creating Room");
                 this.Wait(randomTime, () =>
                 {
                     LoadLists();
@@ -338,7 +338,7 @@ namespace Kalkatos.Rpsls.Test
                     SaveLists();
                     RaiseFindMatchSuccess();
                     RaisePlayerEnteredRoom(MyPlayerInfo);
-                    Debug.Log($"[Testing] Room created: {newRoom.Id}");
+                    this.Log($"Room created: {newRoom.Id}");
                 });
             }
             else if (parameter is string)
@@ -353,12 +353,12 @@ namespace Kalkatos.Rpsls.Test
                         if (room.IsClosed)
                         {
                             RaiseFindMatchFailure(FindMatchError.RoomIsClosed);
-                            Debug.Log($"[Testing] Room is closed: {wantedRoom}");
+                            this.Log($"Room is closed: {wantedRoom}");
                         }
                         else if (room.PlayerCount >= room.MaxPlayers)
                         {
                             RaiseFindMatchFailure(FindMatchError.RoomIsFull);
-                            Debug.Log($"[Testing] Room is full: {wantedRoom}");
+                            this.Log($"Room is full: {wantedRoom}");
                         }
                         else
                         {
@@ -370,13 +370,13 @@ namespace Kalkatos.Rpsls.Test
                             SaveLists();
                             RaiseFindMatchSuccess();
                             RaisePlayerEnteredRoom(MyPlayerInfo);
-                            Debug.Log($"[Testing] Entering room: {room.Id}");
+                            this.Log($"Entering room: {room.Id}");
                         }
                     }
                     else
                     {
                         RaiseFindMatchFailure(FindMatchError.RoomNotFound);
-                        Debug.Log($"[Testing] Room not found: {wantedRoom}");
+                        this.Log($"Room not found: {wantedRoom}");
                     }
                 });
             }
@@ -395,7 +395,7 @@ namespace Kalkatos.Rpsls.Test
             LoadLists();
             LeaveRoom();
             SaveLists();
-            Debug.Log("[Testing] Left Room.");
+            this.Log("Left Room.");
         }
 
         public override void UpdateMyCustomData (params object[] parameters)
@@ -461,7 +461,7 @@ namespace Kalkatos.Rpsls.Test
             Assert.IsTrue(IsConnected);
             Assert.IsTrue(IsInRoom);
 
-            Debug.Log("Sent event: " + eventKey);
+            this.Log("Sent event: " + eventKey);
             EventExecution execution = new EventExecution()
             {
                 Id = newSmallGuid,
@@ -524,7 +524,8 @@ namespace Kalkatos.Rpsls.Test
                         PlayerInfo newPlayer = new PlayerInfo()
                         {
                             Id = newPlayerId,
-                            Nickname = CreateGuestName()
+                            Nickname = CreateGuestName(),
+                            IsBot = true
                         };
                         connectedPlayers.Add(newPlayerId, newPlayer);
                         CurrentRoomInfo.Players.Add(newPlayer);
