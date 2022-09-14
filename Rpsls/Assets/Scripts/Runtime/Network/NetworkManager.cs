@@ -127,6 +127,7 @@ namespace Kalkatos.Network
         public string Nickname;
         public bool IsMasterClient;
         public bool IsMe;
+        public bool IsBot;
         public Dictionary<string, object> CustomData = new Dictionary<string, object>();
 
         public PlayerInfo () { }

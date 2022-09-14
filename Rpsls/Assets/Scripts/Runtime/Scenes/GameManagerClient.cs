@@ -1,39 +1,25 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 using Kalkatos.Network;
-using Newtonsoft.Json;
 
 namespace Kalkatos.Rpsls
 {
-    public class GameManagerClient : MonoBehaviour
+    public class GameManagerClient : Client
     {
         public static GameManagerClient Instance { get; private set; }
 
         public static event Action<List<PlayerInfo>> OnPlayerListReceived;
         public static event Action<TournamentInfo> OnTournamentUpdated;
-        public static event Action OnOtherPlayerReadyForMatch;
 
-        private string myId;
-        private string currentOpponentId;
-        private ClientState currentState;
         private Dictionary<string, PlayerInfo> players = new Dictionary<string, PlayerInfo>();
-        private TournamentInfo tournament;
-        private MatchInfo currentMatch;
 
         private static PlayerInfo myInfo => NetworkManager.Instance.MyPlayerInfo;
         private static RoomInfo roomInfo => NetworkManager.Instance.CurrentRoomInfo;
 
-        private void Awake ()
+        protected override void OnAwake ()
         {
             Instance = this;
-            myId = myInfo.Id;
-            NetworkManager.OnEventReceived += HandleEventReceived;
-        }
-
-        private void OnDestroy ()
-        {
-            NetworkManager.OnEventReceived -= HandleEventReceived;
+            SetInfo(myInfo);
         }
 
         private void Start ()
@@ -46,44 +32,13 @@ namespace Kalkatos.Rpsls
                 players.Add(info.Id, info);
             }
             OnPlayerListReceived?.Invoke(playerList);
-            currentState = ClientState.GameReady;
-            NetworkManager.Instance.SendData($"{Keys.ClientIdKey}-{myId}", (int)currentState);
+            SetReadyInGame();
         }
 
-        private void HandleEventReceived (string key, object[] parameters)
+        public override void SetTournament (TournamentInfo tournamentInfo)
         {
-            this.Log("Event received in client: " + key);
-            Dictionary<string, object> paramDict = parameters.ToDictionary();
-            switch (key)
-            {
-                case Keys.TournamentUpdateEvt:
-                    if (paramDict.TryGetValue(Keys.TournamentInfoKey, out object value))
-                    {
-                        this.Log($"Tournament received:     {value}");
-                        tournament = JsonConvert.DeserializeObject<TournamentInfo>(value.ToString());
-                        OnTournamentUpdated?.Invoke(tournament);
-                        foreach (var item in tournament.Matches)
-                        {
-                            if (item.Player1.Id == myId)
-                            {
-                                currentMatch = item;
-                                currentOpponentId = item.Player2?.Id ?? "";
-                            }
-                            else if (item.Player2 != null && item.Player2.Id == myId)
-                            {
-                                currentMatch = item;
-                                currentOpponentId = item.Player1.Id;
-                            }
-                        }
-                    }
-                    else
-                        this.LogWarning("Didn't receive the key " + Keys.TournamentInfoKey);
-                    break;
-                case Keys.ReadyForMatchEvt:
-                    if (paramDict.TryGetValue(Keys.ClientIdKey, out object id) && id.ToString() == currentOpponentId)
-                        OnOtherPlayerReadyForMatch?.Invoke();
-                    break;
-            }
+            base.SetTournament(tournamentInfo);
+            OnTournamentUpdated?.Invoke(tournamentInfo);
         }
 
         public static void ExitRoom ()
@@ -91,18 +46,14 @@ namespace Kalkatos.Rpsls
             SceneManager.EndScene("Game");
             NetworkManager.Instance.LeaveMatch();
         }
-
-        public static void SetReadyToStartMatch ()
-        {
-            NetworkManager.Instance.ExecuteEvent(Keys.ReadyForMatchEvt, Keys.ClientIdKey, Instance.myId);
-        }
     }
 
     public enum ClientState
     {
-        Undefined,
-        GameReady,
-        MatchPresentation,
+        Undefined = 0,
+        GameReady = -100,
+        MatchReady = -50,
+
     }
 
     internal static class Keys
@@ -112,7 +63,7 @@ namespace Kalkatos.Rpsls
         public const string ClientIdKey = "PlrId";
         //Events
         public const string TournamentUpdateEvt = "TmtUp";
-        public const string ReadyForMatchEvt = "RdyMt";
+        public const string TurnUpdateEvt = "TuUpt";
     }
 
     public class MatchInfo

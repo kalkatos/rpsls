@@ -29,7 +29,7 @@ namespace Kalkatos.Rpsls
             NetworkManager.OnEventReceived += HandleEventReceived;
             NetworkManager.OnRequestDataSuccess += HandleRequestDataSuccess;
 
-            WaitUntil(() => isConnectedAndInRoom, GetPlayers);
+            StartCoroutine(GameLoop());
         }
 
         private void OnDestroy ()
@@ -38,33 +38,24 @@ namespace Kalkatos.Rpsls
             NetworkManager.OnRequestDataSuccess -= HandleRequestDataSuccess;
         }
 
-        private void GetPlayers ()
+        private IEnumerator GameLoop ()
         {
-            List<PlayerInfo> list = NetworkManager.Instance.CurrentRoomInfo.Players.CloneList();
-            for (int i = 0; i < list.Count; i++)
-                players.Add(list[i].Id, list[i]);
+            yield return WaitUntil(() => isConnectedAndInRoom);
+            GetPlayers();
             PrepareTournament();
-            CheckClientsState(ClientState.GameReady, SendTournament);
+            yield return WaitClientsState(ClientState.GameReady);
+            SendTournament();
+            yield return WaitClientsState(ClientState.MatchReady);
+            Debug.Log("Everyone ready for match!");
         }
 
-        private void WaitUntil (Func<bool> condition, Action callback)
-        {
-            StartCoroutine(WaitUntilCoroutine(condition, callback));
-        }
-
-        private IEnumerator WaitUntilCoroutine (Func<bool> condition, Action callback)
+        private IEnumerator WaitUntil (Func<bool> condition)
         {
             while (!condition.Invoke())
                 yield return wait;
-            callback?.Invoke();
         }
 
-        private void CheckClientsState (ClientState expectedState, Action callback)
-        {
-            StartCoroutine(CheckClientsStateCoroutine(expectedState, callback));
-        }
-
-        private IEnumerator CheckClientsStateCoroutine (ClientState expectedState, Action callback)
+        private IEnumerator WaitClientsState (ClientState expectedState)
         {
             clientsChecked.Clear();
             while (players.Count > clientsChecked.Count)
@@ -90,7 +81,6 @@ namespace Kalkatos.Rpsls
                 if (correctStateCount == players.Count)
                     break;
             }
-            callback?.Invoke();
         }
 
         private void HandleRequestDataSuccess (object[] parameters)
@@ -103,7 +93,21 @@ namespace Kalkatos.Rpsls
 
         private void HandleEventReceived (string key, object[] parameters)
         {
-            //TODO Receive other players ready
+            
+        }
+
+        private void GetPlayers ()
+        {
+            List<PlayerInfo> list = NetworkManager.Instance.CurrentRoomInfo.Players.CloneList();
+            for (int i = 0; i < list.Count; i++)
+            {
+                players.Add(list[i].Id, list[i]); 
+                if (list[i].IsBot)
+                {
+                    BotClient bot = gameObject.AddComponent<BotClient>();
+                    bot.SetInfo(list[i]);
+                }
+            }
         }
 
         private void PrepareTournament ()
