@@ -12,8 +12,6 @@ namespace Kalkatos.Tournament
         [SerializeField] private GameObject timerBarObj;
         [SerializeField] private RectTransform timerBar;
         [SerializeField, ChildGameObjectsOnly] private Button exitButton;
-        [Header("Positions")]
-        [SerializeField] private Transform[] playmatPositions;
         [Header("Config")]
         [SerializeField] private TournamentGameSettings settings;
 
@@ -39,7 +37,7 @@ namespace Kalkatos.Tournament
         private IEnumerator GameSetupAnimations ()
         {
             yield return new WaitForSeconds(0.5f);
-            //TODO Create and place playmats
+
             //TODO Create and place the cards
 
             // Send ready event Action
