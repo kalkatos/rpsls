@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 502bcd9db609e704ba57aea3411af6d4, type: 3}
   m_Name: TournamentGameSettings
   m_EditorClassIdentifier: 
-  MaxPlayers: 8
+  MaxPlayers: 10
   DelayBeforeStarting: 3
   RoomInfoSlotPrefab: {fileID: 2484671227098352049, guid: ce25457a3ef788a4c9d7a05ea2f4ff48, type: 3}
   GameInfoSlotPrefab: {fileID: 65353391401825626, guid: cbd2f5628b89fd74d8f51626c1fa8f72, type: 3}
@@ -25,3 +25,4 @@ MonoBehaviour:
   MoveToVersusTime: 1
   VersusAnimationTime: 2
   DockingTime: 1
+  MovePlaymatsTime: 0.7

@@ -17,7 +17,7 @@ namespace Kalkatos.Tournament
         [SerializeField, ChildGameObjectsOnly] private GridLayoutGroup playerSlotsListParent;
         [SerializeField, ChildGameObjectsOnly] private GridLayoutGroup tournamentMatchesParent;
         [SerializeField] private Transform tournamentStructure;
-        
+        [SerializeField] private Transform[] matchBubbles;
         [Header("Positions")]
         [SerializeField] private Transform[] versusPositions;
         [SerializeField] private Transform[] battlePositions;
@@ -25,6 +25,7 @@ namespace Kalkatos.Tournament
         [SerializeField] private Transform[] centerPositions;
         [SerializeField] private Transform[] matchesPositions;
         [SerializeField] private Transform[] tournamentPositions;
+        [SerializeField] private Transform[] playmatPositions;
         [Header("Config")]
         [SerializeField] private TournamentGameSettings settings;
 
@@ -154,7 +155,9 @@ namespace Kalkatos.Tournament
             // Wait for tournament info
             while (tournamentInfo == null)
                 yield return null;
+
             // TODO Set the BYE player badge, if any
+
             if (tournamentInfo.Matches.Length > 1)
             {
                 // Build tournament structure
@@ -162,20 +165,22 @@ namespace Kalkatos.Tournament
                 for (int i = 0; i < matchesPositions.Length; i++)
                     matchesPositions[i].gameObject.SetActive(i < tournamentInfo.Matches.Length);
                 int index = 0;
+
+                // TODO Round X animation
+
                 // Move each player slot to its position with a jump
                 foreach (var item in tournamentInfo.Matches)
                 {
                     string p1 = item.Player1.Id;
                     string p2 = item.Player2?.Id ?? "";
-                    MoveAndScaleTo(playerSlots[p1].transform, tournamentPositions[index++], moveToTournamentTime, true);
+                    playerSlots[p1].transform.MoveAndScaleTo(tournamentPositions[index++], moveToTournamentTime, true);
                     int p2Index = index++;
                     if (!string.IsNullOrEmpty(p2))
-                        MoveAndScaleTo(playerSlots[p2].transform, tournamentPositions[p2Index], moveToTournamentTime, true);
+                        playerSlots[p2].transform.MoveAndScaleTo(tournamentPositions[p2Index], moveToTournamentTime, true);
                 }
                 //  Move tournament structure to view
                 tournamentStructure.DOLocalMove(Vector3.zero, moveToTournamentTime / 2f);
                 yield return new WaitForSeconds(moveToTournamentTime + settings.TournamentShowTime);
-                tournamentMatchesParent.enabled = false;
                 // Hide tournament structure
                 tournamentStructure.DOLocalMove(tournamentHiddenPosition, moveToTournamentTime / 2f);
             }
@@ -189,25 +194,24 @@ namespace Kalkatos.Tournament
             {
                 float moveToVersusTime = settings.MoveToVersusTime;
                 int sidePositionsIndex = 0;
-                for (int i = 0; i < matchesPositions.Length; i++)
+                for (int i = 0; i < matchBubbles.Length; i++)
                 {
                     if (i == myMatchIndex)
                     {
                         // Move my opponent and mine slots to the center of the screen BIG
-                        matchesPositions[i].gameObject.SetActive(false);
-                        MoveAndScaleTo(playerSlots[myId].transform, versusPositions[1], moveToVersusTime);
-                        MoveAndScaleTo(playerSlots[currentOpponentId].transform, versusPositions[0], moveToVersusTime);
+                        matchBubbles[i].gameObject.SetActive(false);
+                        playerSlots[myId].transform.MoveAndScaleTo(versusPositions[1], moveToVersusTime);
+                        playerSlots[currentOpponentId].transform.MoveAndScaleTo(versusPositions[0], moveToVersusTime);
                     }
                     else
                     {
-                        MoveAndScaleTo(matchesPositions[i], sidePositions[sidePositionsIndex++], moveToVersusTime);
                         //      also Move each other player to the sides of the screen (small) according to their matches
-                        //MoveAndScaleTo(playerSlots[item.Player1.Id].transform, sidePositions[sidePositionsIndex++], moveToVersusTime);
-                        //if (item.Player2 != null)
-                        //    MoveAndScaleTo(playerSlots[item.Player2.Id].transform, sidePositions[sidePositionsIndex++], moveToVersusTime);
+                        matchBubbles[i].MoveAndScaleTo(sidePositions[sidePositionsIndex++], moveToVersusTime);
                     }
                 }
+
                 // TODO Play a versus animation
+
                 float versusAnimationTime = settings.VersusAnimationTime;
 
                 yield return new WaitForSeconds(moveToVersusTime + versusAnimationTime);
@@ -215,8 +219,8 @@ namespace Kalkatos.Tournament
             float dockingTime = settings.DockingTime;
             // Dock my opponent slot at the top of the screen and mine at the bottom
             if (haveOpponent)
-                MoveAndScaleTo(playerSlots[currentOpponentId].transform, battlePositions[0], dockingTime);
-            MoveAndScaleTo(playerSlots[myId].transform, battlePositions[1], dockingTime);
+                playerSlots[currentOpponentId].transform.MoveAndScaleTo(battlePositions[0], dockingTime);
+            playerSlots[myId].transform.MoveAndScaleTo(battlePositions[1], dockingTime);
             if (!haveOpponent)
             {
                 // If I am bye, move opponents' battles to the center of the screen
@@ -225,24 +229,36 @@ namespace Kalkatos.Tournament
                 {
                     if (item == myMatch)
                         continue;
-                    MoveAndScaleTo(playerSlots[item.Player1.Id].transform, centerPositions[centerPositionsIndex++], dockingTime);
-                    MoveAndScaleTo(playerSlots[item.Player2.Id].transform, centerPositions[centerPositionsIndex++], dockingTime);
+                    playerSlots[item.Player1.Id].transform.MoveAndScaleTo(centerPositions[centerPositionsIndex++], dockingTime);
+                    playerSlots[item.Player2.Id].transform.MoveAndScaleTo(centerPositions[centerPositionsIndex++], dockingTime);
                 }
+            }
+            else
+            {
+                // Create and move playmats to their position
+                float movePlaymatsTime = settings.MovePlaymatsTime;
+                GameObject topPlaymat = Instantiate(settings.PlaymatTopPrefab, playmatPositions[0]);
+                topPlaymat.transform.localPosition = Vector3.up * 700;
+                GameObject bottomPlaymat = Instantiate(settings.PlaymatBottomPrefab, playmatPositions[1]);
+                bottomPlaymat.transform.localPosition = Vector3.down * 700;
+                topPlaymat.transform.MoveAndScaleTo(playmatPositions[0], movePlaymatsTime);
+                bottomPlaymat.transform.MoveAndScaleTo(playmatPositions[1], movePlaymatsTime);
+                yield return new WaitForSeconds(movePlaymatsTime);
             }
             OnTournamentIntroFinished?.Invoke();
         }
 
-        #endregion
-
-        private void MoveAndScaleTo (Transform obj, Transform destination, float time, bool jump = false)
+        private IEnumerator MatchesEndedAnimation ()
         {
-            obj.SetParent(destination);
-            if (jump)
-                obj.DOLocalJump(Vector3.zero, 2, 1, time);
-            else
-                obj.DOLocalMove(Vector3.zero, time);
-            obj.DOScale(Vector3.one, time);
+            // TODO Reencapsulate the player and his opponent slot match
+            // TODO Reparent matches bubbles to their structure
+            // TODO     and present them in the center with record (1-0, 0-1, etc)
+            // TODO Go to Tournament round start again
+
+            yield return null;
         }
+
+        #endregion
 
         private PlayerInfoSlot CreateSlot (PlayerInfo info)
         {

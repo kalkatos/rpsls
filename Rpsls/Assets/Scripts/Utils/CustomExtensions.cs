@@ -2,11 +2,26 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 namespace Kalkatos
 {
     public static class CustomExtensions
     {
+        #region Transform (via DOTween) =========================================
+
+        public static void MoveAndScaleTo (this Transform obj, Transform destination, float time, bool jump = false)
+        {
+            obj.SetParent(destination);
+            if (jump)
+                obj.DOLocalJump(Vector3.zero, 2, 1, time);
+            else
+                obj.DOLocalMove(Vector3.zero, time);
+            obj.DOScale(Vector3.one, time);
+        }
+
+        #endregion
+
         #region MonoBehaviour ================================================
 
         private static IEnumerator Wait (float time, Action callback)
