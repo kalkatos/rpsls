@@ -35,10 +35,10 @@ namespace Kalkatos.Tournament
             SetReadyInGame();
         }
 
-        public override void SetTournament (TournamentInfo tournamentInfo)
+        public override void SetRound (RoundInfo roundInfo)
         {
-            base.SetTournament(tournamentInfo);
-            OnTournamentUpdated?.Invoke(tournamentInfo);
+            base.SetRound(roundInfo);
+            OnRoundReceived?.Invoke(roundInfo);
         }
 
         public static void ExitRoom ()
@@ -58,10 +58,12 @@ namespace Kalkatos.Tournament
 
     internal static class Keys
     {
-        //Dictionary keys
+        // Keys for Player Info Custom Data
+        public const string IsByeKey = "IsBye";
+        // Dictionary keys for event parameters
         public const string TournamentInfoKey = "TInfo";
         public const string ClientIdKey = "PlrId";
-        //Events
+        // Event handles
         public const string TournamentUpdateEvt = "TmtUp";
         public const string TurnUpdateEvt = "TuUpt";
     }
@@ -75,7 +77,7 @@ namespace Kalkatos.Tournament
         public int Player2Wins;
     }
 
-    public class TournamentInfo
+    public class RoundInfo
     {
         public MatchInfo[] Matches;
     }

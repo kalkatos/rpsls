@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Kalkatos.Tournament
 {
-    [CreateAssetMenu(menuName = "Rpsls/Game Settings", fileName = "RpslsGameSettings")]
+    [CreateAssetMenu(menuName = "Fire Tournament/Settings", fileName = "TournamentGameSettings")]
     public class TournamentGameSettings : SingletonScriptableObject<TournamentGameSettings>
     {
         [Header("Game Configuration")]
@@ -18,7 +18,7 @@ namespace Kalkatos.Tournament
         [Header("Animation Time")]
         public float IntroAnimationTime = 2f;
         public float DelayBetweenSlotsAppearing = 0.1f;
-        public float MoveToTournamentTime = 1f;
+        public float MoveToBubblesTime = 1f;
         public float TournamentShowTime = 2f;
         public float MoveToVersusTime = 1f;
         public float VersusAnimationTime = 2f;
