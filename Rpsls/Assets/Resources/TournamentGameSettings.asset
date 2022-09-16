@@ -15,7 +15,7 @@ MonoBehaviour:
   MaxPlayers: 10
   DelayBeforeStarting: 3
   RoomInfoSlotPrefab: {fileID: 2484671227098352049, guid: ce25457a3ef788a4c9d7a05ea2f4ff48, type: 3}
-  GameInfoSlotPrefab: {fileID: 5226735126310528078, guid: 4fd2735ee900a314ba69f53f93c16100, type: 3}
+  GameInfoSlotPrefab: {fileID: 65353391401825626, guid: cbd2f5628b89fd74d8f51626c1fa8f72, type: 3}
   PlaymatTopPrefab: {fileID: 1173353055995432643, guid: 65233381157593f46acf684d0853e1ce, type: 3}
   PlaymatBottomPrefab: {fileID: 1511664127826312114, guid: a98db75143394b048b69d55314d615df, type: 3}
   IntroAnimationTime: 2
