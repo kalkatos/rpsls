@@ -9,7 +9,7 @@ namespace Kalkatos.Tournament
         public static GameManagerClient Instance { get; private set; }
 
         public static event Action<List<PlayerInfo>> OnPlayerListReceived;
-        public static event Action<TournamentInfo> OnTournamentUpdated;
+        public static event Action<RoundInfo> OnRoundReceived;
 
         private Dictionary<string, PlayerInfo> players = new Dictionary<string, PlayerInfo>();
 
