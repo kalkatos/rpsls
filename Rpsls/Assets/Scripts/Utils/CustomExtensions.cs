@@ -61,6 +61,24 @@ namespace Kalkatos
 
         #region Dictionary & List ================================================
 
+        public static bool IsEqual (this Dictionary<string, object> dict, Dictionary<string, object> otherDict)
+        {
+            if (ReferenceEquals(dict, null) ^ ReferenceEquals(otherDict, null))
+                return false;
+            if (ReferenceEquals(dict, otherDict))
+                return true;
+            if (dict.Count != otherDict.Count)
+                return false;
+            foreach (var item in dict)
+            {
+                if (!otherDict.ContainsKey(item.Key))
+                    return false;
+                if (otherDict[item.Key] != item.Value)
+                    return false;
+            }
+            return true;
+        }
+
         public static Dictionary<string, T> UpdateOrAdd<T> (this Dictionary<string, T> dict, string key, T value)
         {
             if (ReferenceEquals(dict, null))
