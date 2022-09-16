@@ -51,7 +51,7 @@ namespace Kalkatos.Tournament
         private void OnDestroy ()
         {
             GameManagerClient.OnPlayerListReceived -= HandlePlayerListReceived;
-            GameManagerClient.OnTournamentUpdated -= HandleTournamentUpdated;
+            GameManagerClient.OnRoundReceived -= HandleRoundReceived;
         }
 
         private void Start ()
