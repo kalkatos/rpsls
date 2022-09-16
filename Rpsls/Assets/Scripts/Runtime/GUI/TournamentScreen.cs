@@ -42,7 +42,7 @@ namespace Kalkatos.Tournament
         private void Awake ()
         {
             GameManagerClient.OnPlayerListReceived += HandlePlayerListReceived;
-            GameManagerClient.OnTournamentUpdated += HandleTournamentUpdated;
+            GameManagerClient.OnRoundReceived += HandleRoundReceived;
             settings = TournamentGameSettings.Instance;
             myId = NetworkManager.Instance.MyPlayerInfo.Id;
             tournamentHiddenPosition = tournamentStructure.localPosition;
