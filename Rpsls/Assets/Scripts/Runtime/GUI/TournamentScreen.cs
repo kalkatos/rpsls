@@ -41,7 +41,7 @@ namespace Kalkatos.Tournament
 
         private void Awake ()
         {
-            GameManagerClient.OnPlayerListReceived += HandlePlayerListReceived;
+            GameManagerClient.OnPlayerListUpdated += HandlePlayerListUpdated;
             GameManagerClient.OnRoundReceived += HandleRoundReceived;
             settings = TournamentGameSettings.Instance;
             myId = NetworkManager.Instance.MyPlayerInfo.Id;
@@ -50,7 +50,7 @@ namespace Kalkatos.Tournament
 
         private void OnDestroy ()
         {
-            GameManagerClient.OnPlayerListReceived -= HandlePlayerListReceived;
+            GameManagerClient.OnPlayerListUpdated -= HandlePlayerListUpdated;
             GameManagerClient.OnRoundReceived -= HandleRoundReceived;
         }
 
@@ -59,19 +59,26 @@ namespace Kalkatos.Tournament
             StartCoroutine(TournamentAnimations());
         }
 
-        private void HandlePlayerListReceived (List<PlayerInfo> receivedPlayers)
+        private void HandlePlayerListUpdated (PlayerInfo[] receivedPlayers)
         {
-            if (receivedPlayers.Count == 2 && receivedPlayers[0].Id == myId)
+            if (receivedPlayers.Length == 2 && receivedPlayers[0].Id == myId)
             {
                 PlayerInfo myInfo = receivedPlayers[0];
-                receivedPlayers.Remove(myInfo);
-                receivedPlayers.Add(myInfo);
+                receivedPlayers[0] = receivedPlayers[1];
+                receivedPlayers[1] = myInfo;
             }
-            for (int i = 0; i < receivedPlayers.Count; i++)
+            for (int i = 0; i < receivedPlayers.Length; i++)
             {
-                PlayerInfoSlot slot = CreateSlot(receivedPlayers[i]);
-                playerSlots.Add(receivedPlayers[i].Id, slot);
-                slot.transform.localScale = 0.01f * Vector3.one;
+                if (playerSlots.TryGetValue(receivedPlayers[i].Id, out PlayerInfoSlot slot))
+                {
+                    slot.HandlePlayerInfo(receivedPlayers[i]);
+                }
+                else
+                {
+                    slot = CreateSlot(receivedPlayers[i]);
+                    playerSlots.Add(receivedPlayers[i].Id, slot);
+                    slot.transform.localScale = 0.01f * Vector3.one;
+                }
             }
         }
 
