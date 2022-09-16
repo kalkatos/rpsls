@@ -8,7 +8,7 @@ namespace Kalkatos.Tournament
     {
         public static GameManagerClient Instance { get; private set; }
 
-        public static event Action<List<PlayerInfo>> OnPlayerListReceived;
+        public static event Action<PlayerInfo[]> OnPlayerListUpdated;
         public static event Action<RoundInfo> OnRoundReceived;
 
         private Dictionary<string, PlayerInfo> players = new Dictionary<string, PlayerInfo>();
@@ -18,8 +18,14 @@ namespace Kalkatos.Tournament
 
         protected override void OnAwake ()
         {
+            NetworkManager.OnPlayerDataChanged += HandlePlayerDataChanged;
             Instance = this;
             SetInfo(myInfo);
+        }
+
+        private void OnDestroy ()
+        {
+            NetworkManager.OnPlayerDataChanged -= HandlePlayerDataChanged;
         }
 
         private void Start ()
@@ -31,8 +37,18 @@ namespace Kalkatos.Tournament
                 PlayerInfo info = playerList[i];
                 players.Add(info.Id, info);
             }
-            OnPlayerListReceived?.Invoke(playerList);
+            OnPlayerListUpdated?.Invoke(playerList.ToArray());
             SetReadyInGame();
+        }
+
+        private void HandlePlayerDataChanged (PlayerInfo obj)
+        {
+            if (!players.ContainsKey(obj.Id))
+                return;
+            players[obj.Id] = obj;
+            PlayerInfo[] playerList = new PlayerInfo[players.Count];
+            players.Values.CopyTo(playerList, 0);
+            OnPlayerListUpdated?.Invoke(playerList);
         }
 
         public override void SetRound (RoundInfo roundInfo)
