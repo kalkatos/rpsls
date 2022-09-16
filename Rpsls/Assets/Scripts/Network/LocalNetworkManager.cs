@@ -4,13 +4,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 using Random = UnityEngine.Random;
-using Kalkatos.Network;
 using Newtonsoft.Json;
 
-namespace Kalkatos.Tournament.Test
+namespace Kalkatos.Network
 {
     [DefaultExecutionOrder(-10)]
-    public class TestingNetworkManager : NetworkManager
+    public class LocalNetworkManager : NetworkManager
     {
         [Header("Debug")]
         [SerializeField] private bool bypassConnection;
@@ -27,6 +26,7 @@ namespace Kalkatos.Tournament.Test
         private string playerId;
         private string roomId;
         private float eventLifetime = 300;
+        private string masterKey = "";
         private Dictionary<string, PlayerInfo> lastKnownPlayers = new Dictionary<string, PlayerInfo>();
         private Dictionary<string, PlayerInfo> connectedPlayers = new Dictionary<string, PlayerInfo>();
         private Dictionary<string, RoomInfo> activeRooms = new Dictionary<string, RoomInfo>();
@@ -182,7 +182,7 @@ namespace Kalkatos.Tournament.Test
                         {
                             if (!isKnownPlayer)
                                 RaisePlayerEnteredRoom(player);
-                            else if (player.CustomData != lastKnownPlayers[player.Id].CustomData ||
+                            else if (!player.CustomData.IsEqual(lastKnownPlayers[player.Id].CustomData) ||
                                 player.Nickname != lastKnownPlayers[player.Id].Nickname)
                                 RaisePlayerDataChanged(player);
                         }
@@ -407,6 +407,24 @@ namespace Kalkatos.Tournament.Test
             connectedPlayers[playerId].CustomData = myData.UpdateOrAdd(parameters.ToDictionary());
             SaveLists();
             RaisePlayerDataChanged(MyPlayerInfo);
+        }
+
+        public override void UpdatePlayerCustomData (string playerId, params object[] parameters)
+        {
+            Assert.IsTrue(IsConnected);
+            Assert.IsTrue(connectedPlayers.ContainsKey(playerId));
+
+            Dictionary<string, object> paramDict = parameters.ToDictionary();
+            Assert.IsTrue(paramDict.ContainsKey("MasterKey") && paramDict["MasterKey"].ToString() == masterKey);
+            paramDict.Remove("MasterKey");
+            // TODO Add a verification of the master key
+
+            LoadLists();
+            Dictionary<string, object> myData = connectedPlayers[playerId].CustomData;
+            connectedPlayers[playerId].CustomData = myData.UpdateOrAdd(paramDict);
+            SaveLists();
+            if (playerId == this.playerId)
+                RaisePlayerDataChanged(MyPlayerInfo);
         }
 
         public override void UpdateRoomData (params object[] parameters)

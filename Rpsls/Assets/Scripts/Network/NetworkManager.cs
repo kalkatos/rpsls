@@ -79,7 +79,8 @@ namespace Kalkatos.Network
         public virtual void LogIn (object parameter = null) => Debug.LogError("LogIn not implemented!");
         public virtual void FindMatch (object parameter = null) => Debug.LogError("FindMatch not implemented!");
         public virtual void LeaveMatch (object parameter = null) => Debug.LogError("LeaveMatch not implemented!");
-        public virtual void UpdateMyCustomData (params object[] parameters) => Debug.LogError("SetMyCustomData not implemented!");
+        public virtual void UpdateMyCustomData (params object[] parameters) => Debug.LogError("UpdateMyCustomData not implemented!");
+        public virtual void UpdatePlayerCustomData (string playerId, params object[] parameters) => Debug.LogError("UpdatePlayerCustomData not implemented!");
         public virtual void UpdateRoomData (params object[] parameters) => Debug.LogError("SetRoomData not implemented!");
         public virtual void SendData (params object[] parameters) => Debug.LogError("SendData not implemented!");
         public virtual void RequestData (params object[] parameters) { Debug.LogError("RequestData not implemented!"); }

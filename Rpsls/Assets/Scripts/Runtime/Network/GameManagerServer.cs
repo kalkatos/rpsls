@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 
 namespace Kalkatos.Tournament
 {
+
     public class GameManagerServer : MonoBehaviour
     {
         private RoundInfo currentTournament;
@@ -120,7 +121,16 @@ namespace Kalkatos.Tournament
             for (int i = 0; i < keys.Length; i += 2)
             {
                 bool isByePlayer = i + 1 >= keys.Length;
-                MatchInfo newMatch = GetNewMatch(players[keys[i]], isByePlayer ? null : players[keys[i + 1]]);
+                PlayerInfo p1 = players[keys[i]];
+                PlayerInfo p2 = isByePlayer ? null : players[keys[i + 1]];
+                p1.CustomData.UpdateOrAdd(new Dictionary<string, object>() { { Keys.IsByeKey, isByePlayer } });
+                NetworkManager.Instance.UpdatePlayerCustomData(p1.Id, "MasterKey", "", p1.CustomData.ToObjArray());
+                if (p2 != null)
+                {
+                    p2.CustomData.UpdateOrAdd(new Dictionary<string, object>() { { Keys.IsByeKey, false } });
+                    NetworkManager.Instance.UpdatePlayerCustomData(p2.Id, "MasterKey", "", p2.CustomData.ToObjArray());
+                }
+                MatchInfo newMatch = GetNewMatch(p1, p2);
                 matchList.Add(newMatch);
             }
             currentTournament.Matches = matchList.ToArray();
