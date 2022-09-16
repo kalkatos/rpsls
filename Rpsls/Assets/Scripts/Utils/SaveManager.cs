@@ -99,6 +99,64 @@ namespace Kalkatos
         }
     }
 
+    public class SaveInScriptable : ISaveImplementation
+    {
+        private Dictionary<string, string> dataDict = new Dictionary<string, string>();
+        private SaveScriptable scriptable;
+
+        public SaveInScriptable ()
+        {
+            scriptable = SaveScriptable.Instance;
+            if (scriptable != null)
+                dataDict = JsonConvert.DeserializeObject<Dictionary<string, string>>(scriptable.Data);
+            if (dataDict == null)
+                dataDict = new Dictionary<string, string>();
+        }
+
+        public void DeleteKey (string key)
+        {
+            dataDict.Remove(key);
+            scriptable.Data = JsonConvert.SerializeObject(dataDict);
+        }
+
+        public int GetInt (string key, int defaultValue)
+        {
+            if (HasKey(key))
+                return int.Parse(dataDict[key]);
+            return defaultValue;
+        }
+
+        public string GetString (string key, string defaultValue)
+        {
+            if (HasKey(key))
+                return dataDict[key];
+            return defaultValue;
+        }
+
+        public bool HasKey (string key)
+        {
+            return dataDict.ContainsKey(key);
+        }
+
+        public void SaveInt (string key, int value)
+        {
+            if (HasKey(key))
+                dataDict[key] = value.ToString();
+            else
+                dataDict.Add(key, value.ToString());
+            scriptable.Data = JsonConvert.SerializeObject(dataDict);
+        }
+
+        public void SaveString (string key, string value)
+        {
+            if (HasKey(key))
+                dataDict[key] = value;
+            else
+                dataDict.Add(key, value);
+            scriptable.Data = JsonConvert.SerializeObject(dataDict);
+        }
+    }
+
     public class SaveInFile : ISaveImplementation
     {
         private const float timeBetweenSaves = 0.1f;
