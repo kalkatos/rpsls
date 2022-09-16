@@ -9,7 +9,7 @@ namespace Kalkatos.Tournament
 {
     public class GameManagerServer : MonoBehaviour
     {
-        private TournamentInfo currentTournament;
+        private RoundInfo currentTournament;
         private Dictionary<string, PlayerInfo> players = new Dictionary<string, PlayerInfo>();
         private byte currentMatchId = 0;
         private List<Tuple<string, ClientState>> clientsChecked = new List<Tuple<string, ClientState>>();
@@ -112,7 +112,7 @@ namespace Kalkatos.Tournament
 
         private void PrepareTournament ()
         {
-            currentTournament = new TournamentInfo();
+            currentTournament = new RoundInfo();
             string[] keys = new string[players.Count];
             players.Keys.CopyTo(keys, 0);
             keys = keys.Shuffle();

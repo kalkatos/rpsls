@@ -10,9 +10,9 @@ namespace Kalkatos.Tournament
             SetReadyInGame();
         }
 
-        public override void SetTournament (TournamentInfo tournamentInfo)
+        public override void SetRound (RoundInfo tournamentInfo)
         {
-            base.SetTournament(tournamentInfo);
+            base.SetRound(tournamentInfo);
             SetReadyToStartMatch();
         }
     }

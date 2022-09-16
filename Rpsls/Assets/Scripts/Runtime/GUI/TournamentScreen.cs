@@ -33,9 +33,11 @@ namespace Kalkatos.Tournament
         private int myMatchIndex;
         private string currentOpponentId;
         private Dictionary<string, PlayerInfoSlot> playerSlots = new Dictionary<string, PlayerInfoSlot>();
-        private TournamentInfo tournamentInfo;
+        private RoundInfo roundInfo;
         private MatchInfo myMatch;
         private Vector3 tournamentHiddenPosition;
+        private Transform[] playmats = new Transform[2];
+        private bool isOver;
 
         private void Awake ()
         {
@@ -54,7 +56,7 @@ namespace Kalkatos.Tournament
 
         private void Start ()
         {
-            StartCoroutine(PlayersEntryAnimation());
+            StartCoroutine(TournamentAnimations());
         }
 
         private void HandlePlayerListReceived (List<PlayerInfo> receivedPlayers)
@@ -73,11 +75,11 @@ namespace Kalkatos.Tournament
             }
         }
 
-        private void HandleTournamentUpdated (TournamentInfo tournamentInfo)
+        private void HandleRoundReceived (RoundInfo roundInfo)
         {
-            this.tournamentInfo = tournamentInfo;
+            this.roundInfo = roundInfo;
             int index = 0;
-            foreach (var item in tournamentInfo.Matches)
+            foreach (var item in roundInfo.Matches)
             {
                 if (item.Player1.Id == myId)
                 {
@@ -125,6 +127,19 @@ namespace Kalkatos.Tournament
 
         #region ================= Animations ========================
 
+        private IEnumerator TournamentAnimations ()
+        {
+            yield return PlayersEntryAnimation();
+            while (!isOver)
+            {
+                yield return RoundStartAnimation();
+                yield return MatchStartAnimation();
+                while (roundInfo != null)
+                    yield return null;
+                yield return MatchesEndedAnimation();
+            }
+        }
+
         private IEnumerator PlayersEntryAnimation ()
         {
             // TODO Play an intro animation
@@ -147,29 +162,27 @@ namespace Kalkatos.Tournament
             foreach (var item in playerSlots)
                 item.Value.transform.SetParent(playerSlotsListParent.transform.parent);
             // Go to tournament presentation
-            StartCoroutine(TournamentStartAnimation());
         }
 
-        private IEnumerator TournamentStartAnimation ()
+        private IEnumerator RoundStartAnimation ()
         {
             // Wait for tournament info
-            while (tournamentInfo == null)
+            while (roundInfo == null)
                 yield return null;
 
             // TODO Set the BYE player badge, if any
 
-            if (tournamentInfo.Matches.Length > 1)
+            // Build tournament structure
+            float moveToTournamentTime = settings.MoveToBubblesTime;
+            for (int i = 0; i < matchesPositions.Length; i++)
+                matchesPositions[i].gameObject.SetActive(i < roundInfo.Matches.Length);
+
+            // TODO Round X animation
+            if (roundInfo.Matches.Length > 1)
             {
-                // Build tournament structure
-                float moveToTournamentTime = settings.MoveToTournamentTime;
-                for (int i = 0; i < matchesPositions.Length; i++)
-                    matchesPositions[i].gameObject.SetActive(i < tournamentInfo.Matches.Length);
-                int index = 0;
-
-                // TODO Round X animation
-
                 // Move each player slot to its position with a jump
-                foreach (var item in tournamentInfo.Matches)
+                int index = 0;
+                foreach (var item in roundInfo.Matches)
                 {
                     string p1 = item.Player1.Id;
                     string p2 = item.Player2?.Id ?? "";
@@ -184,7 +197,6 @@ namespace Kalkatos.Tournament
                 // Hide tournament structure
                 tournamentStructure.DOLocalMove(tournamentHiddenPosition, moveToTournamentTime / 2f);
             }
-            StartCoroutine(MatchStartAnimation());
         }
 
         private IEnumerator MatchStartAnimation ()
@@ -203,7 +215,7 @@ namespace Kalkatos.Tournament
                         playerSlots[myId].transform.MoveAndScaleTo(versusPositions[1], moveToVersusTime);
                         playerSlots[currentOpponentId].transform.MoveAndScaleTo(versusPositions[0], moveToVersusTime);
                     }
-                    else
+                    else if (i < roundInfo.Matches.Length)
                     {
                         //      also Move each other player to the sides of the screen (small) according to their matches
                         matchBubbles[i].MoveAndScaleTo(sidePositions[sidePositionsIndex++], moveToVersusTime);
@@ -224,25 +236,24 @@ namespace Kalkatos.Tournament
             if (!haveOpponent)
             {
                 // If I am bye, move opponents' battles to the center of the screen
-                int centerPositionsIndex = 0;
-                foreach (var item in tournamentInfo.Matches)
+                for (int i = 0; i < matchBubbles.Length; i++)
                 {
-                    if (item == myMatch)
+                    if (i == myMatchIndex)
                         continue;
-                    playerSlots[item.Player1.Id].transform.MoveAndScaleTo(centerPositions[centerPositionsIndex++], dockingTime);
-                    playerSlots[item.Player2.Id].transform.MoveAndScaleTo(centerPositions[centerPositionsIndex++], dockingTime);
+                    if (i < roundInfo.Matches.Length)
+                        matchBubbles[i].MoveAndScaleTo(centerPositions[i], dockingTime);
                 }
             }
             else
             {
                 // Create and move playmats to their position
                 float movePlaymatsTime = settings.MovePlaymatsTime;
-                GameObject topPlaymat = Instantiate(settings.PlaymatTopPrefab, playmatPositions[0]);
-                topPlaymat.transform.localPosition = Vector3.up * 700;
-                GameObject bottomPlaymat = Instantiate(settings.PlaymatBottomPrefab, playmatPositions[1]);
-                bottomPlaymat.transform.localPosition = Vector3.down * 700;
-                topPlaymat.transform.MoveAndScaleTo(playmatPositions[0], movePlaymatsTime);
-                bottomPlaymat.transform.MoveAndScaleTo(playmatPositions[1], movePlaymatsTime);
+                if (playmats[0] == null)
+                    playmats[0] = CreatePlaymat(0);
+                playmats[0].MoveAndScaleTo(playmatPositions[0], movePlaymatsTime);
+                if (playmats[1] == null)
+                    playmats[1] = CreatePlaymat(1);
+                playmats[1].MoveAndScaleTo(playmatPositions[1], movePlaymatsTime);
                 yield return new WaitForSeconds(movePlaymatsTime);
             }
             OnTournamentIntroFinished?.Invoke();
@@ -251,10 +262,19 @@ namespace Kalkatos.Tournament
         private IEnumerator MatchesEndedAnimation ()
         {
             // TODO Reencapsulate the player and his opponent slot match
+
             // TODO Reparent matches bubbles to their structure
+
+            // Fly playmats out
+            float movePlaymatsTime = settings.MovePlaymatsTime;
+            playmats[0].DOLocalMoveY(-700, movePlaymatsTime);
+            playmats[1].DOLocalMoveY(700, movePlaymatsTime);
+
             // TODO     and present them in the center with record (1-0, 0-1, etc)
+
             // TODO Go to Tournament round start again
 
+            roundInfo = null;
             yield return null;
         }
 
@@ -265,6 +285,13 @@ namespace Kalkatos.Tournament
             PlayerInfoSlot newSlot = Instantiate(settings.GameInfoSlotPrefab, playerSlotsListParent.transform);
             newSlot.HandlePlayerInfo(info);
             return newSlot;
+        }
+
+        private Transform CreatePlaymat (int index)
+        {
+            Transform result = Instantiate(index == 0 ? settings.PlaymatTopPrefab : settings.PlaymatBottomPrefab, playmatPositions[index]).transform;
+            result.localPosition = 700 * (index == 0 ? 1 : -1) * Vector3.up;
+            return result;
         }
     }
 }
