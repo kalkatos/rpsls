@@ -26,7 +26,6 @@ namespace Kalkatos.Network
         private string playerId;
         private string roomId;
         private float eventLifetime = 300;
-        private string masterKey = "";
         private Dictionary<string, PlayerInfo> lastKnownPlayers = new Dictionary<string, PlayerInfo>();
         private Dictionary<string, PlayerInfo> connectedPlayers = new Dictionary<string, PlayerInfo>();
         private Dictionary<string, RoomInfo> activeRooms = new Dictionary<string, RoomInfo>();
@@ -89,6 +88,9 @@ namespace Kalkatos.Network
         {
             if (bypassConnection)
                 Connect();
+            LocalFunctionServer.ExecuteFunction("Foo", new object[] { "Crazy Babies" }, 
+                (successPar) => Debug.Log("Received success parameter: " + successPar), 
+                (failurePar) => Debug.Log("Received failure parameter: " + failurePar));
         }
 
         private void LoadLists ()
@@ -419,7 +421,7 @@ namespace Kalkatos.Network
                 LoadLists();
                 Dictionary<string, object> roomData = activeRooms[roomId].CustomData;
                 roomData = roomData.UpdateOrAdd(parameters.ToDictionary());
-                ExecuteEvent(roomChangedKey, roomData.ToObjArray());
+                BroadcastEvent(roomChangedKey, roomData.ToObjArray());
             }
         }
 
@@ -456,7 +458,7 @@ namespace Kalkatos.Network
             });
         }
 
-        public override void ExecuteEvent (string eventKey, params object[] parameters)
+        public override void BroadcastEvent (string eventKey, params object[] parameters)
         {
             Assert.IsTrue(IsConnected);
             Assert.IsTrue(IsInRoom);
@@ -483,7 +485,7 @@ namespace Kalkatos.Network
             LoadLists();
             CurrentRoomInfo.IsClosed = false;
             SaveLists();
-            ExecuteEvent(roomOpenKey, parameters);
+            BroadcastEvent(roomOpenKey, parameters);
         }
 
         public override void CloseRoom (params object[] parameters)
@@ -493,7 +495,22 @@ namespace Kalkatos.Network
             LoadLists();
             CurrentRoomInfo.IsClosed = true;
             SaveLists();
-            ExecuteEvent(roomCloseKey, parameters);
+            BroadcastEvent(roomCloseKey, parameters);
+        }
+
+        public override void ExecuteFunction (string functionName, params object[] parameters)
+        {
+            Assert.IsTrue(IsConnected);
+
+            LocalFunctionServer.ExecuteFunction(functionName, parameters, 
+                (success) =>
+                {
+                    RaiseExecuteFunctionSuccess((object[])success);
+                },
+                (failure) =>
+                {
+                    RaiseExecuteFunctionFailure("Message", failure.ToString());
+                });
         }
 
         #endregion

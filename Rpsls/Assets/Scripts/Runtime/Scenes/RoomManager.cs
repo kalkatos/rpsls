@@ -145,12 +145,12 @@ namespace Kalkatos.Tournament
                 if (isEveryoneReady)
                 {
                     Instance.Log("Calling start game");
-                    NetworkManager.Instance.ExecuteEvent(aboutToStartKey);
+                    NetworkManager.Instance.BroadcastEvent(aboutToStartKey);
                     NetworkManager.Instance.CloseRoom();
                     Instance.Wait(Instance.settings.DelayBeforeStarting, () =>
                     {
                         Instance.Log("Start!");
-                        NetworkManager.Instance.ExecuteEvent(startGameKey);
+                        NetworkManager.Instance.BroadcastEvent(startGameKey);
                     });
 
                 }

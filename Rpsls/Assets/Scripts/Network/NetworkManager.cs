@@ -34,6 +34,8 @@ namespace Kalkatos.Network
         public static event Action<PlayerInfo> OnMasterClientChanged;
         public static event Action<object[]> OnRoomOpened;
         public static event Action<object[]> OnRoomClosed;
+        public static event Action<object[]> OnExecuteFunctionSuccess;
+        public static event Action<object[]> OnExecuteFunctionFailure;
 
         public virtual bool IsConnected { get; protected set; } = false;
         public virtual bool IsInRoom { get; protected set; } = false;
@@ -83,10 +85,11 @@ namespace Kalkatos.Network
         public virtual void UpdateRoomData (params object[] parameters) => Debug.LogError("SetRoomData not implemented!");
         public virtual void SendData (params object[] parameters) => Debug.LogError("SendData not implemented!");
         public virtual void RequestData (params object[] parameters) { Debug.LogError("RequestData not implemented!"); }
-        public virtual void ExecuteEvent (string eventKey, params object[] parameters) { Debug.LogError("ExecuteEvent not implemented!"); }
+        public virtual void BroadcastEvent (string eventKey, params object[] parameters) { Debug.LogError("ExecuteEvent not implemented!"); }
         public virtual void OpenRoom (params object[] parameters) { Debug.LogError("OpenRoom not implemented!"); }
         public virtual void CloseRoom (params object[] parameters) { Debug.LogError("CloseRoom not implemented!"); }
-
+        public virtual void ExecuteFunction (string functionName, params object[] parameters) => Debug.LogError("ExecuteFunction not implemented!");
+        
         #endregion
 
         #region ==================  Callbacks  ===========================
@@ -107,6 +110,8 @@ namespace Kalkatos.Network
         public virtual void RaiseMasterClientChanged (PlayerInfo newMaster) => OnMasterClientChanged?.Invoke(newMaster);
         public virtual void RaiseRoomOpened (params object[] parameters) => OnRoomOpened?.Invoke(parameters);
         public virtual void RaiseRoomClosed (params object[] parameters) => OnRoomClosed?.Invoke(parameters);
+        public virtual void RaiseExecuteFunctionSuccess (params object[] parameters) => OnExecuteFunctionSuccess?.Invoke(parameters);
+        public virtual void RaiseExecuteFunctionFailure (params object[] parameters) => OnExecuteFunctionFailure?.Invoke(parameters);
 
         #endregion
     }
