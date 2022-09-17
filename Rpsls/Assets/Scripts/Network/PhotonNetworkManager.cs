@@ -146,7 +146,7 @@ namespace Kalkatos.Network
             
         }
 
-        public override void ExecuteEvent (string eventKey, params object[] parameters) 
+        public override void BroadcastEvent (string eventKey, params object[] parameters) 
         {
             Assert.IsTrue(PhotonNetwork.InRoom);
 

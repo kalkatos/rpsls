@@ -124,12 +124,8 @@ namespace Kalkatos.Tournament
                 PlayerInfo p1 = players[keys[i]];
                 PlayerInfo p2 = isByePlayer ? null : players[keys[i + 1]];
                 p1.CustomData.UpdateOrAdd(new Dictionary<string, object>() { { Keys.IsByeKey, isByePlayer } });
-                NetworkManager.Instance.UpdatePlayerCustomData(p1.Id, "MasterKey", "", p1.CustomData.ToObjArray());
                 if (p2 != null)
-                {
                     p2.CustomData.UpdateOrAdd(new Dictionary<string, object>() { { Keys.IsByeKey, false } });
-                    NetworkManager.Instance.UpdatePlayerCustomData(p2.Id, "MasterKey", "", p2.CustomData.ToObjArray());
-                }
                 MatchInfo newMatch = GetNewMatch(p1, p2);
                 matchList.Add(newMatch);
             }
@@ -138,7 +134,7 @@ namespace Kalkatos.Tournament
 
         private void SendTournament ()
         {
-            NetworkManager.Instance.ExecuteEvent(Keys.TournamentUpdateEvt, Keys.TournamentInfoKey, JsonConvert.SerializeObject(currentTournament));
+            NetworkManager.Instance.BroadcastEvent(Keys.TournamentUpdateEvt, Keys.TournamentInfoKey, JsonConvert.SerializeObject(currentTournament));
         }
 
         private MatchInfo GetNewMatch (PlayerInfo player1, PlayerInfo player2)
