@@ -409,24 +409,6 @@ namespace Kalkatos.Network
             RaisePlayerDataChanged(MyPlayerInfo);
         }
 
-        public override void UpdatePlayerCustomData (string playerId, params object[] parameters)
-        {
-            Assert.IsTrue(IsConnected);
-            Assert.IsTrue(connectedPlayers.ContainsKey(playerId));
-
-            Dictionary<string, object> paramDict = parameters.ToDictionary();
-            Assert.IsTrue(paramDict.ContainsKey("MasterKey") && paramDict["MasterKey"].ToString() == masterKey);
-            paramDict.Remove("MasterKey");
-            // TODO Add a verification of the master key
-
-            LoadLists();
-            Dictionary<string, object> myData = connectedPlayers[playerId].CustomData;
-            connectedPlayers[playerId].CustomData = myData.UpdateOrAdd(paramDict);
-            SaveLists();
-            if (playerId == this.playerId)
-                RaisePlayerDataChanged(MyPlayerInfo);
-        }
-
         public override void UpdateRoomData (params object[] parameters)
         {
             Assert.IsTrue(IsConnected);
