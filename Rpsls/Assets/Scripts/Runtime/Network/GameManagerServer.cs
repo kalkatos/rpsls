@@ -66,7 +66,7 @@ namespace Kalkatos.Tournament
                 int index = 0;
                 foreach (var item in players)
                 {
-                    playerIds[index] = $"{Keys.ClientIdKey}-{item.Key}";
+                    playerIds[index] = $"{Keys.PlayerIdKey}-{item.Key}";
                     index++;
                 }
                 NetworkManager.Instance.RequestData(playerIds);
@@ -88,7 +88,7 @@ namespace Kalkatos.Tournament
         {
             Dictionary<string, object> paramDict = parameters.ToDictionary();
             foreach (var item in players)
-                if (paramDict.TryGetValue($"{Keys.ClientIdKey}-{item.Key}", out object state))
+                if (paramDict.TryGetValue($"{Keys.PlayerIdKey}-{item.Key}", out object state))
                     clientsChecked.Add(new Tuple<string, ClientState>(item.Key, (ClientState)int.Parse(state.ToString())));
         }
 
@@ -134,7 +134,7 @@ namespace Kalkatos.Tournament
 
         private void SendTournament ()
         {
-            NetworkManager.Instance.BroadcastEvent(Keys.TournamentUpdateEvt, Keys.TournamentInfoKey, JsonConvert.SerializeObject(currentTournament));
+            //NetworkManager.Instance.BroadcastEvent(Keys.TournamentUpdateEvt, Keys.TournamentInfoKey, JsonConvert.SerializeObject(currentTournament));
         }
 
         private MatchInfo GetNewMatch (PlayerInfo player1, PlayerInfo player2)

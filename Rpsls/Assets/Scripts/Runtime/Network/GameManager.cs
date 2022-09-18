@@ -4,9 +4,9 @@ using Kalkatos.Network;
 
 namespace Kalkatos.Tournament
 {
-    public class GameManagerClient : Client
+    public class GameManager : Client
     {
-        public static GameManagerClient Instance { get; private set; }
+        public static GameManager Instance { get; private set; }
 
         public static event Action<PlayerInfo[]> OnPlayerListUpdated;
         public static event Action<RoundInfo> OnRoundReceived;
@@ -39,6 +39,7 @@ namespace Kalkatos.Tournament
             }
             OnPlayerListUpdated?.Invoke(playerList.ToArray());
             SetReadyInGame();
+
         }
 
         private void HandlePlayerDataChanged (PlayerInfo obj)
@@ -72,18 +73,6 @@ namespace Kalkatos.Tournament
 
     }
 
-    internal static class Keys
-    {
-        // Keys for Player Info Custom Data
-        public const string IsByeKey = "IsBye";
-        // Dictionary keys for event parameters
-        public const string TournamentInfoKey = "TInfo";
-        public const string ClientIdKey = "PlrId";
-        // Event handles
-        public const string TournamentUpdateEvt = "TmtUp";
-        public const string TurnUpdateEvt = "TuUpt";
-    }
-
     public class MatchInfo
     {
         public int Id;
@@ -95,6 +84,14 @@ namespace Kalkatos.Tournament
 
     public class RoundInfo
     {
+        public int index;
         public MatchInfo[] Matches;
+    }
+
+    public class TournamentInfo
+    {
+        public string Id;
+        public string[] Players;
+        public RoundInfo[] Rounds;
     }
 }
