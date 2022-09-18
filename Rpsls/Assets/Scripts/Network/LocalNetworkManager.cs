@@ -16,13 +16,6 @@ namespace Kalkatos.Network
         [SerializeField] private int amountOfPlayersToWaitFor;
         [SerializeField] private int amountOfPlayersToFillIn;
 
-        private const string connectedPlayersKey = "CntPl";
-        private const string activeRoomsKey = "AtvRm";
-        private const string customDataKey = "CtmDt";
-        private const string roomChangedKey = "RmChd";
-        private const string roomOpenKey = "RmOpn";
-        private const string roomCloseKey = "RmCls";
-
         private string playerId;
         private string roomId;
         private float eventLifetime = 300;
@@ -60,10 +53,10 @@ namespace Kalkatos.Network
         {
             if (bypassConnection && MyPlayerInfo.IsMasterClient)
             {
-                SaveManager.DeleteKey(connectedPlayersKey);
-                SaveManager.DeleteKey(activeRoomsKey);
+                SaveManager.DeleteKey(Keys.ConnectedPlayersKey);
+                SaveManager.DeleteKey(Keys.ActiveRoomsKey);
                 SaveManager.DeleteKey(executeEventKey);
-                SaveManager.DeleteKey(customDataKey);
+                SaveManager.DeleteKey(Keys.CustomDataKey);
                 return;
             }
 
@@ -75,8 +68,8 @@ namespace Kalkatos.Network
             {
                 this.Log("Cleaning up to quit.");
                 connectedPlayers.Clear();
-                SaveManager.DeleteKey(connectedPlayersKey);
-                SaveManager.DeleteKey(activeRoomsKey);
+                SaveManager.DeleteKey(Keys.ConnectedPlayersKey);
+                SaveManager.DeleteKey(Keys.ActiveRoomsKey);
                 SaveManager.DeleteKey(savedExecEventKey);
             }
             else
@@ -88,16 +81,13 @@ namespace Kalkatos.Network
         {
             if (bypassConnection)
                 Connect();
-            LocalFunctionServer.ExecuteFunction("Foo", new object[] { "Crazy Babies" }, 
-                (successPar) => Debug.Log("Received success parameter: " + successPar), 
-                (failurePar) => Debug.Log("Received failure parameter: " + failurePar));
         }
 
         private void LoadLists ()
         {
-            if (SaveManager.HasKey(connectedPlayersKey))
+            if (SaveManager.HasKey(Keys.ConnectedPlayersKey))
             {
-                object[] objArray = JsonConvert.DeserializeObject<object[]>(SaveManager.GetString(connectedPlayersKey, ""));
+                object[] objArray = JsonConvert.DeserializeObject<object[]>(SaveManager.GetString(Keys.ConnectedPlayersKey, ""));
                 connectedPlayers = new Dictionary<string, PlayerInfo>();
                 string currentKey = "";
                 for (int i = 0; i < objArray.Length; i++)
@@ -112,9 +102,9 @@ namespace Kalkatos.Network
                     }
                 }
             }
-            if (SaveManager.HasKey(activeRoomsKey))
+            if (SaveManager.HasKey(Keys.ActiveRoomsKey))
             {
-                object[] objArray = JsonConvert.DeserializeObject<object[]>(SaveManager.GetString(activeRoomsKey, ""));
+                object[] objArray = JsonConvert.DeserializeObject<object[]>(SaveManager.GetString(Keys.ActiveRoomsKey, ""));
                 activeRooms = new Dictionary<string, RoomInfo>();
                 string currentKey = "";
                 for (int i = 0; i < objArray.Length; i++)
@@ -138,10 +128,10 @@ namespace Kalkatos.Network
         {
             if (connectedPlayers.ContainsKey(playerId))
                 connectedPlayers[playerId].IsMe = false;
-            SaveManager.SaveString(connectedPlayersKey, JsonConvert.SerializeObject(connectedPlayers.ToObjArray(), Formatting.None));
+            SaveManager.SaveString(Keys.ConnectedPlayersKey, JsonConvert.SerializeObject(connectedPlayers.ToObjArray(), Formatting.None));
             if (connectedPlayers.ContainsKey(playerId))
                 connectedPlayers[playerId].IsMe = true;
-            SaveManager.SaveString(activeRoomsKey, JsonConvert.SerializeObject(activeRooms.ToObjArray(), Formatting.None));
+            SaveManager.SaveString(Keys.ActiveRoomsKey, JsonConvert.SerializeObject(activeRooms.ToObjArray(), Formatting.None));
         }
 
         private void LoadEventExecutions ()
@@ -243,7 +233,7 @@ namespace Kalkatos.Network
                 activeRooms.Remove(room.Id);
                 SaveManager.DeleteKey(executeEventKey);
                 if (activeRooms.Count == 0)
-                    SaveManager.DeleteKey(activeRoomsKey);
+                    SaveManager.DeleteKey(Keys.ActiveRoomsKey);
             }
             else
                 activeRooms[room.Id] = room;
@@ -421,7 +411,7 @@ namespace Kalkatos.Network
                 LoadLists();
                 Dictionary<string, object> roomData = activeRooms[roomId].CustomData;
                 roomData = roomData.UpdateOrAdd(parameters.ToDictionary());
-                BroadcastEvent(roomChangedKey, roomData.ToObjArray());
+                BroadcastEvent(Keys.RoomChangedKey, roomData.ToObjArray());
             }
         }
 
@@ -430,9 +420,9 @@ namespace Kalkatos.Network
             Assert.IsTrue(IsConnected);
             this.Wait(randomTime, () =>
             {
-                object[] loadedData = JsonConvert.DeserializeObject<object[]>(SaveManager.GetString(customDataKey, ""));
+                object[] loadedData = JsonConvert.DeserializeObject<object[]>(SaveManager.GetString(Keys.CustomDataKey, ""));
                 loadedData = loadedData.CloneWithChange(parameters);
-                SaveManager.SaveString(customDataKey, JsonConvert.SerializeObject(loadedData));
+                SaveManager.SaveString(Keys.CustomDataKey, JsonConvert.SerializeObject(loadedData));
                 RaiseSendDataSuccess();
             });
         }
@@ -442,7 +432,7 @@ namespace Kalkatos.Network
             Assert.IsTrue(IsConnected);
             this.Wait(randomTime, () =>
             {
-                Dictionary<string, object> loadedData = JsonConvert.DeserializeObject<object[]>(SaveManager.GetString(customDataKey, "")).ToDictionary();
+                Dictionary<string, object> loadedData = JsonConvert.DeserializeObject<object[]>(SaveManager.GetString(Keys.CustomDataKey, "")).ToDictionary();
                 Dictionary<string, object> resultData = new Dictionary<string, object>();
 
                 for (int i = 0; i < parameters.Length; i++)
@@ -485,7 +475,7 @@ namespace Kalkatos.Network
             LoadLists();
             CurrentRoomInfo.IsClosed = false;
             SaveLists();
-            BroadcastEvent(roomOpenKey, parameters);
+            BroadcastEvent(Keys.RoomOpenKey, parameters);
         }
 
         public override void CloseRoom (params object[] parameters)
@@ -495,7 +485,7 @@ namespace Kalkatos.Network
             LoadLists();
             CurrentRoomInfo.IsClosed = true;
             SaveLists();
-            BroadcastEvent(roomCloseKey, parameters);
+            BroadcastEvent(Keys.RoomCloseKey, parameters);
         }
 
         public override void ExecuteFunction (string functionName, params object[] parameters)
@@ -505,11 +495,11 @@ namespace Kalkatos.Network
             LocalFunctionServer.ExecuteFunction(functionName, parameters, 
                 (success) =>
                 {
-                    RaiseExecuteFunctionSuccess((object[])success);
+                    RaiseExecuteFunctionSuccess(success);
                 },
                 (failure) =>
                 {
-                    RaiseExecuteFunctionFailure("Message", failure.ToString());
+                    RaiseExecuteFunctionFailure(failure.ToString());
                 });
         }
 
@@ -548,6 +538,11 @@ namespace Kalkatos.Network
                         CurrentRoomInfo.Players.Add(newPlayer);
                     }
                     SaveLists();
+
+                    object[] playersObj = new object[connectedPlayers.Count];
+                    int index = 0;
+                    foreach (var item in connectedPlayers)
+                        playersObj[index++] = item.Value;
                 }
             }
         }
@@ -556,15 +551,45 @@ namespace Kalkatos.Network
         {
             if (IsInRoom)
             {
-                if (eventKey == roomChangedKey)
+                if (eventKey == Keys.RoomChangedKey)
                     CurrentRoomInfo.CustomData = parameters.ToDictionary();
-                else if (eventKey == roomOpenKey)
+                else if (eventKey == Keys.RoomOpenKey)
                     RaiseRoomOpened(parameters);
-                else if (eventKey == roomCloseKey)
+                else if (eventKey == Keys.RoomCloseKey)
                     RaiseRoomClosed(parameters);
             }
             base.RaiseEventReceived(eventKey, parameters);
         }
+    }
+
+    internal static class Keys
+    {
+        // Keys for data saved
+        public const string ConnectedPlayersKey = "CntPl";
+        public const string ActiveRoomsKey = "AtvRm";
+        public const string CustomDataKey = "CtmDt";
+        public const string TournamentListKey = "Trnmt";
+        public const string RoomChangedKey = "RmChd";
+        public const string RoomOpenKey = "RmOpn";
+        public const string RoomCloseKey = "RmClo";
+        // Keys for Player Info Custom Data
+        public const string IsByeKey = "IsBye";
+        public const string MatchRecordKey = "MRecd";
+        public const string TournamentRecordKey = "TRecd";
+        // Info Keys
+        public const string PlayerIdKey = "PlrId";
+        public const string TournamentIdKey = "TmtId";
+        public const string MatchIdKey = "MtcId";
+        public const string RoomIdKey = "RmId";
+        public const string RoomInfoKey = "RdIfo";
+        public const string RoundNumberKey = "RdNum";
+
+        // Event handles
+        public const string TournamentUpdateEvt = "TmtUp";
+        public const string TurnUpdateEvt = "TuUpt";
+        // Function handles
+        public const string GetRoundFct = "GetRd";
+
     }
 
     internal class EventExecution

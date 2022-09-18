@@ -2,6 +2,7 @@
 using UnityEngine;
 using Kalkatos.Network;
 using Newtonsoft.Json;
+using System;
 
 namespace Kalkatos.Tournament
 {
@@ -18,6 +19,7 @@ namespace Kalkatos.Tournament
         private void Awake ()
         {
             NetworkManager.OnEventReceived += HandleEventReceived;
+            NetworkManager.OnExecuteFunctionSuccess += HandleExecuteFunctionSuccess;
             OnAwake();
         }
 
@@ -31,6 +33,11 @@ namespace Kalkatos.Tournament
 
         protected virtual void UponDestroy () { }
 
+        private void HandleExecuteFunctionSuccess (object[] parameters)
+        {
+            
+        }
+
         protected void HandleEventReceived (string key, object[] parameters)
         {
             this.Log("Event received in client: " + key);
@@ -38,14 +45,14 @@ namespace Kalkatos.Tournament
             switch (key)
             {
                 case Keys.TournamentUpdateEvt:
-                    if (paramDict.TryGetValue(Keys.TournamentInfoKey, out object value))
+                    if (paramDict.TryGetValue(Keys.TournamentIdKey, out object value))
                     {
                         this.Log($"Tournament received:     {value}");
                         RoundInfo tournament = JsonConvert.DeserializeObject<RoundInfo>(value.ToString());
                         SetRound(tournament);
                     }
                     else
-                        this.LogWarning("Didn't receive the key " + Keys.TournamentInfoKey);
+                        this.LogWarning("Didn't receive the key " + Keys.TournamentIdKey);
                     break;
                 case Keys.TurnUpdateEvt:
 
@@ -80,13 +87,13 @@ namespace Kalkatos.Tournament
         public void SetReadyInGame ()
         {
             CurrentState = ClientState.GameReady;
-            NetworkManager.Instance.SendData($"{Keys.ClientIdKey}-{Id}", (int)CurrentState);
+            NetworkManager.Instance.SendData($"{Keys.PlayerIdKey}-{Id}", (int)CurrentState);
         }
 
         public void SetReadyToStartMatch ()
         {
             CurrentState = ClientState.MatchReady;
-            NetworkManager.Instance.SendData($"{Keys.ClientIdKey}-{Id}", (int)CurrentState);
+            NetworkManager.Instance.SendData($"{Keys.PlayerIdKey}-{Id}", (int)CurrentState);
         }
     }
 }

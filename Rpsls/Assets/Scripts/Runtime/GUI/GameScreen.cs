@@ -41,7 +41,7 @@ namespace Kalkatos.Tournament
             //TODO Create and place the cards
 
             // Send ready event Action
-            GameManagerClient.Instance.SetReadyToStartMatch();
+            GameManager.Instance.SetReadyToStartMatch();
             // Wait for other player ready
             StartCoroutine(TurnLoop());
         }
@@ -62,7 +62,7 @@ namespace Kalkatos.Tournament
 
         private void OnExitButtonClicked ()
         {
-            GameManagerClient.ExitRoom();
+            GameManager.ExitRoom();
         }
     }
 }

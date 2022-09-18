@@ -41,8 +41,8 @@ namespace Kalkatos.Tournament
 
         private void Awake ()
         {
-            GameManagerClient.OnPlayerListUpdated += HandlePlayerListUpdated;
-            GameManagerClient.OnRoundReceived += HandleRoundReceived;
+            GameManager.OnPlayerListUpdated += HandlePlayerListUpdated;
+            GameManager.OnRoundReceived += HandleRoundReceived;
             settings = TournamentGameSettings.Instance;
             myId = NetworkManager.Instance.MyPlayerInfo.Id;
             tournamentHiddenPosition = tournamentStructure.localPosition;
@@ -50,8 +50,8 @@ namespace Kalkatos.Tournament
 
         private void OnDestroy ()
         {
-            GameManagerClient.OnPlayerListUpdated -= HandlePlayerListUpdated;
-            GameManagerClient.OnRoundReceived -= HandleRoundReceived;
+            GameManager.OnPlayerListUpdated -= HandlePlayerListUpdated;
+            GameManager.OnRoundReceived -= HandleRoundReceived;
         }
 
         private void Start ()
