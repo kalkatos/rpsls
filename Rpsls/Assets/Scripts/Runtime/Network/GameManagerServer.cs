@@ -7,7 +7,6 @@ using Newtonsoft.Json;
 
 namespace Kalkatos.Tournament
 {
-
     public class GameManagerServer : MonoBehaviour
     {
         private RoundInfo currentTournament;
