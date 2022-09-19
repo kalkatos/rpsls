@@ -81,6 +81,9 @@ namespace Kalkatos.Network
         {
             if (bypassConnection)
                 Connect();
+            FunctionInvoker.ExecuteFunction("Foo", new object[] { "Crazy", "Babies" },
+                (successPar) => Debug.Log("Received success parameter: " + successPar),
+                (failurePar) => Debug.Log("Received failure parameter: " + failurePar));
         }
 
         private void LoadLists ()
@@ -114,8 +117,6 @@ namespace Kalkatos.Network
                     else
                     {
                         RoomInfo room = JsonConvert.DeserializeObject<RoomInfo>(objArray[i].ToString());
-                        //if (room.CustomData != null)
-                        //    room.CustomData = JsonConvert.DeserializeObject<object[]>(room.CustomData.ToString()).ToDictionary();
                         for (int j = 0; j < room.Players.Count; j++)
                             room.Players[j] = connectedPlayers[room.Players[j].Id];
                         activeRooms.Add(currentKey, room);
@@ -492,7 +493,7 @@ namespace Kalkatos.Network
         {
             Assert.IsTrue(IsConnected);
 
-            LocalFunctionServer.ExecuteFunction(functionName, parameters, 
+            FunctionInvoker.ExecuteFunction(functionName, parameters, 
                 (success) =>
                 {
                     RaiseExecuteFunctionSuccess(success);
