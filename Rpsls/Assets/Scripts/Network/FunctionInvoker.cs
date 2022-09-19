@@ -22,7 +22,9 @@ namespace Kalkatos.Network
         private List<Tuple<Task<object>, Action<object>, Action<object>>> delayedExecutions =
             new List<Tuple<Task<object>, Action<object>, Action<object>>>();
 
-        private bool IsMasterClient => NetworkManager.Instance.MyPlayerInfo.IsMasterClient;
+        protected static bool IsMasterClient => NetworkManager.Instance.MyPlayerInfo.IsMasterClient;
+
+        public static DataAccess DataAccess => NetworkManager.Instance.DataAccess;
 
         private void Update ()
         {
@@ -72,31 +74,19 @@ namespace Kalkatos.Network
             failure?.Invoke(Error.MethodNotFound);
         }
 
+        #region =================== Data =================================
 
-
-        #region =================== Generic =================================
-
-        public static async Task<object> GetData (string key)
+        public static async Task<object> GetData (string key, string container = "")
         {
-            string data = await Instance.GetString(key, "");
+            string data = await DataAccess.RequestData(key, "", container);
             if (string.IsNullOrEmpty(data))
                 return null;
             return data;
         }
 
-        public virtual async Task<string> GetString (string key, string defaultValue)
+        public static async Task SetData (string key, string value, string container = "")
         {
-            //LOCAL
-            string result = SaveManager.GetString(key, defaultValue);
-            await Task.Delay(1);
-            return result;
-        }
-
-        public virtual async Task SetString (string key, string value)
-        {
-            //LOCAL
-            SaveManager.SaveString(key, value);
-            await Task.Delay(1);
+            await DataAccess.SendData(key, value, container);
         }
 
         #endregion
@@ -106,8 +96,24 @@ namespace Kalkatos.Network
             WrongParameters,
             MethodNotFound,
             NotAvailable,
+            NonExistent,
             NotAllowed,
             MustBeMaster,
         };
+    }
+
+    public class DataAccess
+    {
+#pragma warning disable
+        public virtual async Task<string> RequestData (string key, string defaultValue, string container = "")
+        {
+            throw new NotImplementedException("RequestData is not implemented.");
+        }
+
+        public virtual async Task SendData (string key, string value, string container = "")
+        {
+            throw new NotImplementedException("SendData is not implemented.");
+        }
+#pragma warning restore
     }
 }

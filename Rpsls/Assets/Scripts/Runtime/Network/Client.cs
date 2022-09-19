@@ -87,13 +87,13 @@ namespace Kalkatos.Tournament
         public void SetReadyInGame ()
         {
             CurrentState = ClientState.GameReady;
-            NetworkManager.Instance.SendData($"{Keys.PlayerIdKey}-{Id}", (int)CurrentState);
+            NetworkManager.Instance.SendCustomData($"{Keys.PlayerIdKey}-{Id}", (int)CurrentState);
         }
 
         public void SetReadyToStartMatch ()
         {
             CurrentState = ClientState.MatchReady;
-            NetworkManager.Instance.SendData($"{Keys.PlayerIdKey}-{Id}", (int)CurrentState);
+            NetworkManager.Instance.SendCustomData($"{Keys.PlayerIdKey}-{Id}", (int)CurrentState);
         }
     }
 }

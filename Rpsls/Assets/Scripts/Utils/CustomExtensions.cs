@@ -79,7 +79,7 @@ namespace Kalkatos
             return true;
         }
 
-        public static Dictionary<string, T> UpdateOrAdd<T> (this Dictionary<string, T> dict, string key, T value)
+        public static Dictionary<string, T> CloneWithUpdateOrAdd<T> (this Dictionary<string, T> dict, string key, T value)
         {
             if (ReferenceEquals(dict, null))
                 dict = new Dictionary<string, T>();
@@ -95,7 +95,7 @@ namespace Kalkatos
         public static Dictionary<string, T> UpdateOrAdd<T> (this Dictionary<string, T> dict, Dictionary<string, T> otherDict)
         {
             foreach (var item in otherDict)
-                dict = dict.UpdateOrAdd(item.Key, item.Value);
+                dict = dict.CloneWithUpdateOrAdd(item.Key, item.Value);
             return dict;
         }
 
@@ -205,7 +205,7 @@ namespace Kalkatos
             return null;
         }
 
-        public static object[] CloneWithChange (this object[] objArray, object[] other)
+        public static object[] CloneWithUpdateOrAdd (this object[] objArray, object[] other)
         {
             if (objArray == null)
                 return other;
