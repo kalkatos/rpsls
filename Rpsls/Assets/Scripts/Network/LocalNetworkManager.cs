@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using Random = UnityEngine.Random;
 using Newtonsoft.Json;
+using System.Threading.Tasks;
 
 namespace Kalkatos.Network
 {
@@ -16,6 +17,7 @@ namespace Kalkatos.Network
         [SerializeField] private int amountOfPlayersToWaitFor;
         [SerializeField] private int amountOfPlayersToFillIn;
 
+        private LocalDataAccess dataAccess = new LocalDataAccess();
         private string playerId;
         private string roomId;
         private float eventLifetime = 300;
@@ -48,6 +50,7 @@ namespace Kalkatos.Network
                 activeRooms[roomId] = value;
             }
         }
+        public override DataAccess DataAccess => dataAccess;
 
         private void OnApplicationQuit ()
         {
@@ -416,36 +419,42 @@ namespace Kalkatos.Network
             }
         }
 
-        public override void SendData (params object[] parameters)
+        public override void SendCustomData (params object[] parameters)
         {
             Assert.IsTrue(IsConnected);
+            
             this.Wait(randomTime, () =>
             {
                 object[] loadedData = JsonConvert.DeserializeObject<object[]>(SaveManager.GetString(Keys.CustomDataKey, ""));
-                loadedData = loadedData.CloneWithChange(parameters);
+                loadedData = loadedData.CloneWithUpdateOrAdd(parameters);
                 SaveManager.SaveString(Keys.CustomDataKey, JsonConvert.SerializeObject(loadedData));
                 RaiseSendDataSuccess();
             });
         }
 
-        public override void RequestData (params object[] parameters)
+        public override void RequestCustomData (params object[] parameters)
         {
             Assert.IsTrue(IsConnected);
             this.Wait(randomTime, () =>
             {
                 Dictionary<string, object> loadedData = JsonConvert.DeserializeObject<object[]>(SaveManager.GetString(Keys.CustomDataKey, "")).ToDictionary();
                 Dictionary<string, object> resultData = new Dictionary<string, object>();
-
+                int missedParams = 0;
                 for (int i = 0; i < parameters.Length; i++)
                 {
                     string key = (string)parameters[i];
                     if (loadedData.ContainsKey(key))
                         resultData.Add(key, loadedData[key]);
+                    else
+                    {
+                        resultData.Add(key, null);
+                        missedParams++;
+                    }
                 }
-                if (resultData.Count > 0)
-                    RaiseRequestDataSuccess(resultData.ToObjArray());
-                else
+                if (missedParams == parameters.Length)
                     RaiseRequestDataFailure(parameters);
+                else
+                    RaiseRequestDataSuccess(resultData.ToObjArray());
             });
         }
 
@@ -563,6 +572,45 @@ namespace Kalkatos.Network
         }
     }
 
+    internal class LocalDataAccess : DataAccess
+    {
+#pragma warning disable
+        public override async Task<string> RequestData (string key, string defaultValue, string container = "")
+        {
+            if (!string.IsNullOrEmpty(container))
+            {
+                if (SaveManager.HasKey(container))
+                {
+                    var containerContent = JsonConvert.DeserializeObject<object[]>(SaveManager.GetString(container, "")).ToDictionary();
+                    if (containerContent.TryGetValue(key, out object value))
+                        return value.ToString();
+                }
+            }
+            else if (SaveManager.HasKey(key))
+                return SaveManager.GetString(key, "");
+            return "";
+        }
+
+        public override async Task SendData (string key, string value, string container = "")
+        {
+            if (!string.IsNullOrEmpty(container))
+            {
+                if (SaveManager.HasKey(container))
+                {
+                    var containerContent = JsonConvert.DeserializeObject<object[]>(SaveManager.GetString(container, "")).ToDictionary();
+                    if (containerContent.ContainsKey(key))
+                        containerContent[key] = value;
+                    else
+                        containerContent.Add(key, value);
+                    SaveManager.SaveString(container, JsonConvert.SerializeObject(containerContent.ToObjArray()));
+                }
+            }
+            else
+                SaveManager.SaveString(key, value);
+        }
+#pragma warning restore
+    }
+
     internal static class Keys
     {
         // Keys for data saved
@@ -573,6 +621,7 @@ namespace Kalkatos.Network
         public const string RoomChangedKey = "RmChd";
         public const string RoomOpenKey = "RmOpn";
         public const string RoomCloseKey = "RmClo";
+        public const string ContainerAccessKey = "Ctner";
         // Keys for Player Info Custom Data
         public const string IsByeKey = "IsBye";
         public const string MatchRecordKey = "MRecd";

@@ -68,7 +68,7 @@ namespace Kalkatos.Tournament
                     playerIds[index] = $"{Keys.PlayerIdKey}-{item.Key}";
                     index++;
                 }
-                NetworkManager.Instance.RequestData(playerIds);
+                NetworkManager.Instance.RequestCustomData(playerIds);
                 while (clientsChecked.Count == 0)
                     yield return null;
                 if (players.Count > clientsChecked.Count)

@@ -41,6 +41,7 @@ namespace Kalkatos.Network
         public virtual bool IsInRoom { get; protected set; } = false;
         public virtual PlayerInfo MyPlayerInfo { get; protected set; } = new PlayerInfo();
         public virtual RoomInfo CurrentRoomInfo { get; protected set; } = new RoomInfo();
+        public abstract DataAccess DataAccess { get; }
 
         private void Awake ()
         {
@@ -83,8 +84,8 @@ namespace Kalkatos.Network
         public virtual void LeaveMatch (object parameter = null) => Debug.LogError("LeaveMatch not implemented!");
         public virtual void UpdateMyCustomData (params object[] parameters) => Debug.LogError("UpdateMyCustomData not implemented!");
         public virtual void UpdateRoomData (params object[] parameters) => Debug.LogError("SetRoomData not implemented!");
-        public virtual void SendData (params object[] parameters) => Debug.LogError("SendData not implemented!");
-        public virtual void RequestData (params object[] parameters) { Debug.LogError("RequestData not implemented!"); }
+        public virtual void SendCustomData (params object[] parameters) => Debug.LogError("SendData not implemented!");
+        public virtual void RequestCustomData (params object[] parameters) { Debug.LogError("RequestData not implemented!"); }
         public virtual void BroadcastEvent (string eventKey, params object[] parameters) { Debug.LogError("ExecuteEvent not implemented!"); }
         public virtual void OpenRoom (params object[] parameters) { Debug.LogError("OpenRoom not implemented!"); }
         public virtual void CloseRoom (params object[] parameters) { Debug.LogError("CloseRoom not implemented!"); }

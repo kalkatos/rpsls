@@ -7,6 +7,7 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 using System.Collections.Generic;
 using ExitGames.Client.Photon;
 using Newtonsoft.Json;
+using System.Threading.Tasks;
 
 namespace Kalkatos.Network
 {
@@ -16,8 +17,11 @@ namespace Kalkatos.Network
         private const string executeEventKey = "EvKey";
         private const byte customEvent = 1;
 
+        private PhotonDataAccess dataAccess = new PhotonDataAccess();
+
         public override bool IsConnected => PhotonNetwork.IsConnected;
         public override bool IsInRoom => PhotonNetwork.CurrentRoom != null;
+        public override DataAccess DataAccess => dataAccess;
 
         public virtual void OnEnable ()
         {
@@ -136,14 +140,30 @@ namespace Kalkatos.Network
                 PhotonNetwork.CurrentRoom.SetCustomProperties(parameters.ToHashtable());
         }
 
-        public override void SendData (params object[] parameters)
+        public override void SendCustomData (params object[] parameters)
         {
-            
+            PhotonNetwork.CurrentRoom.SetCustomProperties(parameters.ToHashtable());
         }
 
-        public override void RequestData (params object[] parameters)
+        public override void RequestCustomData (params object[] parameters)
         {
-            
+            Dictionary<string, object> resultDict = new Dictionary<string, object>();
+            var data = PhotonNetwork.CurrentRoom.CustomProperties;
+            int missedParams = 0;
+            for (int i = 0; i < parameters.Length; i++)
+            {
+                if (data.TryGetValue(parameters[i].ToString(), out object value))
+                    resultDict.Add(parameters[i].ToString(), value);
+                else
+                {
+                    resultDict.Add(parameters[i].ToString(), null);
+                    missedParams++;
+                }
+            }
+            if (missedParams == parameters.Length)
+                RaiseRequestDataFailure(parameters);
+            else
+                RaiseRequestDataSuccess(resultDict);
         }
 
         public override void BroadcastEvent (string eventKey, params object[] parameters) 
@@ -317,5 +337,39 @@ namespace Kalkatos.Network
                 result.Add(item.Key, item.Value);
             return result;
         }
+    }
+
+    internal class PhotonDataAccess : DataAccess
+    {
+        #pragma warning disable
+        public override async Task<string> RequestData (string key, string defaultValue, string container = "")
+        {
+            if (container == Keys.ConnectedPlayersKey)
+            {
+                foreach (var item in PhotonNetwork.PlayerList)
+                    if (item.UserId == key)
+                        if (item.CustomProperties.TryGetValue(key, out object value))
+                            return value.ToString();
+            }
+            else if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue(key, out object value))
+                return value.ToString();
+            return "";
+        }
+
+        public override async Task SendData (string key, string value, string container = "")
+        {
+            if (container == Keys.ConnectedPlayersKey && PhotonNetwork.LocalPlayer.IsMasterClient)
+            {
+                foreach (var item in PhotonNetwork.PlayerList)
+                    if (item.UserId == key)
+                    {
+                        item.SetCustomProperties(new Hashtable() { { key, value } });
+                        break;
+                    }
+            }
+            else
+                PhotonNetwork.CurrentRoom.SetCustomProperties(new Hashtable() { { key, value } });
+        }
+        #pragma warning restore
     }
 }
