@@ -400,7 +400,7 @@ namespace Kalkatos.Network
 
             LoadLists();
             Dictionary<string, object> myData = connectedPlayers[playerId].CustomData;
-            connectedPlayers[playerId].CustomData = myData.UpdateOrAdd(parameters.ToDictionary());
+            connectedPlayers[playerId].CustomData = myData.CloneWithUpdateOrAdd(parameters.ToDictionary());
             SaveLists();
             RaisePlayerDataChanged(MyPlayerInfo);
         }
@@ -414,7 +414,7 @@ namespace Kalkatos.Network
             {
                 LoadLists();
                 Dictionary<string, object> roomData = activeRooms[roomId].CustomData;
-                roomData = roomData.UpdateOrAdd(parameters.ToDictionary());
+                roomData = roomData.CloneWithUpdateOrAdd(parameters.ToDictionary());
                 BroadcastEvent(Keys.RoomChangedKey, roomData.ToObjArray());
             }
         }
@@ -498,11 +498,11 @@ namespace Kalkatos.Network
             BroadcastEvent(Keys.RoomCloseKey, parameters);
         }
 
-        public override void ExecuteFunction (string functionName, params object[] parameters)
+        public override void ExecuteFunction (string functionName, object parameter)
         {
             Assert.IsTrue(IsConnected);
 
-            FunctionInvoker.ExecuteFunction(functionName, parameters, 
+            FunctionInvoker.ExecuteFunction(functionName, parameter, 
                 (success) =>
                 {
                     RaiseExecuteFunctionSuccess(success);
@@ -639,6 +639,7 @@ namespace Kalkatos.Network
         public const string TurnUpdateEvt = "TuUpt";
         // Function handles
         public const string GetRoundFct = "GetRd";
+        public const string StartTournamentFct = nameof(FunctionInvoker.StartTournament);
 
     }
 

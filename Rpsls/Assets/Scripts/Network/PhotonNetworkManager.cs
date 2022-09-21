@@ -189,6 +189,8 @@ namespace Kalkatos.Network
             PhotonNetwork.CurrentRoom.IsOpen = false;
         }
 
+        // TODO Implement Execute Function
+
         #endregion
 
         #region ==================  Callbacks  ===========================
@@ -344,7 +346,7 @@ namespace Kalkatos.Network
         #pragma warning disable
         public override async Task<string> RequestData (string key, string defaultValue, string container = "")
         {
-            if (container == Keys.ConnectedPlayersKey)
+            if (container == Keys.ConnectedPlayersKey) // TODO Do the same for rooms
             {
                 foreach (var item in PhotonNetwork.PlayerList)
                     if (item.UserId == key)
@@ -358,7 +360,7 @@ namespace Kalkatos.Network
 
         public override async Task SendData (string key, string value, string container = "")
         {
-            if (container == Keys.ConnectedPlayersKey && PhotonNetwork.LocalPlayer.IsMasterClient)
+            if (container == Keys.ConnectedPlayersKey && PhotonNetwork.LocalPlayer.IsMasterClient) // TODO Do the same for rooms
             {
                 foreach (var item in PhotonNetwork.PlayerList)
                     if (item.UserId == key)

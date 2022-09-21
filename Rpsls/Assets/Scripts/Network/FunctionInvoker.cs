@@ -43,7 +43,7 @@ namespace Kalkatos.Network
             }
         }
 
-        public static void ExecuteFunction (string name, object[] parameters, Action<object> success, Action<object> failure)
+        public static void ExecuteFunction (string name, object parameter, Action<object> success, Action<object> failure)
         {
             var methods = typeof(FunctionInvoker).GetMethods(BindingFlags.Public | BindingFlags.Static);
             for (int i = 0; i < methods.Length; i++)
@@ -54,7 +54,7 @@ namespace Kalkatos.Network
                     object result = null;
                     try
                     {
-                        object[] args = new object[] { parameters };
+                        object[] args = new object[] { parameter };
                         result = typeof(FunctionInvoker).InvokeMember(name, BindingFlags.InvokeMethod | BindingFlags.Public | BindingFlags.Static, null, null, args);
                     }
                     catch (Exception ex)

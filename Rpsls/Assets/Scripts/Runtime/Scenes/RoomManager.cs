@@ -147,6 +147,7 @@ namespace Kalkatos.Tournament
                     Instance.Log("Calling start game");
                     NetworkManager.Instance.BroadcastEvent(aboutToStartKey);
                     NetworkManager.Instance.CloseRoom();
+                    //TODO NetworkManager.Instance.ExecuteFunction(Keys.StartTournamentFct, Instance.roomInfo.Id);
                     Instance.Wait(Instance.settings.DelayBeforeStarting, () =>
                     {
                         Instance.Log("Start!");

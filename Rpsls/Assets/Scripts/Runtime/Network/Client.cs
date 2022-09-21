@@ -13,7 +13,7 @@ namespace Kalkatos.Tournament
         protected PlayerInfo Info;
         protected string CurrentOpponentId;
         protected ClientState CurrentState = ClientState.Undefined;
-        protected RoundInfo Tournament;
+        protected RoundInfo Round;
         protected MatchInfo CurrentMatch;
 
         private void Awake ()
@@ -26,7 +26,13 @@ namespace Kalkatos.Tournament
         private void OnDestroy ()
         {
             NetworkManager.OnEventReceived -= HandleEventReceived;
+            NetworkManager.OnExecuteFunctionSuccess -= HandleExecuteFunctionSuccess;
             UponDestroy();
+        }
+
+        private void Update ()
+        {
+            
         }
 
         protected virtual void OnAwake () { }
@@ -47,9 +53,9 @@ namespace Kalkatos.Tournament
                 case Keys.TournamentUpdateEvt:
                     if (paramDict.TryGetValue(Keys.TournamentIdKey, out object value))
                     {
-                        this.Log($"Tournament received:     {value}");
-                        RoundInfo tournament = JsonConvert.DeserializeObject<RoundInfo>(value.ToString());
-                        SetRound(tournament);
+                        this.Log($"Round received:     {value}");
+                        RoundInfo round = JsonConvert.DeserializeObject<RoundInfo>(value.ToString());
+                        SetRound(round);
                     }
                     else
                         this.LogWarning("Didn't receive the key " + Keys.TournamentIdKey);
@@ -66,10 +72,10 @@ namespace Kalkatos.Tournament
             Id = info.Id;
         }
 
-        public virtual void SetRound (RoundInfo tournamentInfo)
+        public virtual void SetRound (RoundInfo roundInfo)
         {
-            Tournament = tournamentInfo;
-            foreach (var item in Tournament.Matches)
+            Round = roundInfo;
+            foreach (var item in Round.Matches)
             {
                 if (item.Player1.Id == Id)
                 {

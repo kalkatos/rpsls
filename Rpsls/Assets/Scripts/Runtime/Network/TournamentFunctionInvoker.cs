@@ -25,15 +25,19 @@ namespace Kalkatos.Network
             {
                 bool isBye = i == players.Length - 1;
                 playerIds[i] = players[i].Id;
-                players[i].CustomData = players[i].CustomData.CloneWithUpdateOrAdd(Keys.IsByeKey, isBye);
-                players[i].CustomData = players[i].CustomData.CloneWithUpdateOrAdd(Keys.MatchRecordKey, "0-0");
-                players[i].CustomData = players[i].CustomData.CloneWithUpdateOrAdd(Keys.TournamentRecordKey, isBye ? "1-0" : "0-0");
+                Dictionary<string, object> dict = new Dictionary<string, object>();
+                dict.Add(Keys.IsByeKey, isBye);
+                dict.Add(Keys.MatchRecordKey, "0-0");
+                dict.Add(Keys.TournamentRecordKey, isBye ? "1-0" : "0-0");
+                players[i].CustomData = players[i].CustomData.CloneWithUpdateOrAdd(dict);
                 if (!isBye)
                 {
                     playerIds[i + 1] = players[i + 1].Id;
-                    players[i + 1].CustomData = players[i + 1].CustomData.CloneWithUpdateOrAdd(Keys.IsByeKey, false);
-                    players[i + 1].CustomData = players[i + 1].CustomData.CloneWithUpdateOrAdd(Keys.MatchRecordKey, "0-0");
-                    players[i + 1].CustomData = players[i + 1].CustomData.CloneWithUpdateOrAdd(Keys.TournamentRecordKey, "0-0");
+                    dict.Clear();
+                    dict.Add(Keys.IsByeKey, false);
+                    dict.Add(Keys.MatchRecordKey, "0-0");
+                    dict.Add(Keys.TournamentRecordKey, "0-0");
+                    players[i + 1].CustomData = players[i + 1].CustomData.CloneWithUpdateOrAdd(dict);
                 }
                 int matchIndex = (int)Mathf.Ceil(i / 2f);
                 matches[matchIndex] = new MatchInfo()
@@ -57,34 +61,69 @@ namespace Kalkatos.Network
             return tournament;
         }
 
-        private static object AdvanceTournament (object fromTournament)
+        private static object AdvanceTournament (TournamentInfo fromTournament, PlayerInfo[] players)
         {
-            return null;
+            foreach (var item in players)
+            {
+                if (!item.CustomData.ContainsKey(Keys.TournamentRecordKey))
+                    return Error.WrongParameters;
+            }
+            Array.Sort(players, SortBasedOnRecord);
+
+            int SortBasedOnRecord (PlayerInfo p1, PlayerInfo p2)
+            {
+                // TODO Sort
+                return 0;
+            }
+            return fromTournament;
         }
 
-        public static async Task<object> StartTournament (object playersObj)
+        public static async Task<object> StartTournament (object roomId)
         {
-            // Check parameters
-            if (!(playersObj is object[]))
-                return Error.WrongParameters;
-            object[] playersArrayObj = (object[])playersObj;
-            PlayerInfo[] players = new PlayerInfo[playersArrayObj.Length];
-            for (int i = 0; i < playersArrayObj.Length; i++)
-            {
-                if (!(playersArrayObj[i] is PlayerInfo))
-                    return Error.WrongParameters;
-                players[i] = (PlayerInfo)playersArrayObj[i]; 
-            }
             // Check if it's master
             if (!IsMasterClient)
                 return Error.MustBeMaster;
+            // Get Room
+            object getRoomResult = await GetRoom(roomId);
+            if (getRoomResult is Error)
+                return getRoomResult;
+            RoomInfo room = (RoomInfo)getRoomResult;
+            // Get Players
+            PlayerInfo[] players = room.Players.ToArray();
             // Create tournament
             TournamentInfo tournamentInfo = CreateTournament(players);
             // Update players
             foreach (var item in players)
                 await DataAccess.SendData(item.Id, JsonConvert.SerializeObject(item), Keys.ConnectedPlayersKey);
+
+            // TODO Update room
+            
             return tournamentInfo;
         }
+
+        public static async Task<object> GetRoom (object roomId)
+        {
+            // Check parameters
+            if (roomId == null || !(roomId is string))
+                return Error.WrongParameters;
+            // Get Room
+            string roomSerialized = (await GetData(roomId.ToString(), Keys.ActiveRoomsKey)).ToString();
+            if (string.IsNullOrEmpty(roomSerialized))
+                return Error.NotAvailable;
+            RoomInfo room = JsonConvert.DeserializeObject<RoomInfo>(roomSerialized);
+            return room;
+        }
+
+        // TODO GetTournamentFromRoom
+        //public static async Task<object> GetTournamentFromRoom (object roomId)
+        //{
+        //    // Get Room
+        //    object getRoomResult = await GetRoom(roomId);
+        //    if (getRoomResult is Error)
+        //        return getRoomResult;
+        //    RoomInfo room = (RoomInfo)getRoomResult;
+        //}
+
 
         /// <summary>
         /// Parameters: Tournament ID (string) ||
