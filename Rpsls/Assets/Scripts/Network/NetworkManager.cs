@@ -89,7 +89,7 @@ namespace Kalkatos.Network
         public virtual void BroadcastEvent (string eventKey, params object[] parameters) { Debug.LogError("ExecuteEvent not implemented!"); }
         public virtual void OpenRoom (params object[] parameters) { Debug.LogError("OpenRoom not implemented!"); }
         public virtual void CloseRoom (params object[] parameters) { Debug.LogError("CloseRoom not implemented!"); }
-        public virtual void ExecuteFunction (string functionName, params object[] parameters) => Debug.LogError("ExecuteFunction not implemented!");
+        public virtual void ExecuteFunction (string functionName, object parameter) => Debug.LogError("ExecuteFunction not implemented!");
         
         #endregion
 

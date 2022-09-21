@@ -92,7 +92,7 @@ namespace Kalkatos
             return dict;
         }
 
-        public static Dictionary<string, T> UpdateOrAdd<T> (this Dictionary<string, T> dict, Dictionary<string, T> otherDict)
+        public static Dictionary<string, T> CloneWithUpdateOrAdd<T> (this Dictionary<string, T> dict, Dictionary<string, T> otherDict)
         {
             foreach (var item in otherDict)
                 dict = dict.CloneWithUpdateOrAdd(item.Key, item.Value);

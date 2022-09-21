@@ -39,7 +39,6 @@ namespace Kalkatos.Tournament
             }
             OnPlayerListUpdated?.Invoke(playerList.ToArray());
             SetReadyInGame();
-
         }
 
         private void HandlePlayerDataChanged (PlayerInfo obj)
@@ -70,7 +69,6 @@ namespace Kalkatos.Tournament
         Undefined = 0,
         GameReady = -100,
         MatchReady = -50,
-
     }
 
     public class MatchInfo

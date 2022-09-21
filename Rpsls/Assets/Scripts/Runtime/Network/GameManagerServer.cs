@@ -9,12 +9,16 @@ namespace Kalkatos.Tournament
 {
     public class GameManagerServer : MonoBehaviour
     {
-        private RoundInfo currentTournament;
+        private TournamentInfo currentTournament;
+        private RoundInfo currentRound;
         private Dictionary<string, PlayerInfo> players = new Dictionary<string, PlayerInfo>();
         private byte currentMatchId = 0;
+        private byte currentRoundIndex = 0;
+        private byte currentTurn = 0;
         private List<Tuple<string, ClientState>> clientsChecked = new List<Tuple<string, ClientState>>();
         private WaitForSeconds delayToCheckClients = new WaitForSeconds(0.5f);
         private WaitForSeconds wait = new WaitForSeconds(0.5f);
+        private bool isOver;
 
         private byte nextMatchId => ++currentMatchId;
         private bool isConnectedAndInRoom => NetworkManager.Instance.IsConnected && NetworkManager.Instance.IsInRoom;
@@ -41,12 +45,22 @@ namespace Kalkatos.Tournament
         private IEnumerator GameLoop ()
         {
             yield return WaitUntil(() => isConnectedAndInRoom);
-            GetPlayers();
+            GetPlayers(true);
             PrepareTournament();
             yield return WaitClientsState(ClientState.GameReady);
-            SendTournament();
-            yield return WaitClientsState(ClientState.MatchReady);
-            Debug.Log("Everyone ready for match!");
+            while (!isOver)
+            {
+                currentRound = currentTournament.Rounds[currentRoundIndex];
+                SendRound();
+                yield return WaitClientsState(ClientState.MatchReady);
+                Debug.Log("Round: " + (currentRoundIndex + 1));
+                yield return new WaitForSeconds(1f);
+                GetPlayers();
+                for (int i = 0; i < players.Count; i++)
+                {
+                    // TODO Finish
+                }
+            }
         }
 
         private IEnumerator WaitUntil (Func<bool> condition)
@@ -88,21 +102,25 @@ namespace Kalkatos.Tournament
             Dictionary<string, object> paramDict = parameters.ToDictionary();
             foreach (var item in players)
                 if (paramDict.TryGetValue($"{Keys.PlayerIdKey}-{item.Key}", out object state))
-                    clientsChecked.Add(new Tuple<string, ClientState>(item.Key, (ClientState)int.Parse(state.ToString())));
+                {
+                    if (state != null)
+                        clientsChecked.Add(new Tuple<string, ClientState>(item.Key, (ClientState)int.Parse(state.ToString())));
+                }
         }
 
         private void HandleEventReceived (string key, object[] parameters)
         {
-            
+
         }
 
-        private void GetPlayers ()
+        private void GetPlayers (bool createBots = false)
         {
             List<PlayerInfo> list = NetworkManager.Instance.CurrentRoomInfo.Players.CloneList();
+            players.Clear();
             for (int i = 0; i < list.Count; i++)
             {
-                players.Add(list[i].Id, list[i]); 
-                if (list[i].IsBot)
+                players.Add(list[i].Id, list[i]);
+                if (createBots && list[i].IsBot)
                 {
                     BotClient bot = gameObject.AddComponent<BotClient>();
                     bot.SetInfo(list[i]);
@@ -112,28 +130,22 @@ namespace Kalkatos.Tournament
 
         private void PrepareTournament ()
         {
-            currentTournament = new RoundInfo();
-            string[] keys = new string[players.Count];
-            players.Keys.CopyTo(keys, 0);
-            keys = keys.Shuffle();
-            List<MatchInfo> matchList = new List<MatchInfo>();
-            for (int i = 0; i < keys.Length; i += 2)
-            {
-                bool isByePlayer = i + 1 >= keys.Length;
-                PlayerInfo p1 = players[keys[i]];
-                PlayerInfo p2 = isByePlayer ? null : players[keys[i + 1]];
-                p1.CustomData.UpdateOrAdd(new Dictionary<string, object>() { { Keys.IsByeKey, isByePlayer } });
-                if (p2 != null)
-                    p2.CustomData.UpdateOrAdd(new Dictionary<string, object>() { { Keys.IsByeKey, false } });
-                MatchInfo newMatch = GetNewMatch(p1, p2);
-                matchList.Add(newMatch);
-            }
-            currentTournament.Matches = matchList.ToArray();
+            FunctionInvoker.ExecuteFunction(nameof(FunctionInvoker.StartTournament), NetworkManager.Instance.CurrentRoomInfo.Id,
+                (success) =>
+                {
+                    currentTournament = (TournamentInfo)success;
+
+                },
+                (failure) =>
+                {
+                    this.LogError(failure.ToString());
+                });
         }
 
-        private void SendTournament ()
+        private void SendRound ()
         {
-            //NetworkManager.Instance.BroadcastEvent(Keys.TournamentUpdateEvt, Keys.TournamentInfoKey, JsonConvert.SerializeObject(currentTournament));
+            this.Log("Tournament:  " + JsonConvert.SerializeObject(currentTournament));
+            NetworkManager.Instance.BroadcastEvent(Keys.TournamentUpdateEvt, Keys.TournamentIdKey, JsonConvert.SerializeObject(currentRound));
         }
 
         private MatchInfo GetNewMatch (PlayerInfo player1, PlayerInfo player2)
