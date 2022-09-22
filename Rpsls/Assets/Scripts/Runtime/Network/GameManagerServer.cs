@@ -134,7 +134,7 @@ namespace Kalkatos.Tournament
                 (success) =>
                 {
                     currentTournament = (TournamentInfo)success;
-
+                    NetworkManager.Instance.SendCustomData(Keys.TournamentIdKey, currentTournament);
                 },
                 (failure) =>
                 {
@@ -144,8 +144,8 @@ namespace Kalkatos.Tournament
 
         private void SendRound ()
         {
-            this.Log("Tournament:  " + JsonConvert.SerializeObject(currentTournament));
-            NetworkManager.Instance.BroadcastEvent(Keys.TournamentUpdateEvt, Keys.TournamentIdKey, JsonConvert.SerializeObject(currentRound));
+            this.Log("Tournament:  " + JsonConvert.SerializeObject(currentTournament, Formatting.Indented));
+            NetworkManager.Instance.BroadcastEvent(Keys.TournamentUpdateEvt, Keys.TournamentIdKey, JsonConvert.SerializeObject(currentRound, Formatting.Indented));
         }
 
         private MatchInfo GetNewMatch (PlayerInfo player1, PlayerInfo player2)

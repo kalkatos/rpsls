@@ -82,7 +82,7 @@ namespace Kalkatos.Tournament
 
     public class RoundInfo
     {
-        public int index;
+        public string Id;
         public MatchInfo[] Matches;
     }
 

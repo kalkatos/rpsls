@@ -5,12 +5,13 @@ using ParrelSync;
 using Newtonsoft.Json;
 using System.IO;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 
 namespace Kalkatos
 {
     public static class SaveManager
     {
-        private static ISaveImplementation save = new SaveInPlayerPrefs();
+        private static ISaveImplementation save = new SaveInScriptable();
 
         private static string CloneArgument => ClonesManager.IsClone() ? ClonesManager.GetArgument() : "";
         private static string nicknameKey => "Nickname" + CloneArgument;
@@ -116,7 +117,7 @@ namespace Kalkatos
         public void DeleteKey (string key)
         {
             dataDict.Remove(key);
-            scriptable.Data = JsonConvert.SerializeObject(dataDict);
+            scriptable.Data = JsonConvert.SerializeObject(dataDict, Formatting.Indented);
         }
 
         public int GetInt (string key, int defaultValue)
@@ -144,7 +145,7 @@ namespace Kalkatos
                 dataDict[key] = value.ToString();
             else
                 dataDict.Add(key, value.ToString());
-            scriptable.Data = JsonConvert.SerializeObject(dataDict);
+            scriptable.Data = JsonConvert.SerializeObject(dataDict, Formatting.Indented);
         }
 
         public void SaveString (string key, string value)
@@ -153,7 +154,7 @@ namespace Kalkatos
                 dataDict[key] = value;
             else
                 dataDict.Add(key, value);
-            scriptable.Data = JsonConvert.SerializeObject(dataDict);
+            scriptable.Data = JsonConvert.SerializeObject(dataDict, Formatting.Indented);
         }
     }
 
@@ -185,7 +186,7 @@ namespace Kalkatos
                 if ((DateTime.Now - lastCommitTime).TotalSeconds > timeBetweenSaves)
                 {
                     waitingForNextCommit = false;
-                    File.WriteAllText(savePath, JsonConvert.SerializeObject(data));
+                    File.WriteAllText(savePath, JsonConvert.SerializeObject(data, Formatting.Indented));
                     lastCommitTime = DateTime.Now;
                     Debug.Log("Saved file to " + savePath);
                 }

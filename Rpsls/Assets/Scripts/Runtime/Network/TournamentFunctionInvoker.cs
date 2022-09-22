@@ -54,7 +54,7 @@ namespace Kalkatos.Network
             {
                 new RoundInfo()
                 {
-                    index = 0,
+                    Id = Guid.NewGuid().ToString(),
                     Matches = matches
                 }
             };
@@ -93,11 +93,16 @@ namespace Kalkatos.Network
             // Create tournament
             TournamentInfo tournamentInfo = CreateTournament(players);
             // Update players
+#pragma warning disable 4014
             foreach (var item in players)
-                await DataAccess.SendData(item.Id, JsonConvert.SerializeObject(item), Keys.ConnectedPlayersKey);
-
-            // TODO Update room
-            
+                DataAccess.SendData(item.Id, JsonConvert.SerializeObject(item, Formatting.Indented), Keys.ConnectedPlayersKey).ContinueWith((t) => { });
+            // Update room
+            room.Players.Clear();
+            room.Players.AddRange(players);
+            room.CustomData = room.CustomData.CloneWithUpdateOrAdd(Keys.TournamentsKey, tournamentInfo);
+            DataAccess.SendData(room.Id, JsonConvert.SerializeObject(room, Formatting.Indented), Keys.ActiveRoomsKey);
+            DataAccess.SendData(tournamentInfo.Id, JsonConvert.SerializeObject(tournamentInfo, Formatting.Indented), Keys.TournamentsKey);
+#pragma warning restore 4014
             return tournamentInfo;
         }
 
@@ -140,7 +145,7 @@ namespace Kalkatos.Network
                 return Error.WrongParameters;
             string tournamentId = tournamentIdObj.ToString();
             // Check if the tournament exists
-            string tmtListSerialized = (await GetData(Keys.TournamentListKey)).ToString();
+            string tmtListSerialized = (await GetData(Keys.TournamentsKey)).ToString();
             if (string.IsNullOrEmpty(tmtListSerialized))
                 return Error.NonExistent;
             Dictionary<string, object> tmtListDict = JsonConvert.DeserializeObject<object[]>(tmtListSerialized).ToDictionary();
