@@ -69,6 +69,7 @@ namespace Kalkatos.Tournament
         Undefined = 0,
         GameReady = -100,
         MatchReady = -50,
+        TurnReady = -10
     }
 
     public class MatchInfo

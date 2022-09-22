@@ -95,13 +95,13 @@ namespace Kalkatos.Network
             // Update players
 #pragma warning disable 4014
             foreach (var item in players)
-                DataAccess.SendData(item.Id, JsonConvert.SerializeObject(item, Formatting.Indented), Keys.ConnectedPlayersKey).ContinueWith((t) => { });
+                await DataAccess.SendData(item.Id, JsonConvert.SerializeObject(item, Formatting.Indented), Keys.ConnectedPlayersKey).ContinueWith((t) => { });
             // Update room
             room.Players.Clear();
             room.Players.AddRange(players);
             room.CustomData = room.CustomData.CloneWithUpdateOrAdd(Keys.TournamentsKey, tournamentInfo);
-            DataAccess.SendData(room.Id, JsonConvert.SerializeObject(room, Formatting.Indented), Keys.ActiveRoomsKey);
-            DataAccess.SendData(tournamentInfo.Id, JsonConvert.SerializeObject(tournamentInfo, Formatting.Indented), Keys.TournamentsKey);
+            await DataAccess.SendData(room.Id, JsonConvert.SerializeObject(room, Formatting.Indented), Keys.ActiveRoomsKey);
+            await DataAccess.SendData(tournamentInfo.Id, JsonConvert.SerializeObject(tournamentInfo, Formatting.Indented), Keys.TournamentsKey);
 #pragma warning restore 4014
             return tournamentInfo;
         }
