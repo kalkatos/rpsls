@@ -132,10 +132,10 @@ namespace Kalkatos.Network
         {
             if (connectedPlayers.ContainsKey(playerId))
                 connectedPlayers[playerId].IsMe = false;
-            SaveManager.SaveString(Keys.ConnectedPlayersKey, JsonConvert.SerializeObject(connectedPlayers.ToObjArray(), Formatting.None));
+            SaveManager.SaveString(Keys.ConnectedPlayersKey, JsonConvert.SerializeObject(connectedPlayers.ToObjArray(), Formatting.Indented));
             if (connectedPlayers.ContainsKey(playerId))
                 connectedPlayers[playerId].IsMe = true;
-            SaveManager.SaveString(Keys.ActiveRoomsKey, JsonConvert.SerializeObject(activeRooms.ToObjArray(), Formatting.None));
+            SaveManager.SaveString(Keys.ActiveRoomsKey, JsonConvert.SerializeObject(activeRooms.ToObjArray(), Formatting.Indented));
         }
 
         private void LoadEventExecutions ()
@@ -157,7 +157,7 @@ namespace Kalkatos.Network
 
         private void SaveEventExecutions ()
         {
-            SaveManager.SaveString(executeEventKey, JsonConvert.SerializeObject(eventExecutions.ToObjArray(), Formatting.None));
+            SaveManager.SaveString(executeEventKey, JsonConvert.SerializeObject(eventExecutions.ToObjArray(), Formatting.Indented));
         }
 
         private IEnumerator CheckCoroutine ()
@@ -425,9 +425,16 @@ namespace Kalkatos.Network
             
             this.Wait(randomTime, () =>
             {
-                object[] loadedData = JsonConvert.DeserializeObject<object[]>(SaveManager.GetString(Keys.CustomDataKey, ""));
-                loadedData = loadedData.CloneWithUpdateOrAdd(parameters);
-                SaveManager.SaveString(Keys.CustomDataKey, JsonConvert.SerializeObject(loadedData));
+                var paramDict = parameters.ToDictionary();
+                string container = Keys.CustomDataKey;
+                if (paramDict.TryGetValue(Keys.ContainerAccessKey, out object containerObj))
+                {
+                    container = containerObj.ToString(); 
+                    paramDict.Remove(Keys.ContainerAccessKey);
+                }
+                object[] loadedData = JsonConvert.DeserializeObject<object[]>(SaveManager.GetString(container, ""));
+                loadedData = loadedData.CloneWithUpdateOrAdd(paramDict.ToObjArray());
+                SaveManager.SaveString(container, JsonConvert.SerializeObject(loadedData, Formatting.Indented));
                 RaiseSendDataSuccess();
             });
         }
@@ -602,8 +609,10 @@ namespace Kalkatos.Network
                         containerContent[key] = value;
                     else
                         containerContent.Add(key, value);
-                    SaveManager.SaveString(container, JsonConvert.SerializeObject(containerContent.ToObjArray()));
+                    SaveManager.SaveString(container, JsonConvert.SerializeObject(containerContent.ToObjArray(), Formatting.Indented));
                 }
+                else
+                    SaveManager.SaveString(container, JsonConvert.SerializeObject(new object[] { key, value }, Formatting.Indented));
             }
             else
                 SaveManager.SaveString(key, value);
@@ -613,11 +622,12 @@ namespace Kalkatos.Network
 
     internal static class Keys
     {
-        // Keys for data saved
+        // Containers
         public const string ConnectedPlayersKey = "CntPl";
         public const string ActiveRoomsKey = "AtvRm";
         public const string CustomDataKey = "CtmDt";
-        public const string TournamentListKey = "Trnmt";
+        public const string TournamentsKey = "Trnmt";
+        // Keys for custom data saved
         public const string RoomChangedKey = "RmChd";
         public const string RoomOpenKey = "RmOpn";
         public const string RoomCloseKey = "RmClo";
