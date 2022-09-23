@@ -14,6 +14,7 @@ namespace Kalkatos.Tournament
     public class GameManagerServer : MonoBehaviourPunCallbacks
     {
         [SerializeField] private bool debug;
+        [SerializeField] private int botAmount;
         [SerializeField] private GameManager gameManager;
 
         private Dictionary<string, PlayerInfo> players = new Dictionary<string, PlayerInfo>();
@@ -75,6 +76,8 @@ namespace Kalkatos.Tournament
             PhotonNetwork.JoinOrCreateRoom("DEBUG", new Photon.Realtime.RoomOptions(), TypedLobby.Default);
             while (!PhotonNetwork.InRoom)
                 yield return null;
+            for (int i = 0; i < botAmount; i++)
+                NetworkManager.Instance.AddBot();
             PhotonNetwork.LocalPlayer.NickName = "Kalkatos";
             GetPlayers(true);
             gameManager = gameObject.AddComponent<GameManager>();
@@ -120,6 +123,7 @@ namespace Kalkatos.Tournament
                     }
                 }
                 becameNewMaster = false;
+                yield return null;
             }
         }
 
@@ -135,17 +139,14 @@ namespace Kalkatos.Tournament
             while (players.Count > clientsChecked.Count)
             {
                 yield return delayToCheckClients;
-                object[] playerIds = new object[players.Count];
-                int index = 0;
+                Hashtable data = PhotonNetwork.CurrentRoom.CustomProperties;
                 foreach (var item in players)
                 {
-                    playerIds[index] = $"{Keys.PlayerStatusKey}-{item.Key}";
-                    index++;
+                    string key = $"{Keys.PlayerStatusKey}-{item.Key}";
+                    if (data.TryGetValue(key, out object state))
+                        if (state != null)
+                            clientsChecked.Add(new Tuple<string, ClientState>(key, (ClientState)int.Parse(state.ToString())));
                 }
-                // TODO Change to get directly
-                NetworkManager.Instance.RequestCustomData(playerIds);
-                while (clientsChecked.Count == 0)
-                    yield return null;
                 if (players.Count > clientsChecked.Count)
                     continue;
                 //TODO Check disconnected players to get out of this loop

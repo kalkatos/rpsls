@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 using Kalkatos.Network;
 
 namespace Kalkatos.Tournament
@@ -38,16 +39,6 @@ namespace Kalkatos.Tournament
             OnPlayerListUpdated?.Invoke(playerList.ToArray());
             SetReadyInGame();
         }
-
-        //private void HandlePlayerDataChanged (PlayerInfo obj)
-        //{
-        //    if (!players.ContainsKey(obj.Id))
-        //        return;
-        //    players[obj.Id] = obj;
-        //    PlayerInfo[] playerList = new PlayerInfo[players.Count];
-        //    players.Values.CopyTo(playerList, 0);
-        //    OnPlayerListUpdated?.Invoke(playerList);
-        //}
 
         public override void SetRound (RoundInfo roundInfo)
         {

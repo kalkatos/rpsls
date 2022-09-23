@@ -520,6 +520,15 @@ namespace Kalkatos.Network
                 });
         }
 
+        public override PlayerInfo AddBot (string name = "")
+        {
+            PlayerInfo bot = base.AddBot(name);
+            LoadLists();
+            connectedPlayers.Add(bot.Id, bot);
+            SaveLists();
+            return bot;
+        }
+
         #endregion
 
         public override void RaiseLogInSuccess (object parameter = null)
