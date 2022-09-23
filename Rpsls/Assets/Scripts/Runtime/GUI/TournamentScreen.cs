@@ -44,7 +44,6 @@ namespace Kalkatos.Tournament
             GameManager.OnPlayerListUpdated += HandlePlayerListUpdated;
             GameManager.OnRoundReceived += HandleRoundReceived;
             settings = TournamentGameSettings.Instance;
-            myId = NetworkManager.Instance.MyPlayerInfo.Id;
             tournamentHiddenPosition = tournamentStructure.localPosition;
         }
 
@@ -61,6 +60,7 @@ namespace Kalkatos.Tournament
 
         private void HandlePlayerListUpdated (PlayerInfo[] receivedPlayers)
         {
+            myId = NetworkManager.Instance.MyPlayerInfo.Id;
             if (receivedPlayers.Length == 2 && receivedPlayers[0].Id == myId)
             {
                 PlayerInfo myInfo = receivedPlayers[0];
@@ -87,11 +87,14 @@ namespace Kalkatos.Tournament
             this.roundInfo = roundInfo;
         }
 
-        private void SetupRoundInfo ()
+        private void UseRoundInfo ()
         {
             int index = 0;
             foreach (var item in roundInfo.Matches)
             {
+                playerSlots[item.Player1.Id].HandlePlayerInfo(item.Player1);
+                if (item.Player2 != null)
+                    playerSlots[item.Player2.Id].HandlePlayerInfo(item.Player2);
                 if (item.Player1.Id == myId)
                 {
                     myMatchIndex = index;
@@ -180,7 +183,7 @@ namespace Kalkatos.Tournament
             // Wait for tournament info
             while (roundInfo == null)
                 yield return null;
-            SetupRoundInfo();
+            UseRoundInfo();
 
             // TODO Set the BYE player badge, if any
 

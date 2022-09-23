@@ -43,6 +43,8 @@ namespace Kalkatos.Network
         public virtual RoomInfo CurrentRoomInfo { get; protected set; } = new RoomInfo();
         public abstract DataAccess DataAccess { get; }
 
+        protected List<PlayerInfo> bots = new List<PlayerInfo>();
+
         private void Awake ()
         {
             if (instance == null)
@@ -73,6 +75,17 @@ namespace Kalkatos.Network
                 result += letters[Random.Range(0, letters.Length)];
             return result;
         }
+        public virtual PlayerInfo AddBot (string name = "")
+        {
+            PlayerInfo newBot = new PlayerInfo()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Nickname = string.IsNullOrEmpty(name) ? CreateGuestName() : name,
+                IsBot = true
+            };
+            bots.Add(newBot);
+            return newBot;
+        }
 
         #region ==================  Requests  ===========================
 
@@ -90,7 +103,7 @@ namespace Kalkatos.Network
         public virtual void OpenRoom (params object[] parameters) { Debug.LogError("OpenRoom not implemented!"); }
         public virtual void CloseRoom (params object[] parameters) { Debug.LogError("CloseRoom not implemented!"); }
         public virtual void ExecuteFunction (string functionName, object parameter) => Debug.LogError("ExecuteFunction not implemented!");
-        
+
         #endregion
 
         #region ==================  Callbacks  ===========================
@@ -134,6 +147,7 @@ namespace Kalkatos.Network
         public const string MatchRecordKey = "MRecd";
         public const string TournamentRecordKey = "TRecd";
         // Info Keys
+        public const string BotsKey = "Bots";
         public const string PlayerIdKey = "PlrId";
         public const string PlayerStatusKey = "PlSts";
         public const string TournamentIdKey = "TmtId";
