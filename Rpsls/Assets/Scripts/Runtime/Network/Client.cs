@@ -10,11 +10,11 @@ namespace Kalkatos.Tournament
     {
         [SerializeField] protected string Id;
 
-        protected PlayerInfo Info;
-        protected string CurrentOpponentId;
-        protected ClientState CurrentState = ClientState.Undefined;
-        protected RoundInfo Round;
-        protected MatchInfo CurrentMatch;
+        protected PlayerInfo info;
+        protected string currentOpponentId;
+        protected ClientState currentState = ClientState.Undefined;
+        protected RoundInfo currentRound;
+        protected MatchInfo currentMatch;
 
         private void Awake ()
         {
@@ -50,7 +50,7 @@ namespace Kalkatos.Tournament
             Dictionary<string, object> paramDict = parameters.ToDictionary();
             switch (key)
             {
-                case Keys.TournamentUpdateEvt:
+                case Keys.RoundReceivedEvt:
                     if (paramDict.TryGetValue(Keys.TournamentIdKey, out object value))
                     {
                         this.Log($"Round received:     {value}");
@@ -68,38 +68,38 @@ namespace Kalkatos.Tournament
 
         public virtual void SetInfo (PlayerInfo info)
         {
-            Info = info;
+            this.info = info;
             Id = info.Id;
         }
 
         public virtual void SetRound (RoundInfo roundInfo)
         {
-            Round = roundInfo;
-            foreach (var item in Round.Matches)
+            currentRound = roundInfo;
+            foreach (var item in currentRound.Matches)
             {
                 if (item.Player1.Id == Id)
                 {
-                    CurrentMatch = item;
-                    CurrentOpponentId = item.Player2?.Id ?? "";
+                    currentMatch = item;
+                    currentOpponentId = item.Player2?.Id ?? "";
                 }
                 else if (item.Player2 != null && item.Player2.Id == Id)
                 {
-                    CurrentMatch = item;
-                    CurrentOpponentId = item.Player1.Id;
+                    currentMatch = item;
+                    currentOpponentId = item.Player1.Id;
                 }
             }
         }
 
         public void SetReadyInGame ()
         {
-            CurrentState = ClientState.GameReady;
-            NetworkManager.Instance.SendCustomData($"{Keys.PlayerIdKey}-{Id}", (int)CurrentState);
+            currentState = ClientState.GameReady;
+            NetworkManager.Instance.SendCustomData($"{Keys.PlayerIdKey}-{Id}", (int)currentState);
         }
 
         public void SetReadyToStartMatch ()
         {
-            CurrentState = ClientState.MatchReady;
-            NetworkManager.Instance.SendCustomData($"{Keys.PlayerIdKey}-{Id}", (int)CurrentState);
+            currentState = ClientState.MatchReady;
+            NetworkManager.Instance.SendCustomData($"{Keys.PlayerIdKey}-{Id}", (int)currentState);
         }
     }
 }

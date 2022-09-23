@@ -620,38 +620,7 @@ namespace Kalkatos.Network
 #pragma warning restore
     }
 
-    internal static class Keys
-    {
-        // Containers
-        public const string ConnectedPlayersKey = "CntPl";
-        public const string ActiveRoomsKey = "AtvRm";
-        public const string CustomDataKey = "CtmDt";
-        public const string TournamentsKey = "Trnmt";
-        // Keys for custom data saved
-        public const string RoomChangedKey = "RmChd";
-        public const string RoomOpenKey = "RmOpn";
-        public const string RoomCloseKey = "RmClo";
-        public const string ContainerAccessKey = "Ctner";
-        // Keys for Player Info Custom Data
-        public const string IsByeKey = "IsBye";
-        public const string MatchRecordKey = "MRecd";
-        public const string TournamentRecordKey = "TRecd";
-        // Info Keys
-        public const string PlayerIdKey = "PlrId";
-        public const string TournamentIdKey = "TmtId";
-        public const string MatchIdKey = "MtcId";
-        public const string RoomIdKey = "RmId";
-        public const string RoomInfoKey = "RdIfo";
-        public const string RoundNumberKey = "RdNum";
-
-        // Event handles
-        public const string TournamentUpdateEvt = "TmtUp";
-        public const string TurnUpdateEvt = "TuUpt";
-        // Function handles
-        public const string GetRoundFct = "GetRd";
-        public const string StartTournamentFct = nameof(FunctionInvoker.StartTournament);
-
-    }
+    
 
     internal class EventExecution
     {

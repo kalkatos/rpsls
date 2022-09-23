@@ -85,6 +85,10 @@ namespace Kalkatos.Tournament
         private void HandleRoundReceived (RoundInfo roundInfo)
         {
             this.roundInfo = roundInfo;
+        }
+
+        private void SetupRoundInfo ()
+        {
             int index = 0;
             foreach (var item in roundInfo.Matches)
             {
@@ -176,6 +180,7 @@ namespace Kalkatos.Tournament
             // Wait for tournament info
             while (roundInfo == null)
                 yield return null;
+            SetupRoundInfo();
 
             // TODO Set the BYE player badge, if any
 

@@ -58,14 +58,14 @@ namespace Kalkatos.Network
 
         protected virtual void OnAwake () { }
 
-        protected string CreateGuestName ()
+        public string CreateGuestName ()
         {
             string guestName = "Guest-";
             for (int i = 0; i < 7; i++)
                 guestName += Random.Range(0, 10);
             return guestName;
         }
-        protected string CreateRandomRoomName ()
+        public string CreateRandomRoomName ()
         {
             string letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
             string result = "";
@@ -115,6 +115,40 @@ namespace Kalkatos.Network
         public virtual void RaiseExecuteFunctionFailure (params object[] parameters) => OnExecuteFunctionFailure?.Invoke(parameters);
 
         #endregion
+    }
+
+    internal static class Keys
+    {
+        // Containers
+        public const string ConnectedPlayersKey = "CntPl";
+        public const string ActiveRoomsKey = "AtvRm";
+        public const string CustomDataKey = "CtmDt";
+        public const string TournamentsKey = "Trnmt";
+        // Keys for custom data saved
+        public const string RoomChangedKey = "RmChd";
+        public const string RoomOpenKey = "RmOpn";
+        public const string RoomCloseKey = "RmClo";
+        public const string ContainerAccessKey = "Ctner";
+        // Keys for Player Info Custom Data
+        public const string IsByeKey = "IsBye";
+        public const string MatchRecordKey = "MRecd";
+        public const string TournamentRecordKey = "TRecd";
+        // Info Keys
+        public const string PlayerIdKey = "PlrId";
+        public const string PlayerStatusKey = "PlSts";
+        public const string TournamentIdKey = "TmtId";
+        public const string MatchIdKey = "MtcId";
+        public const string RoomIdKey = "RmId";
+        public const string RoomInfoKey = "RdIfo";
+        public const string RoundNumberKey = "RdNum";
+
+        // Event handles
+        public const string RoundReceivedEvt = "TmtUp";
+        public const string TurnUpdateEvt = "TuUpt";
+        // Function handles
+        public const string GetRoundFct = "GetRd";
+        public const string StartTournamentFct = nameof(FunctionInvoker.StartTournament);
+
     }
 
     public enum FindMatchError
