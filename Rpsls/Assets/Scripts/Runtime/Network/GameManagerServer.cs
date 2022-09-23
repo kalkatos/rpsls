@@ -4,62 +4,122 @@ using System.Collections.Generic;
 using UnityEngine;
 using Kalkatos.Network;
 using Newtonsoft.Json;
+using Photon.Pun;
+using Photon.Realtime;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 namespace Kalkatos.Tournament
 {
-    public class GameManagerServer : MonoBehaviour
+    [DefaultExecutionOrder(-1)]
+    public class GameManagerServer : MonoBehaviourPunCallbacks
     {
+        [SerializeField] private bool debug;
+        [SerializeField] private GameManager gameManager;
+
+        private Dictionary<string, PlayerInfo> players = new Dictionary<string, PlayerInfo>();
         private TournamentInfo currentTournament;
         private RoundInfo currentRound;
-        private Dictionary<string, PlayerInfo> players = new Dictionary<string, PlayerInfo>();
         private byte currentMatchId = 0;
-        private byte currentRoundIndex = 0;
         private byte currentTurn = 0;
         private List<Tuple<string, ClientState>> clientsChecked = new List<Tuple<string, ClientState>>();
         private WaitForSeconds delayToCheckClients = new WaitForSeconds(0.5f);
         private WaitForSeconds wait = new WaitForSeconds(0.5f);
-        private bool isOver;
+        private bool becameNewMaster;
+        private bool hasJoinedLobby;
 
+        private const string isOverKey = "Over";
+        private const string expectedStateKey = "ExSte";
+
+        private int currentRoundIndex => currentTournament.Rounds.Length - 1;
+        private bool isOver => HasData(isOverKey);
         private byte nextMatchId => ++currentMatchId;
         private bool isConnectedAndInRoom => NetworkManager.Instance.IsConnected && NetworkManager.Instance.IsInRoom;
+        private List<PlayerInfo> playersList
+        {
+            get
+            {
+                var list = new List<PlayerInfo>();
+                foreach (var item in players)
+                    list.Add(item.Value);
+                return list;
+            }
+        }
+        private ClientState currentExpectedState
+        {
+            get
+            {
+                if (PhotonNetwork.CurrentRoom != null && PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue(expectedStateKey, out object value))
+                    return (ClientState)int.Parse(value.ToString());
+                return ClientState.Undefined;
+            }
+            set => PhotonNetwork.CurrentRoom?.SetCustomProperties(new Hashtable() { { expectedStateKey, (int)value } });
+        }
 
         private void Awake ()
         {
-            if (!NetworkManager.Instance.MyPlayerInfo.IsMasterClient)
+            if (debug)
+                StartCoroutine(ConnectForDebug());
+            else if (NetworkManager.Instance.MyPlayerInfo.IsMasterClient)
             {
-                Destroy(this);
-                return;
+                currentExpectedState = ClientState.Undefined;
+                StartCoroutine(GameLoop());
             }
-            NetworkManager.OnEventReceived += HandleEventReceived;
-            NetworkManager.OnRequestDataSuccess += HandleRequestDataSuccess;
-
-            StartCoroutine(GameLoop());
         }
 
-        private void OnDestroy ()
+        private IEnumerator ConnectForDebug ()
         {
-            NetworkManager.OnEventReceived -= HandleEventReceived;
-            NetworkManager.OnRequestDataSuccess -= HandleRequestDataSuccess;
+            DestroyImmediate(gameManager);
+            PhotonNetwork.ConnectUsingSettings();
+            while (!hasJoinedLobby)
+                yield return null;
+            PhotonNetwork.JoinOrCreateRoom("DEBUG", new Photon.Realtime.RoomOptions(), TypedLobby.Default);
+            while (!PhotonNetwork.InRoom)
+                yield return null;
+            PhotonNetwork.LocalPlayer.NickName = "Kalkatos";
+            GetPlayers(true);
+            gameManager = gameObject.AddComponent<GameManager>();
+            currentExpectedState = ClientState.Undefined;
+            StartCoroutine(GameLoop());
         }
 
         private IEnumerator GameLoop ()
         {
+            // Wait until connected and in a room
             yield return WaitUntil(() => isConnectedAndInRoom);
-            GetPlayers(true);
-            PrepareTournament();
-            yield return WaitClientsState(ClientState.GameReady);
+            // If this is a fresh start, prepare the tournament. Just get the players otherwise.
+            if (!becameNewMaster)
+            {
+                if (!debug)
+                    GetPlayers(true);
+                PrepareTournament();
+                currentExpectedState = ClientState.GameReady;
+                yield return WaitClientsState();
+            }
+            else
+                GetPlayers(false);
+            // Begin the loop
             while (!isOver)
             {
                 currentRound = currentTournament.Rounds[currentRoundIndex];
-                SendRound();
-                yield return WaitClientsState(ClientState.MatchReady);
-                Debug.Log("Round: " + (currentRoundIndex + 1));
-                yield return new WaitForSeconds(1f);
-                GetPlayers();
-                for (int i = 0; i < players.Count; i++)
+                if (!becameNewMaster)
+                    SendRound();
+                if (currentExpectedState == ClientState.GameReady)
                 {
-                    // TODO Finish
+                    currentExpectedState = ClientState.MatchReady;
+                    yield return WaitClientsState();
                 }
+                if (currentExpectedState == ClientState.MatchReady)
+                {
+                    currentExpectedState = ClientState.TurnReady;
+                    Debug.Log("Round: " + (currentRoundIndex + 1));
+                    yield return new WaitForSeconds(1f);
+                    GetPlayers(false);
+                    foreach (var item in players)
+                    {
+
+                    }
+                }
+                becameNewMaster = false;
             }
         }
 
@@ -69,7 +129,7 @@ namespace Kalkatos.Tournament
                 yield return wait;
         }
 
-        private IEnumerator WaitClientsState (ClientState expectedState)
+        private IEnumerator WaitClientsState ()
         {
             clientsChecked.Clear();
             while (players.Count > clientsChecked.Count)
@@ -79,9 +139,10 @@ namespace Kalkatos.Tournament
                 int index = 0;
                 foreach (var item in players)
                 {
-                    playerIds[index] = $"{Keys.PlayerIdKey}-{item.Key}";
+                    playerIds[index] = $"{Keys.PlayerStatusKey}-{item.Key}";
                     index++;
                 }
+                // TODO Change to get directly
                 NetworkManager.Instance.RequestCustomData(playerIds);
                 while (clientsChecked.Count == 0)
                     yield return null;
@@ -90,27 +151,16 @@ namespace Kalkatos.Tournament
                 //TODO Check disconnected players to get out of this loop
                 int correctStateCount = 0;
                 for (int i = 0; i < clientsChecked.Count; i++)
-                    if (clientsChecked[i].Item2 == expectedState)
+                    if (clientsChecked[i].Item2 == currentExpectedState)
                         correctStateCount++;
                 if (correctStateCount == players.Count)
                     break;
             }
         }
 
-        private void HandleRequestDataSuccess (object[] parameters)
+        private bool HasData (string key)
         {
-            Dictionary<string, object> paramDict = parameters.ToDictionary();
-            foreach (var item in players)
-                if (paramDict.TryGetValue($"{Keys.PlayerIdKey}-{item.Key}", out object state))
-                {
-                    if (state != null)
-                        clientsChecked.Add(new Tuple<string, ClientState>(item.Key, (ClientState)int.Parse(state.ToString())));
-                }
-        }
-
-        private void HandleEventReceived (string key, object[] parameters)
-        {
-
+            return PhotonNetwork.CurrentRoom.CustomProperties.ContainsKey(key);
         }
 
         private void GetPlayers (bool createBots = false)
@@ -130,34 +180,31 @@ namespace Kalkatos.Tournament
 
         private void PrepareTournament ()
         {
-            FunctionInvoker.ExecuteFunction(nameof(FunctionInvoker.StartTournament), NetworkManager.Instance.CurrentRoomInfo.Id,
-                (success) =>
-                {
-                    currentTournament = (TournamentInfo)success;
-                    NetworkManager.Instance.SendCustomData(Keys.TournamentIdKey, currentTournament);
-                },
-                (failure) =>
-                {
-                    this.LogError(failure.ToString());
-                });
+            currentTournament = FunctionInvoker.CreateTournament(playersList.ToArray());
+            PhotonNetwork.CurrentRoom.SetCustomProperties(new Hashtable() { { Keys.TournamentsKey, JsonConvert.SerializeObject(currentTournament) } });
         }
 
         private void SendRound ()
         {
-            this.Log("Tournament:  " + JsonConvert.SerializeObject(currentTournament, Formatting.Indented));
-            NetworkManager.Instance.BroadcastEvent(Keys.TournamentUpdateEvt, Keys.TournamentIdKey, JsonConvert.SerializeObject(currentRound, Formatting.Indented));
+            NetworkManager.Instance.BroadcastEvent(Keys.RoundReceivedEvt, Keys.TournamentIdKey, JsonConvert.SerializeObject(currentRound));
         }
 
-        private MatchInfo GetNewMatch (PlayerInfo player1, PlayerInfo player2)
+        #region ========== Callbacks ===============
+
+        public override void OnJoinedLobby ()
         {
-            return new MatchInfo()
-            {
-                Id = nextMatchId,
-                Player1 = player1,
-                Player2 = player2,
-                Player1Wins = 0,
-                Player2Wins = 0
-            };
+            hasJoinedLobby = true;
         }
+
+        public override void OnMasterClientSwitched (Player newMasterClient)
+        {
+            if (newMasterClient.IsLocal)
+            {
+                becameNewMaster = true;
+                StartCoroutine(GameLoop());
+            }
+        }
+
+        #endregion
     }
 }

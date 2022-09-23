@@ -13,11 +13,14 @@ namespace Kalkatos.Network
 {
     public class PhotonNetworkManager : NetworkManager, IConnectionCallbacks, IMatchmakingCallbacks, IInRoomCallbacks, ILobbyCallbacks, IOnEventCallback
     {
+        [SerializeField] private int numberOfBots;
+
         private const string lastByteUsedForEvents = "LstBt";
         private const string executeEventKey = "EvKey";
         private const byte customEvent = 1;
 
         private PhotonDataAccess dataAccess = new PhotonDataAccess();
+        private List<PlayerInfo> botList = new List<PlayerInfo>();
 
         public override bool IsConnected => PhotonNetwork.IsConnected;
         public override bool IsInRoom => PhotonNetwork.CurrentRoom != null;
@@ -36,6 +39,19 @@ namespace Kalkatos.Network
         private void OnApplicationQuit ()
         {
             PhotonNetwork.Disconnect();
+        }
+
+        protected override void OnAwake ()
+        {
+            for (int i = 0; i < numberOfBots; i++)
+            {
+                botList.Add(new PlayerInfo()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Nickname = CreateGuestName(),
+                    IsBot = true
+                });
+            }
         }
 
         public override PlayerInfo MyPlayerInfo
@@ -57,12 +73,13 @@ namespace Kalkatos.Network
                     info.Players = new List<PlayerInfo>();
                     foreach (var item in room.Players)
                         info.Players.Add(InfoFromPlayer(item.Value));
+                    info.Players.AddRange(botList);
                 }
                 return info;
             }
         }
 
-        private PlayerInfo InfoFromPlayer (Player player)
+        public static PlayerInfo InfoFromPlayer (Player player)
         {
             return new PlayerInfo()
             {

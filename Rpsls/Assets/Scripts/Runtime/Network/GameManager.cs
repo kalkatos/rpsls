@@ -18,14 +18,12 @@ namespace Kalkatos.Tournament
 
         protected override void OnAwake ()
         {
-            NetworkManager.OnPlayerDataChanged += HandlePlayerDataChanged;
             Instance = this;
             SetInfo(myInfo);
         }
 
         private void OnDestroy ()
         {
-            NetworkManager.OnPlayerDataChanged -= HandlePlayerDataChanged;
         }
 
         private void Start ()
@@ -41,15 +39,15 @@ namespace Kalkatos.Tournament
             SetReadyInGame();
         }
 
-        private void HandlePlayerDataChanged (PlayerInfo obj)
-        {
-            if (!players.ContainsKey(obj.Id))
-                return;
-            players[obj.Id] = obj;
-            PlayerInfo[] playerList = new PlayerInfo[players.Count];
-            players.Values.CopyTo(playerList, 0);
-            OnPlayerListUpdated?.Invoke(playerList);
-        }
+        //private void HandlePlayerDataChanged (PlayerInfo obj)
+        //{
+        //    if (!players.ContainsKey(obj.Id))
+        //        return;
+        //    players[obj.Id] = obj;
+        //    PlayerInfo[] playerList = new PlayerInfo[players.Count];
+        //    players.Values.CopyTo(playerList, 0);
+        //    OnPlayerListUpdated?.Invoke(playerList);
+        //}
 
         public override void SetRound (RoundInfo roundInfo)
         {

@@ -14,7 +14,7 @@ namespace Kalkatos.Network
             return parameters[0];
         }
 
-        private static TournamentInfo CreateTournament (PlayerInfo[] players)
+        public static TournamentInfo CreateTournament (PlayerInfo[] players)
         {
             players.Shuffle();
             TournamentInfo tournament = new TournamentInfo();
@@ -61,12 +61,12 @@ namespace Kalkatos.Network
             return tournament;
         }
 
-        private static object AdvanceTournament (TournamentInfo fromTournament, PlayerInfo[] players)
+        public static TournamentInfo AdvanceTournament (TournamentInfo fromTournament, PlayerInfo[] players)
         {
             foreach (var item in players)
             {
                 if (!item.CustomData.ContainsKey(Keys.TournamentRecordKey))
-                    return Error.WrongParameters;
+                    item.CustomData.Add(Keys.TournamentRecordKey, "0-0");
             }
             Array.Sort(players, SortBasedOnRecord);
 
@@ -93,7 +93,6 @@ namespace Kalkatos.Network
             // Create tournament
             TournamentInfo tournamentInfo = CreateTournament(players);
             // Update players
-#pragma warning disable 4014
             foreach (var item in players)
                 await DataAccess.SendData(item.Id, JsonConvert.SerializeObject(item, Formatting.Indented), Keys.ConnectedPlayersKey).ContinueWith((t) => { });
             // Update room
@@ -102,7 +101,6 @@ namespace Kalkatos.Network
             room.CustomData = room.CustomData.CloneWithUpdateOrAdd(Keys.TournamentsKey, tournamentInfo);
             await DataAccess.SendData(room.Id, JsonConvert.SerializeObject(room, Formatting.Indented), Keys.ActiveRoomsKey);
             await DataAccess.SendData(tournamentInfo.Id, JsonConvert.SerializeObject(tournamentInfo, Formatting.Indented), Keys.TournamentsKey);
-#pragma warning restore 4014
             return tournamentInfo;
         }
 

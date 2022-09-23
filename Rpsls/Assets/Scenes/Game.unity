@@ -210,6 +210,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3753ef5dc297ec41a006d9f1e2ca4f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debug: 1
+  gameManager: {fileID: 406633096}
 --- !u!114 &406633096
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -377,6 +379,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2380359721366390740, guid: 7939899439f241f48ad10e8e997e7498, type: 3}
       propertyPath: amountOfPlayersToFillIn
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8101669485526991225, guid: 7939899439f241f48ad10e8e997e7498, type: 3}
+      propertyPath: numberOfBots
       value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
