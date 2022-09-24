@@ -95,28 +95,26 @@ namespace Kalkatos.Tournament
                 if (!debug)
                     GetPlayers(true);
                 PrepareTournament();
-                currentExpectedState = ClientState.GameReady;
-                yield return WaitClientsState();
+                yield return WaitClientsState(ClientState.GameReady);
             }
             else
-                GetPlayers(false);
+                GetPlayers();
             // Begin the loop
             while (!isOver)
             {
                 currentRound = currentTournament.Rounds[currentRoundIndex];
                 if (!becameNewMaster)
-                    SendRound();
-                if (currentExpectedState == ClientState.GameReady)
                 {
-                    currentExpectedState = ClientState.MatchReady;
-                    yield return WaitClientsState();
+                    SendRound();
+                    Debug.Log("Round: " + (currentRoundIndex + 1)); 
                 }
+                if (currentExpectedState == ClientState.GameReady)
+                    yield return WaitClientsState(ClientState.MatchReady);
                 if (currentExpectedState == ClientState.MatchReady)
                 {
-                    currentExpectedState = ClientState.TurnReady;
-                    Debug.Log("Round: " + (currentRoundIndex + 1));
-                    yield return new WaitForSeconds(1f);
-                    GetPlayers(false);
+                    //currentExpectedState = ++currentTurn;
+                    yield return new WaitForSeconds(10f);
+                    GetPlayers();
                     foreach (var item in players)
                     {
 
@@ -133,20 +131,17 @@ namespace Kalkatos.Tournament
                 yield return wait;
         }
 
-        private IEnumerator WaitClientsState ()
+        private IEnumerator WaitClientsState (ClientState expectedState)
         {
+            currentExpectedState = expectedState;
             clientsChecked.Clear();
             while (players.Count > clientsChecked.Count)
             {
                 yield return delayToCheckClients;
-                Hashtable data = PhotonNetwork.CurrentRoom.CustomProperties;
+                GetPlayers();
                 foreach (var item in players)
-                {
-                    string key = $"{Keys.PlayerStatusKey}-{item.Key}";
-                    if (data.TryGetValue(key, out object state))
-                        if (state != null)
-                            clientsChecked.Add(new Tuple<string, ClientState>(key, (ClientState)int.Parse(state.ToString())));
-                }
+                    if (item.Value.CustomData.TryGetValue(Keys.PlayerStatusKey, out object state))
+                        clientsChecked.Add(new Tuple<string, ClientState>(item.Value.Id, (ClientState)int.Parse(state.ToString())));
                 if (players.Count > clientsChecked.Count)
                     continue;
                 //TODO Check disconnected players to get out of this loop
@@ -207,5 +202,17 @@ namespace Kalkatos.Tournament
         }
 
         #endregion
+    }
+
+    public interface IGame
+    {
+        public void OnMatchStarted(MatchInfo match);
+        public void OnMatchEnded(MatchInfo match);
+        public void OnTurnStarted(MatchInfo match, int turnNumber);
+        public void OnTurnEnded(MatchInfo match, int turnNumber);
+        public void OnPhaseStarted(MatchInfo match, string phaseName);
+        public void OnPhaseEndted(MatchInfo match, string phaseName);
+        public void OnStepStarted(MatchInfo match, string stepName);
+        public void OnStepEnded(MatchInfo match, string stepName);
     }
 }

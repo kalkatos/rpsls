@@ -269,7 +269,7 @@ namespace Kalkatos.Tournament
                 if (playmats[1] == null)
                     playmats[1] = CreatePlaymat(1);
                 playmats[1].MoveAndScaleTo(playmatPositions[1], movePlaymatsTime);
-                yield return new WaitForSeconds(movePlaymatsTime);
+                yield return new WaitForSeconds(dockingTime);
             }
             OnTournamentIntroFinished?.Invoke();
         }
