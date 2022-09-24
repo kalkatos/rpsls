@@ -155,7 +155,6 @@ namespace Kalkatos.Network
         public const string RoomIdKey = "RmId";
         public const string RoomInfoKey = "RdIfo";
         public const string RoundNumberKey = "RdNum";
-
         // Event handles
         public const string RoundReceivedEvt = "TmtUp";
         public const string TurnUpdateEvt = "TuUpt";

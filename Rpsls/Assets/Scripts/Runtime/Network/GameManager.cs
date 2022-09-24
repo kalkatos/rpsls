@@ -56,6 +56,7 @@ namespace Kalkatos.Tournament
     public enum ClientState
     {
         Undefined = 0,
+        Disconnected = -150,
         GameReady = -100,
         MatchReady = -50,
         TurnReady = -10

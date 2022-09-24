@@ -66,6 +66,13 @@ namespace Kalkatos.Tournament
             }
         }
 
+        protected void SetState (ClientState state)
+        {
+            currentState = state;
+            //NetworkManager.Instance.SendCustomData($"{Keys.PlayerStatusKey}-{Id}", (int)currentState);
+            NetworkManager.Instance.UpdateMyCustomData(Keys.PlayerStatusKey, (int)currentState);
+        }
+
         public virtual void SetInfo (PlayerInfo info)
         {
             this.info = info;
@@ -92,14 +99,12 @@ namespace Kalkatos.Tournament
 
         public void SetReadyInGame ()
         {
-            currentState = ClientState.GameReady;
-            NetworkManager.Instance.SendCustomData($"{Keys.PlayerStatusKey}-{Id}", (int)currentState);
+            SetState(ClientState.GameReady);
         }
 
         public void SetReadyToStartMatch ()
         {
-            currentState = ClientState.MatchReady;
-            NetworkManager.Instance.SendCustomData($"{Keys.PlayerStatusKey}-{Id}", (int)currentState);
+            SetState(ClientState.MatchReady);
         }
     }
 }
