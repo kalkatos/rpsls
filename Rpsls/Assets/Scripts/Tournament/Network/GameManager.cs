@@ -11,6 +11,8 @@ namespace Kalkatos.Tournament
 
         public static event Action<PlayerInfo[]> OnPlayerListUpdated;
         public static event Action<RoundInfo> OnRoundReceived;
+        public static event Action OnHandReceived;
+        public static event Action<RoundInfo> OnTurnResultReceived;
 
         private Dictionary<string, PlayerInfo> players = new Dictionary<string, PlayerInfo>();
 
@@ -37,13 +39,25 @@ namespace Kalkatos.Tournament
                 players.Add(info.Id, info);
             }
             OnPlayerListUpdated?.Invoke(playerList.ToArray());
-            SetReadyInGame();
+            SetStateAsInGame();
         }
 
         public override void SetRound (RoundInfo roundInfo)
         {
             base.SetRound(roundInfo);
             OnRoundReceived?.Invoke(roundInfo);
+        }
+
+        public override void SetHand ()
+        {
+            base.SetHand();
+            OnHandReceived?.Invoke();
+        }
+
+        public override void HandleTurnResult (RoundInfo roundInfo)
+        {
+            base.HandleTurnResult(roundInfo);
+            OnTurnResultReceived?.Invoke(roundInfo);
         }
 
         public static void ExitRoom ()
@@ -53,18 +67,20 @@ namespace Kalkatos.Tournament
         }
     }
 
-    public enum ClientState
+    public static class ClientState
     {
-        Undefined = 0,
-        Disconnected = -150,
-        GameReady = -100,
-        MatchReady = -50,
-        TurnReady = -10
+        public const string Undefined = "Undefined";
+        public const string Disconnected = "Disconnected";
+        public const string InGame = "InGame"; // In the game scene
+        public const string InMatch = "InMatch"; // Finished tournament intro
+        public const string InTurn = "InTurn"; // Finished card delivery intro (mulligan)
+        public const string HandReceived = "HandReceived";
+        public const string WaitingTurnResult = "WaitingTurnResult";
     }
 
     public class MatchInfo
     {
-        public int Id;
+        public string Id;
         public PlayerInfo Player1;
         public PlayerInfo Player2;
         public int Player1Wins;
@@ -74,6 +90,7 @@ namespace Kalkatos.Tournament
     public class RoundInfo
     {
         public string Id;
+        public int Index;
         public MatchInfo[] Matches;
     }
 
@@ -82,5 +99,10 @@ namespace Kalkatos.Tournament
         public string Id;
         public string[] Players;
         public RoundInfo[] Rounds;
+    }
+
+    public class MatchState
+    {
+        public object[] Data;
     }
 }

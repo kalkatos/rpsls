@@ -12,9 +12,10 @@ namespace Kalkatos.Tournament
 
         protected PlayerInfo info;
         protected string currentOpponentId;
-        protected ClientState currentState = ClientState.Undefined;
+        protected string currentState = ClientState.Undefined.ToString();
         protected RoundInfo currentRound;
         protected MatchInfo currentMatch;
+        protected MatchState currentMatchState;
 
         private void Awake ()
         {
@@ -48,29 +49,45 @@ namespace Kalkatos.Tournament
         {
             this.Log("Event received in client: " + key);
             Dictionary<string, object> paramDict = parameters.ToDictionary();
+            object value = null;
             switch (key)
             {
                 case Keys.RoundReceivedEvt:
-                    if (paramDict.TryGetValue(Keys.TournamentIdKey, out object value))
+                    if (paramDict.TryGetValue(Keys.RoundKey, out value))
                     {
                         this.Log($"Round received:     {value}");
                         RoundInfo round = JsonConvert.DeserializeObject<RoundInfo>(value.ToString());
                         SetRound(round);
                     }
                     else
-                        this.LogWarning("Didn't receive the key " + Keys.TournamentIdKey);
+                        this.LogWarning("Didn't receive the key " + Keys.RoundKey);
                     break;
-                case Keys.TurnUpdateEvt:
-
+                case Keys.HandReceivedEvt:
+                    // TODO Change to the real tratative of the hand
+                    this.Wait(UnityEngine.Random.Range(1f, 2f), () =>
+                    {
+                        SetHand();
+                        SetStateAsHandReceived();
+                    });
+                    break;
+                case Keys.TurnEndedEvt:
+                    if (paramDict.TryGetValue(Keys.RoundKey, out value))
+                    {
+                        this.Log($"Round received at turn End:     {value}");
+                        RoundInfo round = JsonConvert.DeserializeObject<RoundInfo>(value.ToString());
+                        HandleTurnResult(round);
+                    }
+                    else
+                        this.LogWarning("Didn't receive the key " + Keys.RoundKey);
                     break;
             }
         }
 
-        protected void SetState (ClientState state)
+        protected void SetState (string state)
         {
             currentState = state;
             //NetworkManager.Instance.SendCustomData($"{Keys.PlayerStatusKey}-{Id}", (int)currentState);
-            NetworkManager.Instance.UpdateMyCustomData(Keys.PlayerStatusKey, (int)currentState);
+            NetworkManager.Instance.UpdateMyCustomData(Keys.PlayerStatusKey, currentState);
         }
 
         public virtual void SetInfo (PlayerInfo info)
@@ -97,14 +114,39 @@ namespace Kalkatos.Tournament
             }
         }
 
-        public void SetReadyInGame ()
+        public virtual void SetHand ()
         {
-            SetState(ClientState.GameReady);
+
         }
 
-        public void SetReadyToStartMatch ()
+        public virtual void HandleTurnResult (RoundInfo roundInfo)
         {
-            SetState(ClientState.MatchReady);
+
+        }
+
+        public void SetStateAsInGame ()
+        {
+            SetState(ClientState.InGame);
+        }
+
+        public void SetStateAsInMatch ()
+        {
+            SetState(ClientState.InMatch);
+        }
+
+        public void SetStateAsInTurn ()
+        {
+            SetState(ClientState.InTurn);
+        }
+
+        public void SetStateAsHandReceived ()
+        {
+            SetState(ClientState.HandReceived);
+        }
+
+        public void SetStateAsWaitingForResult ()
+        {
+            SetState(ClientState.WaitingTurnResult);
         }
     }
 }

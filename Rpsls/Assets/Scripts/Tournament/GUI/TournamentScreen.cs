@@ -43,6 +43,7 @@ namespace Kalkatos.Tournament
         {
             GameManager.OnPlayerListUpdated += HandlePlayerListUpdated;
             GameManager.OnRoundReceived += HandleRoundReceived;
+            GameManager.OnTurnResultReceived += HandleTurnResultReceived;
             settings = TournamentGameSettings.Instance;
             tournamentHiddenPosition = tournamentStructure.localPosition;
         }
@@ -51,6 +52,7 @@ namespace Kalkatos.Tournament
         {
             GameManager.OnPlayerListUpdated -= HandlePlayerListUpdated;
             GameManager.OnRoundReceived -= HandleRoundReceived;
+            GameManager.OnTurnResultReceived -= HandleTurnResultReceived;
         }
 
         private void Start ()
@@ -85,6 +87,16 @@ namespace Kalkatos.Tournament
         private void HandleRoundReceived (RoundInfo roundInfo)
         {
             this.roundInfo = roundInfo;
+        }
+
+        public void HandleTurnResultReceived (RoundInfo roundInfo)
+        {
+            foreach (var item in roundInfo.Matches)
+            {
+                playerSlots[item.Player1.Id].HandlePlayerInfo(item.Player1);
+                if (item.Player2 != null)
+                    playerSlots[item.Player2.Id].HandlePlayerInfo(item.Player2);
+            }
         }
 
         private void UseRoundInfo ()

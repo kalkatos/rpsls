@@ -153,11 +153,14 @@ namespace Kalkatos.Network
         public const string TournamentIdKey = "TmtId";
         public const string MatchIdKey = "MtcId";
         public const string RoomIdKey = "RmId";
-        public const string RoomInfoKey = "RdIfo";
+        public const string RoomInfoKey = "RmIfo";
         public const string RoundNumberKey = "RdNum";
+        public const string RoundKey = "Round";
+        public const string HandKey = "Hand";
         // Event handles
-        public const string RoundReceivedEvt = "TmtUp";
-        public const string TurnUpdateEvt = "TuUpt";
+        public const string RoundReceivedEvt = "RdRcv";
+        public const string HandReceivedEvt = "HdSnt";
+        public const string TurnEndedEvt = "TuEnd";
         // Function handles
         public const string GetRoundFct = "GetRd";
         public const string StartTournamentFct = nameof(FunctionInvoker.StartTournament);
