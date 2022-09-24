@@ -42,7 +42,7 @@ namespace Kalkatos.Network
                 int matchIndex = (int)Mathf.Ceil(i / 2f);
                 matches[matchIndex] = new MatchInfo()
                 {
-                    Id = matchIndex,
+                    Id = Guid.NewGuid().ToString(),
                     Player1 = players[i],
                     Player2 = isBye ? null : players[i + 1],
                     Player1Wins = 0,
@@ -55,6 +55,7 @@ namespace Kalkatos.Network
                 new RoundInfo()
                 {
                     Id = Guid.NewGuid().ToString(),
+                    Index = 0,
                     Matches = matches
                 }
             };
