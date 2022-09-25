@@ -211,7 +211,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debug: 1
-  botAmount: 2
+  botAmount: 9
   gameManager: {fileID: 406633096}
 --- !u!114 &406633096
 MonoBehaviour:
