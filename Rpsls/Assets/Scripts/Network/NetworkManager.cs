@@ -39,9 +39,16 @@ namespace Kalkatos.Network
 
         public virtual bool IsConnected { get; protected set; } = false;
         public virtual bool IsInRoom { get; protected set; } = false;
+        public virtual PlayerInfo[] Players { get; protected set; }
         public virtual PlayerInfo MyPlayerInfo { get; protected set; } = new PlayerInfo();
         public virtual RoomInfo CurrentRoomInfo { get; protected set; } = new RoomInfo();
         public abstract DataAccess DataAccess { get; }
+        public virtual PlayerInfo GetPlayer (string id)
+        {
+            List<PlayerInfo> list = new List<PlayerInfo>();
+            list.AddRange(Players);
+            return list.Find((p) => p.Id == id);
+        }
 
         protected List<PlayerInfo> bots = new List<PlayerInfo>();
 
@@ -85,6 +92,15 @@ namespace Kalkatos.Network
             };
             bots.Add(newBot);
             return newBot;
+        }
+        public virtual void UpdateBotData (PlayerInfo info)
+        {
+            for (int i = 0; i < bots.Count; i++)
+            {
+                if (bots[i].Id != info.Id)
+                    continue;
+                bots[i] = info;
+            }
         }
 
         #region ==================  Requests  ===========================
@@ -212,7 +228,7 @@ namespace Kalkatos.Network
         public string Id;
         public int MaxPlayers;
         public bool IsClosed;
-        public List<PlayerInfo> Players;
+        public string[] Players;
         public int PlayerCount;
         public Dictionary<string, object> CustomData = new Dictionary<string, object>();
     }

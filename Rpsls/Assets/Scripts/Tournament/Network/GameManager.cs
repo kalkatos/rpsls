@@ -22,24 +22,26 @@ namespace Kalkatos.Tournament
         protected override void OnAwake ()
         {
             Instance = this;
-            SetInfo(myInfo);
-        }
-
-        private void OnDestroy ()
-        {
         }
 
         private void Start ()
         {
             List<PlayerInfo> playerList = new List<PlayerInfo>();
-            playerList.AddRange(roomInfo.Players);
+            playerList.AddRange(NetworkManager.Instance.Players);
             for (int i = 0; i < playerList.Count; i++)
             {
                 PlayerInfo info = playerList[i];
                 players.Add(info.Id, info);
             }
             OnPlayerListUpdated?.Invoke(playerList.ToArray());
+            SetId(myInfo.Id);
             SetStateAsInGame();
+        }
+
+        protected override void SetState (string state)
+        {
+            base.SetState(state);
+            NetworkManager.Instance.UpdateMyCustomData(Keys.PlayerStatusKey, currentState);
         }
 
         public override void SetRound (RoundInfo roundInfo)
@@ -65,6 +67,20 @@ namespace Kalkatos.Tournament
             SceneManager.EndScene("Game");
             NetworkManager.Instance.LeaveMatch();
         }
+
+        public static void UpdatePlayers ()
+        {
+            if (Instance == null)
+                return;
+            Instance.players.Clear();
+            foreach (var item in NetworkManager.Instance.Players)
+                Instance.players.Add(item.Id, item);
+        }
+
+        public static PlayerInfo GetPlayer (string id)
+        {
+            return Instance?.players[id];
+        }
     }
 
     public static class ClientState
@@ -81,8 +97,8 @@ namespace Kalkatos.Tournament
     public class MatchInfo
     {
         public string Id;
-        public PlayerInfo Player1;
-        public PlayerInfo Player2;
+        public string Player1;
+        public string Player2;
         public int Player1Wins;
         public int Player2Wins;
     }

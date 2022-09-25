@@ -54,10 +54,9 @@ namespace Kalkatos.Network
                     info.Id = room.Name;
                     info.MaxPlayers = room.MaxPlayers;
                     info.PlayerCount = room.PlayerCount;
-                    info.Players = new List<PlayerInfo>();
-                    foreach (var item in room.Players)
-                        info.Players.Add(InfoFromPlayer(item.Value));
-                    info.Players.AddRange(bots);
+                    info.Players = new string[Players.Length];
+                    for (int i = 0; i < Players.Length; i++)
+                        info.Players[i] = Players[i].Id;
                 }
                 return info;
             }
@@ -81,6 +80,16 @@ namespace Kalkatos.Network
             {
                 MaxPlayers = (byte)roomOptions.MaxPlayers
             };
+        }
+
+        public void UpdatePlayerList ()
+        {
+            Player[] list = PhotonNetwork.PlayerList;
+            Players = new PlayerInfo[list.Length + bots.Count];
+            for (int i = 0; i < list.Length; i++)
+                Players[i] = InfoFromPlayer(list[i]);
+            for (int i = 0; i < bots.Count; i++)
+                Players[list.Length + i] = bots[i];
         }
 
         #region ==================  Requests  ===========================
@@ -161,7 +170,7 @@ namespace Kalkatos.Network
                     missedParams++;
                 }
             }
-            if (missedParams == parameters.Length)
+            if (missedParams == parameters.Length)  
                 RaiseRequestDataFailure(parameters);
             else
                 RaiseRequestDataSuccess(resultDict);
@@ -208,22 +217,26 @@ namespace Kalkatos.Network
 
         public void OnJoinedRoom ()
         {
+            UpdatePlayerList();
             Debug.Log("Joined Room: " + PhotonNetwork.CurrentRoom.Name);
             RaiseFindMatchSuccess();
         }
 
         void IInRoomCallbacks.OnPlayerEnteredRoom (Player newPlayer) 
         {
+            UpdatePlayerList();
             RaisePlayerEnteredRoom(InfoFromPlayer(newPlayer));
         }
 
         void IInRoomCallbacks.OnPlayerLeftRoom (Player otherPlayer) 
         {
+            UpdatePlayerList();
             RaisePlayerLeftRoom(InfoFromPlayer(otherPlayer));
         }
 
         public void OnMasterClientSwitched (Player newMasterClient)
         {
+            UpdatePlayerList();
             RaiseMasterClientChanged(InfoFromPlayer(newMasterClient));
         }
 
@@ -249,6 +262,7 @@ namespace Kalkatos.Network
 
         public void OnPlayerPropertiesUpdate (Player targetPlayer, Hashtable changedProps) 
         {
+            UpdatePlayerList();
             RaisePlayerDataChanged(InfoFromPlayer(targetPlayer));
         }
 

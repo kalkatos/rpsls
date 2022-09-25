@@ -11,6 +11,9 @@ namespace Kalkatos.Tournament
         public override void HandlePlayerInfo (PlayerInfo info)
         {
             matchRecordText.gameObject.SetActive(false);
+            if (info.CustomData.TryGetValue(Keys.IsByeKey, out object isBye) && bool.Parse(isBye.ToString()))
+                return;
+
             if (info.CustomData.TryGetValue(Keys.PlayerStatusKey, out object status))
             {
                 if (status.ToString() == ClientState.WaitingTurnResult)
@@ -20,14 +23,8 @@ namespace Kalkatos.Tournament
                         matchRecordText.gameObject.SetActive(true);
                         matchRecordText.text = record.ToString(); 
                     }
-                    else
-                        this.LogWarning("Doesn't have record.");
                 }
-                else
-                    this.LogWarning("Status is not WaitingForResult, it is " + status.ToString());
             }
-            else
-                this.LogWarning("Doesn't have status.");
         }
     }
 }

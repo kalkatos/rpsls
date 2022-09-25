@@ -10,9 +10,8 @@ namespace Kalkatos.Tournament
     {
         [SerializeField] protected string Id;
 
-        protected PlayerInfo info;
         protected string currentOpponentId;
-        protected string currentState = ClientState.Undefined.ToString();
+        protected string currentState = ClientState.Undefined;
         protected RoundInfo currentRound;
         protected MatchInfo currentMatch;
         protected MatchState currentMatchState;
@@ -47,7 +46,7 @@ namespace Kalkatos.Tournament
 
         protected void HandleEventReceived (string key, object[] parameters)
         {
-            this.Log("Event received in client: " + key);
+            //this.Log("Event received in client: " + key);
             Dictionary<string, object> paramDict = parameters.ToDictionary();
             object value = null;
             switch (key)
@@ -55,7 +54,7 @@ namespace Kalkatos.Tournament
                 case Keys.RoundReceivedEvt:
                     if (paramDict.TryGetValue(Keys.RoundKey, out value))
                     {
-                        this.Log($"Round received:     {value}");
+                        //this.Log($"Round received:     {value}");
                         RoundInfo round = JsonConvert.DeserializeObject<RoundInfo>(value.ToString());
                         SetRound(round);
                     }
@@ -67,13 +66,12 @@ namespace Kalkatos.Tournament
                     this.Wait(UnityEngine.Random.Range(1f, 2f), () =>
                     {
                         SetHand();
-                        SetStateAsHandReceived();
                     });
                     break;
                 case Keys.TurnEndedEvt:
                     if (paramDict.TryGetValue(Keys.RoundKey, out value))
                     {
-                        this.Log($"Round received at turn End:     {value}");
+                        //this.Log($"Round received at turn End:     {value}");
                         RoundInfo round = JsonConvert.DeserializeObject<RoundInfo>(value.ToString());
                         HandleTurnResult(round);
                     }
@@ -83,17 +81,27 @@ namespace Kalkatos.Tournament
             }
         }
 
-        protected void SetState (string state)
+        public virtual void SetId (string id)
         {
-            currentState = state;
-            //NetworkManager.Instance.SendCustomData($"{Keys.PlayerStatusKey}-{Id}", (int)currentState);
-            NetworkManager.Instance.UpdateMyCustomData(Keys.PlayerStatusKey, currentState);
+            Id = id;
         }
 
-        public virtual void SetInfo (PlayerInfo info)
+        protected virtual void SetState (string state)
         {
-            this.info = info;
-            Id = info.Id;
+            currentState = NextState(currentState);
+            if (state != currentState)
+                this.LogWarning("Expected state is different from right next state.");
+            NetworkManager.Instance.SendCustomData($"{Keys.PlayerStatusKey}-{Id}", currentState);
+            this.Log("State set: " + currentState);
+            //if (info.IsBot)
+            //{
+            //    GameManager.UpdatePlayers();
+            //    info = GameManager.GetPlayer(info.Id);
+            //    info.CustomData = info.CustomData.CloneWithUpdateOrAdd(Keys.PlayerStatusKey, currentState);
+            //    NetworkManager.Instance.UpdateBotData(info);
+            //}
+            //else
+            //    NetworkManager.Instance.UpdateMyCustomData(Keys.PlayerStatusKey, currentState);
         }
 
         public virtual void SetRound (RoundInfo roundInfo)
@@ -101,15 +109,15 @@ namespace Kalkatos.Tournament
             currentRound = roundInfo;
             foreach (var item in currentRound.Matches)
             {
-                if (item.Player1.Id == Id)
+                if (item.Player1 == Id)
                 {
                     currentMatch = item;
-                    currentOpponentId = item.Player2?.Id ?? "";
+                    currentOpponentId = item.Player2;
                 }
-                else if (item.Player2 != null && item.Player2.Id == Id)
+                else if (item.Player2 == Id)
                 {
                     currentMatch = item;
-                    currentOpponentId = item.Player1.Id;
+                    currentOpponentId = item.Player1;
                 }
             }
         }
@@ -147,6 +155,30 @@ namespace Kalkatos.Tournament
         public void SetStateAsWaitingForResult ()
         {
             SetState(ClientState.WaitingTurnResult);
+        }
+
+        protected string NextState (string currentState, string addInfo = "")
+        {
+            switch (currentState)
+            {
+                case ClientState.Undefined:
+                case "":
+                    return ClientState.InGame;
+                case ClientState.InGame:
+                    return ClientState.InMatch;
+                case ClientState.InMatch:
+                    return ClientState.InTurn;
+                case ClientState.InTurn:
+                    return ClientState.HandReceived;
+                case ClientState.HandReceived:
+                    return ClientState.WaitingTurnResult;
+                case ClientState.WaitingTurnResult:
+                    if (string.IsNullOrEmpty(addInfo))
+                        return ClientState.InTurn;
+                    else
+                        return ClientState.InMatch;
+            }
+            return ClientState.Undefined;
         }
     }
 }
