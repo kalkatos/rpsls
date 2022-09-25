@@ -30,6 +30,16 @@ namespace Kalkatos.Network
         private string newSmallGuid => Guid.NewGuid().ToString().Split('-')[0];
         private float randomTime => bypassConnection ? 0 : Random.Range(0.3f, 1f);
 
+        public override PlayerInfo[] Players
+        { 
+            get
+            {
+                PlayerInfo[] result = new PlayerInfo[connectedPlayers.Count];
+                connectedPlayers.Values.CopyTo(result, 0);
+                return result;
+            }
+            protected set => base.Players = value; 
+        }
         public override bool IsInRoom { get => !string.IsNullOrEmpty(roomId); }
         public override PlayerInfo MyPlayerInfo { get => connectedPlayers[playerId]; protected set => connectedPlayers[playerId] = value; }
         public override RoomInfo CurrentRoomInfo
@@ -37,11 +47,11 @@ namespace Kalkatos.Network
             get
             {
                 RoomInfo room = activeRooms[roomId];
-                for (int i = 0; i < room.Players.Count; i++)
+                for (int i = 0; i < Players.Length; i++)
                 {
-                    PlayerInfo player = room.Players[i];
+                    PlayerInfo player = Players[i];
                     player.IsMe = player.Id == playerId;
-                    room.Players[i] = connectedPlayers[player.Id]; 
+                    room.Players[i] = player.Id; 
                 }
                 return room;
             }
@@ -120,8 +130,6 @@ namespace Kalkatos.Network
                     else
                     {
                         RoomInfo room = JsonConvert.DeserializeObject<RoomInfo>(objArray[i].ToString());
-                        for (int j = 0; j < room.Players.Count; j++)
-                            room.Players[j] = connectedPlayers[room.Players[j].Id];
                         activeRooms.Add(currentKey, room);
                     }
                 }
@@ -170,7 +178,8 @@ namespace Kalkatos.Network
                 {
                     LoadLists();
                     //Check players
-                    List<PlayerInfo> roomPlayerList = CurrentRoomInfo.Players;
+                    List<PlayerInfo> roomPlayerList = new List<PlayerInfo>();
+                    roomPlayerList.AddRange(Players);
                     foreach (var player in roomPlayerList)
                     {
                         bool isKnownPlayer = lastKnownPlayers.ContainsKey(player.Id);
@@ -215,24 +224,25 @@ namespace Kalkatos.Network
 
         private void LeaveRoom ()
         {
-            RoomInfo room = activeRooms[roomId];
-            List<PlayerInfo> players = room.Players;
-            for (int i = players.Count - 1; i >= 0; i--)
+            PlayerInfo myPlayerInfo = MyPlayerInfo;
+            connectedPlayers.Remove(myPlayerInfo.Id);
+            connectedPlayers.Values.CopyTo(Players, 0);
+            if (myPlayerInfo.IsMasterClient && connectedPlayers.Count > 0)
             {
-                if (players[i].Id == playerId)
+                foreach (var item in connectedPlayers)
                 {
-                    PlayerInfo myPlayerInfo = players[i];
-                    players.RemoveAt(i);
-                    if (players.Count > 0 && myPlayerInfo.IsMasterClient)
-                        connectedPlayers[players[0].Id].IsMasterClient = true;
-                    myPlayerInfo.IsMasterClient = false;
-                    RaisePlayerLeftRoom(myPlayerInfo);
+                    item.Value.IsMasterClient = true;
                     break;
                 }
             }
+            RoomInfo room = activeRooms[roomId];
+            room.Players = new string[connectedPlayers.Count];
+            for (int i = 0; i < Players.Length; i++)
+                room.Players[i] = Players[i].Id;
+            RaisePlayerLeftRoom(myPlayerInfo);
             roomId = "";
-            room.PlayerCount = players.Count;
-            if (players.Count == 0)
+            room.PlayerCount = Players.Length;
+            if (Players.Length == 0)
             {
                 activeRooms.Remove(room.Id);
                 SaveManager.DeleteKey(executeEventKey);
@@ -326,9 +336,11 @@ namespace Kalkatos.Network
                     {
                         Id = string.IsNullOrEmpty(options.DesiredName) ? CreateRandomRoomName() : options.DesiredName,
                         MaxPlayers = options.MaxPlayers,
-                        Players = new List<PlayerInfo>() { connectedPlayers[playerId] },
+                        Players = new string[Players.Length],
                         PlayerCount = 1
                     };
+                    for (int i = 0; i < newRoom.Players.Length; i++)
+                        newRoom.Players[i] = Players[i].Id;
                     roomId = newRoom.Id;
                     activeRooms.Add(newRoom.Id, newRoom);
                     SaveLists();
@@ -358,10 +370,12 @@ namespace Kalkatos.Network
                         }
                         else
                         {
-                            List<PlayerInfo> playersInRoom = room.Players;
+                            List<PlayerInfo> playersInRoom = new List<PlayerInfo>();
+                            playersInRoom.AddRange(Players);
                             connectedPlayers[playerId].IsMasterClient = false;
                             playersInRoom.Add(MyPlayerInfo);
                             room.PlayerCount = playersInRoom.Count;
+                            Players = playersInRoom.ToArray();
                             roomId = room.Id;
                             SaveLists();
                             RaiseFindMatchSuccess();
@@ -410,7 +424,9 @@ namespace Kalkatos.Network
             Assert.IsTrue(IsConnected);
             Assert.IsTrue(IsInRoom);
 
-            if (CurrentRoomInfo.Players.Find((player) => player.Id == playerId) != null)
+            List<PlayerInfo> list = new List<PlayerInfo>();
+            list.AddRange(Players);
+            if (list.Find((player) => player.Id == playerId) != null)
             {
                 LoadLists();
                 Dictionary<string, object> roomData = activeRooms[roomId].CustomData;
@@ -561,7 +577,7 @@ namespace Kalkatos.Network
                             IsBot = true
                         };
                         connectedPlayers.Add(newPlayerId, newPlayer);
-                        CurrentRoomInfo.Players.Add(newPlayer);
+                        Players = Players.Add(newPlayer);
                     }
                     SaveLists();
 

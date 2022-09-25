@@ -43,8 +43,8 @@ namespace Kalkatos.Network
                 matches[matchIndex] = new MatchInfo()
                 {
                     Id = Guid.NewGuid().ToString(),
-                    Player1 = players[i],
-                    Player2 = isBye ? null : players[i + 1],
+                    Player1 = players[i].Id,
+                    Player2 = isBye ? null : players[i + 1].Id,
                     Player1Wins = 0,
                     Player2Wins = 0
                 };
@@ -90,15 +90,13 @@ namespace Kalkatos.Network
                 return getRoomResult;
             RoomInfo room = (RoomInfo)getRoomResult;
             // Get Players
-            PlayerInfo[] players = room.Players.ToArray();
+            PlayerInfo[] players = NetworkManager.Instance.Players;
             // Create tournament
             TournamentInfo tournamentInfo = CreateTournament(players);
             // Update players
             foreach (var item in players)
                 await DataAccess.SendData(item.Id, JsonConvert.SerializeObject(item, Formatting.Indented), Keys.ConnectedPlayersKey).ContinueWith((t) => { });
-            // Update room
-            room.Players.Clear();
-            room.Players.AddRange(players);
+            // Add to room
             room.CustomData = room.CustomData.CloneWithUpdateOrAdd(Keys.TournamentsKey, tournamentInfo);
             await DataAccess.SendData(room.Id, JsonConvert.SerializeObject(room, Formatting.Indented), Keys.ActiveRoomsKey);
             await DataAccess.SendData(tournamentInfo.Id, JsonConvert.SerializeObject(tournamentInfo, Formatting.Indented), Keys.TournamentsKey);

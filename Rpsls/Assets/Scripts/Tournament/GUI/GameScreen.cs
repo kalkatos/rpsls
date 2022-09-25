@@ -16,12 +16,14 @@ namespace Kalkatos.Tournament
         [SerializeField] private TournamentGameSettings settings;
 
         private bool isHandReceived;
+        private bool isTurnResultReceived;
         private bool isMatchOver;
 
         private void Awake ()
         {
             TournamentScreen.OnTournamentIntroFinished += HandleTournamentIntroFinished;
             GameManager.OnHandReceived += HandleHandReceived;
+            GameManager.OnTurnResultReceived += HandleTurnResultReceived;
             exitButton.onClick.AddListener(OnExitButtonClicked);
             settings = TournamentGameSettings.Instance;
         }
@@ -30,6 +32,7 @@ namespace Kalkatos.Tournament
         {
             TournamentScreen.OnTournamentIntroFinished -= HandleTournamentIntroFinished;
             GameManager.OnHandReceived -= HandleHandReceived;
+            GameManager.OnTurnResultReceived -= HandleTurnResultReceived;
             exitButton.onClick.RemoveListener(OnExitButtonClicked);
         }
 
@@ -44,6 +47,11 @@ namespace Kalkatos.Tournament
             isHandReceived = true;
         }
 
+        private void HandleTurnResultReceived (RoundInfo roundInfo)
+        {
+            //isTurnResultReceived = true;
+        }
+
         private IEnumerator GameSetupAnimations ()
         {
             GameManager.Instance.SetStateAsInMatch();
@@ -52,21 +60,21 @@ namespace Kalkatos.Tournament
 
             //TODO Create and place the cards
 
-            // Send ready event Action
-            // Wait for other player ready
             StartCoroutine(TurnLoop());
         }
 
         private IEnumerator  TurnLoop ()
         {
             yield return new WaitForSeconds(0.5f);
-            GameManager.Instance.SetStateAsInTurn();
             // Do while no one has won:
             while (!isMatchOver)
             {
+                GameManager.Instance.SetStateAsInTurn();
                 // Wait for turn info (hand)
                 while (!isHandReceived)
                     yield return null;
+                yield return new WaitForSeconds(2f);
+                GameManager.Instance.SetStateAsHandReceived();
 
                 //TODO      Setup and move correct cards to hand
 
@@ -88,7 +96,8 @@ namespace Kalkatos.Tournament
 
                 // Wait for turn resolution
                 GameManager.Instance.SetStateAsWaitingForResult();
-
+                while (!isTurnResultReceived)
+                    yield return null;
 
                 //TODO      Present the result
                 //TODO      Wait for other player confirmation

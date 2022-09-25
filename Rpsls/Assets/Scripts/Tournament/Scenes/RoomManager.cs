@@ -54,7 +54,7 @@ namespace Kalkatos.Tournament
         private void Start ()
         {
             List<PlayerInfo> playerList = new List<PlayerInfo>();
-            playerList.AddRange(roomInfo.Players);
+            playerList.AddRange(NetworkManager.Instance.Players);
             playerList.Sort(SortPlayers);
             for (int i = 0; i < playerList.Count; i++)
             {

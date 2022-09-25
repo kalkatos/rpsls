@@ -23,34 +23,25 @@ namespace Kalkatos.Rpsls
         private Dictionary<string, PlayerInfo> players = new Dictionary<string, PlayerInfo>();
         private Dictionary<string, Player> playersInPhoton = new Dictionary<string, Player>();
         private TournamentInfo currentTournament;
-        private RoundInfo currentRound;
         private byte currentTurn = 0;
-        private List<Tuple<string, string>> clientsChecked = new List<Tuple<string, string>>();
+        private HashSet<string> clientsChecked = new HashSet<string>();
         private WaitForSeconds delayToCheckClients = new WaitForSeconds(0.5f);
         private WaitForSeconds wait = new WaitForSeconds(0.5f);
         private bool becameNewMaster;
         private bool hasJoinedLobby;
+        private bool hasJoinedRoom;
 
         private const string tournamentOverKey = "TOver";
         private const string matchOverKey = "MOver";
         private const string turnOverKey = "UOver";
         private const string expectedStateKey = "ExSte";
 
+        private RoundInfo currentRound => currentTournament.Rounds[currentRoundIndex];
         private int currentRoundIndex => currentTournament.Rounds.Length - 1;
         private bool tournamentIsOver => IsTrue(tournamentOverKey);
         private bool matchIsOver => IsTrue(matchOverKey);
         private bool turnIsOver => IsTrue(turnOverKey);
         private bool isConnectedAndInRoom => NetworkManager.Instance.IsConnected && NetworkManager.Instance.IsInRoom;
-        private List<PlayerInfo> playersList
-        {
-            get
-            {
-                var list = new List<PlayerInfo>();
-                foreach (var item in players)
-                    list.Add(item.Value);
-                return list;
-            }
-        }
         private string currentExpectedState
         {
             get
@@ -81,13 +72,17 @@ namespace Kalkatos.Rpsls
             while (!hasJoinedLobby)
                 yield return null;
             PhotonNetwork.JoinOrCreateRoom("DEBUG", new Photon.Realtime.RoomOptions(), TypedLobby.Default);
-            while (!PhotonNetwork.InRoom)
+            while (!hasJoinedRoom)
                 yield return null;
             for (int i = 0; i < botAmount; i++)
-                NetworkManager.Instance.AddBot();
+            {
+                PlayerInfo botInfo = NetworkManager.Instance.AddBot();
+                BotClient bot = gameObject.AddComponent<BotClient>();
+                bot.SetId(botInfo.Id);
+            }
             PhotonNetwork.LocalPlayer.NickName = "Kalkatos";
-            GetPlayers(true);
-            gameManager = gameObject.AddComponent<GameManager>();
+            GetPlayers();
+            gameManager = gameObject.AddComponent<GameManager>(); 
             currentExpectedState = ClientState.Undefined;
             StartCoroutine(GameLoop());
         }
@@ -102,8 +97,7 @@ namespace Kalkatos.Rpsls
             // If this is a fresh start, prepare the tournament. Just get the players otherwise.
             if (!becameNewMaster)
             {
-                if (!debug)
-                    GetPlayers(true);
+                GetPlayers();
                 PrepareTournament();
                 yield return WaitClientsState(ClientState.InGame);
             }
@@ -112,30 +106,25 @@ namespace Kalkatos.Rpsls
             // Begin the tournament - many matches
             while (!tournamentIsOver)
             {
-                currentRound = currentTournament.Rounds[currentRoundIndex];
                 if (!becameNewMaster)
                 {
                     SendRound();
                     this.Log("Round: " + (currentRoundIndex + 1)); 
                 }
-                if (currentExpectedState == ClientState.InGame)
-                    yield return WaitClientsState(ClientState.InMatch);
+                yield return WaitClientsState(ClientState.InMatch);
                 this.Log("Everyone in match");
                 // Go to match - many turns
                 while (!matchIsOver)
                 {
                     GetPlayers();
-                    if (currentExpectedState == ClientState.InMatch)
-                        yield return WaitClientsState(ClientState.InTurn);
+                    yield return WaitClientsState(ClientState.InTurn);
                     currentTurn++;
                     this.Log("Everyone in turn " + currentTurn);
                     SendHand();
-                    if (currentExpectedState == ClientState.InTurn)
-                        yield return WaitClientsState(ClientState.HandReceived);
+                    yield return WaitClientsState(ClientState.HandReceived);
                     this.Log("Everyone got their hands");
                     yield return new WaitForSeconds(settings.TurnDuration);
-                    if (currentExpectedState == ClientState.HandReceived)
-                        yield return WaitClientsState(ClientState.WaitingTurnResult);
+                    yield return WaitClientsState(ClientState.WaitingTurnResult);
                     SendTurnResult();
                     this.Log("End of turn");
                     yield return null;
@@ -158,23 +147,23 @@ namespace Kalkatos.Rpsls
         {
             currentExpectedState = expectedState;
             clientsChecked.Clear();
+            this.Log($"~~~~~~   Waiting all players in state: {expectedState}");
             while (players.Count > clientsChecked.Count)
             {
                 yield return delayToCheckClients;
                 GetPlayers();
+                //Hashtable data = PhotonNetwork.CurrentRoom.CustomProperties;
                 foreach (var item in players)
-                    if (item.Value.CustomData.TryGetValue(Keys.PlayerStatusKey, out object state))
-                        clientsChecked.Add(new Tuple<string, string>(item.Value.Id, state.ToString()));
-                if (players.Count > clientsChecked.Count)
-                    continue;
-                //TODO Check disconnected players to get out of this loop
-                int correctStateCount = 0;
-                for (int i = 0; i < clientsChecked.Count; i++)
-                    if (clientsChecked[i].Item2 == expectedState)
-                        correctStateCount++;
-                if (correctStateCount == players.Count)
-                    break;
+                {
+                    if (item.Value.CustomData.TryGetValue(Keys.PlayerStatusKey, out object state) && state.ToString() == expectedState && !clientsChecked.Contains(item.Value.Nickname))
+                        clientsChecked.Add(item.Value.Nickname);
+                    //string key = $"{Keys.PlayerStatusKey}-{item.Key}";
+                    //if (data.TryGetValue(key, out object state))
+                    //    if (state != null)
+                    //        clientsChecked.Add(new Tuple<string, string>(key, state.ToString()));
+                }
             }
+            this.Log($"=====OK   All players in correct state: {expectedState} == {JsonConvert.SerializeObject(clientsChecked)}");
         }
 
         private bool IsTrue (string key)
@@ -187,24 +176,19 @@ namespace Kalkatos.Rpsls
             PhotonNetwork.CurrentRoom.SetCustomProperties(new Hashtable() { { key, "false" } });
         }
 
-        private void GetPlayers (bool createBots = false)
+        private void GetPlayers ()
         {
-            List<PlayerInfo> list = NetworkManager.Instance.CurrentRoomInfo.Players.CloneList();
+            ((PhotonNetworkManager)NetworkManager.Instance).UpdatePlayerList();
             players.Clear();
-            for (int i = 0; i < list.Count; i++)
-            {
+            var list = NetworkManager.Instance.Players;
+            for (int i = 0; i < list.Length; i++)
                 players.Add(list[i].Id, list[i]);
-                if (createBots && list[i].IsBot)
-                {
-                    BotClient bot = gameObject.AddComponent<BotClient>();
-                    bot.SetInfo(list[i]);
-                }
-            }
         }
 
         private void PrepareTournament ()
         {
-            currentTournament = FunctionInvoker.CreateTournament(playersList.ToArray());
+            currentTournament = FunctionInvoker.CreateTournament(NetworkManager.Instance.Players);
+            UpdatePhotonPlayers();
             PhotonNetwork.CurrentRoom.SetCustomProperties(new Hashtable() { { Keys.TournamentsKey, JsonConvert.SerializeObject(currentTournament) } });
         }
 
@@ -219,11 +203,20 @@ namespace Kalkatos.Rpsls
             NetworkManager.Instance.BroadcastEvent(Keys.HandReceivedEvt, Keys.HandKey, "");
         }
 
+        private void UpdatePhotonPlayers ()
+        {
+            foreach (var item in PhotonNetwork.CurrentRoom.Players)
+            {
+                item.Value.SetCustomProperties(players[item.Value.UserId].CustomData.ToHashtable());
+            }
+        }
+
         private void SendTurnResult ()
         {
+            GetPlayers();
             foreach (var item in currentRound.Matches)
             {
-                if (item.Player2 == null)
+                if (string.IsNullOrEmpty(item.Player2))
                     continue;
                 // TODO Do proper results
                 int randomWinner = UnityEngine.Random.Range(0, 2);
@@ -234,18 +227,11 @@ namespace Kalkatos.Rpsls
                 // Save results in Round
                 string p1NewMatchRecord = $"{item.Player1Wins}-{item.Player2Wins}";
                 string p2NewMatchRecord = $"{item.Player2Wins}-{item.Player1Wins}";
-                item.Player1.CustomData = item.Player1.CustomData.CloneWithUpdateOrAdd(Keys.MatchRecordKey, p1NewMatchRecord);
-                item.Player2.CustomData = item.Player2.CustomData.CloneWithUpdateOrAdd(Keys.MatchRecordKey, p2NewMatchRecord);
-                foreach (var item2 in PhotonNetwork.CurrentRoom.Players)
-                {
-                    if (item2.Value.UserId == item.Player1.Id)
-                        item2.Value.SetCustomProperties(new Hashtable { { Keys.MatchRecordKey, p1NewMatchRecord } });
-                    else if (item2.Value.UserId == item.Player2.Id)
-                        item2.Value.SetCustomProperties(new Hashtable { { Keys.MatchRecordKey, p2NewMatchRecord } });
-                }
+                players[item.Player1].CustomData = players[item.Player1].CustomData.CloneWithUpdateOrAdd(Keys.MatchRecordKey, p1NewMatchRecord);
+                players[item.Player2].CustomData = players[item.Player2].CustomData.CloneWithUpdateOrAdd(Keys.MatchRecordKey, p2NewMatchRecord);
             }
+            UpdatePhotonPlayers();
             // Save tournament
-            currentTournament.Rounds[currentRound.Index] = currentRound;
             PhotonNetwork.CurrentRoom.SetCustomProperties(new Hashtable() { { Keys.TournamentsKey, JsonConvert.SerializeObject(currentTournament) } });
             // Send updated Turn
             NetworkManager.Instance.BroadcastEvent(Keys.TurnEndedEvt, Keys.RoundKey, JsonConvert.SerializeObject(currentRound));
@@ -256,6 +242,11 @@ namespace Kalkatos.Rpsls
         public override void OnJoinedLobby ()
         {
             hasJoinedLobby = true;
+        }
+
+        public override void OnJoinedRoom ()
+        {
+            hasJoinedRoom = true;
         }
 
         public override void OnMasterClientSwitched (Player newMasterClient)

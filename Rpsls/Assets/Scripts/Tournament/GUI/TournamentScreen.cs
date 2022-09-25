@@ -91,33 +91,40 @@ namespace Kalkatos.Tournament
 
         public void HandleTurnResultReceived (RoundInfo roundInfo)
         {
+            GameManager.UpdatePlayers();
             foreach (var item in roundInfo.Matches)
             {
-                playerSlots[item.Player1.Id].HandlePlayerInfo(item.Player1);
-                if (item.Player2 != null)
-                    playerSlots[item.Player2.Id].HandlePlayerInfo(item.Player2);
+                playerSlots[item.Player1].HandlePlayerInfo(GameManager.GetPlayer(item.Player1));
+                if (!string.IsNullOrEmpty(item.Player2))
+                    playerSlots[item.Player2].HandlePlayerInfo(GameManager.GetPlayer(item.Player2));
             }
         }
 
         private void UseRoundInfo ()
         {
             int index = 0;
+            GameManager.UpdatePlayers();
             foreach (var item in roundInfo.Matches)
             {
-                playerSlots[item.Player1.Id].HandlePlayerInfo(item.Player1);
+                PlayerInfo p1, p2;
+                p1 = GameManager.GetPlayer(item.Player1);
+                playerSlots[item.Player1].HandlePlayerInfo(p1);
                 if (item.Player2 != null)
-                    playerSlots[item.Player2.Id].HandlePlayerInfo(item.Player2);
-                if (item.Player1.Id == myId)
                 {
-                    myMatchIndex = index;
-                    myMatch = item;
-                    currentOpponentId = item.Player2?.Id;
+                    p2 = GameManager.GetPlayer(item.Player2);
+                    playerSlots[item.Player2].HandlePlayerInfo(p2); 
                 }
-                else if (item.Player2 != null && item.Player2.Id == myId)
+                if (item.Player1 == myId)
                 {
                     myMatchIndex = index;
                     myMatch = item;
-                    currentOpponentId = item.Player1.Id;
+                    currentOpponentId = item.Player2;
+                }
+                else if (item.Player2 == myId)
+                {
+                    myMatchIndex = index;
+                    myMatch = item;
+                    currentOpponentId = item.Player1;
                 }
                 index++;
             }
@@ -211,12 +218,10 @@ namespace Kalkatos.Tournament
                 int index = 0;
                 foreach (var item in roundInfo.Matches)
                 {
-                    string p1 = item.Player1.Id;
-                    string p2 = item.Player2?.Id ?? "";
-                    playerSlots[p1].transform.MoveAndScaleTo(tournamentPositions[index++], moveToTournamentTime, true);
+                    playerSlots[item.Player1].transform.MoveAndScaleTo(tournamentPositions[index++], moveToTournamentTime, true);
                     int p2Index = index++;
-                    if (!string.IsNullOrEmpty(p2))
-                        playerSlots[p2].transform.MoveAndScaleTo(tournamentPositions[p2Index], moveToTournamentTime, true);
+                    if (!string.IsNullOrEmpty(item.Player2))
+                        playerSlots[item.Player2].transform.MoveAndScaleTo(tournamentPositions[p2Index], moveToTournamentTime, true);
                 }
                 //  Move tournament structure to view
                 tournamentStructure.DOLocalMove(Vector3.zero, moveToTournamentTime / 2f);
