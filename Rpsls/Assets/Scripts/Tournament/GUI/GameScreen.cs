@@ -49,7 +49,7 @@ namespace Kalkatos.Tournament
 
         private void HandleTurnResultReceived (RoundInfo roundInfo)
         {
-            //isTurnResultReceived = true;
+            isTurnResultReceived = true;
         }
 
         private IEnumerator GameSetupAnimations ()
@@ -82,12 +82,12 @@ namespace Kalkatos.Tournament
                 float time = settings.TurnDuration;
                 float startTime = Time.time;
                 timerBarObj.SetActive(true);
-                timerBar.anchorMax.Set(1, 1);
+                timerBar.anchorMax = new Vector2(1, 1);
                 float elapsed = 0;
                 while (elapsed < time)
                 {
                     elapsed = Time.time - startTime;
-                    timerBar.anchorMax.Set(1 - elapsed / time, 1);
+                    timerBar.anchorMax = new Vector2(1 - elapsed / time, 1);
                     yield return null;
                 }
                 timerBarObj.SetActive(false);
