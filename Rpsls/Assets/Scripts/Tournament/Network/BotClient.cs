@@ -10,13 +10,13 @@ namespace Kalkatos.Tournament
             this.Wait(1f, SetStateAsInGame);
         }
 
-        protected override void SetState (string state)
+        protected override void SetState (string state, string addInfo = "")
         {
-            base.SetState(state);
+            base.SetState(state, addInfo);
             PlayerInfo info = NetworkManager.Instance.GetPlayer(Id);
             if (info != null)
             {
-                info.CustomData = info.CustomData.CloneWithUpdateOrAdd(Keys.PlayerStatusKey, currentState);
+                info.CustomData = info.CustomData.CloneWithUpdateOrAdd(Keys.ClientStateKey, currentState);
                 NetworkManager.Instance.UpdateBotData(info);
             }
             else

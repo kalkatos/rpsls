@@ -86,13 +86,12 @@ namespace Kalkatos.Tournament
             Id = id;
         }
 
-        protected virtual void SetState (string state)
+        protected virtual void SetState (string state, string addInfo = "")
         {
-            currentState = NextState(currentState);
+            currentState = NextState(currentState, addInfo);
             if (state != currentState)
                 this.LogWarning("Expected state is different from right next state.");
-            NetworkManager.Instance.SendCustomData($"{Keys.PlayerStatusKey}-{Id}", currentState);
-            this.Log("State set: " + currentState);
+            NetworkManager.Instance.SendCustomData($"{Keys.ClientStateKey}-{Id}", currentState);
             //if (info.IsBot)
             //{
             //    GameManager.UpdatePlayers();
@@ -165,6 +164,7 @@ namespace Kalkatos.Tournament
                 case "":
                     return ClientState.InGame;
                 case ClientState.InGame:
+                case ClientState.BetweenMatches:
                     return ClientState.InMatch;
                 case ClientState.InMatch:
                     return ClientState.InTurn;
@@ -175,8 +175,10 @@ namespace Kalkatos.Tournament
                 case ClientState.WaitingTurnResult:
                     if (string.IsNullOrEmpty(addInfo))
                         return ClientState.InTurn;
+                    else if (addInfo == ClientState.BetweenMatches)
+                        return ClientState.BetweenMatches;
                     else
-                        return ClientState.InMatch;
+                        return ClientState.GameOver;
             }
             return ClientState.Undefined;
         }

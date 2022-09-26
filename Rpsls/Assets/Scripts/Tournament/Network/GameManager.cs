@@ -38,10 +38,10 @@ namespace Kalkatos.Tournament
             SetStateAsInGame();
         }
 
-        protected override void SetState (string state)
+        protected override void SetState (string state, string addInfo = "")
         {
-            base.SetState(state);
-            NetworkManager.Instance.UpdateMyCustomData(Keys.PlayerStatusKey, currentState);
+            base.SetState(state, addInfo);
+            NetworkManager.Instance.UpdateMyCustomData(Keys.ClientStateKey, currentState);
         }
 
         public override void SetRound (RoundInfo roundInfo)
@@ -91,7 +91,9 @@ namespace Kalkatos.Tournament
         public const string InMatch = "InMatch"; // Finished tournament intro
         public const string InTurn = "InTurn"; // Finished card delivery intro (mulligan)
         public const string HandReceived = "HandReceived";
-        public const string WaitingTurnResult = "WaitingTurnResult";
+        public const string WaitingTurnResult = "Waiting";
+        public const string BetweenMatches = "Between";
+        public const string GameOver = "GameOver";
     }
 
     public class MatchInfo
