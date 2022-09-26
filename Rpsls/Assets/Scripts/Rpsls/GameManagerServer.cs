@@ -227,9 +227,9 @@ namespace Kalkatos.Rpsls
                 string p2NewMatchRecord = $"{item.Player2Wins}-{item.Player1Wins}";
                 players[item.Player1].CustomData = players[item.Player1].CustomData.CloneWithUpdateOrAdd(Keys.MatchRecordKey, p1NewMatchRecord);
                 players[item.Player2].CustomData = players[item.Player2].CustomData.CloneWithUpdateOrAdd(Keys.MatchRecordKey, p2NewMatchRecord);
-                this.Log($" ooooo Match: {JsonConvert.SerializeObject(item)}");
-                this.Log($" ooooo    Player 1: {JsonConvert.SerializeObject(players[item.Player1])}");
-                this.Log($" ooooo    Player 2: {JsonConvert.SerializeObject(players[item.Player2])}");
+                //this.Log($" ooooo Match: {JsonConvert.SerializeObject(item)}");
+                //this.Log($" ooooo    Player 1: {JsonConvert.SerializeObject(players[item.Player1])}");
+                //this.Log($" ooooo    Player 2: {JsonConvert.SerializeObject(players[item.Player2])}");
             }
             UpdatePhotonPlayers();
             // Save tournament

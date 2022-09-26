@@ -2,6 +2,7 @@
 using Kalkatos.Network;
 using TMPro;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace Kalkatos.Tournament
 {
@@ -21,7 +22,7 @@ namespace Kalkatos.Tournament
             string state = stateObj != null ? stateObj.ToString() : "";
             if ((info.CustomData.TryGetValue(Keys.IsByeKey, out object isBye) && bool.Parse(isBye.ToString()))
                 || !hasState 
-                || state == ClientState.InGame
+                //|| state == ClientState.InGame
                 || state == ClientState.Undefined
                 || state == ClientState.BetweenMatches
                 || state == ClientState.GameOver)
@@ -30,12 +31,12 @@ namespace Kalkatos.Tournament
                 SetTriggerState(counter1, "0");
                 SetTriggerState(counter2, "0");
                 SetTriggerState(counter3, "0");
-                if (victoryCounterObj.activeSelf)
-                    this.LogWarning($"Deactivated victory counter of player {info.Nickname} - state: {(string.IsNullOrEmpty(state) ? "<empty>" : state)}");
                 victoryCounterObj.SetActive(false);
+                this.LogWarning($"Not activated for player {info.Nickname} - info: {JsonConvert.SerializeObject(info)}");
                 return;
             }
-            
+
+            this.Log($"Setting up for player {info.Nickname} = {JsonConvert.SerializeObject(info)}");
             if (info.CustomData.TryGetValue(Keys.MatchRecordKey, out object record))
             {
                 if (!victoryCounterObj.activeSelf)
@@ -49,7 +50,6 @@ namespace Kalkatos.Tournament
                 SetTriggerState(counter2, counter2Trigger);
                 SetTriggerState(counter3, counter3Trigger);
 
-                this.Log($"Victory counter activated for player {info.Nickname} - victories: {myVictories} - triggers: {counter1Trigger} , {counter2Trigger} , {counter3Trigger}");
                 //matchRecordText.gameObject.SetActive(true);
                 //matchRecordText.text = record.ToString();
             }
@@ -61,6 +61,7 @@ namespace Kalkatos.Tournament
                 currentStates.Add(counter, trigger);
             else if (currentStates[counter] == trigger)
                 return;
+            currentStates[counter] = trigger;
             counter.SetTrigger(trigger);
         }
     }
