@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using Kalkatos.Network;
 using TMPro;
+using System.Collections.Generic;
 
 namespace Kalkatos.Tournament
 {
@@ -11,6 +12,8 @@ namespace Kalkatos.Tournament
         [SerializeField] private Animator counter1;
         [SerializeField] private Animator counter2;
         [SerializeField] private Animator counter3;
+
+        private Dictionary<Animator, string> currentStates = new Dictionary<Animator, string>();
 
         public override void HandlePlayerInfo (PlayerInfo info)
         {
@@ -24,24 +27,41 @@ namespace Kalkatos.Tournament
                 || state == ClientState.GameOver)
             {
                 //matchRecordText.gameObject.SetActive(false);
+                SetTriggerState(counter1, "0");
+                SetTriggerState(counter2, "0");
+                SetTriggerState(counter3, "0");
+                if (victoryCounterObj.activeSelf)
+                    this.LogWarning($"Deactivated victory counter of player {info.Nickname} - state: {(string.IsNullOrEmpty(state) ? "<empty>" : state)}");
                 victoryCounterObj.SetActive(false);
-                counter1.SetTrigger("0");
-                counter2.SetTrigger("0");
-                counter3.SetTrigger("0");
                 return;
             }
             
             if (info.CustomData.TryGetValue(Keys.MatchRecordKey, out object record))
             {
+                if (!victoryCounterObj.activeSelf)
+                    victoryCounterObj.SetActive(true);
                 string[] split = record.ToString().Split('-');
                 int myVictories = int.Parse(split[0]);
-                victoryCounterObj.SetActive(true);
-                counter1.SetTrigger((myVictories == 0 ? 0 : 1 + myVictories / 3).ToString());
-                counter2.SetTrigger((myVictories < 2 ? 0 : 1 + (myVictories % 3 < 2 ? 0 : myVictories / 3)).ToString()); // Lógica doida
-                counter3.SetTrigger((myVictories < 3 ? 0 : 1 + (myVictories % 3 < 3 ? 0 : myVictories / 3)).ToString());
+                string counter1Trigger = (myVictories / 3 + (myVictories % 3 > 0 ? 1 : 0)).ToString();
+                string counter2Trigger = (myVictories / 3 + (myVictories % 3 > 1 ? 1 : 0)).ToString();
+                string counter3Trigger = (myVictories / 3).ToString();
+                SetTriggerState(counter1, counter1Trigger);
+                SetTriggerState(counter2, counter2Trigger);
+                SetTriggerState(counter3, counter3Trigger);
+
+                this.Log($"Victory counter activated for player {info.Nickname} - victories: {myVictories} - triggers: {counter1Trigger} , {counter2Trigger} , {counter3Trigger}");
                 //matchRecordText.gameObject.SetActive(true);
                 //matchRecordText.text = record.ToString();
             }
+        }
+
+        private void SetTriggerState (Animator counter, string trigger)
+        {
+            if (!currentStates.ContainsKey(counter))
+                currentStates.Add(counter, trigger);
+            else if (currentStates[counter] == trigger)
+                return;
+            counter.SetTrigger(trigger);
         }
     }
 }
