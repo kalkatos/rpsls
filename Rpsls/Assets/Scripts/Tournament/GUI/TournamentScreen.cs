@@ -44,6 +44,7 @@ namespace Kalkatos.Tournament
             GameManager.OnPlayerListUpdated += HandlePlayerListUpdated;
             GameManager.OnRoundReceived += HandleRoundReceived;
             GameManager.OnTurnResultReceived += HandleTurnResultReceived;
+            GameManager.OnStateChanged += HandleStateChanged;
             settings = TournamentGameSettings.Instance;
             tournamentHiddenPosition = tournamentStructure.localPosition;
         }
@@ -53,6 +54,7 @@ namespace Kalkatos.Tournament
             GameManager.OnPlayerListUpdated -= HandlePlayerListUpdated;
             GameManager.OnRoundReceived -= HandleRoundReceived;
             GameManager.OnTurnResultReceived -= HandleTurnResultReceived;
+            GameManager.OnStateChanged -= HandleStateChanged;
         }
 
         private void Start ()
@@ -100,20 +102,19 @@ namespace Kalkatos.Tournament
             }
         }
 
+        public void HandleStateChanged (string state)
+        {
+            if (state == ClientState.InMatch)
+                UpdatePlayersInfoBits();
+        }
+
         private void UseRoundInfo ()
         {
             int index = 0;
             GameManager.UpdatePlayers();
             foreach (var item in roundInfo.Matches)
             {
-                PlayerInfo p1, p2;
-                p1 = GameManager.GetPlayer(item.Player1);
-                playerSlots[item.Player1].HandlePlayerInfo(p1);
-                if (item.Player2 != null)
-                {
-                    p2 = GameManager.GetPlayer(item.Player2);
-                    playerSlots[item.Player2].HandlePlayerInfo(p2); 
-                }
+                UpdateMatchInfo(item);
                 if (item.Player1 == myId)
                 {
                     myMatchIndex = index;
@@ -127,6 +128,24 @@ namespace Kalkatos.Tournament
                     currentOpponentId = item.Player1;
                 }
                 index++;
+            }
+        }
+
+        private void UpdatePlayersInfoBits ()
+        {
+            foreach (var item in roundInfo.Matches)
+                UpdateMatchInfo(item);
+        }
+
+        public void UpdateMatchInfo (MatchInfo matchInfo)
+        {
+            PlayerInfo p1, p2;
+            p1 = GameManager.GetPlayer(matchInfo.Player1);
+            playerSlots[matchInfo.Player1].HandlePlayerInfo(p1);
+            if (matchInfo.Player2 != null)
+            {
+                p2 = GameManager.GetPlayer(matchInfo.Player2);
+                playerSlots[matchInfo.Player2].HandlePlayerInfo(p2);
             }
         }
 
@@ -204,14 +223,13 @@ namespace Kalkatos.Tournament
                 yield return null;
             UseRoundInfo();
 
-            // TODO Set the BYE player badge, if any
-
             // Build tournament structure
             float moveToTournamentTime = settings.MoveToBubblesTime;
             for (int i = 0; i < matchesPositions.Length; i++)
                 matchesPositions[i].gameObject.SetActive(i < roundInfo.Matches.Length);
 
-            // TODO Round X animation
+            // TODO Round Number animation
+
             if (roundInfo.Matches.Length > 1)
             {
                 // Move each player slot to its position with a jump

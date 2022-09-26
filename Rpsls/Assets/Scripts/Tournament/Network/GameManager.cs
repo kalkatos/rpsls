@@ -11,6 +11,7 @@ namespace Kalkatos.Tournament
 
         public static event Action<PlayerInfo[]> OnPlayerListUpdated;
         public static event Action<RoundInfo> OnRoundReceived;
+        public static event Action<string> OnStateChanged;
         public static event Action OnHandReceived;
         public static event Action<RoundInfo> OnTurnResultReceived;
 
@@ -42,6 +43,7 @@ namespace Kalkatos.Tournament
         {
             base.SetState(state, addInfo);
             NetworkManager.Instance.UpdateMyCustomData(Keys.ClientStateKey, currentState);
+            OnStateChanged?.Invoke(state);
         }
 
         public override void SetRound (RoundInfo roundInfo)
