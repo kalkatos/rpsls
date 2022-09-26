@@ -147,7 +147,6 @@ namespace Kalkatos.Rpsls
         {
             currentExpectedState = expectedState;
             clientsChecked.Clear();
-            this.Log($"~~~~~~   Waiting all players in state: {expectedState}");
             while (players.Count > clientsChecked.Count)
             {
                 yield return delayToCheckClients;
@@ -155,7 +154,7 @@ namespace Kalkatos.Rpsls
                 //Hashtable data = PhotonNetwork.CurrentRoom.CustomProperties;
                 foreach (var item in players)
                 {
-                    if (item.Value.CustomData.TryGetValue(Keys.PlayerStatusKey, out object state) && state.ToString() == expectedState && !clientsChecked.Contains(item.Value.Nickname))
+                    if (item.Value.CustomData.TryGetValue(Keys.ClientStateKey, out object state) && state.ToString() == expectedState && !clientsChecked.Contains(item.Value.Nickname))
                         clientsChecked.Add(item.Value.Nickname);
                     //string key = $"{Keys.PlayerStatusKey}-{item.Key}";
                     //if (data.TryGetValue(key, out object state))
@@ -163,7 +162,6 @@ namespace Kalkatos.Rpsls
                     //        clientsChecked.Add(new Tuple<string, string>(key, state.ToString()));
                 }
             }
-            this.Log($"=====OK   All players in correct state: {expectedState} == {JsonConvert.SerializeObject(clientsChecked)}");
         }
 
         private bool IsTrue (string key)
@@ -229,6 +227,9 @@ namespace Kalkatos.Rpsls
                 string p2NewMatchRecord = $"{item.Player2Wins}-{item.Player1Wins}";
                 players[item.Player1].CustomData = players[item.Player1].CustomData.CloneWithUpdateOrAdd(Keys.MatchRecordKey, p1NewMatchRecord);
                 players[item.Player2].CustomData = players[item.Player2].CustomData.CloneWithUpdateOrAdd(Keys.MatchRecordKey, p2NewMatchRecord);
+                this.Log($" ooooo Match: {JsonConvert.SerializeObject(item)}");
+                this.Log($" ooooo    Player 1: {JsonConvert.SerializeObject(players[item.Player1])}");
+                this.Log($" ooooo    Player 2: {JsonConvert.SerializeObject(players[item.Player2])}");
             }
             UpdatePhotonPlayers();
             // Save tournament

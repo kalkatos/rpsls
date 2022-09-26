@@ -165,7 +165,7 @@ namespace Kalkatos.Network
         // Info Keys
         public const string BotsKey = "Bots";
         public const string PlayerIdKey = "PlrId";
-        public const string PlayerStatusKey = "PlSts";
+        public const string ClientStateKey = "ClSts";
         public const string TournamentIdKey = "TmtId";
         public const string MatchIdKey = "MtcId";
         public const string RoomIdKey = "RmId";

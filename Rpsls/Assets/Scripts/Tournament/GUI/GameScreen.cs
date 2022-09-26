@@ -102,6 +102,7 @@ namespace Kalkatos.Tournament
                 //TODO      Present the result
                 //TODO      Wait for other player confirmation
                 isHandReceived = false;
+                isTurnResultReceived = false;
                 yield return null;
             }
         }
