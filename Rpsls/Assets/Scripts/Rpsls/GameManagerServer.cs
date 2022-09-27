@@ -30,17 +30,53 @@ namespace Kalkatos.Rpsls
         private bool becameNewMaster;
         private bool hasJoinedLobby;
         private bool hasJoinedRoom;
+        private bool tournamentIsOverLocal;
+        private bool roundIsOverLocal;
+        private bool turnIsOverLocal;
 
         private const string tournamentOverKey = "TOver";
-        private const string matchOverKey = "MOver";
+        private const string roundOverKey = "ROver";
         private const string turnOverKey = "UOver";
         private const string expectedStateKey = "ExSte";
 
         private RoundInfo currentRound => currentTournament.Rounds[currentRoundIndex];
         private int currentRoundIndex => currentTournament.Rounds.Length - 1;
-        private bool tournamentIsOver => IsTrue(tournamentOverKey);
-        private bool matchIsOver => IsTrue(matchOverKey);
-        private bool turnIsOver => IsTrue(turnOverKey);
+        private bool tournamentIsOver 
+        {
+            get
+            {
+                return tournamentIsOverLocal; 
+            } 
+            set 
+            {
+                tournamentIsOverLocal = value; 
+                SetBool(tournamentOverKey, value); 
+            } 
+        }
+        private bool roundIsOver
+        {
+            get
+            {
+                return roundIsOverLocal;
+            }
+            set
+            {
+                roundIsOverLocal = value;
+                SetBool(roundOverKey, value);
+            }
+        }
+        private bool turnIsOver
+        {
+            get
+            {
+                return turnIsOverLocal;
+            }
+            set
+            {
+                turnIsOverLocal = value;
+                SetBool(turnOverKey, value);
+            }
+        }
         private bool isConnectedAndInRoom => NetworkManager.Instance.IsConnected && NetworkManager.Instance.IsInRoom;
         private string currentExpectedState
         {
@@ -114,7 +150,7 @@ namespace Kalkatos.Rpsls
                 yield return WaitClientsState(ClientState.InMatch);
                 this.Log("Everyone in match");
                 // Go to match - many turns
-                while (!matchIsOver)
+                while (!roundIsOver)
                 {
                     GetPlayers();
                     yield return WaitClientsState(ClientState.InTurn);
@@ -130,11 +166,15 @@ namespace Kalkatos.Rpsls
                     yield return null;
                 }
                 // End of match routines
+                this.Log("End of Round");
                 currentTurn = 0;
-                SetFalse(matchOverKey);
+                SetBool(roundOverKey, false);
                 becameNewMaster = false;
+                AdvanceTournament();
+                yield return WaitClientsState(ClientState.BetweenRounds);
                 yield return null;
             }
+            this.Log("End of tournament");
         }
 
         private IEnumerator WaitUntil (Func<bool> condition)
@@ -169,9 +209,9 @@ namespace Kalkatos.Rpsls
             return PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue(key, out object value) && bool.Parse(value.ToString());
         }
 
-        private void SetFalse (string key)
+        private void SetBool (string key, bool value)
         {
-            PhotonNetwork.CurrentRoom.SetCustomProperties(new Hashtable() { { key, "false" } });
+            PhotonNetwork.CurrentRoom.SetCustomProperties(new Hashtable() { { key, value } });
         }
 
         private void GetPlayers ()
@@ -212,17 +252,27 @@ namespace Kalkatos.Rpsls
         private void SendTurnResult ()
         {
             GetPlayers();
+            int endedMatches = 0;
             foreach (var item in currentRound.Matches)
             {
-                if (string.IsNullOrEmpty(item.Player2))
-                    continue;
-                // TODO Do proper results
+                if (item.IsOver)
+                {
+                    endedMatches++;
+                    continue; 
+                }
+
+                // TODO  >>>>  Do proper results <<<<<<
                 int randomWinner = UnityEngine.Random.Range(0, 2);
                 if (randomWinner == 0)
                     item.Player1Wins++;
                 else
                     item.Player2Wins++;
+
                 // Save results in Round
+                item.IsOver = item.Player1Wins >= settings.TurnVictories || item.Player2Wins >= settings.TurnVictories;
+                if (item.IsOver)
+                    endedMatches++;
+                // Save results in players
                 string p1NewMatchRecord = $"{item.Player1Wins}-{item.Player2Wins}";
                 string p2NewMatchRecord = $"{item.Player2Wins}-{item.Player1Wins}";
                 players[item.Player1].CustomData = players[item.Player1].CustomData.CloneWithUpdateOrAdd(Keys.MatchRecordKey, p1NewMatchRecord);
@@ -232,10 +282,20 @@ namespace Kalkatos.Rpsls
                 //this.Log($" ooooo    Player 2: {JsonConvert.SerializeObject(players[item.Player2])}");
             }
             UpdatePhotonPlayers();
+            if (endedMatches >= currentRound.Matches.Length)
+            {
+                roundIsOver = true;
+                currentRound.IsOver = true;
+            }
             // Save tournament
             PhotonNetwork.CurrentRoom.SetCustomProperties(new Hashtable() { { Keys.TournamentsKey, JsonConvert.SerializeObject(currentTournament) } });
             // Send updated Turn
             NetworkManager.Instance.BroadcastEvent(Keys.TurnEndedEvt, Keys.RoundKey, JsonConvert.SerializeObject(currentRound));
+        }
+
+        private void AdvanceTournament ()
+        {
+
         }
 
         #region ========== Callbacks ===============

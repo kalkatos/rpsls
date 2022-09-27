@@ -73,7 +73,7 @@ namespace Kalkatos.Tournament
                 // Wait for turn info (hand)
                 while (!isHandReceived)
                     yield return null;
-                yield return new WaitForSeconds(2f);
+                yield return new WaitForSeconds(0.5f);
                 GameManager.Instance.SetStateAsHandReceived();
 
                 //TODO      Setup and move correct cards to hand
@@ -98,9 +98,12 @@ namespace Kalkatos.Tournament
                 GameManager.Instance.SetStateAsWaitingForResult();
                 while (!isTurnResultReceived)
                     yield return null;
+                yield return new WaitForSeconds(0.5f);
 
-                //TODO      Present the result
+                //TODO      Present the result  <<<
+
                 //TODO      Wait for other player confirmation
+
                 isHandReceived = false;
                 isTurnResultReceived = false;
                 yield return null;

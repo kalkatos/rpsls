@@ -90,7 +90,7 @@ namespace Kalkatos.Tournament
         {
             currentState = NextState(currentState, addInfo);
             if (state != currentState)
-                this.LogWarning("Expected state is different from right next state.");
+                this.LogWarning($"Expected state {state} is different from correct next state {currentState}");
             NetworkManager.Instance.SendCustomData($"{Keys.ClientStateKey}-{Id}", currentState);
             //if (info.IsBot)
             //{
@@ -156,6 +156,11 @@ namespace Kalkatos.Tournament
             SetState(ClientState.WaitingTurnResult);
         }
 
+        public void SetStateAsBetweenRounds ()
+        {
+            SetState(ClientState.BetweenRounds, ClientState.BetweenRounds);
+        }
+
         protected string NextState (string currentState, string addInfo = "")
         {
             switch (currentState)
@@ -164,7 +169,7 @@ namespace Kalkatos.Tournament
                 case "":
                     return ClientState.InGame;
                 case ClientState.InGame:
-                case ClientState.BetweenMatches:
+                case ClientState.BetweenRounds:
                     return ClientState.InMatch;
                 case ClientState.InMatch:
                     return ClientState.InTurn;
@@ -175,8 +180,8 @@ namespace Kalkatos.Tournament
                 case ClientState.WaitingTurnResult:
                     if (string.IsNullOrEmpty(addInfo))
                         return ClientState.InTurn;
-                    else if (addInfo == ClientState.BetweenMatches)
-                        return ClientState.BetweenMatches;
+                    else if (addInfo == ClientState.BetweenRounds)
+                        return ClientState.BetweenRounds;
                     else
                         return ClientState.GameOver;
             }
