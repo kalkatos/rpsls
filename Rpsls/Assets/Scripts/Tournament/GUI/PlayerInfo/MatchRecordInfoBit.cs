@@ -24,7 +24,7 @@ namespace Kalkatos.Tournament
                 || !hasState 
                 //|| state == ClientState.InGame
                 || state == ClientState.Undefined
-                || state == ClientState.BetweenMatches
+                || state == ClientState.BetweenRounds
                 || state == ClientState.GameOver)
             {
                 //matchRecordText.gameObject.SetActive(false);
@@ -32,11 +32,9 @@ namespace Kalkatos.Tournament
                 SetTriggerState(counter2, "0");
                 SetTriggerState(counter3, "0");
                 victoryCounterObj.SetActive(false);
-                this.LogWarning($"Not activated for player {info.Nickname} - info: {JsonConvert.SerializeObject(info)}");
                 return;
             }
 
-            this.Log($"Setting up for player {info.Nickname} = {JsonConvert.SerializeObject(info)}");
             if (info.CustomData.TryGetValue(Keys.MatchRecordKey, out object record))
             {
                 if (!victoryCounterObj.activeSelf)

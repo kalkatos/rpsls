@@ -46,7 +46,8 @@ namespace Kalkatos.Network
                     Player1 = players[i].Id,
                     Player2 = isBye ? null : players[i + 1].Id,
                     Player1Wins = 0,
-                    Player2Wins = 0
+                    Player2Wins = 0,
+                    IsOver = isBye
                 };
             }
             tournament.Players = playerIds;

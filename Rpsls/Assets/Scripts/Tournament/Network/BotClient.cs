@@ -39,7 +39,10 @@ namespace Kalkatos.Tournament
 
         public override void HandleTurnResult (RoundInfo roundInfo)
         {
-            this.Wait(1f, SetStateAsInTurn);
+            if (roundInfo.IsOver)
+                this.Wait(1f, SetStateAsBetweenRounds);
+            else
+                this.Wait(1f, SetStateAsInTurn);
         }
     }
 }

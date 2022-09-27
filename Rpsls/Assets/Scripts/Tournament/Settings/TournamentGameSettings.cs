@@ -9,6 +9,7 @@ namespace Kalkatos.Tournament
     {
         [Header("Game Configuration")]
         public int MaxPlayers;
+        public int TurnVictories;
         public float DelayBeforeStarting = 3f;
         public float TurnDuration = 5f;
         [Header("Prefabs")]

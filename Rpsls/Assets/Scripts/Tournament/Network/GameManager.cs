@@ -94,7 +94,7 @@ namespace Kalkatos.Tournament
         public const string InTurn = "InTurn"; // Finished card delivery intro (mulligan)
         public const string HandReceived = "HandReceived";
         public const string WaitingTurnResult = "Waiting";
-        public const string BetweenMatches = "Between";
+        public const string BetweenRounds = "Between";
         public const string GameOver = "GameOver";
     }
 
@@ -105,12 +105,14 @@ namespace Kalkatos.Tournament
         public string Player2;
         public int Player1Wins;
         public int Player2Wins;
+        public bool IsOver;
     }
 
     public class RoundInfo
     {
         public string Id;
         public int Index;
+        public bool IsOver;
         public MatchInfo[] Matches;
     }
 
