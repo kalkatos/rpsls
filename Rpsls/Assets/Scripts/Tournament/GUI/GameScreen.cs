@@ -23,7 +23,7 @@ namespace Kalkatos.Tournament
         {
             TournamentScreen.OnTournamentIntroFinished += HandleTournamentIntroFinished;
             GameManager.OnHandReceived += HandleHandReceived;
-            GameManager.OnTurnResultReceived += HandleTurnResultReceived;
+            GameManager.OnMyMatchResultReceived += HandleMyMatchResultReceived;
             exitButton.onClick.AddListener(OnExitButtonClicked);
             settings = TournamentGameSettings.Instance;
         }
@@ -32,7 +32,7 @@ namespace Kalkatos.Tournament
         {
             TournamentScreen.OnTournamentIntroFinished -= HandleTournamentIntroFinished;
             GameManager.OnHandReceived -= HandleHandReceived;
-            GameManager.OnTurnResultReceived -= HandleTurnResultReceived;
+            GameManager.OnMyMatchResultReceived -= HandleMyMatchResultReceived;
             exitButton.onClick.RemoveListener(OnExitButtonClicked);
         }
 
@@ -47,9 +47,10 @@ namespace Kalkatos.Tournament
             isHandReceived = true;
         }
 
-        private void HandleTurnResultReceived (RoundInfo roundInfo)
+        private void HandleMyMatchResultReceived (MatchInfo matchInfo)
         {
             isTurnResultReceived = true;
+            isMatchOver = matchInfo.IsOver;
         }
 
         private IEnumerator GameSetupAnimations ()
@@ -100,7 +101,15 @@ namespace Kalkatos.Tournament
                     yield return null;
                 yield return new WaitForSeconds(0.5f);
 
-                //TODO      Present the result  <<<
+                if (isMatchOver)
+                {
+                    // TODO End match
+                    this.Log("Match ended for me.");
+                }
+                else
+                {
+                    //TODO      Present the result  <<<
+                }
 
                 //TODO      Wait for other player confirmation
 

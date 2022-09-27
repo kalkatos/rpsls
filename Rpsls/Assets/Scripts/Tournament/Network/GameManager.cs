@@ -14,6 +14,7 @@ namespace Kalkatos.Tournament
         public static event Action<string> OnStateChanged;
         public static event Action OnHandReceived;
         public static event Action<RoundInfo> OnTurnResultReceived;
+        public static event Action<MatchInfo> OnMyMatchResultReceived;
 
         private Dictionary<string, PlayerInfo> players = new Dictionary<string, PlayerInfo>();
 
@@ -62,6 +63,14 @@ namespace Kalkatos.Tournament
         {
             base.HandleTurnResult(roundInfo);
             OnTurnResultReceived?.Invoke(roundInfo);
+            foreach (var item in roundInfo.Matches)
+            {
+                if (item.Player1 == Id || item.Player2 == Id)
+                {
+                    OnMyMatchResultReceived?.Invoke(item);
+                    break;
+                }
+            }
         }
 
         public static void ExitRoom ()

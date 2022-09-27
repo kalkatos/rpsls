@@ -37,7 +37,8 @@ namespace Kalkatos.Tournament
         private MatchInfo myMatch;
         private Vector3 tournamentHiddenPosition;
         private Transform[] playmats = new Transform[2];
-        private bool isOver;
+        private bool isTournamentOver;
+        private bool isRoundOver;
 
         private void Awake ()
         {
@@ -182,11 +183,11 @@ namespace Kalkatos.Tournament
         private IEnumerator TournamentAnimations ()
         {
             yield return PlayersEntryAnimation();
-            while (!isOver)
+            while (!isTournamentOver)
             {
                 yield return RoundStartAnimation();
                 yield return MatchStartAnimation();
-                while (roundInfo != null)
+                while (!roundInfo.IsOver)
                     yield return null;
                 yield return MatchesEndedAnimation();
             }
