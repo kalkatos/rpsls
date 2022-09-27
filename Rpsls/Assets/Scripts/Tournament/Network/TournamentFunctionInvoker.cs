@@ -70,7 +70,37 @@ namespace Kalkatos.Network
                 if (!item.CustomData.ContainsKey(Keys.TournamentRecordKey))
                     item.CustomData.Add(Keys.TournamentRecordKey, "0-0");
             }
-            Array.Sort(players, SortBasedOnRecord);
+            List<PlayerInfo> playersList = new List<PlayerInfo>();
+            playersList.AddRange(players);
+
+            // TODO Extract records here
+
+            foreach (var item in fromTournament.Rounds[fromTournament.Rounds.Length - 1].Matches)
+            {
+                PlayerInfo p1 = playersList.Find((p) => p.Id == item.Player1);
+                PlayerInfo p2 = playersList.Find((p) => p.Id == item.Player2);
+                if (p1 != null)
+                    UpdatePlayerRecord(p1, item.Player1Wins > item.Player2Wins);
+                if (p2 != null)
+                    UpdatePlayerRecord(p2, item.Player2Wins > item.Player1Wins);
+                if (item.Player1Wins == item.Player2Wins)
+                    Debug.LogWarning($"Advance Tournament is not prepared to received Draws! Match between {p1?.Nickname} and {p2?.Nickname}");
+            }
+            //Array.Sort(players, SortBasedOnRecord);
+            players.Shuffle();
+
+            int[] ExtractRecord (PlayerInfo player)
+            {
+                string[] recordSplit = player.CustomData[Keys.TournamentRecordKey].ToString().Split('-');
+                return new int[] { int.Parse(recordSplit[0]), int.Parse(recordSplit[1]) };
+            }
+
+            void UpdatePlayerRecord (PlayerInfo player, bool isVictorious)
+            {
+                int[] records = ExtractRecord(player);
+                string newRecord = isVictorious ? $"{records[0] + 1}-{records[1]}" : $"{records[0]}-{records[1] + 1}";
+                player.CustomData = player.CustomData.CloneWithUpdateOrAdd(Keys.TournamentRecordKey, newRecord);
+            }
 
             int SortBasedOnRecord (PlayerInfo p1, PlayerInfo p2)
             {

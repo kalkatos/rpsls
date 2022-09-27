@@ -187,20 +187,39 @@ namespace Kalkatos.Rpsls
         {
             currentExpectedState = expectedState;
             clientsChecked.Clear();
-            while (players.Count > clientsChecked.Count)
+            int playersInMatchesCount = int.MaxValue;
+            while (playersInMatchesCount > clientsChecked.Count)
             {
                 yield return delayToCheckClients;
+                playersInMatchesCount = 0;
                 GetPlayers();
                 //Hashtable data = PhotonNetwork.CurrentRoom.CustomProperties;
-                foreach (var item in players)
+                foreach (var item in currentRound.Matches)
                 {
-                    if (item.Value.CustomData.TryGetValue(Keys.ClientStateKey, out object state) && state.ToString() == expectedState && !clientsChecked.Contains(item.Value.Nickname))
-                        clientsChecked.Add(item.Value.Nickname);
-                    //string key = $"{Keys.PlayerStatusKey}-{item.Key}";
-                    //if (data.TryGetValue(key, out object state))
-                    //    if (state != null)
-                    //        clientsChecked.Add(new Tuple<string, string>(key, state.ToString()));
+                    if (item.IsOver)
+                        continue;
+                    playersInMatchesCount += 2;
+                    PlayerInfo p1 = players[item.Player1];
+                    if (p1.CustomData.TryGetValue(Keys.ClientStateKey, out object stateP1) 
+                        && stateP1.ToString() == expectedState 
+                        && !clientsChecked.Contains(p1.Id))
+                        clientsChecked.Add(p1.Id);
+                    PlayerInfo p2 = players[item.Player2];
+                    if (p2.CustomData.TryGetValue(Keys.ClientStateKey, out object stateP2) 
+                        && stateP2.ToString() == expectedState 
+                        && !clientsChecked.Contains(p2.Id))
+                        clientsChecked.Add(p2.Id);
                 }
+
+                //foreach (var item in players)
+                //{
+                //    if (item.Value.CustomData.TryGetValue(Keys.ClientStateKey, out object state) && state.ToString() == expectedState && !clientsChecked.Contains(item.Value.Id))
+                //        clientsChecked.Add(item.Value.Id);
+                //    //string key = $"{Keys.PlayerStatusKey}-{item.Key}";
+                //    //if (data.TryGetValue(key, out object state))
+                //    //    if (state != null)
+                //    //        clientsChecked.Add(new Tuple<string, string>(key, state.ToString()));
+                //}
             }
         }
 
