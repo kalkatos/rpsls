@@ -21,30 +21,26 @@ namespace Kalkatos.Network
             {
                 bool isBye = i == players.Length - 1;
                 Dictionary<string, object> dict = new Dictionary<string, object>();
+                dict.Add(Keys.IsByeKey, isBye);
+                dict.Add(Keys.MatchRecordKey, "0-0");
                 if (addZeroedRecords)
-                {
-                    dict.Add(Keys.IsByeKey, isBye);
-                    dict.Add(Keys.MatchRecordKey, "0-0");
                     dict.Add(Keys.TournamentRecordKey, isBye ? "1-0" : "0-0");
-                    players[i].CustomData = players[i].CustomData.CloneWithUpdateOrAdd(dict);
-                }
+                players[i].CustomData = players[i].CustomData.CloneWithUpdateOrAdd(dict);
                 if (!isBye)
                 {
+                    dict.Clear();
+                    dict.Add(Keys.IsByeKey, false);
+                    dict.Add(Keys.MatchRecordKey, "0-0");
                     if (addZeroedRecords)
-                    {
-                        dict.Clear();
-                        dict.Add(Keys.IsByeKey, false);
-                        dict.Add(Keys.MatchRecordKey, "0-0");
                         dict.Add(Keys.TournamentRecordKey, "0-0");
-                        players[i + 1].CustomData = players[i + 1].CustomData.CloneWithUpdateOrAdd(dict);
-                    }
+                    players[i + 1].CustomData = players[i + 1].CustomData.CloneWithUpdateOrAdd(dict);
                 }
                 int matchIndex = (int)Mathf.Ceil(i / 2f);
                 matches[matchIndex] = new MatchInfo()
                 {
                     Id = Guid.NewGuid().ToString(),
                     Player1 = players[i].Id,
-                    Player2 = isBye ? null : players[i + 1].Id,
+                    Player2 = isBye ? "" : players[i + 1].Id,
                     Player1Wins = 0,
                     Player2Wins = 0,
                     IsOver = isBye
@@ -71,12 +67,12 @@ namespace Kalkatos.Network
             return tournament;
         }
 
-        public static TournamentInfo AdvanceTournament (TournamentInfo fromTournament, PlayerInfo[] players)
+        public static TournamentInfo AdvanceTournament (TournamentInfo fromTournament, PlayerInfo[] players, ref string log)
         {
-            List<object> log = new List<object>();
+            List<object> logObjList = new List<object>();
 
-            log.Add("Tournament Before");
-            log.Add(new TournamentInfo(fromTournament));
+            logObjList.Add("Tournament Before");
+            logObjList.Add(new TournamentInfo(fromTournament));
 
             PlayerInfo[] Clone (PlayerInfo[] players)
             {
@@ -86,8 +82,8 @@ namespace Kalkatos.Network
                         playersClone[i] = new PlayerInfo(players[i]);
                 return playersClone;
             }
-            log.Add("Players Before");
-            log.Add(Clone(players));
+            logObjList.Add("Players Before");
+            logObjList.Add(Clone(players));
 
             foreach (var item in players)
             {
@@ -106,22 +102,17 @@ namespace Kalkatos.Network
             {
                 PlayerInfo p1 = playersList.Find((p) => p.Id == item.Player1);
                 PlayerInfo p2 = playersList.Find((p) => p.Id == item.Player2);
-                if (p1 != null )
-                    UpdatePlayerRecord(p1, item.Player1Wins > item.Player2Wins); // TODO Consider bye
-                if (p2 != null)
+                bool isByeMatch = p1 == null || p2 == null;
+                if (!isByeMatch)
+                {
+                    UpdatePlayerRecord(p1, item.Player1Wins > item.Player2Wins);
                     UpdatePlayerRecord(p2, item.Player2Wins > item.Player1Wins);
-                if (item.Player1Wins == item.Player2Wins && item.Player1Wins > 0)
-                    Debug.LogWarning($"Advance Tournament is not prepared to received Draws! Match between {p1?.Nickname} and {p2?.Nickname}");
+                    if (item.Player1Wins == item.Player2Wins)
+                        Debug.LogWarning($"Advance Tournament is not prepared to received Draws! Match between {p1?.Nickname} and {p2?.Nickname}");
+                }
             }
-            log.Add("Updated Records");
-            log.Add(Clone(players));
-
-            // Just two players and they have already faced each other (as this functions should only be called after a match)
-            if (players.Length == 2)
-            {
-                fromTournament.IsOver = true;
-                return fromTournament;
-            }
+            //log.Add("Updated Records");
+            //log.Add(Clone(players));
 
             // Create metadata
             Dictionary<string, PlayerMetadata> metadata = new Dictionary<string, PlayerMetadata>();
@@ -133,7 +124,10 @@ namespace Kalkatos.Network
                     foreach (var match in round.Matches)
                     {
                         if (match.Player1 == player.Id)
+                        {
                             playerMetadata.FacedOpponents.Add(match.Player2);
+                            playerMetadata.HadByeRound |= string.IsNullOrEmpty(match.Player2);
+                        }
                         else if (match.Player2 == player.Id)
                             playerMetadata.FacedOpponents.Add(match.Player1);
                     }
@@ -141,64 +135,112 @@ namespace Kalkatos.Network
                 playerMetadata.Record = ExtractRecord(player);
                 metadata.Add(player.Id, playerMetadata);
             }
-            log.Add("Metadata");
-            log.Add(metadata.ToObjArray());
+            logObjList.Add("Metadata");
+            logObjList.Add(metadata.ToObjArray());
 
-            // Create new array with an empty spot if the number of players is odd
-            PlayerInfo[] playersEven = new PlayerInfo[players.Length + players.Length % 2];
-            for (int i = 0; i < players.Length; i++)
-                playersEven[i] = players[i];
+            // Just two players and they have already faced each other (as this functions should only be called after a match)
+            if (players.Length == 2)
+            {
+                fromTournament.IsOver = true;
+                return fromTournament;
+            }
 
-            // Shuffle and sort
-            playersEven.Shuffle();
-            Array.Sort(playersEven, SortBasedOnRecord);
+            // Shuffle
+            players.Shuffle();
 
-            log.Add("Players Even Before");
-            log.Add(Clone(playersEven));
+            // Get bye first
+            if (players.Length % 2 == 1)
+            {
+                PlayerInfo byePlayer = null;
+                // Go through the list of random players to find one that has not had bye before
+                for (int i = 0; i < players.Length; i++)
+                {
+                    byePlayer = players[i];
+                    if (!metadata[players[i].Id].HadByeRound)
+                        break;
+                }
+                // Create and populate an array only with the other players
+                PlayerInfo[] playersEven = new PlayerInfo[players.Length - 1];
+                int indexWithoutBye = 0;
+                for (int i = 0; i < players.Length; i++)
+                {
+                    if (players[i].Id == byePlayer.Id)
+                        continue;
+                    playersEven[indexWithoutBye] = players[i];
+                    indexWithoutBye++;
+                }
+                // Sort the not-bye players and put them back on the players in the correct order with bye player last
+                Array.Sort(playersEven, SortBasedOnRecord);
+                for (int i = 0; i < playersEven.Length; i++)
+                    players[i] = playersEven[i];
+                players[players.Length - 1] = byePlayer;
+            }
+            else
+                Array.Sort(players, SortBasedOnRecord);
 
             // Order players for new matches
-            // TODO Get bye first if needed, then go for matches. Make more passes to guarantee no rematches
-            for (int i = 0; i < playersEven.Length; i += 2)
+            for (int i = 0; i < players.Length - 1; i += 2)
             {
-                if (playersEven[i] == null)
+                PlayerInfo p1 = players[i];
+                PlayerInfo p2 = players[i + 1];
+                if (metadata[p1.Id].FacedOpponents.Contains(p2.Id))
                 {
-                    playersEven[i] = playersEven[i + 1];
-                    playersEven[i + 1] = null;
-                }
-                PlayerInfo p1 = playersEven[i];
-                PlayerInfo p2 = playersEven[i + 1];
-                if (metadata[p1.Id].FacedOpponents.Contains(p2 == null ? "" : p2.Id))
-                {
-                    for (int j = i + 2; j < playersEven.Length; j++)
+                    bool foundNewWithSameRecord = false;
+                    // Find an opponent that p1 has never faced before with the same record
+                    for (int j = 0; j < players.Length; j++)
                     {
-                        if (!metadata[p1.Id].FacedOpponents.Contains(playersEven[j] == null ? "" : playersEven[j].Id))
+                        if (players[j] == p1 || players[j] == p2)
+                            continue;
+                        if (!metadata[p1.Id].FacedOpponents.Contains(players[j].Id)
+                            && metadata[players[j].Id].Record[0] == metadata[p1.Id].Record[0])
                         {
-                            p2 = playersEven[j];
-                            playersEven[j] = playersEven[i + 1];
-                            playersEven[i + 1] = p2;
+                            ExchangePlayersPositions(j, i + 1);
+                            foundNewWithSameRecord = true;
+                            break;
+                        }
+                    }
+                    if (!foundNewWithSameRecord)
+                    {
+                        // If there is no opponent with the same record, just find an opponent that has never faced before
+                        for (int j = 0; j < players.Length; j++)
+                        {
+                            if (players[j] == p1 || players[j] == p2)
+                                continue;
+                            if (!metadata[p1.Id].FacedOpponents.Contains(players[j].Id))
+                            {
+                                ExchangePlayersPositions(j, i + 1);
+                                break;
+                            }
                         }
                     }
                 }
             }
 
-            log.Add("Players Even After");
-            log.Add(playersEven);
+            //log.Add("Players Before Tournament");
+            //log.Add(players);
 
             // Return to players
             int playersIndex = 0;
-            for (int i = 0; i < playersEven.Length; i++)
+            for (int i = 0; i < players.Length; i++)
             {
-                if (playersEven[i] == null)
+                if (players[i] == null)
                     continue;
-                players[playersIndex] = playersEven[i];
+                players[playersIndex] = players[i];
                 playersIndex++;
             }
 
-            log.Add("Players Returned");
-            log.Add(Clone(players));
+            //log.Add("Players Returned");
+            //log.Add(Clone(players));
 
             // Add new round
             fromTournament.Rounds = fromTournament.Rounds.CloneWithAdd(CreateRound(players, false));
+
+            void ExchangePlayersPositions (int a, int b)
+            {
+                PlayerInfo temp = players[a];
+                players[a] = players[b];
+                players[b] = temp;
+            }
 
             int[] ExtractRecord (PlayerInfo player)
             {
@@ -222,12 +264,11 @@ namespace Kalkatos.Network
                 return p2Record[0] - p1Record[0];
             }
 
-            log.Add("Tournament After");
-            log.Add(fromTournament);
-            log.Add("Players At The End"); // TODO Zero out match records
-            log.Add(players);
+            logObjList.Add("Players and Tournament");
+            logObjList.Add(new object[] { players, fromTournament });
 
-            Debug.Log(JsonConvert.SerializeObject(log));
+            log = JsonConvert.SerializeObject(logObjList, Formatting.Indented);
+            Debug.Log(log);
 
             return fromTournament;
         }
@@ -345,9 +386,161 @@ namespace Kalkatos.Network
 
         private class PlayerMetadata
         {
-            public string Id;
+            public bool HadByeRound;
             public int[] Record;
             public List<string> FacedOpponents = new List<string>();
         }
+
+        public static TournamentInfo AdvanceTournament (TournamentInfo from, PlayerInfo[] players)
+        {
+            string log = "";
+            return AdvanceTournament(from, players, ref log);
+        }
+
+#if UNITY_EDITOR
+        [UnityEditor.MenuItem("Tournament/Test Tournament")]
+        public static void TestTournament ()
+        {
+            var stream = System.IO.File.ReadAllText(Application.dataPath + "/tournament-test.json", System.Text.Encoding.UTF8);
+            object[] data = JsonConvert.DeserializeObject<object[]>(stream);
+            PlayerInfo[] players = JsonConvert.DeserializeObject<PlayerInfo[]>(data[0].ToString());
+            //object[] playersObjArray = (object[])data[0];
+            //PlayerInfo[] players = new PlayerInfo[playersObjArray.Length];
+            //for (int i = 0; i < playersObjArray.Length; i++)
+            //    players[i] = (PlayerInfo)playersObjArray[i];
+            TournamentInfo tournament = JsonConvert.DeserializeObject<TournamentInfo>(data[1].ToString());
+            string log = "";
+            AdvanceTournament(tournament, players, ref log);
+            if (!string.IsNullOrEmpty(log))
+                System.IO.File.WriteAllText(Application.dataPath + "/tournament-test-result.json", log, System.Text.Encoding.UTF8);
+
+            /*
+            PlayerInfo[] players = new PlayerInfo[]
+            {
+                new PlayerInfo ()
+                {
+                    Id = "A",
+                    IsBot = false,
+                    Nickname = "A",
+                    IsMasterClient = true,
+                    IsMe = true,
+                    CustomData = new Dictionary<string, object>()
+                    {
+                        { Keys.IsByeKey, false },
+                        { Keys.MatchRecordKey, "3-2" },
+                        { Keys.TournamentRecordKey, "0-0" },
+                        { Keys.ClientStateKey, "Waiting" },
+                    }
+                },
+                new PlayerInfo ()
+                {
+                    Id = "B",
+                    IsBot = true,
+                    Nickname = "B",
+                    IsMasterClient = false,
+                    IsMe = false,
+                    CustomData = new Dictionary<string, object>()
+                    {
+                        { Keys.IsByeKey, false },
+                        { Keys.MatchRecordKey, "2-3" },
+                        { Keys.TournamentRecordKey, "0-0" },
+                        { Keys.ClientStateKey, "Waiting" },
+                    }
+                },
+                new PlayerInfo ()
+                {
+                    Id = "C",
+                    IsBot = true,
+                    Nickname = "C",
+                    IsMasterClient = false,
+                    IsMe = false,
+                    CustomData = new Dictionary<string, object>()
+                    {
+                        { Keys.IsByeKey, false },
+                        { Keys.MatchRecordKey, "0-3" },
+                        { Keys.TournamentRecordKey, "0-0" },
+                        { Keys.ClientStateKey, "Waiting" },
+                    }
+                },
+                new PlayerInfo ()
+                {
+                    Id = "D",
+                    IsBot = true,
+                    Nickname = "D",
+                    IsMasterClient = false,
+                    IsMe = false,
+                    CustomData = new Dictionary<string, object>()
+                    {
+                        { Keys.IsByeKey, false },
+                        { Keys.MatchRecordKey, "3-0" },
+                        { Keys.TournamentRecordKey, "0-0" },
+                        { Keys.ClientStateKey, "Waiting" },
+                    }
+                },
+                new PlayerInfo ()
+                {
+                    Id = "E",
+                    IsBot = true,
+                    Nickname = "E",
+                    IsMasterClient = false,
+                    IsMe = false,
+                    CustomData = new Dictionary<string, object>()
+                    {
+                        { Keys.IsByeKey, true },
+                        { Keys.MatchRecordKey, "0-0" },
+                        { Keys.TournamentRecordKey, "1-0" },
+                        { Keys.ClientStateKey, "Waiting" },
+                    }
+                },
+            };
+            TournamentInfo testTournament = new TournamentInfo()
+            {
+                Id = "Tournament1",
+                IsOver = false,
+                Players = new string[] { "A", "B", "C", "D", "E" },
+                Rounds = new RoundInfo[]
+                {
+                    new RoundInfo ()
+                    {
+                        Id = "Round1",
+                        Index = 0,
+                        IsOver = true,
+                        Matches = new MatchInfo[]
+                        {
+                            new MatchInfo ()
+                            {
+                                Id = "1",
+                                IsOver = true,
+                                Player1 = "A",
+                                Player2 = "B",
+                                Player1Wins = 3,
+                                Player2Wins = 2
+                            },
+                            new MatchInfo ()
+                            {
+                                Id = "2",
+                                IsOver = true,
+                                Player1 = "C",
+                                Player2 = "D",
+                                Player1Wins = 0,
+                                Player2Wins = 3
+                            },
+                            new MatchInfo ()
+                            {
+                                Id = "3",
+                                IsOver = true,
+                                Player1 = "E",
+                                Player2 = "",
+                                Player1Wins = 0,
+                                Player2Wins = 0
+                            },
+                        }
+                    }
+                }
+            };
+            AdvanceTournament(testTournament, players);
+            */
+        }
+#endif
     }
 }
