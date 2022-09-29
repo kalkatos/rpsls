@@ -115,6 +115,18 @@ namespace Kalkatos.Tournament
         public int Player1Wins;
         public int Player2Wins;
         public bool IsOver;
+
+        public MatchInfo () { }
+
+        public MatchInfo (MatchInfo other)
+        {
+            Id = other.Id;
+            Player1 = other.Player1;
+            Player2 = other.Player2;
+            Player1Wins = other.Player1Wins;
+            Player2Wins = other.Player2Wins;
+            IsOver = other.IsOver;
+        }
     }
 
     public class RoundInfo
@@ -123,13 +135,39 @@ namespace Kalkatos.Tournament
         public int Index;
         public bool IsOver;
         public MatchInfo[] Matches;
+
+        public RoundInfo () { }
+
+        public RoundInfo (RoundInfo other)
+        {
+            Id = other.Id;
+            Index = other.Index;
+            IsOver = other.IsOver;
+            Matches = new MatchInfo[other.Matches.Length];
+            for (int i = 0; i < other.Matches.Length; i++)
+                Matches[i] = new MatchInfo(other.Matches[i]);
+        }
     }
 
     public class TournamentInfo
     {
         public string Id;
+        public bool IsOver;
         public string[] Players;
         public RoundInfo[] Rounds;
+
+        public TournamentInfo () { }
+        public TournamentInfo (TournamentInfo other)
+        {
+            Id = other.Id;
+            IsOver = other.IsOver;
+            Players = new string[other.Players.Length];
+            for (int i = 0; i < other.Players.Length; i++)
+                Players[i] = other.Players[i];
+            Rounds = new RoundInfo[other.Rounds.Length];
+            for (int i = 0; i < other.Rounds.Length; i++)
+                Rounds[i] = new RoundInfo(other.Rounds[i]);
+        }
     }
 
     public class MatchState

@@ -105,8 +105,7 @@ namespace Kalkatos.Tournament
 
         public void HandleStateChanged (string state)
         {
-            if (state == ClientState.InMatch)
-                UpdatePlayersInfoBits();
+            
         }
 
         private void UseRoundInfo ()
@@ -115,7 +114,6 @@ namespace Kalkatos.Tournament
             GameManager.UpdatePlayers();
             foreach (var item in roundInfo.Matches)
             {
-                UpdateMatchInfo(item);
                 if (item.Player1 == myId)
                 {
                     myMatchIndex = index;
@@ -279,6 +277,7 @@ namespace Kalkatos.Tournament
 
                 yield return new WaitForSeconds(moveToVersusTime + versusAnimationTime);
             }
+            UpdatePlayersInfoBits();
             float dockingTime = settings.DockingTime;
             // Dock my opponent slot at the top of the screen and mine at the bottom
             if (haveOpponent)
