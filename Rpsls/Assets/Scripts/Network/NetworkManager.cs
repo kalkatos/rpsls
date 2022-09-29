@@ -210,7 +210,7 @@ namespace Kalkatos.Network
             Nickname = other.Nickname;
             IsMasterClient = other.IsMasterClient;
             IsMe = other.IsMe;
-            CustomData = other.CustomData;
+            CustomData = other.CustomData.CloneDictionary();
         }
     }
 

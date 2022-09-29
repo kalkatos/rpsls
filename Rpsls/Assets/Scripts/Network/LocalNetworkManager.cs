@@ -577,7 +577,7 @@ namespace Kalkatos.Network
                             IsBot = true
                         };
                         connectedPlayers.Add(newPlayerId, newPlayer);
-                        Players = Players.Add(newPlayer);
+                        Players = Players.CloneWithAdd(newPlayer);
                     }
                     SaveLists();
 

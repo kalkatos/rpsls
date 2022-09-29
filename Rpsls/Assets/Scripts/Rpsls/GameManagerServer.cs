@@ -314,7 +314,8 @@ namespace Kalkatos.Rpsls
 
         private void AdvanceTournament ()
         {
-
+            currentTournament = FunctionInvoker.AdvanceTournament(currentTournament, NetworkManager.Instance.Players);
+            UpdatePhotonPlayers();
         }
 
         #region ========== Callbacks ===============

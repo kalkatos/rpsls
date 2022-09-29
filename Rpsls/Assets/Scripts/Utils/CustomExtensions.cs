@@ -284,9 +284,11 @@ namespace Kalkatos
             return Array.IndexOf(array, value) >= 0;
         }
 
-        public static T[] Add<T> (this T[] array, T value)
+        public static T[] CloneWithAdd<T> (this T[] array, T value)
         {
             T[] newArray = new T[array.Length + 1];
+            for (int i = 0; i < array.Length; i++)
+                newArray[i] = array[i];
             newArray[array.Length] = value;
             return newArray;
         }
