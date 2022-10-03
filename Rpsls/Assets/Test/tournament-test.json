@@ -1,0 +1,279 @@
+﻿[
+  [
+    {
+      "Id": "G",
+      "Nickname": "G",
+      "IsMasterClient": false,
+      "IsMe": false,
+      "IsBot": true,
+      "CustomData": {
+        "IsBye": false,
+        "MRecd": "0-0",
+        "TRecd": "3-0",
+        "ClSts": "Waiting"
+      }
+    },
+    {
+      "Id": "A",
+      "Nickname": "A",
+      "IsMasterClient": true,
+      "IsMe": true,
+      "IsBot": false,
+      "CustomData": {
+        "IsBye": false,
+        "MRecd": "0-0",
+        "TRecd": "2-1",
+        "ClSts": "Waiting"
+      }
+    },
+    {
+      "Id": "I",
+      "Nickname": "I",
+      "IsMasterClient": false,
+      "IsMe": false,
+      "IsBot": true,
+      "CustomData": {
+        "IsBye": false,
+        "MRecd": "0-0",
+        "TRecd": "2-1",
+        "ClSts": "Waiting"
+      }
+    },
+    {
+      "Id": "D",
+      "Nickname": "D",
+      "IsMasterClient": false,
+      "IsMe": false,
+      "IsBot": true,
+      "CustomData": {
+        "IsBye": false,
+        "MRecd": "0-0",
+        "TRecd": "2-1",
+        "ClSts": "Waiting"
+      }
+    },
+    {
+      "Id": "H",
+      "Nickname": "H",
+      "IsMasterClient": false,
+      "IsMe": false,
+      "IsBot": true,
+      "CustomData": {
+        "IsBye": false,
+        "MRecd": "0-0",
+        "TRecd": "2-1",
+        "ClSts": "Waiting"
+      }
+    },
+    {
+      "Id": "E",
+      "Nickname": "E",
+      "IsMasterClient": false,
+      "IsMe": false,
+      "IsBot": true,
+      "CustomData": {
+        "IsBye": false,
+        "MRecd": "0-0",
+        "TRecd": "1-2",
+        "ClSts": "Waiting"
+      }
+    },
+    {
+      "Id": "F",
+      "Nickname": "F",
+      "IsMasterClient": false,
+      "IsMe": false,
+      "IsBot": true,
+      "CustomData": {
+        "IsBye": false,
+        "MRecd": "0-0",
+        "TRecd": "0-3",
+        "ClSts": "Waiting"
+      }
+    },
+    {
+      "Id": "B",
+      "Nickname": "B",
+      "IsMasterClient": false,
+      "IsMe": false,
+      "IsBot": true,
+      "CustomData": {
+        "IsBye": false,
+        "MRecd": "0-0",
+        "TRecd": "1-2",
+        "ClSts": "Waiting"
+      }
+    },
+    {
+      "Id": "C",
+      "Nickname": "C",
+      "IsMasterClient": false,
+      "IsMe": false,
+      "IsBot": true,
+      "CustomData": {
+        "IsBye": false,
+        "MRecd": "0-0",
+        "TRecd": "2-1",
+        "ClSts": "Waiting"
+      }
+    }
+  ],
+  {
+    "Id": "Tournament1",
+    "IsOver": false,
+    "Players": [
+      "A",
+      "B",
+      "C",
+      "D",
+      "E",
+      "F",
+      "G",
+      "H",
+      "I"
+    ],
+    "Rounds": [
+      {
+        "Id": "Round1",
+        "Index": 0,
+        "IsOver": true,
+        "Matches": [
+          {
+            "Id": "1",
+            "Player1": "A",
+            "Player2": "B",
+            "Player1Wins": 3,
+            "Player2Wins": 0,
+            "IsOver": true
+          },
+          {
+            "Id": "2",
+            "Player1": "C",
+            "Player2": "D",
+            "Player1Wins": 3,
+            "Player2Wins": 0,
+            "IsOver": true
+          },
+          {
+            "Id": "3",
+            "Player1": "E",
+            "Player2": "F",
+            "Player1Wins": 3,
+            "Player2Wins": 0,
+            "IsOver": true
+          },
+          {
+            "Id": "4",
+            "Player1": "G",
+            "Player2": "H",
+            "Player1Wins": 3,
+            "Player2Wins": 0,
+            "IsOver": true
+          },
+          {
+            "Id": "5",
+            "Player1": "I",
+            "Player2": "",
+            "Player1Wins": 0,
+            "Player2Wins": 0,
+            "IsOver": true
+          }
+        ]
+      },
+      {
+        "Id": "41c8253c-a1e8-4931-a24c-0440622b2c48",
+        "Index": 1,
+        "IsOver": true,
+        "Matches": [
+          {
+            "Id": "be76806c-77e5-40c2-a61a-48bce88a0d71",
+            "Player1": "I",
+            "Player2": "E",
+            "Player1Wins": 3,
+            "Player2Wins": 0,
+            "IsOver": true
+          },
+          {
+            "Id": "72144bd5-adcb-4466-be78-a4e6898f77d7",
+            "Player1": "G",
+            "Player2": "C",
+            "Player1Wins": 3,
+            "Player2Wins": 0,
+            "IsOver": true
+          },
+          {
+            "Id": "512bd10f-0385-46fc-85b0-9159efe530ac",
+            "Player1": "H",
+            "Player2": "F",
+            "Player1Wins": 3,
+            "Player2Wins": 0,
+            "IsOver": true
+          },
+          {
+            "Id": "92a8afd8-084d-4f2f-82c9-4a30b298d211",
+            "Player1": "D",
+            "Player2": "B",
+            "Player1Wins": 3,
+            "Player2Wins": 0,
+            "IsOver": true
+          },
+          {
+            "Id": "695b95e7-4418-464b-b0d4-8230314c1631",
+            "Player1": "A",
+            "Player2": "",
+            "Player1Wins": 0,
+            "Player2Wins": 0,
+            "IsOver": true
+          }
+        ]
+      },
+      {
+        "Id": "811a6c55-6371-43ac-a678-53799c023a43",
+        "Index": 2,
+        "IsOver": true,
+        "Matches": [
+          {
+            "Id": "680ece57-1c5e-4e10-849b-4addf373b873",
+            "Player1": "G",
+            "Player2": "A",
+            "Player1Wins": 3,
+            "Player2Wins": 0,
+            "IsOver": true
+          },
+          {
+            "Id": "5e7d3ccf-9ed8-489c-9958-c8c2c9d52d75",
+            "Player1": "I",
+            "Player2": "D",
+            "Player1Wins": 0,
+            "Player2Wins": 3,
+            "IsOver": true
+          },
+          {
+            "Id": "1de65f5a-7d12-4562-a8a5-cb8bc2154ea3",
+            "Player1": "H",
+            "Player2": "E",
+            "Player1Wins": 3,
+            "Player2Wins": 0,
+            "IsOver": true
+          },
+          {
+            "Id": "17913849-19e6-47fd-99da-19eff371cb28",
+            "Player1": "F",
+            "Player2": "B",
+            "Player1Wins": 0,
+            "Player2Wins": 3,
+            "IsOver": true
+          },
+          {
+            "Id": "224d6b10-a895-4b86-8680-7a3f647b5cc5",
+            "Player1": "C",
+            "Player2": "",
+            "Player1Wins": 0,
+            "Player2Wins": 0,
+            "IsOver": true
+          }
+        ]
+      }
+    ]
+  }
+]

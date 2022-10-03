@@ -12,6 +12,8 @@ namespace Kalkatos.Tournament
         public int TurnVictories;
         public float DelayBeforeStarting = 3f;
         public float TurnDuration = 5f;
+        [Header("Tournament Options")]
+        public int NumberOfRounds = 4;
         [Header("Prefabs")]
         public PlayerInfoSlot RoomInfoSlotPrefab;
         public PlayerInfoSlot GameInfoSlotPrefab;

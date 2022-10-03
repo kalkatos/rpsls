@@ -141,7 +141,7 @@ namespace Kalkatos.Tournament
             PlayerInfo p1, p2;
             p1 = GameManager.GetPlayer(matchInfo.Player1);
             playerSlots[matchInfo.Player1].HandlePlayerInfo(p1);
-            if (matchInfo.Player2 != null)
+            if (!string.IsNullOrEmpty(matchInfo.Player2))
             {
                 p2 = GameManager.GetPlayer(matchInfo.Player2);
                 playerSlots[matchInfo.Player2].HandlePlayerInfo(p2);

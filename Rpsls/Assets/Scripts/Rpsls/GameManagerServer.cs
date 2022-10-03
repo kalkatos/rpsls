@@ -188,6 +188,7 @@ namespace Kalkatos.Rpsls
             currentExpectedState = expectedState;
             clientsChecked.Clear();
             int playersInMatchesCount = int.MaxValue;
+            this.Log("Waiting for clients state: " + expectedState);
             while (playersInMatchesCount > clientsChecked.Count)
             {
                 yield return delayToCheckClients;
@@ -221,6 +222,7 @@ namespace Kalkatos.Rpsls
                 //    //        clientsChecked.Add(new Tuple<string, string>(key, state.ToString()));
                 //}
             }
+            this.Log("All clients in state: " + expectedState);
         }
 
         private bool IsTrue (string key)
@@ -305,6 +307,7 @@ namespace Kalkatos.Rpsls
             {
                 roundIsOver = true;
                 currentRound.IsOver = true;
+                FunctionInvoker.EndRound(currentTournament, NetworkManager.Instance.Players);
             }
             // Save tournament
             PhotonNetwork.CurrentRoom.SetCustomProperties(new Hashtable() { { Keys.TournamentsKey, JsonConvert.SerializeObject(currentTournament) } });
@@ -314,7 +317,7 @@ namespace Kalkatos.Rpsls
 
         private void AdvanceTournament ()
         {
-            currentTournament = FunctionInvoker.AdvanceTournament(currentTournament, NetworkManager.Instance.Players);
+            FunctionInvoker.AdvanceTournament(currentTournament, NetworkManager.Instance.Players);
             UpdatePhotonPlayers();
         }
 
