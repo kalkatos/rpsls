@@ -1,123 +1,123 @@
 ﻿[
-  [
-    {
-      "Id": "I",
-      "Nickname": "I",
-      "IsMasterClient": false,
-      "IsMe": false,
-      "IsBot": true,
-      "CustomData": {
-        "IsBye": false,
-        "MRecd": "0-0",
-        "TRecd": "0-0",
-        "ClSts": "Waiting"
-      }
-    },
-    {
-      "Id": "B",
-      "Nickname": "B",
-      "IsMasterClient": false,
-      "IsMe": false,
-      "IsBot": true,
-      "CustomData": {
-        "IsBye": false,
-        "MRecd": "0-0",
-        "TRecd": "0-0",
-        "ClSts": "Waiting"
-      }
-    },
-    {
-      "Id": "F",
-      "Nickname": "F",
-      "IsMasterClient": false,
-      "IsMe": false,
-      "IsBot": true,
-      "CustomData": {
-        "IsBye": false,
-        "MRecd": "0-0",
-        "TRecd": "0-0",
-        "ClSts": "Waiting"
-      }
-    },
-    {
-      "Id": "C",
-      "Nickname": "C",
-      "IsMasterClient": false,
-      "IsMe": false,
-      "IsBot": true,
-      "CustomData": {
-        "IsBye": false,
-        "MRecd": "0-0",
-        "TRecd": "0-0",
-        "ClSts": "Waiting"
-      }
-    },
-    {
-      "Id": "H",
-      "Nickname": "H",
-      "IsMasterClient": false,
-      "IsMe": false,
-      "IsBot": true,
-      "CustomData": {
-        "IsBye": false,
-        "MRecd": "0-0",
-        "TRecd": "0-0",
-        "ClSts": "Waiting"
-      }
-    },
-    {
-      "Id": "E",
-      "Nickname": "E",
-      "IsMasterClient": false,
-      "IsMe": false,
-      "IsBot": true,
-      "CustomData": {
-        "IsBye": false,
-        "MRecd": "0-0",
-        "TRecd": "0-0",
-        "ClSts": "Waiting"
-      }
-    },
-    {
-      "Id": "A",
-      "Nickname": "A",
-      "IsMasterClient": true,
-      "IsMe": true,
-      "IsBot": false,
-      "CustomData": {
-        "IsBye": false,
-        "MRecd": "0-0",
-        "TRecd": "0-0",
-        "ClSts": "Waiting"
-      }
-    },
-    {
-      "Id": "G",
-      "Nickname": "G",
-      "IsMasterClient": false,
-      "IsMe": false,
-      "IsBot": true,
-      "CustomData": {
-        "IsBye": false,
-        "MRecd": "0-0",
-        "TRecd": "0-0",
-        "ClSts": "Waiting"
-      }
-    },
-    {
-      "Id": "D",
-      "Nickname": "D",
-      "IsMasterClient": false,
-      "IsMe": false,
-      "IsBot": true,
-      "CustomData": {
-        "IsBye": false,
-        "MRecd": "0-0",
-        "TRecd": "0-0",
-        "ClSts": "Waiting"
-      }
-    }
-  ],
+    [
+        {
+            "Id": "A",
+            "Nickname": "A",
+            "IsMasterClient": true,
+            "IsMe": true,
+            "IsBot": false,
+            "CustomData": {
+                "IsBye": false,
+                "MRecd": "0-0",
+                "TRecd": "0-0",
+                "ClSts": "Waiting"
+            }
+        },
+        {
+            "Id": "B",
+            "Nickname": "B",
+            "IsMasterClient": false,
+            "IsMe": false,
+            "IsBot": true,
+            "CustomData": {
+                "IsBye": false,
+                "MRecd": "0-0",
+                "TRecd": "0-0",
+                "ClSts": "Waiting"
+            }
+        },
+        {
+            "Id": "C",
+            "Nickname": "C",
+            "IsMasterClient": false,
+            "IsMe": false,
+            "IsBot": true,
+            "CustomData": {
+                "IsBye": false,
+                "MRecd": "0-0",
+                "TRecd": "0-0",
+                "ClSts": "Waiting"
+            }
+        },
+        {
+            "Id": "D",
+            "Nickname": "D",
+            "IsMasterClient": false,
+            "IsMe": false,
+            "IsBot": true,
+            "CustomData": {
+                "IsBye": false,
+                "MRecd": "0-0",
+                "TRecd": "0-0",
+                "ClSts": "Waiting"
+            }
+        },
+        {
+            "Id": "E",
+            "Nickname": "E",
+            "IsMasterClient": false,
+            "IsMe": false,
+            "IsBot": true,
+            "CustomData": {
+                "IsBye": false,
+                "MRecd": "0-0",
+                "TRecd": "0-0",
+                "ClSts": "Waiting"
+            }
+        },
+        {
+            "Id": "F",
+            "Nickname": "F",
+            "IsMasterClient": false,
+            "IsMe": false,
+            "IsBot": true,
+            "CustomData": {
+                "IsBye": false,
+                "MRecd": "0-0",
+                "TRecd": "0-0",
+                "ClSts": "Waiting"
+            }
+        },
+        {
+            "Id": "G",
+            "Nickname": "G",
+            "IsMasterClient": false,
+            "IsMe": false,
+            "IsBot": true,
+            "CustomData": {
+                "IsBye": false,
+                "MRecd": "0-0",
+                "TRecd": "0-0",
+                "ClSts": "Waiting"
+            }
+        },
+        {
+            "Id": "H",
+            "Nickname": "H",
+            "IsMasterClient": false,
+            "IsMe": false,
+            "IsBot": true,
+            "CustomData": {
+                "IsBye": false,
+                "MRecd": "0-0",
+                "TRecd": "0-0",
+                "ClSts": "Waiting"
+            }
+        },
+        {
+            "Id": "I",
+            "Nickname": "I",
+            "IsMasterClient": false,
+            "IsMe": false,
+            "IsBot": true,
+            "CustomData": {
+                "IsBye": true,
+                "MRecd": "0-0",
+                "TRecd": "0-0",
+                "ClSts": "Waiting"
+            }
+        }
+    ],
   {
     "Id": "Tournament1",
     "IsOver": false,

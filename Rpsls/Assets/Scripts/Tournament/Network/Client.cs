@@ -91,6 +91,8 @@ namespace Kalkatos.Tournament
             currentState = NextState(currentState, addInfo);
             if (state != currentState)
                 this.LogWarning($"Expected state {state} is different from correct next state {currentState}");
+            else
+                this.Log($"Set state: {currentState}");
             NetworkManager.Instance.SendCustomData($"{Keys.ClientStateKey}-{Id}", currentState);
             //if (info.IsBot)
             //{

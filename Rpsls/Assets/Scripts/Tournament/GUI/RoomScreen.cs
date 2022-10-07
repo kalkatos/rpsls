@@ -94,7 +94,7 @@ namespace Kalkatos.Tournament
         private void HandlePlayerInfoChanged (PlayerInfo info)
         {
             if (slots.TryGetValue(info.Id, out PlayerInfoSlot slot))
-                slot.HandlePlayerInfo(info);
+                slot.HandlePlayerInfo(info, "");
         }
 
         private void HandleBecameMaster ()
@@ -172,7 +172,7 @@ namespace Kalkatos.Tournament
         private PlayerInfoSlot CreateSlot (PlayerInfo info)
         {
             PlayerInfoSlot newSlot = Instantiate(settings.RoomInfoSlotPrefab, playerSlotsListParent);
-            newSlot.HandlePlayerInfo(info);
+            newSlot.HandlePlayerInfo(info, "");
             return newSlot;
         }
     }

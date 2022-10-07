@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: TournamentGameSettings
   m_EditorClassIdentifier: 
   MaxPlayers: 10
-  TurnVictories: 3
   DelayBeforeStarting: 3
   TurnDuration: 2
+  TurnVictories: 1
+  NumberOfRounds: 4
   RoomInfoSlotPrefab: {fileID: 2484671227098352049, guid: ce25457a3ef788a4c9d7a05ea2f4ff48, type: 3}
   GameInfoSlotPrefab: {fileID: 5226735126310528078, guid: 4fd2735ee900a314ba69f53f93c16100, type: 3}
   PlaymatTopPrefab: {fileID: 1173353055995432643, guid: 65233381157593f46acf684d0853e1ce, type: 3}

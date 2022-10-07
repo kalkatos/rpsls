@@ -41,17 +41,17 @@ namespace Kalkatos.Rpsls
 
         private RoundInfo currentRound => currentTournament.Rounds[currentRoundIndex];
         private int currentRoundIndex => currentTournament.Rounds.Length - 1;
-        private bool tournamentIsOver 
+        private bool tournamentIsOver
         {
             get
             {
-                return tournamentIsOverLocal; 
-            } 
-            set 
+                return tournamentIsOverLocal;
+            }
+            set
             {
-                tournamentIsOverLocal = value; 
-                SetBool(tournamentOverKey, value); 
-            } 
+                tournamentIsOverLocal = value;
+                SetBool(tournamentOverKey, value);
+            }
         }
         private bool roundIsOver
         {
@@ -118,7 +118,7 @@ namespace Kalkatos.Rpsls
             }
             PhotonNetwork.LocalPlayer.NickName = "Kalkatos";
             GetPlayers();
-            gameManager = gameObject.AddComponent<GameManager>(); 
+            gameManager = gameObject.AddComponent<GameManager>();
             currentExpectedState = ClientState.Undefined;
             StartCoroutine(GameLoop());
         }
@@ -145,7 +145,7 @@ namespace Kalkatos.Rpsls
                 if (!becameNewMaster)
                 {
                     SendRound();
-                    this.Log("Round: " + (currentRoundIndex + 1)); 
+                    this.Log("Round: " + (currentRoundIndex + 1));
                 }
                 yield return WaitClientsState(ClientState.InMatch);
                 this.Log("Everyone in match");
@@ -186,30 +186,24 @@ namespace Kalkatos.Rpsls
         private IEnumerator WaitClientsState (string expectedState)
         {
             currentExpectedState = expectedState;
+            GetPlayers();
             clientsChecked.Clear();
-            int playersInMatchesCount = int.MaxValue;
             this.Log("Waiting for clients state: " + expectedState);
-            while (playersInMatchesCount > clientsChecked.Count)
+            while (players.Count > clientsChecked.Count)
             {
                 yield return delayToCheckClients;
-                playersInMatchesCount = 0;
                 GetPlayers();
                 //Hashtable data = PhotonNetwork.CurrentRoom.CustomProperties;
-                foreach (var item in currentRound.Matches)
+
+                foreach (var item in players)
                 {
-                    if (item.IsOver)
-                        continue;
-                    playersInMatchesCount += 2;
-                    PlayerInfo p1 = players[item.Player1];
-                    if (p1.CustomData.TryGetValue(Keys.ClientStateKey, out object stateP1) 
-                        && stateP1.ToString() == expectedState 
-                        && !clientsChecked.Contains(p1.Id))
-                        clientsChecked.Add(p1.Id);
-                    PlayerInfo p2 = players[item.Player2];
-                    if (p2.CustomData.TryGetValue(Keys.ClientStateKey, out object stateP2) 
-                        && stateP2.ToString() == expectedState 
-                        && !clientsChecked.Contains(p2.Id))
-                        clientsChecked.Add(p2.Id);
+                    PlayerInfo player = item.Value;
+                    if (player.CustomData.TryGetValue(Keys.ClientStateKey, out object state)
+                        && state.ToString() == expectedState
+                        && !clientsChecked.Contains(player.Id))
+                    {
+                        clientsChecked.Add(player.Id);
+                    }
                 }
 
                 //foreach (var item in players)
@@ -222,6 +216,8 @@ namespace Kalkatos.Rpsls
                 //    //        clientsChecked.Add(new Tuple<string, string>(key, state.ToString()));
                 //}
             }
+            if (expectedState == ClientState.BetweenRounds)
+                this.Log("Here");
             this.Log("All clients in state: " + expectedState);
         }
 
@@ -279,7 +275,7 @@ namespace Kalkatos.Rpsls
                 if (item.IsOver)
                 {
                     endedMatches++;
-                    continue; 
+                    continue;
                 }
 
                 // TODO  >>>>  Do proper results <<<<<<
@@ -347,13 +343,13 @@ namespace Kalkatos.Rpsls
 
     public interface IGame
     {
-        public void OnMatchStarted(MatchInfo match);
-        public void OnMatchEnded(MatchInfo match);
-        public void OnTurnStarted(MatchInfo match, int turnNumber);
-        public void OnTurnEnded(MatchInfo match, int turnNumber);
-        public void OnPhaseStarted(MatchInfo match, string phaseName);
-        public void OnPhaseEndted(MatchInfo match, string phaseName);
-        public void OnStepStarted(MatchInfo match, string stepName);
-        public void OnStepEnded(MatchInfo match, string stepName);
+        public void OnMatchStarted (MatchInfo match);
+        public void OnMatchEnded (MatchInfo match);
+        public void OnTurnStarted (MatchInfo match, int turnNumber);
+        public void OnTurnEnded (MatchInfo match, int turnNumber);
+        public void OnPhaseStarted (MatchInfo match, string phaseName);
+        public void OnPhaseEndted (MatchInfo match, string phaseName);
+        public void OnStepStarted (MatchInfo match, string stepName);
+        public void OnStepEnded (MatchInfo match, string stepName);
     }
 }
