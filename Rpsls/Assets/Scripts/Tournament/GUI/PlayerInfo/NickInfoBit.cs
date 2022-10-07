@@ -8,7 +8,7 @@ namespace Kalkatos.Tournament
     {
         [SerializeField] private TMP_Text nicknameText;
 
-        public override void HandlePlayerInfo (PlayerInfo info)
+        public override void HandlePlayerInfo (PlayerInfo info, string state)
         {
             nicknameText.text = info.Nickname;
         }

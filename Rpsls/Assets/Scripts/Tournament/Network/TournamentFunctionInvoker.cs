@@ -114,10 +114,6 @@ namespace Kalkatos.Network
             {
                 if (!item.CustomData.ContainsKey(Keys.TournamentRecordKey))
                     item.CustomData.Add(Keys.TournamentRecordKey, "0-0");
-                if (!item.CustomData.ContainsKey(Keys.IsByeKey))
-                    item.CustomData.Add(Keys.IsByeKey, false);
-                else
-                    item.CustomData[Keys.IsByeKey] = false;
             }
             // Update records
             List<PlayerInfo> playersList = new List<PlayerInfo>();
@@ -169,32 +165,19 @@ namespace Kalkatos.Network
             // Get bye first and/or sort
             if (players.Length % 2 == 1)
             {
-                PlayerInfo byePlayer = null;
                 // Go through the list of random players to find one that has not had bye before
                 for (int i = 0; i < players.Length; i++)
                 {
-                    byePlayer = players[i];
                     if (!metadata[players[i].Id].HadByeRound)
+                    {
+                        ExchangePlayersPositions(i, players.Length - 1);
                         break;
+                    }
                 }
-                // Create and populate an array only with the other players
-                PlayerInfo[] playersEven = new PlayerInfo[players.Length - 1];
-                int indexWithoutBye = 0;
-                for (int i = 0; i < players.Length; i++)
-                {
-                    if (players[i].Id == byePlayer.Id)
-                        continue;
-                    playersEven[indexWithoutBye] = players[i];
-                    indexWithoutBye++;
-                }
-                // Sort the not-bye players and put them back on the players in the correct order with bye player last
-                Array.Sort(playersEven, SortBasedOnRecord);
-                for (int i = 0; i < playersEven.Length; i++)
-                    players[i] = playersEven[i];
-                players[players.Length - 1] = byePlayer;
+                Array.Sort(players, 0, players.Length - 1, new PlayerInfoComparer());
             }
             else
-                Array.Sort(players, SortBasedOnRecord);
+                Array.Sort(players, new PlayerInfoComparer());
 
             // Order players for new matches
             for (int i = 0; i < players.Length - 1; i += 2)
@@ -253,15 +236,6 @@ namespace Kalkatos.Network
                 PlayerInfo temp = players[a];
                 players[a] = players[b];
                 players[b] = temp;
-            }
-
-            int SortBasedOnRecord (PlayerInfo p1, PlayerInfo p2)
-            {
-                if (p1 == null || p2 == null)
-                    return UnityEngine.Random.Range(-1, 2);
-                int[] p1Record = ExtractRecord(p1);
-                int[] p2Record = ExtractRecord(p2);
-                return p2Record[0] - p1Record[0];
             }
 
             PlayerInfo[] Clone (PlayerInfo[] players)
@@ -385,6 +359,18 @@ namespace Kalkatos.Network
             return Error.WrongParameters;
         }
 
+        private class PlayerInfoComparer : IComparer<PlayerInfo>
+        {
+            public int Compare (PlayerInfo x, PlayerInfo y)
+            {
+                if (x == null || y == null)
+                    return UnityEngine.Random.Range(-1, 2);
+                int[] p1Record = ExtractRecord(x);
+                int[] p2Record = ExtractRecord(y);
+                return p2Record[0] - p1Record[0];
+            }
+        }
+
         private class PlayerMetadata
         {
             public bool HadByeRound;
@@ -393,7 +379,7 @@ namespace Kalkatos.Network
         }
 
 #if UNITY_EDITOR
-        [UnityEditor.MenuItem("Tournament/End Round")]
+        [UnityEditor.MenuItem("Tournament Test/End Round")]
         public static void TestEndRound ()
         {
             var stream = System.IO.File.ReadAllText(Application.dataPath + "/Test/tournament-test.json", System.Text.Encoding.UTF8);
@@ -419,7 +405,7 @@ namespace Kalkatos.Network
             System.IO.File.WriteAllText(Application.dataPath + "/Test/tournament-test.json", JsonConvert.SerializeObject(data, Formatting.Indented), System.Text.Encoding.UTF8);
         }
 
-        [UnityEditor.MenuItem("Tournament/Advance Tournament")]
+        [UnityEditor.MenuItem("Tournament Test/Advance Tournament")]
         public static void TestAdvanceTournament ()
         {
             var stream = System.IO.File.ReadAllText(Application.dataPath + "/Test/tournament-test.json", System.Text.Encoding.UTF8);
@@ -430,132 +416,195 @@ namespace Kalkatos.Network
             if (!string.IsNullOrEmpty(log))
                 System.IO.File.WriteAllText(Application.dataPath + "/Test/tournament-test-result.json", log, System.Text.Encoding.UTF8);
 
+            #region Tournament json example
             /*
-            PlayerInfo[] players = new PlayerInfo[]
-            {
-                new PlayerInfo ()
-                {
-                    Id = "A",
-                    IsBot = false,
-                    Nickname = "A",
-                    IsMasterClient = true,
-                    IsMe = true,
-                    CustomData = new Dictionary<string, object>()
+            [
+                [
                     {
-                        { Keys.IsByeKey, false },
-                        { Keys.MatchRecordKey, "3-2" },
-                        { Keys.TournamentRecordKey, "0-0" },
-                        { Keys.ClientStateKey, "Waiting" },
-                    }
-                },
-                new PlayerInfo ()
-                {
-                    Id = "B",
-                    IsBot = true,
-                    Nickname = "B",
-                    IsMasterClient = false,
-                    IsMe = false,
-                    CustomData = new Dictionary<string, object>()
-                    {
-                        { Keys.IsByeKey, false },
-                        { Keys.MatchRecordKey, "2-3" },
-                        { Keys.TournamentRecordKey, "0-0" },
-                        { Keys.ClientStateKey, "Waiting" },
-                    }
-                },
-                new PlayerInfo ()
-                {
-                    Id = "C",
-                    IsBot = true,
-                    Nickname = "C",
-                    IsMasterClient = false,
-                    IsMe = false,
-                    CustomData = new Dictionary<string, object>()
-                    {
-                        { Keys.IsByeKey, false },
-                        { Keys.MatchRecordKey, "0-3" },
-                        { Keys.TournamentRecordKey, "0-0" },
-                        { Keys.ClientStateKey, "Waiting" },
-                    }
-                },
-                new PlayerInfo ()
-                {
-                    Id = "D",
-                    IsBot = true,
-                    Nickname = "D",
-                    IsMasterClient = false,
-                    IsMe = false,
-                    CustomData = new Dictionary<string, object>()
-                    {
-                        { Keys.IsByeKey, false },
-                        { Keys.MatchRecordKey, "3-0" },
-                        { Keys.TournamentRecordKey, "0-0" },
-                        { Keys.ClientStateKey, "Waiting" },
-                    }
-                },
-                new PlayerInfo ()
-                {
-                    Id = "E",
-                    IsBot = true,
-                    Nickname = "E",
-                    IsMasterClient = false,
-                    IsMe = false,
-                    CustomData = new Dictionary<string, object>()
-                    {
-                        { Keys.IsByeKey, true },
-                        { Keys.MatchRecordKey, "0-0" },
-                        { Keys.TournamentRecordKey, "1-0" },
-                        { Keys.ClientStateKey, "Waiting" },
-                    }
-                },
-            };
-            TournamentInfo testTournament = new TournamentInfo()
-            {
-                Id = "Tournament1",
-                IsOver = false,
-                Players = new string[] { "A", "B", "C", "D", "E" },
-                Rounds = new RoundInfo[]
-                {
-                    new RoundInfo ()
-                    {
-                        Id = "Round1",
-                        Index = 0,
-                        IsOver = true,
-                        Matches = new MatchInfo[]
-                        {
-                            new MatchInfo ()
-                            {
-                                Id = "1",
-                                IsOver = true,
-                                Player1 = "A",
-                                Player2 = "B",
-                                Player1Wins = 3,
-                                Player2Wins = 2
-                            },
-                            new MatchInfo ()
-                            {
-                                Id = "2",
-                                IsOver = true,
-                                Player1 = "C",
-                                Player2 = "D",
-                                Player1Wins = 0,
-                                Player2Wins = 3
-                            },
-                            new MatchInfo ()
-                            {
-                                Id = "3",
-                                IsOver = true,
-                                Player1 = "E",
-                                Player2 = "",
-                                Player1Wins = 0,
-                                Player2Wins = 0
-                            },
+                            "Id": "A",
+                        "Nickname": "A",
+                        "IsMasterClient": true,
+                        "IsMe": true,
+                        "IsBot": false,
+                        "CustomData": {
+                                "IsBye": false,
+                            "MRecd": "0-0",
+                            "TRecd": "0-0",
+                            "ClSts": "Waiting"
                         }
-                    }
-                }
-            };
-            AdvanceTournament(testTournament, players);
+                        },
+                    {
+                            "Id": "B",
+                        "Nickname": "B",
+                        "IsMasterClient": false,
+                        "IsMe": false,
+                        "IsBot": true,
+                        "CustomData": {
+                                "IsBye": false,
+                            "MRecd": "0-0",
+                            "TRecd": "0-0",
+                            "ClSts": "Waiting"
+                        }
+                        },
+                    {
+                            "Id": "C",
+                        "Nickname": "C",
+                        "IsMasterClient": false,
+                        "IsMe": false,
+                        "IsBot": true,
+                        "CustomData": {
+                                "IsBye": false,
+                            "MRecd": "0-0",
+                            "TRecd": "0-0",
+                            "ClSts": "Waiting"
+                        }
+                        },
+                    {
+                            "Id": "D",
+                        "Nickname": "D",
+                        "IsMasterClient": false,
+                        "IsMe": false,
+                        "IsBot": true,
+                        "CustomData": {
+                                "IsBye": false,
+                            "MRecd": "0-0",
+                            "TRecd": "0-0",
+                            "ClSts": "Waiting"
+                        }
+                        },
+                    {
+                            "Id": "E",
+                        "Nickname": "E",
+                        "IsMasterClient": false,
+                        "IsMe": false,
+                        "IsBot": true,
+                        "CustomData": {
+                                "IsBye": false,
+                            "MRecd": "0-0",
+                            "TRecd": "0-0",
+                            "ClSts": "Waiting"
+                        }
+                        },
+                    {
+                            "Id": "F",
+                        "Nickname": "F",
+                        "IsMasterClient": false,
+                        "IsMe": false,
+                        "IsBot": true,
+                        "CustomData": {
+                                "IsBye": false,
+                            "MRecd": "0-0",
+                            "TRecd": "0-0",
+                            "ClSts": "Waiting"
+                        }
+                        },
+                    {
+                            "Id": "G",
+                        "Nickname": "G",
+                        "IsMasterClient": false,
+                        "IsMe": false,
+                        "IsBot": true,
+                        "CustomData": {
+                                "IsBye": false,
+                            "MRecd": "0-0",
+                            "TRecd": "0-0",
+                            "ClSts": "Waiting"
+                        }
+                        },
+                    {
+                            "Id": "H",
+                        "Nickname": "H",
+                        "IsMasterClient": false,
+                        "IsMe": false,
+                        "IsBot": true,
+                        "CustomData": {
+                                "IsBye": false,
+                            "MRecd": "0-0",
+                            "TRecd": "0-0",
+                            "ClSts": "Waiting"
+                        }
+                        },
+                    {
+                            "Id": "I",
+                        "Nickname": "I",
+                        "IsMasterClient": false,
+                        "IsMe": false,
+                        "IsBot": true,
+                        "CustomData": {
+                                "IsBye": true,
+                            "MRecd": "0-0",
+                            "TRecd": "0-0",
+                            "ClSts": "Waiting"
+                        }
+                        }
+                ],
+              {
+                            "Id": "Tournament1",
+                "IsOver": false,
+                "Players": [
+                  "A",
+                  "B",
+                  "C",
+                  "D",
+                  "E",
+                  "F",
+                  "G",
+                  "H",
+                  "I"
+                ],
+                "Rounds": [
+                  {
+                                "Id": "Round1",
+                    "Index": 0,
+                    "IsOver": true,
+                    "Matches": [
+                      {
+                                    "Id": "1",
+                        "Player1": "A",
+                        "Player2": "B",
+                        "Player1Wins": 3,
+                        "Player2Wins": 0,
+                        "IsOver": true
+                      },
+                      {
+                                    "Id": "2",
+                        "Player1": "C",
+                        "Player2": "D",
+                        "Player1Wins": 3,
+                        "Player2Wins": 0,
+                        "IsOver": true
+                      },
+                      {
+                                    "Id": "3",
+                        "Player1": "E",
+                        "Player2": "F",
+                        "Player1Wins": 3,
+                        "Player2Wins": 0,
+                        "IsOver": true
+                      },
+                      {
+                                    "Id": "4",
+                        "Player1": "G",
+                        "Player2": "H",
+                        "Player1Wins": 3,
+                        "Player2Wins": 0,
+                        "IsOver": true
+                      },
+                      {
+                                    "Id": "5",
+                        "Player1": "I",
+                        "Player2": "",
+                        "Player1Wins": 0,
+                        "Player2Wins": 0,
+                        "IsOver": true
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
             */
+            #endregion
         }
 #endif
     }

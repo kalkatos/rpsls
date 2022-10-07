@@ -9,7 +9,7 @@ namespace Kalkatos.Tournament
         [SerializeField] private Image avatarImage;
         [SerializeField] private Sprite[] possibleSprites;
 
-        public override void HandlePlayerInfo (PlayerInfo info)
+        public override void HandlePlayerInfo (PlayerInfo info, string state)
         {
             avatarImage.sprite = possibleSprites[Random.Range(0, possibleSprites.Length)];
         }

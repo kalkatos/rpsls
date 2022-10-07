@@ -19,7 +19,7 @@ namespace Kalkatos.Tournament
                 statusObjects[i].SetActive(i == status);
         }
 
-        public override void HandlePlayerInfo (PlayerInfo info)
+        public override void HandlePlayerInfo (PlayerInfo info, string state)
         {
             int status = (int)RoomStatus.Idle;
             if (info.CustomData.ContainsKey(RoomManager.RoomStatusKey))

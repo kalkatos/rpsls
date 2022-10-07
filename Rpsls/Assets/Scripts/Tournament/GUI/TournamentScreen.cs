@@ -76,7 +76,7 @@ namespace Kalkatos.Tournament
             {
                 if (playerSlots.TryGetValue(receivedPlayers[i].Id, out PlayerInfoSlot slot))
                 {
-                    slot.HandlePlayerInfo(receivedPlayers[i]);
+                    slot.HandlePlayerInfo(receivedPlayers[i], "Bye");
                 }
                 else
                 {
@@ -95,12 +95,8 @@ namespace Kalkatos.Tournament
         public void HandleTurnResultReceived (RoundInfo roundInfo)
         {
             GameManager.UpdatePlayers();
-            foreach (var item in roundInfo.Matches)
-            {
-                playerSlots[item.Player1].HandlePlayerInfo(GameManager.GetPlayer(item.Player1));
-                if (!string.IsNullOrEmpty(item.Player2))
-                    playerSlots[item.Player2].HandlePlayerInfo(GameManager.GetPlayer(item.Player2));
-            }
+            UpdatePlayersInfoBits("MatchOn");
+            this.roundInfo = roundInfo;
         }
 
         public void HandleStateChanged (string state)
@@ -112,6 +108,7 @@ namespace Kalkatos.Tournament
         {
             int index = 0;
             GameManager.UpdatePlayers();
+            UpdatePlayersInfoBits("ByeOn");
             foreach (var item in roundInfo.Matches)
             {
                 if (item.Player1 == myId)
@@ -130,21 +127,21 @@ namespace Kalkatos.Tournament
             }
         }
 
-        private void UpdatePlayersInfoBits ()
+        private void UpdatePlayersInfoBits (string state)
         {
             foreach (var item in roundInfo.Matches)
-                UpdateMatchInfo(item);
+                UpdateMatchInfo(item, state);
         }
 
-        public void UpdateMatchInfo (MatchInfo matchInfo)
+        public void UpdateMatchInfo (MatchInfo matchInfo, string state)
         {
             PlayerInfo p1, p2;
             p1 = GameManager.GetPlayer(matchInfo.Player1);
-            playerSlots[matchInfo.Player1].HandlePlayerInfo(p1);
+            playerSlots[matchInfo.Player1].HandlePlayerInfo(p1, state);
             if (!string.IsNullOrEmpty(matchInfo.Player2))
             {
                 p2 = GameManager.GetPlayer(matchInfo.Player2);
-                playerSlots[matchInfo.Player2].HandlePlayerInfo(p2);
+                playerSlots[matchInfo.Player2].HandlePlayerInfo(p2, state);
             }
         }
 
@@ -277,7 +274,7 @@ namespace Kalkatos.Tournament
 
                 yield return new WaitForSeconds(moveToVersusTime + versusAnimationTime);
             }
-            UpdatePlayersInfoBits();
+            UpdatePlayersInfoBits("MatchOn");
             float dockingTime = settings.DockingTime;
             // Dock my opponent slot at the top of the screen and mine at the bottom
             if (haveOpponent)
@@ -311,6 +308,14 @@ namespace Kalkatos.Tournament
 
         private IEnumerator MatchesEndedAnimation ()
         {
+            yield return new WaitForSeconds(3f);
+            // Set player info slots to show tournament records
+            UpdatePlayersInfoBits("MatchOff");
+            UpdatePlayersInfoBits("ByeOff");
+            UpdatePlayersInfoBits("TRecOn");
+            yield return new WaitForSeconds(2f);
+            GameManager.Instance.SetStateAsBetweenRounds();
+
             // TODO Reencapsulate the player and his opponent slot match
 
             // TODO Reparent matches bubbles to their structure
@@ -333,7 +338,7 @@ namespace Kalkatos.Tournament
         private PlayerInfoSlot CreateSlot (PlayerInfo info)
         {
             PlayerInfoSlot newSlot = Instantiate(settings.GameInfoSlotPrefab, playerSlotsListParent.transform);
-            newSlot.HandlePlayerInfo(info);
+            newSlot.HandlePlayerInfo(info, "");
             return newSlot;
         }
 

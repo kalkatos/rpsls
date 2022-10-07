@@ -8,7 +8,7 @@ namespace Kalkatos.Tournament
         [SerializeField] private GameObject myBoard;
         [SerializeField] private GameObject othersBoard;
 
-        public override void HandlePlayerInfo (PlayerInfo info)
+        public override void HandlePlayerInfo (PlayerInfo info, string state)
         {
             myBoard.SetActive(info.IsMe);
             othersBoard.SetActive(!info.IsMe);

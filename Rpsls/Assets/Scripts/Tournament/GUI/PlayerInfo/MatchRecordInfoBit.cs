@@ -16,26 +16,23 @@ namespace Kalkatos.Tournament
 
         private Dictionary<Animator, string> currentStates = new Dictionary<Animator, string>();
 
-        public override void HandlePlayerInfo (PlayerInfo info)
+        public override void HandlePlayerInfo (PlayerInfo info, string state)
         {
-            bool hasState = info.CustomData.TryGetValue(Keys.ClientStateKey, out object stateObj);
-            string state = stateObj != null ? stateObj.ToString() : "";
-            if ((info.CustomData.TryGetValue(Keys.IsByeKey, out object isBye) && bool.Parse(isBye.ToString()))
+            bool hasState = info.CustomData.ContainsKey(Keys.ClientStateKey);
+            bool isBye = info.CustomData.TryGetValue(Keys.IsByeKey, out object isByeObj) && bool.Parse(isByeObj.ToString());
+            
+            if (isBye
                 || !hasState 
-                //|| state == ClientState.InGame
-                || state == ClientState.Undefined
-                || state == ClientState.BetweenRounds
-                || state == ClientState.GameOver)
+                || state == "MatchOff")
             {
-                //matchRecordText.gameObject.SetActive(false);
                 SetTriggerState(counter1, "0");
                 SetTriggerState(counter2, "0");
                 SetTriggerState(counter3, "0");
                 victoryCounterObj.SetActive(false);
                 return;
             }
-
-            if (info.CustomData.TryGetValue(Keys.MatchRecordKey, out object record))
+            else if (state == "MatchOn"
+                && info.CustomData.TryGetValue(Keys.MatchRecordKey, out object record))
             {
                 if (!victoryCounterObj.activeSelf)
                     victoryCounterObj.SetActive(true);
@@ -47,9 +44,6 @@ namespace Kalkatos.Tournament
                 SetTriggerState(counter1, counter1Trigger);
                 SetTriggerState(counter2, counter2Trigger);
                 SetTriggerState(counter3, counter3Trigger);
-
-                //matchRecordText.gameObject.SetActive(true);
-                //matchRecordText.text = record.ToString();
             }
         }
 
