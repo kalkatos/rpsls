@@ -177,6 +177,7 @@ namespace Kalkatos.Network
         public const string RoundReceivedEvt = "RdRcv";
         public const string HandReceivedEvt = "HdSnt";
         public const string TurnEndedEvt = "TuEnd";
+        public const string TournamentEndedEvt = "TmtEnd";
         // Function handles
         public const string GetRoundFct = "GetRd";
         public const string StartTournamentFct = nameof(FunctionInvoker.StartTournament);

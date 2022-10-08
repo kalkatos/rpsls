@@ -13,6 +13,7 @@ namespace Kalkatos.Tournament
     public class TournamentScreen : MonoBehaviour
     {
         public static event Action OnTournamentIntroFinished;
+        public static event Action OnTournamentOutroFinished;
 
         [Header("References")]
         [SerializeField, ChildGameObjectsOnly] private GridLayoutGroup playerSlotsListParent;
@@ -20,6 +21,7 @@ namespace Kalkatos.Tournament
         [SerializeField] private Transform tournamentStructure;
         [SerializeField] private Transform[] matchBubbles;
         [SerializeField] private TMP_Text roundIndexText;
+        [SerializeField] private GameObject tournamentEndedObject;
         [Header("Positions")]
         [SerializeField] private Transform[] versusPositions;
         [SerializeField] private Transform[] battlePositions;
@@ -27,6 +29,7 @@ namespace Kalkatos.Tournament
         [SerializeField] private Transform[] centerPositions;
         [SerializeField] private Transform[] matchesPositions;
         [SerializeField] private Transform[] tournamentPositions;
+        [SerializeField] private Transform[] rankingPositions;
         [SerializeField] private Transform[] playmatPositions;
         [Header("Config")]
         [SerializeField] private TournamentGameSettings settings;
@@ -39,11 +42,9 @@ namespace Kalkatos.Tournament
         private bool haveOpponent = true;
         private Dictionary<string, PlayerInfoSlot> playerSlots = new Dictionary<string, PlayerInfoSlot>();
         private RoundInfo roundInfo;
-        private MatchInfo myMatch;
         private Vector3 tournamentHiddenPosition;
         private Transform[] playmats = new Transform[2];
         private bool isTournamentOver;
-        private bool isRoundOver;
 
         private void Awake ()
         {
@@ -51,6 +52,7 @@ namespace Kalkatos.Tournament
             GameManager.OnRoundReceived += HandleRoundReceived;
             GameManager.OnTurnResultReceived += HandleTurnResultReceived;
             GameManager.OnStateChanged += HandleStateChanged;
+            GameManager.OnTournamentEnded += HandleTournamentEnded;
             settings = TournamentGameSettings.Instance;
             tournamentHiddenPosition = tournamentStructure.localPosition;
         }
@@ -61,6 +63,7 @@ namespace Kalkatos.Tournament
             GameManager.OnRoundReceived -= HandleRoundReceived;
             GameManager.OnTurnResultReceived -= HandleTurnResultReceived;
             GameManager.OnStateChanged -= HandleStateChanged;
+            GameManager.OnTournamentEnded -= HandleTournamentEnded;
         }
 
         private void Start ()
@@ -97,16 +100,22 @@ namespace Kalkatos.Tournament
             this.roundInfo = roundInfo;
         }
 
-        public void HandleTurnResultReceived (RoundInfo roundInfo)
+        private void HandleTurnResultReceived (RoundInfo roundInfo)
         {
             GameManager.UpdatePlayers();
             UpdatePlayersInfoBits("MatchOn");
             this.roundInfo = roundInfo;
         }
 
-        public void HandleStateChanged (string state)
+        private void HandleStateChanged (string state)
         {
             
+        }
+
+        private void HandleTournamentEnded ()
+        {
+            this.Log("Tournament ended.");
+            isTournamentOver = true;
         }
 
         private void UseRoundInfo ()
@@ -122,13 +131,11 @@ namespace Kalkatos.Tournament
                 if (item.Player1 == myId)
                 {
                     myMatchIndex = index;
-                    myMatch = item;
                     currentOpponentId = item.Player2;
                 }
                 else if (item.Player2 == myId)
                 {
                     myMatchIndex = index;
-                    myMatch = item;
                     currentOpponentId = item.Player1;
                 }
                 index++;
@@ -194,6 +201,7 @@ namespace Kalkatos.Tournament
                     yield return null;
                 yield return MatchesEndedAnimation();
             }
+            yield return TournamentEndedAnimation();
         }
 
         private IEnumerator PlayersEntryAnimation ()
@@ -224,7 +232,11 @@ namespace Kalkatos.Tournament
         {
             // Wait for tournament info
             while (roundInfo == null)
-                yield return null;
+            {
+                if (isTournamentOver)
+                    yield break;
+                yield return null; 
+            }
             UseRoundInfo();
 
             // Build tournament structure
@@ -356,11 +368,28 @@ namespace Kalkatos.Tournament
                 }
                 matchBubbles[i].MoveAndScaleTo(matchesPositions[i], moveBubblesTime);
             }
-            yield return new WaitForSeconds(moveBubblesTime + 1f);
-            GameManager.Instance.SetStateAsBetweenRounds();
-
             roundInfo = null;
+            yield return new WaitForSeconds(moveBubblesTime);
+            GameManager.Instance.SetStateAsBetweenRounds();
+            yield return new WaitForSeconds(1f);
+
             yield return null;
+        }
+
+        private IEnumerator TournamentEndedAnimation ()
+        {
+            foreach (var item in playerSlots)
+                item.Value.transform.SetParent(null);
+            tournamentStructure.gameObject.SetActive(false);
+            this.Log("Starting tournament ended animation.");
+            yield return new WaitForSeconds(1f);
+            tournamentEndedObject.SetActive(true);
+            PlayerInfo[] rankedPlayers = NetworkManager.Instance.Players;
+            float moveToRankingTime = settings.MoveToRankingTime;
+            for (int i = 0; i < rankedPlayers.Length; i++)
+                playerSlots[rankedPlayers[i].Id].transform.MoveAndScaleTo(rankingPositions[i], moveToRankingTime, true);
+            yield return new WaitForSeconds(moveToRankingTime * 2);
+            OnTournamentOutroFinished?.Invoke();
         }
 
         #endregion

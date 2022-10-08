@@ -78,6 +78,10 @@ namespace Kalkatos.Tournament
                     else
                         this.LogWarning("Didn't receive the key " + Keys.RoundKey);
                     break;
+                case Keys.TournamentEndedEvt:
+                    this.Log("Received tournament ended EVENT.");
+                    HandleTournamentEnded();
+                    break;
             }
         }
 
@@ -129,6 +133,11 @@ namespace Kalkatos.Tournament
         }
 
         public virtual void HandleTurnResult (RoundInfo roundInfo)
+        {
+
+        }
+
+        public virtual void HandleTournamentEnded ()
         {
 
         }

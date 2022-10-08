@@ -15,6 +15,7 @@ namespace Kalkatos.Tournament
         public static event Action OnHandReceived;
         public static event Action<RoundInfo> OnTurnResultReceived;
         public static event Action<MatchInfo> OnMyMatchResultReceived;
+        public static event Action OnTournamentEnded;
 
         private Dictionary<string, PlayerInfo> players = new Dictionary<string, PlayerInfo>();
 
@@ -92,6 +93,12 @@ namespace Kalkatos.Tournament
         public static PlayerInfo GetPlayer (string id)
         {
             return Instance?.players[id];
+        }
+
+        public override void HandleTournamentEnded ()
+        {
+            this.Log("Tournament ended.");
+            OnTournamentEnded?.Invoke();
         }
     }
 

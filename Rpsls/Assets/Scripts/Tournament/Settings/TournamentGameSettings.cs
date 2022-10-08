@@ -28,5 +28,6 @@ namespace Kalkatos.Tournament
         public float VersusAnimationTime = 2f;
         public float DockingTime = 1f;
         public float MovePlaymatsTime = 0.7f;
+        public float MoveToRankingTime = 0.7f;
     }
 }
