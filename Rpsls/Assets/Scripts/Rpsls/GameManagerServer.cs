@@ -296,8 +296,9 @@ namespace Kalkatos.Rpsls
 
         private void AdvanceTournament ()
         {
-            string log = FunctionInvoker.AdvanceTournament(currentTournament, NetworkManager.Instance.Players);
-            Debug.Log("Advance Tournament Log: " + log);
+            string log = FunctionInvoker.AdvanceTournament(currentTournament, NetworkManager.Instance.Players, debug);
+            if (debug)
+                this.Log(" ====> Advance Tournament Log: " + log);
             UpdatePhotonPlayers();
         }
 

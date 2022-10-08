@@ -16,12 +16,12 @@ namespace Kalkatos.Tournament
 
         public override void HandlePlayerInfo (PlayerInfo info, string state)
         {
-            if (state == "ByeOn")
+            if (state.Contains("ByeOn"))
             {
                 if (info.CustomData.ContainsKey(Keys.IsByeKey))
                     byeBadge.SetActive(bool.Parse(info.CustomData[Keys.IsByeKey].ToString()));
             }
-            else if (state == "ByeOff")
+            else if (state.Contains("ByeOff"))
                 byeBadge.SetActive(false);
         }
     }

@@ -55,6 +55,7 @@ namespace Kalkatos.Tournament
 
         public override void SetHand ()
         {
+            // TODO Actually set a hand
             base.SetHand();
             OnHandReceived?.Invoke();
         }

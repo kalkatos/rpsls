@@ -13,12 +13,11 @@ namespace Kalkatos.Tournament
 
         public override void HandlePlayerInfo (PlayerInfo info, string state)
         {
-            bool active = state == "TRecOn";
+            bool active = state.Contains("TRecOn");
             recordObj.SetActive(active);
             if (active && info.CustomData.TryGetValue(Keys.TournamentRecordKey, out object record))
-            {
                 tournamentRecordText.text = record.ToString();
-            }
+            this.Log($"State set: {state}, active: {active}");
         }
     }
 }
