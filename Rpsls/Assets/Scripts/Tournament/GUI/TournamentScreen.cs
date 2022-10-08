@@ -310,7 +310,6 @@ namespace Kalkatos.Tournament
         {
             yield return new WaitForSeconds(3f);
             // Set player info slots to show tournament records
-            UpdatePlayersInfoBits("MatchOff");
             UpdatePlayersInfoBits("ByeOff");
             UpdatePlayersInfoBits("TRecOn");
             yield return new WaitForSeconds(2f);

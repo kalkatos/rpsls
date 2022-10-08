@@ -138,7 +138,10 @@ namespace Kalkatos.Rpsls
                 yield return WaitClientsState(ClientState.InGame);
             }
             else
+            {
                 GetPlayers();
+                // TODO Get tournament in room custom properties
+            }
             // Begin the tournament - many matches
             while (!tournamentIsOver)
             {
@@ -168,7 +171,7 @@ namespace Kalkatos.Rpsls
                 // End of match routines
                 this.Log("End of Round");
                 currentTurn = 0;
-                SetBool(roundOverKey, false);
+                roundIsOver = false;
                 becameNewMaster = false;
                 AdvanceTournament();
                 yield return WaitClientsState(ClientState.BetweenRounds);
@@ -205,25 +208,8 @@ namespace Kalkatos.Rpsls
                         clientsChecked.Add(player.Id);
                     }
                 }
-
-                //foreach (var item in players)
-                //{
-                //    if (item.Value.CustomData.TryGetValue(Keys.ClientStateKey, out object state) && state.ToString() == expectedState && !clientsChecked.Contains(item.Value.Id))
-                //        clientsChecked.Add(item.Value.Id);
-                //    //string key = $"{Keys.PlayerStatusKey}-{item.Key}";
-                //    //if (data.TryGetValue(key, out object state))
-                //    //    if (state != null)
-                //    //        clientsChecked.Add(new Tuple<string, string>(key, state.ToString()));
-                //}
             }
-            if (expectedState == ClientState.BetweenRounds)
-                this.Log("Here");
             this.Log("All clients in state: " + expectedState);
-        }
-
-        private bool IsTrue (string key)
-        {
-            return PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue(key, out object value) && bool.Parse(value.ToString());
         }
 
         private void SetBool (string key, bool value)
@@ -294,9 +280,6 @@ namespace Kalkatos.Rpsls
                 string p2NewMatchRecord = $"{item.Player2Wins}-{item.Player1Wins}";
                 players[item.Player1].CustomData = players[item.Player1].CustomData.CloneWithUpdateOrAdd(Keys.MatchRecordKey, p1NewMatchRecord);
                 players[item.Player2].CustomData = players[item.Player2].CustomData.CloneWithUpdateOrAdd(Keys.MatchRecordKey, p2NewMatchRecord);
-                //this.Log($" ooooo Match: {JsonConvert.SerializeObject(item)}");
-                //this.Log($" ooooo    Player 1: {JsonConvert.SerializeObject(players[item.Player1])}");
-                //this.Log($" ooooo    Player 2: {JsonConvert.SerializeObject(players[item.Player2])}");
             }
             UpdatePhotonPlayers();
             if (endedMatches >= currentRound.Matches.Length)
@@ -313,7 +296,8 @@ namespace Kalkatos.Rpsls
 
         private void AdvanceTournament ()
         {
-            FunctionInvoker.AdvanceTournament(currentTournament, NetworkManager.Instance.Players);
+            string log = FunctionInvoker.AdvanceTournament(currentTournament, NetworkManager.Instance.Players);
+            Debug.Log("Advance Tournament Log: " + log);
             UpdatePhotonPlayers();
         }
 
