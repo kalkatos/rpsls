@@ -8,7 +8,6 @@ namespace Kalkatos.Tournament
 {
     public class MatchRecordInfoBit : PlayerInfoBit
     {
-        [SerializeField] private TMP_Text matchRecordText;
         [SerializeField] private GameObject victoryCounterObj;
         [SerializeField] private Animator counter1;
         [SerializeField] private Animator counter2;
@@ -23,7 +22,7 @@ namespace Kalkatos.Tournament
             
             if (isBye
                 || !hasState 
-                || state == "MatchOff")
+                || state != "MatchOn")
             {
                 SetTriggerState(counter1, "0");
                 SetTriggerState(counter2, "0");
@@ -31,8 +30,7 @@ namespace Kalkatos.Tournament
                 victoryCounterObj.SetActive(false);
                 return;
             }
-            else if (state == "MatchOn"
-                && info.CustomData.TryGetValue(Keys.MatchRecordKey, out object record))
+            else if (info.CustomData.TryGetValue(Keys.MatchRecordKey, out object record))
             {
                 if (!victoryCounterObj.activeSelf)
                     victoryCounterObj.SetActive(true);

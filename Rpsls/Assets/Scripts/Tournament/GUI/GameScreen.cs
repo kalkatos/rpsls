@@ -68,10 +68,12 @@ namespace Kalkatos.Tournament
         {
             yield return new WaitForSeconds(0.5f);
             // Do while no one has won:
+            isMatchOver = false;
             while (!isMatchOver)
             {
                 GameManager.Instance.SetStateAsInTurn();
                 // Wait for turn info (hand)
+                isHandReceived = false;
                 while (!isHandReceived)
                     yield return null;
                 yield return new WaitForSeconds(0.5f);
@@ -97,6 +99,7 @@ namespace Kalkatos.Tournament
 
                 // Wait for turn resolution
                 GameManager.Instance.SetStateAsWaitingForResult();
+                isTurnResultReceived = false;
                 while (!isTurnResultReceived)
                     yield return null;
                 yield return new WaitForSeconds(0.5f);
@@ -113,8 +116,6 @@ namespace Kalkatos.Tournament
 
                 //TODO      Wait for other player confirmation
 
-                isHandReceived = false;
-                isTurnResultReceived = false;
                 yield return null;
             }
         }
