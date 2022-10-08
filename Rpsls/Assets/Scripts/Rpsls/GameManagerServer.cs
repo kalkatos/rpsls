@@ -92,13 +92,18 @@ namespace Kalkatos.Rpsls
         private void Awake ()
         {
             settings = TournamentGameSettings.Instance;
-            if (debug)
+            if (!NetworkManager.Instance.IsConnected && !NetworkManager.Instance.IsInRoom)
                 StartCoroutine(ConnectForDebug());
             else if (NetworkManager.Instance.MyPlayerInfo.IsMasterClient)
             {
                 currentExpectedState = ClientState.Undefined;
                 StartCoroutine(GameLoop());
             }
+        }
+
+        private void OnDestroy ()
+        {
+            
         }
 
         private IEnumerator ConnectForDebug ()
@@ -175,6 +180,11 @@ namespace Kalkatos.Rpsls
                 becameNewMaster = false;
                 AdvanceTournament();
                 yield return WaitClientsState(ClientState.BetweenRounds);
+                if (currentTournament.IsOver)
+                {
+                    tournamentIsOver = true;
+                    SendTournamentOver();
+                }
                 yield return null;
             }
             this.Log("End of tournament");
@@ -300,6 +310,12 @@ namespace Kalkatos.Rpsls
             if (debug)
                 this.Log(" ====> Advance Tournament Log: " + log);
             UpdatePhotonPlayers();
+        }
+
+        private void SendTournamentOver ()
+        {
+            FunctionInvoker.SortPlayersByRanking(NetworkManager.Instance.Players);
+            NetworkManager.Instance.BroadcastEvent(Keys.TournamentEndedEvt);
         }
 
         #region ========== Callbacks ===============

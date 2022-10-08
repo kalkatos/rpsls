@@ -133,6 +133,14 @@ namespace Kalkatos.Network
 
         public static string AdvanceTournament (TournamentInfo fromTournament, PlayerInfo[] players, bool returnLog = false)
         {
+            // Check tournament ended
+            TournamentGameSettings settings = GetTournamentSettings();
+            if (players.Length == 2 || fromTournament.Rounds.Length == settings.NumberOfRounds)
+            {
+                fromTournament.IsOver = true;
+                return "";
+            }
+
             List<object> logObjList = new List<object>();
 
             // DEBUG
@@ -152,13 +160,6 @@ namespace Kalkatos.Network
                 logObjList.Add(metadata.ToObjArray());
             }
 
-            // Just two players and they have already faced each other (as this functions should only be called after a match)
-            if (players.Length == 2)
-            {
-                fromTournament.IsOver = true;
-                return "";
-            }
-
             // Shuffle
             players.Shuffle();
 
@@ -174,10 +175,10 @@ namespace Kalkatos.Network
                         break;
                     }
                 }
-                Array.Sort(players, 0, players.Length - 1, new PlayerInfoComparer());
+                SortPlayersByRanking(players, 0, players.Length - 1);
             }
             else
-                Array.Sort(players, new PlayerInfoComparer());
+                SortPlayersByRanking(players);
 
             // Order players for new matches
             for (int i = 0; i < players.Length - 1; i += 2)
@@ -248,6 +249,18 @@ namespace Kalkatos.Network
             }
         }
 
+        public static void SortPlayersByRanking (PlayerInfo[] players, int index = 0, int length = -1)
+        {
+            if (length < 0)
+                length = players.Length;
+            Array.Sort(players, index, length, new PlayerInfoComparer());
+        }
+
+        public static TournamentGameSettings GetTournamentSettings ()
+        {
+            return TournamentGameSettings.Instance;
+        }
+
         public static async Task<object> StartTournament (object roomId)
         {
             // Check if it's master
@@ -294,7 +307,6 @@ namespace Kalkatos.Network
         //        return getRoomResult;
         //    RoomInfo room = (RoomInfo)getRoomResult;
         //}
-
 
         /// <summary>
         /// Parameters: Tournament ID (string) ||

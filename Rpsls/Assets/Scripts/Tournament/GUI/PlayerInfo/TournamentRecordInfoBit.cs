@@ -17,7 +17,6 @@ namespace Kalkatos.Tournament
             recordObj.SetActive(active);
             if (active && info.CustomData.TryGetValue(Keys.TournamentRecordKey, out object record))
                 tournamentRecordText.text = record.ToString();
-            this.Log($"State set: {state}, active: {active}");
         }
     }
 }

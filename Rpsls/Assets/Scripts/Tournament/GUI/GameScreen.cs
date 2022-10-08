@@ -12,6 +12,7 @@ namespace Kalkatos.Tournament
         [SerializeField] private GameObject timerBarObj;
         [SerializeField] private RectTransform timerBar;
         [SerializeField, ChildGameObjectsOnly] private Button exitButton;
+        [SerializeField, ChildGameObjectsOnly] private Button secondExitButton;
         [Header("Config")]
         [SerializeField] private TournamentGameSettings settings;
 
@@ -22,18 +23,23 @@ namespace Kalkatos.Tournament
         private void Awake ()
         {
             TournamentScreen.OnTournamentIntroFinished += HandleTournamentIntroFinished;
+            TournamentScreen.OnTournamentOutroFinished += HandleTournamentOutroFinished;
             GameManager.OnHandReceived += HandleHandReceived;
             GameManager.OnMyMatchResultReceived += HandleMyMatchResultReceived;
             exitButton.onClick.AddListener(OnExitButtonClicked);
+            secondExitButton.onClick.AddListener(OnExitButtonClicked);
             settings = TournamentGameSettings.Instance;
+            secondExitButton.gameObject.SetActive(false);
         }
 
         private void OnDestroy ()
         {
             TournamentScreen.OnTournamentIntroFinished -= HandleTournamentIntroFinished;
+            TournamentScreen.OnTournamentOutroFinished -= HandleTournamentOutroFinished;
             GameManager.OnHandReceived -= HandleHandReceived;
             GameManager.OnMyMatchResultReceived -= HandleMyMatchResultReceived;
             exitButton.onClick.RemoveListener(OnExitButtonClicked);
+            secondExitButton.onClick.RemoveListener(OnExitButtonClicked);
         }
 
         private void HandleTournamentIntroFinished ()
@@ -51,6 +57,12 @@ namespace Kalkatos.Tournament
         {
             isTurnResultReceived = true;
             isMatchOver = matchInfo.IsOver;
+        }
+
+        private void HandleTournamentOutroFinished ()
+        {
+            exitButton.gameObject.SetActive(false);
+            secondExitButton.gameObject.SetActive(true);
         }
 
         private IEnumerator GameSetupAnimations ()
