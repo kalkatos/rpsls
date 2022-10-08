@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using Sirenix.OdinInspector;
 using Kalkatos.Network;
 using DG.Tweening;
+using TMPro;
 
 namespace Kalkatos.Tournament
 {
@@ -18,6 +19,7 @@ namespace Kalkatos.Tournament
         [SerializeField, ChildGameObjectsOnly] private GridLayoutGroup tournamentMatchesParent;
         [SerializeField] private Transform tournamentStructure;
         [SerializeField] private Transform[] matchBubbles;
+        [SerializeField] private TMP_Text roundIndexText;
         [Header("Positions")]
         [SerializeField] private Transform[] versusPositions;
         [SerializeField] private Transform[] battlePositions;
@@ -31,7 +33,10 @@ namespace Kalkatos.Tournament
 
         private string myId;
         private int myMatchIndex;
+        private int myTournamentIndex;
+        private int opponentTournamentIndex;
         private string currentOpponentId;
+        private bool haveOpponent = true;
         private Dictionary<string, PlayerInfoSlot> playerSlots = new Dictionary<string, PlayerInfoSlot>();
         private RoundInfo roundInfo;
         private MatchInfo myMatch;
@@ -108,7 +113,10 @@ namespace Kalkatos.Tournament
         {
             int index = 0;
             GameManager.UpdatePlayers();
-            UpdatePlayersInfoBits("ByeOn");
+            if (roundInfo.Index == 0)
+                UpdatePlayersInfoBits("ByeOn");
+            else
+                UpdatePlayersInfoBits("ByeOn,TRecOn");
             foreach (var item in roundInfo.Matches)
             {
                 if (item.Player1 == myId)
@@ -225,6 +233,8 @@ namespace Kalkatos.Tournament
                 matchesPositions[i].gameObject.SetActive(i < roundInfo.Matches.Length);
 
             // TODO Round Number animation
+            roundIndexText.gameObject.SetActive(true);
+            roundIndexText.text = "Round " + (roundInfo.Index + 1);
 
             if (roundInfo.Matches.Length > 1)
             {
@@ -232,22 +242,34 @@ namespace Kalkatos.Tournament
                 int index = 0;
                 foreach (var item in roundInfo.Matches)
                 {
-                    playerSlots[item.Player1].transform.MoveAndScaleTo(tournamentPositions[index++], moveToTournamentTime, true);
+                    int p1Index = index++;
                     int p2Index = index++;
+                    playerSlots[item.Player1].transform.MoveAndScaleTo(tournamentPositions[p1Index], moveToTournamentTime, true);
                     if (!string.IsNullOrEmpty(item.Player2))
-                        playerSlots[item.Player2].transform.MoveAndScaleTo(tournamentPositions[p2Index], moveToTournamentTime, true);
+                        playerSlots[item.Player2].transform.MoveAndScaleTo(tournamentPositions[p2Index], moveToTournamentTime, true); 
+                    if (item.Player1 == myId)
+                    {
+                        myTournamentIndex = p1Index;
+                        opponentTournamentIndex = p2Index;
+                    }
+                    else if (item.Player2 == myId)
+                    {
+                        myTournamentIndex = p2Index;
+                        opponentTournamentIndex = p1Index;
+                    }
                 }
                 //  Move tournament structure to view
                 tournamentStructure.DOLocalMove(Vector3.zero, moveToTournamentTime / 2f);
                 yield return new WaitForSeconds(moveToTournamentTime + settings.TournamentShowTime);
                 // Hide tournament structure
                 tournamentStructure.DOLocalMove(tournamentHiddenPosition, moveToTournamentTime / 2f);
+                roundIndexText.gameObject.SetActive(false);
             }
         }
 
         private IEnumerator MatchStartAnimation ()
         {
-            bool haveOpponent = !string.IsNullOrEmpty(currentOpponentId);
+            haveOpponent = !string.IsNullOrEmpty(currentOpponentId);
             if (haveOpponent)
             {
                 float moveToVersusTime = settings.MoveToVersusTime;
@@ -310,23 +332,32 @@ namespace Kalkatos.Tournament
         {
             yield return new WaitForSeconds(3f);
             // Set player info slots to show tournament records
-            UpdatePlayersInfoBits("ByeOff");
-            UpdatePlayersInfoBits("TRecOn");
+            UpdatePlayersInfoBits("ByeOff,TRecOn");
             yield return new WaitForSeconds(2f);
-            GameManager.Instance.SetStateAsBetweenRounds();
-
-            // TODO Reencapsulate the player and his opponent slot match
-
-            // TODO Reparent matches bubbles to their structure
 
             // Fly playmats out
             float movePlaymatsTime = settings.MovePlaymatsTime;
             playmats[0].DOLocalMoveY(-700, movePlaymatsTime);
             playmats[1].DOLocalMoveY(700, movePlaymatsTime);
+            yield return new WaitForSeconds(movePlaymatsTime * 2 / 3);
+            tournamentStructure.localPosition = Vector3.zero;
 
-            // TODO     and present them in the center with record (1-0, 0-1, etc)
-
-            // TODO Go to Tournament round start again
+            // Reparent matches bubbles to their structure
+            float moveBubblesTime = settings.MoveToBubblesTime;
+            for (int i = 0; i < roundInfo.Matches.Length; i++)
+            {
+                matchBubbles[i].gameObject.SetActive(true);
+                if (i == myMatchIndex)
+                {
+                    // Reencapsulate the player and his opponent slot match
+                    playerSlots[myId].transform.MoveAndScaleTo(tournamentPositions[myTournamentIndex], moveBubblesTime, true);
+                    if (haveOpponent)
+                        playerSlots[currentOpponentId].transform.MoveAndScaleTo(tournamentPositions[opponentTournamentIndex], moveBubblesTime, true);
+                }
+                matchBubbles[i].MoveAndScaleTo(matchesPositions[i], moveBubblesTime);
+            }
+            yield return new WaitForSeconds(moveBubblesTime + 1f);
+            GameManager.Instance.SetStateAsBetweenRounds();
 
             roundInfo = null;
             yield return null;
