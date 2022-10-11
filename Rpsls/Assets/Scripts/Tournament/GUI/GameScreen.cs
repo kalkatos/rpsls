@@ -44,7 +44,6 @@ namespace Kalkatos.Tournament
 
         private void HandleTournamentIntroFinished ()
         {
-            Debug.Log("Tournament Intro Finished");
             StartCoroutine(GameSetupAnimations());
         }
 

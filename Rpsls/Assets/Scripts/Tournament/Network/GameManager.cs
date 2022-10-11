@@ -97,7 +97,6 @@ namespace Kalkatos.Tournament
 
         public override void HandleTournamentEnded ()
         {
-            this.Log("Tournament ended.");
             OnTournamentEnded?.Invoke();
         }
     }

@@ -1,4 +1,4 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,7 +13,9 @@ namespace Kalkatos.Tournament
         public float TurnDuration = 5f;
         [Header("Tournament Options")]
         public int TurnVictories;
-        public int NumberOfRounds = 4;
+        public PlayerAmountDef[] NumberOfRoundsDefinition;
+        public bool doPlayoffs;
+        public PlayerAmountDef[] NumberOfPlayersForPlayoffs;
         [Header("Prefabs")]
         public PlayerInfoSlot RoomInfoSlotPrefab;
         public PlayerInfoSlot GameInfoSlotPrefab;
@@ -29,5 +31,22 @@ namespace Kalkatos.Tournament
         public float DockingTime = 1f;
         public float MovePlaymatsTime = 0.7f;
         public float MoveToRankingTime = 0.7f;
+
+        public int GetNumberOfRounds (int numberOfPlayers)
+        {
+            if (NumberOfRoundsDefinition == null || NumberOfRoundsDefinition.Length == 0)
+                return 1;
+            for (int i = 0; i < NumberOfRoundsDefinition.Length - 1; i += 2)
+                if (numberOfPlayers <= NumberOfRoundsDefinition[i].Players)
+                    return NumberOfRoundsDefinition[i].Amount;
+            return NumberOfRoundsDefinition[NumberOfRoundsDefinition.Length - 1].Amount;
+        }
+    }
+
+    [Serializable]
+    public class PlayerAmountDef
+    {
+        public int Players;
+        public int Amount;
     }
 }
