@@ -135,7 +135,7 @@ namespace Kalkatos.Network
         {
             // Check tournament ended
             TournamentGameSettings settings = GetTournamentSettings();
-            if (players.Length == 2 || fromTournament.Rounds.Length == settings.NumberOfRounds)
+            if (fromTournament.Rounds.Length == settings.GetNumberOfRounds(players.Length))
             {
                 fromTournament.IsOver = true;
                 return "";
