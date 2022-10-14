@@ -11,6 +11,8 @@ namespace Kalkatos.Tournament
         [Header("References")]
         [SerializeField] private GameObject timerBarObj;
         [SerializeField] private RectTransform timerBar;
+        [SerializeField] private GameObject settingsPopup;
+        [SerializeField, ChildGameObjectsOnly] private Button settingsButton;
         [SerializeField, ChildGameObjectsOnly] private Button exitButton;
         [SerializeField, ChildGameObjectsOnly] private Button secondExitButton;
         [Header("Config")]
@@ -26,6 +28,7 @@ namespace Kalkatos.Tournament
             TournamentScreen.OnTournamentOutroFinished += HandleTournamentOutroFinished;
             GameManager.OnHandReceived += HandleHandReceived;
             GameManager.OnMyMatchResultReceived += HandleMyMatchResultReceived;
+            settingsButton.onClick.AddListener(OnSettingsButtonClicked);
             exitButton.onClick.AddListener(OnExitButtonClicked);
             secondExitButton.onClick.AddListener(OnExitButtonClicked);
             settings = TournamentGameSettings.Instance;
@@ -38,6 +41,7 @@ namespace Kalkatos.Tournament
             TournamentScreen.OnTournamentOutroFinished -= HandleTournamentOutroFinished;
             GameManager.OnHandReceived -= HandleHandReceived;
             GameManager.OnMyMatchResultReceived -= HandleMyMatchResultReceived;
+            settingsButton.onClick.RemoveListener(OnSettingsButtonClicked);
             exitButton.onClick.RemoveListener(OnExitButtonClicked);
             secondExitButton.onClick.RemoveListener(OnExitButtonClicked);
         }
@@ -60,7 +64,7 @@ namespace Kalkatos.Tournament
 
         private void HandleTournamentOutroFinished ()
         {
-            exitButton.gameObject.SetActive(false);
+            settingsButton.gameObject.SetActive(false);
             secondExitButton.gameObject.SetActive(true);
         }
 
@@ -134,6 +138,11 @@ namespace Kalkatos.Tournament
         private void OnExitButtonClicked ()
         {
             GameManager.ExitRoom();
+        }
+
+        private void OnSettingsButtonClicked ()
+        {
+            settingsPopup.SetActive(true);
         }
     }
 }
