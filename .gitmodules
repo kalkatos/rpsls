@@ -1,0 +1,3 @@
+[submodule "Rpsls/Assets/Plugins/FirecardEngine"]
+	path = Rpsls/Assets/Plugins/FirecardEngine
+	url = https://github.com/kalkatos/firecard-engine.git
