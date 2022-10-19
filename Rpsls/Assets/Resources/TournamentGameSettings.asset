@@ -24,8 +24,10 @@ MonoBehaviour:
   - Players: 8
     Amount: 3
   - Players: 16
-    Amount: 5
+    Amount: 4
   - Players: 32
+    Amount: 5
+  - Players: 64
     Amount: 6
   - Players: 999999
     Amount: 7

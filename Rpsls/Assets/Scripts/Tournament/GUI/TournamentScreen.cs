@@ -349,8 +349,8 @@ namespace Kalkatos.Tournament
 
             // Fly playmats out
             float movePlaymatsTime = settings.MovePlaymatsTime;
-            playmats[0].DOLocalMoveY(-700, movePlaymatsTime);
-            playmats[1].DOLocalMoveY(700, movePlaymatsTime);
+            playmats[0].DOLocalMoveY(700, movePlaymatsTime);
+            playmats[1].DOLocalMoveY(-700, movePlaymatsTime);
             yield return new WaitForSeconds(movePlaymatsTime * 2 / 3);
             tournamentStructure.localPosition = Vector3.zero;
 
@@ -378,12 +378,13 @@ namespace Kalkatos.Tournament
 
         private IEnumerator TournamentEndedAnimation ()
         {
-            foreach (var item in playerSlots)
-                item.Value.transform.SetParent(null);
-            tournamentStructure.gameObject.SetActive(false);
             this.Log("Starting tournament ended animation.");
             yield return new WaitForSeconds(1f);
+            foreach (var item in playerSlots)
+                item.Value.transform.SetParent(tournamentStructure.parent);
+            tournamentStructure.gameObject.SetActive(false);
             tournamentEndedObject.SetActive(true);
+            // Get Ranked Players
             PlayerInfo[] rankedPlayers = NetworkManager.Instance.Players;
             float moveToRankingTime = settings.MoveToRankingTime;
             for (int i = 0; i < rankedPlayers.Length; i++)
