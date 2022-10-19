@@ -31,6 +31,7 @@ namespace Kalkatos.Tournament
             settingsButton.onClick.AddListener(OnSettingsButtonClicked);
             exitButton.onClick.AddListener(OnExitButtonClicked);
             secondExitButton.onClick.AddListener(OnExitButtonClicked);
+
             settings = TournamentGameSettings.Instance;
             secondExitButton.gameObject.SetActive(false);
         }

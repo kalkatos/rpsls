@@ -36,7 +36,7 @@ namespace Kalkatos.Tournament
         {
             if (NumberOfRoundsDefinition == null || NumberOfRoundsDefinition.Length == 0)
                 return 1;
-            for (int i = 0; i < NumberOfRoundsDefinition.Length - 1; i += 2)
+            for (int i = 0; i < NumberOfRoundsDefinition.Length; i++)
                 if (numberOfPlayers <= NumberOfRoundsDefinition[i].Players)
                     return NumberOfRoundsDefinition[i].Amount;
             return NumberOfRoundsDefinition[NumberOfRoundsDefinition.Length - 1].Amount;
