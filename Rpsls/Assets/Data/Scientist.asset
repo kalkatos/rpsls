@@ -19,4 +19,7 @@ MonoBehaviour:
     Fields:
     - Name: Image
       Type: 2
-      Value: scientist-00
+      Value: scientist
+    - Name: Variation
+      Type: 0
+      Value: 00
