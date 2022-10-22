@@ -175,7 +175,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3491899954690559664}
   - component: {fileID: 3158791670642584499}
-  - component: {fileID: 3109785258279327444}
+  - component: {fileID: 5999775647979820675}
   - component: {fileID: 1943119018909768661}
   m_Layer: 0
   m_Name: Card
@@ -212,7 +212,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   asset: {fileID: 11400000, guid: 2882d4fd0ce10264a860239fc41cf613, type: 2}
---- !u!114 &3109785258279327444
+--- !u!114 &5999775647979820675
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -221,10 +221,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 6313868133741276894}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4262737af6afb342857f2576ca3839e, type: 3}
+  m_Script: {fileID: 11500000, guid: 66009771a7850a94ca9717d6e1dff2fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   FieldName: Image
+  variationFieldName: Variation
   spriteRenderer: {fileID: 7158439957029585177}
 --- !u!210 &1943119018909768661
 SortingGroup:

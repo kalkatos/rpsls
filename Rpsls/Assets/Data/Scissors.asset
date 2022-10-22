@@ -19,4 +19,7 @@ MonoBehaviour:
     Fields:
     - Name: Image
       Type: 2
-      Value: scissors-00
+      Value: scissors
+    - Name: Variation
+      Type: 0
+      Value: 00

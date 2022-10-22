@@ -19,4 +19,7 @@ MonoBehaviour:
     Fields:
     - Name: Image
       Type: 2
-      Value: paper-00
+      Value: paper
+    - Name: Variation
+      Type: 0
+      Value: 00
