@@ -271,6 +271,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   root: {fileID: 503170489}
   cardDistance: {x: 0, y: 0, z: -0.1}
+  moveTime: 0.1
 --- !u!4 &503170489
 Transform:
   m_ObjectHideFlags: 0
