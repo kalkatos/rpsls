@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using ParrelSync;
 using Newtonsoft.Json;
 using System.IO;
 using System.Threading.Tasks;
-using Newtonsoft.Json.Linq;
+#if UNITY_EDITOR
+using ParrelSync;
+#endif
 
 namespace Kalkatos
 {
@@ -13,8 +14,14 @@ namespace Kalkatos
     {
         private static ISaveImplementation save = new SaveInScriptable();
 
-        private static string CloneArgument => ClonesManager.IsClone() ? ClonesManager.GetArgument() : "";
-        private static string nicknameKey => "Nickname" + CloneArgument;
+        private static string CloneArgument =>
+#if UNITY_EDITOR
+            ClonesManager.IsClone() ? ClonesManager.GetArgument() : "";
+#else
+            "";
+#endif
+
+		private static string nicknameKey => "Nickname" + CloneArgument;
 
         public static bool HasKey (string key)
         {

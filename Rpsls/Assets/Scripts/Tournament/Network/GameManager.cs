@@ -44,7 +44,7 @@ namespace Kalkatos.Tournament
         protected override void SetState (string state, string addInfo = "")
         {
             base.SetState(state, addInfo);
-            NetworkManager.Instance.UpdateMyCustomData(Keys.ClientStateKey, currentState);
+            NetworkManager.Instance.UpdateMyCustomData(Keys.ClientStateKey, currentState);                                                                                                                                             
             OnStateChanged?.Invoke(state);
         }
 
