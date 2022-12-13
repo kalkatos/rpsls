@@ -116,7 +116,7 @@ namespace Kalkatos.Tournament
 
     public class MatchInfo
     {
-        public string Id;
+        public string MatchId;
         public string Player1;
         public string Player2;
         public int Player1Wins;
@@ -127,7 +127,7 @@ namespace Kalkatos.Tournament
 
         public MatchInfo (MatchInfo other)
         {
-            Id = other.Id;
+            MatchId = other.MatchId;
             Player1 = other.Player1;
             Player2 = other.Player2;
             Player1Wins = other.Player1Wins;
@@ -138,7 +138,7 @@ namespace Kalkatos.Tournament
 
     public class RoundInfo
     {
-        public string Id;
+        public string RoundId;
         public int Index;
         public bool IsOver;
         public MatchInfo[] Matches;
@@ -147,7 +147,7 @@ namespace Kalkatos.Tournament
 
         public RoundInfo (RoundInfo other)
         {
-            Id = other.Id;
+            RoundId = other.RoundId;
             Index = other.Index;
             IsOver = other.IsOver;
             Matches = new MatchInfo[other.Matches.Length];
@@ -158,7 +158,7 @@ namespace Kalkatos.Tournament
 
     public class TournamentInfo
     {
-        public string Id;
+        public string TournamentId;
         public bool IsOver;
         public string[] Players;
         public RoundInfo[] Rounds;
@@ -166,7 +166,7 @@ namespace Kalkatos.Tournament
         public TournamentInfo () { }
         public TournamentInfo (TournamentInfo other)
         {
-            Id = other.Id;
+            TournamentId = other.TournamentId;
             IsOver = other.IsOver;
             Players = new string[other.Players.Length];
             for (int i = 0; i < other.Players.Length; i++)

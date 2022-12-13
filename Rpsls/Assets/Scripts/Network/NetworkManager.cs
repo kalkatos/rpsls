@@ -5,7 +5,8 @@ using Random = UnityEngine.Random;
 
 namespace Kalkatos.Network
 {
-    public abstract class NetworkManager : MonoBehaviour
+
+	public abstract class NetworkManager : MonoBehaviour
     {
         private static NetworkManager instance;
         public static NetworkManager Instance

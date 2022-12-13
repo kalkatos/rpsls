@@ -1,3 +1,6 @@
 [submodule "Rpsls/Assets/Plugins/FirecardEngine"]
 	path = Rpsls/Assets/Plugins/FirecardEngine
 	url = https://github.com/kalkatos/firecard-engine.git
+[submodule "TournamentFunctions/TournamentFunctions/Tournament"]
+	path = TournamentFunctions/TournamentFunctions/Tournament
+	url = https://github.com/kalkatos/tournament.git

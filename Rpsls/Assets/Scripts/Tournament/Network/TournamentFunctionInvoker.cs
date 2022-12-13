@@ -40,7 +40,7 @@ namespace Kalkatos.Network
                 int matchIndex = (int)Mathf.Ceil(i / 2f);
                 matches[matchIndex] = new MatchInfo()
                 {
-                    Id = Guid.NewGuid().ToString(),
+                    MatchId = Guid.NewGuid().ToString(),
                     Player1 = p1.Id,
                     Player2 = isBye ? "" : p2.Id,
                     Player1Wins = 0,
@@ -50,7 +50,7 @@ namespace Kalkatos.Network
             }
             return new RoundInfo()
             {
-                Id = Guid.NewGuid().ToString(),
+                RoundId = Guid.NewGuid().ToString(),
                 Index = index,
                 Matches = matches
             };
@@ -76,7 +76,7 @@ namespace Kalkatos.Network
             for (int i = 0; i < players.Length; i++)
                 playerIds[i] = players[i].Id;
             TournamentInfo tournament = new TournamentInfo();
-            tournament.Id = Guid.NewGuid().ToString();
+            tournament.TournamentId = Guid.NewGuid().ToString();
             tournament.Players = playerIds;
             tournament.Rounds = new RoundInfo[] { CreateRound(players, 0) };
             return tournament;
@@ -281,7 +281,7 @@ namespace Kalkatos.Network
             // Add to room
             room.CustomData = room.CustomData.CloneWithUpdateOrAdd(Keys.TournamentsKey, tournamentInfo);
             await DataAccess.SendData(room.Id, JsonConvert.SerializeObject(room, Formatting.Indented), Keys.ActiveRoomsKey);
-            await DataAccess.SendData(tournamentInfo.Id, JsonConvert.SerializeObject(tournamentInfo, Formatting.Indented), Keys.TournamentsKey);
+            await DataAccess.SendData(tournamentInfo.TournamentId, JsonConvert.SerializeObject(tournamentInfo, Formatting.Indented), Keys.TournamentsKey);
             return tournamentInfo;
         }
 

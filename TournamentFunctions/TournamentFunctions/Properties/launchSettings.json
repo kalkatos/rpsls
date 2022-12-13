@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "TournamentFunctions": {
+      "commandName": "Project",
+      "commandLineArgs": "--port 7175 --verbose"
+    }
+  }
+}
