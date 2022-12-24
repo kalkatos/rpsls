@@ -15,7 +15,10 @@ namespace Kalkatos.Network.Specific
 
 		public void Connect (object parameter, Action<object> onSuccess, Action<object> onError)
 		{
-			
+			if (parameter == null)
+			{
+
+			}
 		}
 
 		public void Get (byte key, object parameter, Action<object> onSuccess, Action<object> onError)

@@ -21,14 +21,14 @@ namespace Kalkatos.UnityGame.Systems
 
         private void TryConnection ()
         {
-			NetworkClient.Connect(null,
+			NetworkClient.Connect(
 				(success) =>
 				{
 					SceneManager.EndScene("Connection", "ToMenu");
 				},
 				(failure) =>
 				{
-					if (failure is NetworkError && (NetworkError)failure == NetworkError.NotConnected)
+					if (failure is NetworkError && ((NetworkError)failure).Tag == NetworkErrorTag.NotConnected)
 						_notConnectedMessage.SetActive(true);
 					else
 						SceneManager.EndScene("Connection", "ToLogin");

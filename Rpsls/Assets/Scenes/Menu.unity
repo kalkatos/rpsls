@@ -394,6 +394,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 336124803}
+  - component: {fileID: 336124804}
   m_Layer: 0
   m_Name: NetworkManager
   m_TagString: Untagged
@@ -416,6 +417,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &336124804
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 336124802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a545c3acf2e8bf74bb0b70022e71b17b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &625040171
 GameObject:
   m_ObjectHideFlags: 0
@@ -559,7 +572,6 @@ GameObject:
   - component: {fileID: 2958661985849410832}
   - component: {fileID: 4295489408620845273}
   - component: {fileID: 1676294254082576478}
-  - component: {fileID: 8481595918579111400}
   m_Layer: 0
   m_Name: Canvas
   m_TagString: Untagged
@@ -567,16 +579,3 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &8481595918579111400
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8481595918579111399}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b7fef2e88b3fd4b4ab1e4570274108bb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _notConnectedMessage: {fileID: 0}
