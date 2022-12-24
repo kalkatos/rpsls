@@ -1,4 +1,5 @@
 ﻿using System;
+using Kalkatos.Network.Model;
 
 namespace Kalkatos.Network
 {
@@ -6,20 +7,13 @@ namespace Kalkatos.Network
 	{
 		event Action<byte, object> OnEventReceived;
 
-		bool IsConnected { get; protected set; }
-		bool IsInRoom { get; protected set; }
-		PlayerInfo[] Players { get; protected set; }
-		PlayerInfo MyInfo { get; protected set; }
+		bool IsConnected { get; }
+		bool IsInRoom { get; }
+		PlayerInfo[] Players { get; }
+		PlayerInfo MyInfo { get; }
 
 		void Connect (object parameter, Action<object> onSuccess, Action<object> onError);
 		void Get (byte key, object parameter, Action<object> onSuccess, Action<object> onError);
 		void Post (byte key, object parameter, Action<object> onSuccess, Action<object> onError);
-	}
-
-	public class PlayerInfo
-	{
-		public string PlayerId;
-		public string Nickname;
-		public string[] CustomData;
 	}
 }
