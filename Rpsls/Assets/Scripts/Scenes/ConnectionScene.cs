@@ -1,5 +1,5 @@
 using UnityEngine;
-using Kalkatos.Network;
+using Kalkatos.Network.Model;
 using Kalkatos.Network.Unity;
 
 namespace Kalkatos.UnityGame.Systems
