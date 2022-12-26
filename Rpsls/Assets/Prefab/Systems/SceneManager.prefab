@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   connectionScene: Connection
-  menuScene: Connection
-  loginScene: Connection
-  lobbyScene: Connection
-  gameScene: Connection
+  menuScene: Menu
+  loginScene: Login
+  lobbyScene: Lobby
+  gameScene: Game
