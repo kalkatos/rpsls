@@ -12,8 +12,8 @@ namespace Kalkatos.Network
 		PlayerInfo[] Players { get; }
 		PlayerInfo MyInfo { get; }
 
-		void Connect (object parameter, Action<object> onSuccess, Action<object> onError);
-		void Get (byte key, object parameter, Action<object> onSuccess, Action<object> onError);
-		void Post (byte key, object parameter, Action<object> onSuccess, Action<object> onError);
+		void Connect (object parameter, Action<object> onSuccess, Action<object> onFailure);
+		void Get (byte key, object parameter, Action<object> onSuccess, Action<object> onFailure);
+		void Post (byte key, object parameter, Action<object> onSuccess, Action<object> onFailure);
 	}
 }

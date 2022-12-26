@@ -10,6 +10,7 @@
 	{
 		Undefined,
 		NotConnected,
+		WrongParameters,
 		NotFound,
 	}
 

@@ -4,6 +4,7 @@ using Kalkatos.Network.Specific;
 using Kalkatos.Network.Model;
 using UnityEngine;
 using Newtonsoft.Json;
+using Kalkatos.FunctionsGame.Models;
 
 namespace Kalkatos.Network.Unity
 {
@@ -18,48 +19,25 @@ namespace Kalkatos.Network.Unity
 			Instance = this;
 		}
 
-		public static void Connect (Action<object> onSuccess, Action<object> onFailure)
+		/// <summary>
+		/// Invokes the connect method on the Network interface.
+		/// </summary>
+		/// <param name="onSuccess"> True if it's new user </param>
+		/// <param name="onFailure"> NetworkError with info on what happened. </param>
+		public static void Connect (Action<bool> onSuccess, Action<NetworkError> onFailure)
 		{
-			// Find and load player info file
-			PlayerInfo playerInfo = null;
-			try
-			{
-				string infoFilePath = Application.persistentDataPath + "/player-info.json";
-				if (File.Exists(infoFilePath))
-				{
-					string content = File.ReadAllText(infoFilePath);
-					playerInfo = JsonConvert.DeserializeObject<PlayerInfo>(content);
-				}
-			}
-			catch
-			{
-				Debug.Log("Could not find player info.");
-			}
+			string deviceId = SystemInfo.deviceUniqueIdentifier;
 			// Invoke network
-			Instance._networkClient.Connect(playerInfo?.PlayerId,
+			Instance._networkClient.Connect(deviceId,
 				(success) =>
 				{
-					// Player were found on network OR it's new player logging in with device id
-					// If player found, ask for credentials
-					// If new player return null
-					// Save player info on file
-					onSuccess.Invoke(success);
+					LoginResponse response = (LoginResponse)success;
+					onSuccess.Invoke(response.IsNewUser);
 				},
 				(failure) =>
 				{
-					// Player not found OR not connected
-					if (failure is NetworkError)
-					{
-						if (((NetworkError)failure).Tag == NetworkErrorTag.NotFound)
-						{
-							if (playerInfo != null)
-							{
-								Debug.LogError("Fatal error: player has local file, but server does not.");
-								// TODO Send a log for fatal error player not found
-							}
-						}
-						onFailure.Invoke(failure);
-					}
+					// Player is not connected to the internet
+					onFailure.Invoke((NetworkError)failure);
 				});
 		}
 	}
