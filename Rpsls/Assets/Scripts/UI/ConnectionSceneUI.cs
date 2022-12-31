@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Kalkatos.Game.Rpsls
 {
-    public class ConnectionSceneUI : MonoBehaviour
+	public class ConnectionSceneUI : MonoBehaviour
     {
         [SerializeField] private TMP_Text _connectingText;
         [SerializeField] private TMP_Text _notConnectedErrorText;
