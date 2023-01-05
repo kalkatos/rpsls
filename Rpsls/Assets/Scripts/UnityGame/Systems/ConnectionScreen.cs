@@ -5,7 +5,7 @@ using Kalkatos.Network.Unity;
 
 namespace Kalkatos.UnityGame.Systems
 {
-	public class ConnectionScene : MonoBehaviour
+	public class ConnectionScreen : MonoBehaviour
     {
 		public static event Action OnNotConnectedError;
 
@@ -20,7 +20,7 @@ namespace Kalkatos.UnityGame.Systems
 			NetworkClient.Connect(
 				(success) =>
 				{
-					SceneManager.EndScene("Connection", "ToMenu");
+					ScreenManager.EndScreen("Connection");
 					Storage.Save("IsNewUser", success ? 1 : 0);
 					Logger.Log("Connected Successfully!");
 				},
