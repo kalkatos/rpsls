@@ -45,11 +45,67 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4738538a224991a4baf85a82baa7f797, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  connectionScene: Connection
-  menuScene: Menu
-  loginScene: Login
-  lobbyScene: Lobby
-  gameScene: Game
+  screenTransitions:
+  - Origin:
+      IsScene: 1
+      SceneName: Connection
+      ScreenName: 
+    PossibleNext:
+    - IsScene: 1
+      SceneName: Menu
+      ScreenName: 
+  - Origin:
+      IsScene: 1
+      SceneName: Menu
+      ScreenName: 
+    PossibleNext:
+    - IsScene: 1
+      SceneName: Login
+      ScreenName: 
+    - IsScene: 1
+      SceneName: Lobby
+      ScreenName: 
+    - IsScene: 0
+      SceneName: Game
+      ScreenName: FindingMatch
+  - Origin:
+      IsScene: 1
+      SceneName: Login
+      ScreenName: 
+    PossibleNext:
+    - IsScene: 1
+      SceneName: Menu
+      ScreenName: 
+  - Origin:
+      IsScene: 1
+      SceneName: Lobby
+      ScreenName: 
+    PossibleNext:
+    - IsScene: 1
+      SceneName: Game
+      ScreenName: 
+    - IsScene: 1
+      SceneName: Menu
+      ScreenName: 
+  - Origin:
+      IsScene: 0
+      SceneName: 
+      ScreenName: FindingMatch
+    PossibleNext:
+    - IsScene: 1
+      SceneName: Game
+      ScreenName: 
+    - IsScene: 1
+      SceneName: Menu
+      ScreenName: 
+  - Origin:
+      IsScene: 1
+      SceneName: Game
+      ScreenName: 
+    PossibleNext:
+    - IsScene: 1
+      SceneName: Menu
+      ScreenName: 
 --- !u!114 &799814901099012139
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Kalkatos.Game.Rpsls
 {
-	public class ConnectionSceneUI : MonoBehaviour
+	public class ConnectionScreenUI : MonoBehaviour
     {
         [SerializeField] private TMP_Text _connectingText;
         [SerializeField] private TMP_Text _notConnectedErrorText;
@@ -17,12 +17,12 @@ namespace Kalkatos.Game.Rpsls
 			_connectingText.gameObject.SetActive(true);
 			_notConnectedErrorText.gameObject.SetActive(false);
 
-			ConnectionScene.OnNotConnectedError += HandleNotConnectedError;
+			ConnectionScreen.OnNotConnectedError += HandleNotConnectedError;
 		}
 
 		private void OnDestroy ()
 		{
-			ConnectionScene.OnNotConnectedError -= HandleNotConnectedError;
+			ConnectionScreen.OnNotConnectedError -= HandleNotConnectedError;
 		}
 
 		private void HandleNotConnectedError ()
