@@ -750,6 +750,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1658891838}
   - component: {fileID: 1658891839}
+  - component: {fileID: 1658891840}
   m_Layer: 0
   m_Name: Finding Match Screen
   m_TagString: Untagged
@@ -795,6 +796,34 @@ MonoBehaviour:
   screenName: FindingMatch
   useChildren: 1
   objects: []
+--- !u!114 &1658891840
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1658891837}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d29bd0bc7060be74598cf2af10944016, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  signal: {fileID: 11400000, guid: 422ec635f9feb024287054b3541bdefc, type: 2}
+  action:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1658891839}
+        m_TargetAssemblyTypeName: Kalkatos.UnityGame.Systems.Screen, Assembly-CSharp
+        m_MethodName: Activate
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1001 &1787462636
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -824,7 +853,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4501207139770476986, guid: 8f5aa5a9725234591a8805567925c461, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: Kalkatos.UnityGame.Systems.Signal, Assembly-CSharp
+      value: Kalkatos.UnityGame.Signals.Signal, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 4501207139770476986, guid: 8f5aa5a9725234591a8805567925c461, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
@@ -929,17 +958,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 6067696467860351032, guid: 8f5aa5a9725234591a8805567925c461, type: 3}
   m_PrefabInstance: {fileID: 1787462636}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1787462638 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4501207139770476986, guid: 8f5aa5a9725234591a8805567925c461, type: 3}
-  m_PrefabInstance: {fileID: 1787462636}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2018624207
 GameObject:
   m_ObjectHideFlags: 0
@@ -1138,6 +1156,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b90bd9a7e3698e4385fe904bf8403f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playButtonClickSignal: {fileID: 11400000, guid: 422ec635f9feb024287054b3541bdefc, type: 2}
 --- !u!114 &2132524515
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1266,4 +1285,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87350a67bf343334797496471ae2ba54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playGameButton: {fileID: 1787462638}

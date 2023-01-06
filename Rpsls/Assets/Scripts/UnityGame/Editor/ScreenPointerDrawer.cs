@@ -1,11 +1,9 @@
 ﻿using UnityEngine;
-#if UNITY_EDITOR
 using UnityEditor;
-#endif
+using Kalkatos.UnityGame.Screens;
 
-namespace Kalkatos.UnityGame.Systems
+namespace Kalkatos.UnityGame.Editor
 {
-#if UNITY_EDITOR
 	[CustomPropertyDrawer(typeof(ScreenPointer))]
 	public class ScreenPointerDrawer : PropertyDrawer
 	{
@@ -26,5 +24,4 @@ namespace Kalkatos.UnityGame.Systems
 			EditorGUI.PropertyField(checkboxRect, boolProp, GUIContent.none);
 		}
 	}
-#endif
 }

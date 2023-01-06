@@ -1,7 +1,4 @@
-﻿using Kalkatos.UnityGame.Systems;
-using System;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
 
 namespace Kalkatos.Game.Rpsls
 {
