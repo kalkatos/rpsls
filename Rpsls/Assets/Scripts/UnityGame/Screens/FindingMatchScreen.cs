@@ -1,10 +1,7 @@
 using Kalkatos.Network.Unity;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace Kalkatos.UnityGame.Systems
+namespace Kalkatos.UnityGame.Screens
 {
 	public class FindingMatchScreen : MonoBehaviour
     {

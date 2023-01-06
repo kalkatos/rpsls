@@ -3,7 +3,7 @@ using UnityEngine;
 using Kalkatos.Network.Model;
 using Kalkatos.Network.Unity;
 
-namespace Kalkatos.UnityGame.Systems
+namespace Kalkatos.UnityGame.Screens
 {
 	public class ConnectionScreen : MonoBehaviour
     {

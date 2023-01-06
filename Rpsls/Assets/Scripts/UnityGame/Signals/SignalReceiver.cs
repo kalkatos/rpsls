@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Kalkatos.UnityGame.Systems
+namespace Kalkatos.UnityGame.Signals
 {
 	public class SignalReceiver : MonoBehaviour
 	{

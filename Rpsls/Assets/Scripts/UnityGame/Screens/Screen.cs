@@ -1,7 +1,7 @@
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace Kalkatos.UnityGame.Systems
+namespace Kalkatos.UnityGame.Screens
 {
     public class Screen : MonoBehaviour
     {

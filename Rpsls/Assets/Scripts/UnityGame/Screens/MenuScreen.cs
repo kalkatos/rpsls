@@ -1,9 +1,8 @@
 ﻿using System;
 using UnityEngine;
-using Kalkatos.Network.Model;
-using Kalkatos.Network.Unity;
+using Kalkatos.UnityGame.Signals;
 
-namespace Kalkatos.UnityGame.Systems
+namespace Kalkatos.UnityGame.Screens
 {
 	public class MenuScreen : MonoBehaviour
 	{

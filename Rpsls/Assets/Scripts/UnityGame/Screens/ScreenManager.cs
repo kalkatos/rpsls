@@ -5,7 +5,7 @@ using UnityEngine;
 using NaughtyAttributes;
 using UnityEngine.SceneManagement;
 
-namespace Kalkatos.UnityGame.Systems
+namespace Kalkatos.UnityGame.Screens
 {
 	public class ScreenManager : MonoBehaviour
 	{
