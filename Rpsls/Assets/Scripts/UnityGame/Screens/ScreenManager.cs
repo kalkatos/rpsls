@@ -1,36 +1,47 @@
 using System;
 using System.Linq;
-using System.Collections;
 using UnityEngine;
 using NaughtyAttributes;
 using UnityEngine.SceneManagement;
+using Kalkatos.UnityGame.Signals;
 
 namespace Kalkatos.UnityGame.Screens
 {
+	[ExecuteAlways]
 	public class ScreenManager : MonoBehaviour
 	{
 		public static ScreenManager Instance { get; private set; }
 
-		public static Action<string> OnStarted;
-		public static Action<string> OnEnded;
-
 		[SerializeField] private ScreenTransition[] screenTransitions;
+
+		[SerializeField, HideInInspector] private ScreenSignal[] screenSignals;
 
 		private static string loadedScene;
 
 		private void Awake ()
 		{
-			if (Instance == null)
-				Instance = this;
-			else if (Instance != this)
+			if (Application.isPlaying)
 			{
-				Destroy(Instance);
-				return;
-			}
+				if (Instance == null)
+					Instance = this;
+				else if (Instance != this)
+				{
+					Destroy(Instance);
+					return;
+				}
 
-			DontDestroyOnLoad(this);
-			SceneManager.activeSceneChanged += HandleSceneChanged;
-			loadedScene = SceneManager.GetActiveScene().name;
+				DontDestroyOnLoad(this);
+				SceneManager.activeSceneChanged += HandleSceneChanged;
+				loadedScene = SceneManager.GetActiveScene().name;
+			}
+			else
+			{
+#if UNITY_EDITOR
+				screenSignals = UnityEditor.AssetDatabase.FindAssets("t:" + nameof(ScreenSignal))
+					.Select(x => UnityEditor.AssetDatabase.GUIDToAssetPath(x))
+					.Select(x => UnityEditor.AssetDatabase.LoadAssetAtPath<ScreenSignal>(x)).ToArray();
+#endif
+			}
 		}
 
 		private void OnDestroy ()
@@ -41,7 +52,6 @@ namespace Kalkatos.UnityGame.Screens
 		private void HandleSceneChanged (Scene oldScene, Scene newScene)
 		{
 			loadedScene = newScene.name;
-			OnStarted?.Invoke(loadedScene);
 		}
 
 		private static void LoadScene (string sceneName)
@@ -52,56 +62,71 @@ namespace Kalkatos.UnityGame.Screens
 			Debug.Log("Loading scene " + sceneName);
 		}
 
-		private static void LoadSceneOrScreen (ScreenPointer pointer)
+		private static ScreenSignal GetScreenSignal (string name)
 		{
-			if (pointer.IsScene)
-				LoadScene(pointer.Value);
-			else
-				OnStarted?.Invoke(pointer.Value);
+			return Instance.screenSignals?.First(x => x.name == name);
 		}
 
-		public static void EndScreen (string current, string next = "")
+		public static void GoToNextScene (string next = "")
 		{
-			ScreenTransition transition = Instance.screenTransitions.First((t) => t.Origin.Value == current);
+			ScreenTransition transition = Instance.screenTransitions.First((t) => t.Origin.SceneName == loadedScene);
 			if (transition == null)
 			{
-				Logger.LogError($"Invoking transition from an unknown scene/screen: {current}");
+				Logger.LogError($"There is no transition defined for scene {loadedScene}");
 				return;
 			}
 			if (transition.PossibleNext == null || transition.PossibleNext.Length == 0)
 			{
 				if (!string.IsNullOrEmpty(next))
-					Logger.LogWarning($"Next scene/screen expected is not defined: {next}");
+				{
+					Logger.LogWarning($"There is no transition defined for scene {loadedScene} going to scene {next}");
+					LoadScene(next);
+				}
 				return;
 			}
-			ScreenPointer nextScreen = transition.PossibleNext[0];
+			ScenePointer nextScreen = transition.PossibleNext[0];
 			if (!string.IsNullOrEmpty(next))
 			{
-				nextScreen = transition.PossibleNext.First((p) => p.Value == next);
+				nextScreen = transition.PossibleNext.First((p) => p.SceneName == next);
 				if (nextScreen == null)
 				{
 					Logger.LogWarning($"Next scene/screen expected is not defined: {next}");
 					return;
 				}
 			}
-			OnEnded?.Invoke(current);
-			LoadSceneOrScreen(nextScreen);
+			LoadScene(nextScreen.SceneName);
+		}
+
+		public static void SetScreenStatus (string name, bool b)
+		{
+			var screen = GetScreenSignal(name);
+			if (screen != null)
+				screen.EmitWithParam(b);
+			else
+				Logger.LogError($"Couldn't find screen {name}");
+		}
+
+		public static void OpenScreen (string name)
+		{
+			SetScreenStatus(name, true);
+		}
+
+		public static void CloseScreen (string name)
+		{
+			SetScreenStatus(name, false);
 		}
 	}
 
 	[Serializable]
-	public class ScreenPointer
+	public class ScenePointer
 	{
-		public bool IsScene;
 		[Scene] public string SceneName;
-		public string ScreenName;
-		public string Value { get { if (IsScene) return SceneName; return ScreenName; } }
 	}
 
 	[Serializable]
 	public class ScreenTransition
 	{
-		public ScreenPointer Origin;
-		public ScreenPointer[] PossibleNext;
+		public ScenePointer Origin;
+		public ScenePointer[] PossibleNext;
 	}
 }
