@@ -790,10 +790,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1658891837}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cdb86a510c30b7d4fa49cbe44b298278, type: 3}
+  m_Script: {fileID: 11500000, guid: 9e30fd4d69d2f23459653765ed89abcc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  screenName: FindingMatch
+  screenSignal: {fileID: 11400000, guid: 36d76a363875b244cb0c2d11b8d727cb, type: 2}
   useChildren: 1
   objects: []
 --- !u!114 &1658891840
@@ -812,17 +812,18 @@ MonoBehaviour:
   action:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1658891839}
-        m_TargetAssemblyTypeName: Kalkatos.UnityGame.Systems.Screen, Assembly-CSharp
-        m_MethodName: Activate
-        m_Mode: 1
+      - m_Target: {fileID: 11400000, guid: 36d76a363875b244cb0c2d11b8d727cb, type: 2}
+        m_TargetAssemblyTypeName: Kalkatos.UnityGame.Signals.TypedSignal`1[[System.Boolean,
+          mscorlib
+        m_MethodName: EmitWithParam
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 0
+          m_BoolArgument: 1
         m_CallState: 2
 --- !u!1001 &1787462636
 PrefabInstance:
@@ -854,6 +855,10 @@ PrefabInstance:
     - target: {fileID: 4501207139770476986, guid: 8f5aa5a9725234591a8805567925c461, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: Kalkatos.UnityGame.Signals.Signal, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4501207139770476986, guid: 8f5aa5a9725234591a8805567925c461, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4501207139770476986, guid: 8f5aa5a9725234591a8805567925c461, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
@@ -1137,38 +1142,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: Managers
       objectReference: {fileID: 0}
+    - target: {fileID: 7560535550127891382, guid: f5649f5175c36674e993a3ebe00c2409, type: 3}
+      propertyPath: Signal
+      value: 
+      objectReference: {fileID: 11400000, guid: 36d76a363875b244cb0c2d11b8d727cb, type: 2}
+    - target: {fileID: 7560535550127891382, guid: f5649f5175c36674e993a3ebe00c2409, type: 3}
+      propertyPath: screenTransitions.Array.data[4].PossibleNext.Array.data[0].IsScene
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f5649f5175c36674e993a3ebe00c2409, type: 3}
---- !u!1 &2132524513 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4226637753447291966, guid: f5649f5175c36674e993a3ebe00c2409, type: 3}
-  m_PrefabInstance: {fileID: 2132524512}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &2132524514
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2132524513}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b90bd9a7e3698e4385fe904bf8403f0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playButtonClickSignal: {fileID: 11400000, guid: 422ec635f9feb024287054b3541bdefc, type: 2}
---- !u!114 &2132524515
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2132524513}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 313769f6a4aef0348ab3c84d46320837, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1676294254082576478
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1265,7 +1248,6 @@ GameObject:
   - component: {fileID: 2958661985849410832}
   - component: {fileID: 4295489408620845273}
   - component: {fileID: 1676294254082576478}
-  - component: {fileID: 8481595918579111400}
   m_Layer: 0
   m_Name: Canvas
   m_TagString: Untagged
@@ -1273,15 +1255,3 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &8481595918579111400
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8481595918579111399}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 87350a67bf343334797496471ae2ba54, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

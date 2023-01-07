@@ -14,12 +14,12 @@ namespace Kalkatos.Game.Rpsls
 			_connectingText.gameObject.SetActive(true);
 			_notConnectedErrorText.gameObject.SetActive(false);
 
-			ConnectionScreen.OnNotConnectedError += HandleNotConnectedError;
+			//ConnectionScreen.OnNotConnectedError += HandleNotConnectedError;
 		}
 
 		private void OnDestroy ()
 		{
-			ConnectionScreen.OnNotConnectedError -= HandleNotConnectedError;
+			//ConnectionScreen.OnNotConnectedError -= HandleNotConnectedError;
 		}
 
 		private void HandleNotConnectedError ()

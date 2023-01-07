@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4226637753447291960}
-  - component: {fileID: 4226637753447291961}
+  - component: {fileID: 7560535550127891382}
   - component: {fileID: 799814901099012139}
   m_Layer: 0
   m_Name: Managers
@@ -33,7 +33,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4226637753447291961
+--- !u!114 &7560535550127891382
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -42,7 +42,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4226637753447291966}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4738538a224991a4baf85a82baa7f797, type: 3}
+  m_Script: {fileID: 11500000, guid: fbdb6b7b8b99f5e459f8212c74db9e03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   screenTransitions:
@@ -61,13 +61,13 @@ MonoBehaviour:
     PossibleNext:
     - IsScene: 1
       SceneName: Login
-      ScreenName: 
+      ScreenName: FindingMatch
     - IsScene: 1
       SceneName: Lobby
       ScreenName: 
-    - IsScene: 0
+    - IsScene: 1
       SceneName: Game
-      ScreenName: FindingMatch
+      ScreenName: 
   - Origin:
       IsScene: 1
       SceneName: Login
@@ -80,17 +80,6 @@ MonoBehaviour:
       IsScene: 1
       SceneName: Lobby
       ScreenName: 
-    PossibleNext:
-    - IsScene: 1
-      SceneName: Game
-      ScreenName: 
-    - IsScene: 1
-      SceneName: Menu
-      ScreenName: 
-  - Origin:
-      IsScene: 0
-      SceneName: 
-      ScreenName: FindingMatch
     PossibleNext:
     - IsScene: 1
       SceneName: Game

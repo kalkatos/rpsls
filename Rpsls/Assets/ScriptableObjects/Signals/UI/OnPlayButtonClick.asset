@@ -9,7 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bb6d6cca74288504bb771a097b89bbb2, type: 3}
-  m_Name: NewSignalInt
+  m_Script: {fileID: 11500000, guid: c908ebabdd980b64a8e6b3199822e23d, type: 3}
+  m_Name: OnPlayButtonClick
   m_EditorClassIdentifier: 
-  Param: 12

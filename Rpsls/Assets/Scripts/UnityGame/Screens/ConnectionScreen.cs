@@ -2,12 +2,13 @@ using System;
 using UnityEngine;
 using Kalkatos.Network.Model;
 using Kalkatos.Network.Unity;
+using UnityEngine.Events;
 
 namespace Kalkatos.UnityGame.Screens
 {
 	public class ConnectionScreen : MonoBehaviour
     {
-		public static event Action OnNotConnectedError;
+		[SerializeField] private UnityEvent onNotConnectedError;
 
 		private void Start ()
         {
@@ -20,14 +21,14 @@ namespace Kalkatos.UnityGame.Screens
 			NetworkClient.Connect(
 				(success) =>
 				{
-					ScreenManager.EndScreen("Connection");
+					ScreenManager.GoToNextScene();
 					Storage.Save("IsNewUser", success ? 1 : 0);
 					Logger.Log("Connected Successfully!");
 				},
 				(failure) =>
 				{
 					if (failure.Tag == NetworkErrorTag.NotConnected)
-						OnNotConnectedError?.Invoke();
+						onNotConnectedError.Invoke();
 					Logger.Log("Connection Error: " + failure.Message);
 				});
 		}

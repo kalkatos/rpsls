@@ -11,12 +11,12 @@ namespace Kalkatos.UnityGame.Signals
 
 		private void Awake ()
 		{
-			signal.OnSignalEmitted += HandleSignalEmitted;
+			signal.OnSignalEmitted.AddListener(HandleSignalEmitted);
 		}
 
 		private void OnDestroy ()
 		{
-			signal.OnSignalEmitted -= HandleSignalEmitted;
+			signal.OnSignalEmitted.RemoveListener(HandleSignalEmitted);
 		}
 
 		private void HandleSignalEmitted ()
