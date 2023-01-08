@@ -2,7 +2,7 @@
 
 namespace Kalkatos.UnityGame.Signals
 {
-	[CreateAssetMenu(fileName = "NewScreenSignal", menuName = "Signal/Signal (Screen)", order = 4)]
+	[CreateAssetMenu(fileName = "NewScreenSignal", menuName = "Signals/Signal (Screen)", order = 4)]
 	public class ScreenSignal : TypedSignal<bool>
 	{
 		public bool DefaultState;

@@ -2,7 +2,7 @@
 
 namespace Kalkatos.UnityGame.Signals
 {
-	[CreateAssetMenu(fileName = "NewSignalString", menuName = "Signal/Signal (String)", order = 1)]
+	[CreateAssetMenu(fileName = "NewSignalString", menuName = "Signals/Signal (String)", order = 1)]
 	public class SignalString : TypedSignal<string>
 	{
 		public string Param;

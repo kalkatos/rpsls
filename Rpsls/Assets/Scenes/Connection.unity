@@ -675,6 +675,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8fca46f6a8ae19c4ba7800dd80d58b3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onConnected:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 11400000, guid: 36d76a363875b244cb0c2d11b8d727cb, type: 2}
+        m_TargetAssemblyTypeName: Kalkatos.UnityGame.Signals.TypedSignal`1[[System.Boolean,
+          mscorlib
+        m_MethodName: EmitWithParam
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
   onNotConnectedError:
     m_PersistentCalls:
       m_Calls:
