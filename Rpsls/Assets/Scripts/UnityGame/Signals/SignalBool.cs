@@ -2,7 +2,7 @@
 
 namespace Kalkatos.UnityGame.Signals
 {
-	[CreateAssetMenu(fileName = "NewSignalBool", menuName = "Signal/Signal (Bool)", order = 3)]
+	[CreateAssetMenu(fileName = "NewSignalBool", menuName = "Signals/Signal (Bool)", order = 3)]
 	public class SignalBool : TypedSignal<bool>
 	{
 		public bool Param;

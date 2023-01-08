@@ -47,54 +47,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   screenTransitions:
   - Origin:
-      IsScene: 1
       SceneName: Connection
-      ScreenName: 
     PossibleNext:
-    - IsScene: 1
-      SceneName: Menu
-      ScreenName: 
+    - SceneName: Menu
   - Origin:
-      IsScene: 1
       SceneName: Menu
-      ScreenName: 
     PossibleNext:
-    - IsScene: 1
+    - SceneName: Login
+    - SceneName: Lobby
+    - SceneName: Game
+  - Origin:
       SceneName: Login
-      ScreenName: FindingMatch
-    - IsScene: 1
+    PossibleNext:
+    - SceneName: Menu
+  - Origin:
       SceneName: Lobby
-      ScreenName: 
-    - IsScene: 1
-      SceneName: Game
-      ScreenName: 
-  - Origin:
-      IsScene: 1
-      SceneName: Login
-      ScreenName: 
     PossibleNext:
-    - IsScene: 1
-      SceneName: Menu
-      ScreenName: 
+    - SceneName: Game
+    - SceneName: Menu
   - Origin:
-      IsScene: 1
-      SceneName: Lobby
-      ScreenName: 
-    PossibleNext:
-    - IsScene: 1
       SceneName: Game
-      ScreenName: 
-    - IsScene: 1
-      SceneName: Menu
-      ScreenName: 
-  - Origin:
-      IsScene: 1
-      SceneName: Game
-      ScreenName: 
     PossibleNext:
-    - IsScene: 1
-      SceneName: Menu
-      ScreenName: 
+    - SceneName: Menu
+  screenSignals:
+  - {fileID: 11400000, guid: 0601b19581be1c547beade73f2b81967, type: 2}
+  - {fileID: 11400000, guid: 36d76a363875b244cb0c2d11b8d727cb, type: 2}
 --- !u!114 &799814901099012139
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -4,6 +4,9 @@ using UnityEngine;
 using NaughtyAttributes;
 using UnityEngine.SceneManagement;
 using Kalkatos.UnityGame.Signals;
+using System.Collections.Generic;
+using UnityEngine.Events;
+using Newtonsoft.Json;
 
 namespace Kalkatos.UnityGame.Screens
 {
@@ -14,39 +17,70 @@ namespace Kalkatos.UnityGame.Screens
 
 		[SerializeField] private ScreenTransition[] screenTransitions;
 
-		[SerializeField, HideInInspector] private ScreenSignal[] screenSignals;
+		[SerializeField] private ScreenSignal[] screenSignals;
 
 		private static string loadedScene;
+		private static Dictionary<ScreenSignal, UnityAction<bool>> signalDict = new Dictionary<ScreenSignal, UnityAction<bool>>();
 
 		private void Awake ()
 		{
-			if (Application.isPlaying)
+			if (!Application.isPlaying)
 			{
-				if (Instance == null)
-					Instance = this;
-				else if (Instance != this)
-				{
-					Destroy(Instance);
-					return;
-				}
+				LoadScreenSignals();
+				return;
+			}
 
-				DontDestroyOnLoad(this);
-				SceneManager.activeSceneChanged += HandleSceneChanged;
-				loadedScene = SceneManager.GetActiveScene().name;
-			}
-			else
+			if (Instance == null)
+				Instance = this;
+			else if (Instance != this)
 			{
-#if UNITY_EDITOR
-				screenSignals = UnityEditor.AssetDatabase.FindAssets("t:" + nameof(ScreenSignal))
-					.Select(x => UnityEditor.AssetDatabase.GUIDToAssetPath(x))
-					.Select(x => UnityEditor.AssetDatabase.LoadAssetAtPath<ScreenSignal>(x)).ToArray();
-#endif
+				Destroy(this);
+				return;
 			}
+
+			DontDestroyOnLoad(this);
+			SceneManager.activeSceneChanged += HandleSceneChanged;
+			loadedScene = SceneManager.GetActiveScene().name;
+
+			Logger.Log("screenSignals = " + JsonConvert.SerializeObject(screenSignals, Formatting.Indented));
+			if (screenSignals != null)
+				for (int i = 0; i < screenSignals.Length; i++)
+				{
+					string name = screenSignals[i].name;
+					UnityAction<bool> ev = (b) =>
+					{
+						Logger.Log("[ScreenManager] Lambda - received signal to change to screen: " + name);
+						ScreenSignalReceived(name, b);
+					};
+					screenSignals[i].OnSignalEmittedWithParam.AddListener(ev);
+					signalDict.Add(screenSignals[i], ev);
+				}
 		}
 
 		private void OnDestroy ()
 		{
 			SceneManager.activeSceneChanged -= HandleSceneChanged;
+			foreach (var item in signalDict)
+				item.Key.OnSignalEmittedWithParam.RemoveListener(item.Value);
+		}
+
+		private void LoadScreenSignals ()
+		{
+#if UNITY_EDITOR
+			screenSignals = UnityEditor.AssetDatabase.FindAssets("t:" + nameof(ScreenSignal))
+				.Select(x => UnityEditor.AssetDatabase.GUIDToAssetPath(x))
+				.Select(x => UnityEditor.AssetDatabase.LoadAssetAtPath<ScreenSignal>(x)).ToArray();
+			UnityEditor.EditorUtility.SetDirty(gameObject);
+			Logger.Log("screenSignals = " + JsonConvert.SerializeObject(screenSignals, Formatting.Indented));
+#endif
+		}
+
+		private void ScreenSignalReceived (string signal, bool b)
+		{
+			Scene scene = SceneManager.GetSceneByName(signal);
+			Logger.Log($"Screen signal received: {signal} {b} || Scene: {scene}");
+			if (scene.IsValid())
+				LoadScene(signal);
 		}
 
 		private void HandleSceneChanged (Scene oldScene, Scene newScene)
@@ -57,9 +91,17 @@ namespace Kalkatos.UnityGame.Screens
 		private static void LoadScene (string sceneName)
 		{
 			if (loadedScene == sceneName)
-				return;
+			{
+				Debug.Log($"Trying to load scene that is already loaded: {sceneName} Use ReloadScene() instead.");
+				return; 
+			}
 			SceneManager.LoadScene(sceneName);
 			Debug.Log("Loading scene " + sceneName);
+		}
+
+		private static void ReloadScene ()
+		{
+			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 		}
 
 		private static ScreenSignal GetScreenSignal (string name)
@@ -111,9 +153,19 @@ namespace Kalkatos.UnityGame.Screens
 			SetScreenStatus(name, true);
 		}
 
+		public static void OpenScreen (ScreenSignal signal)
+		{
+			signal.EmitWithParam(true);
+		}
+
 		public static void CloseScreen (string name)
 		{
 			SetScreenStatus(name, false);
+		}
+
+		public static void CloseScreen (ScreenSignal signal)
+		{
+			signal.EmitWithParam(false);
 		}
 	}
 

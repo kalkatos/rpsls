@@ -1090,65 +1090,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4226637753447291961, guid: f5649f5175c36674e993a3ebe00c2409, type: 3}
-      propertyPath: pointer.IsScene
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226637753447291961, guid: f5649f5175c36674e993a3ebe00c2409, type: 3}
-      propertyPath: pointer.SceneName
-      value: Connection
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226637753447291961, guid: f5649f5175c36674e993a3ebe00c2409, type: 3}
-      propertyPath: transitions.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226637753447291961, guid: f5649f5175c36674e993a3ebe00c2409, type: 3}
-      propertyPath: transitions.Array.data[0].Origin.Name
-      value: Connection
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226637753447291961, guid: f5649f5175c36674e993a3ebe00c2409, type: 3}
-      propertyPath: transitions.Array.data[1].Origin.Name
-      value: Menu
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226637753447291961, guid: f5649f5175c36674e993a3ebe00c2409, type: 3}
-      propertyPath: transitions.Array.data[0].PossibleNext.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226637753447291961, guid: f5649f5175c36674e993a3ebe00c2409, type: 3}
-      propertyPath: transitions.Array.data[1].PossibleNext.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226637753447291961, guid: f5649f5175c36674e993a3ebe00c2409, type: 3}
-      propertyPath: transitions.Array.data[0].PossibleNext.Array.data[0].Name
-      value: Menu
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226637753447291961, guid: f5649f5175c36674e993a3ebe00c2409, type: 3}
-      propertyPath: transitions.Array.data[1].PossibleNext.Array.data[0].Name
-      value: Login
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226637753447291961, guid: f5649f5175c36674e993a3ebe00c2409, type: 3}
-      propertyPath: transitions.Array.data[1].PossibleNext.Array.data[1].Name
-      value: Lobby
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226637753447291961, guid: f5649f5175c36674e993a3ebe00c2409, type: 3}
-      propertyPath: screenTransitions.Array.data[5].PossibleNext.Array.data[1].IsScene
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226637753447291961, guid: f5649f5175c36674e993a3ebe00c2409, type: 3}
-      propertyPath: screenTransitions.Array.data[5].PossibleNext.Array.data[1].SceneName
-      value: Menu
-      objectReference: {fileID: 0}
     - target: {fileID: 4226637753447291966, guid: f5649f5175c36674e993a3ebe00c2409, type: 3}
       propertyPath: m_Name
       value: Managers
-      objectReference: {fileID: 0}
-    - target: {fileID: 7560535550127891382, guid: f5649f5175c36674e993a3ebe00c2409, type: 3}
-      propertyPath: Signal
-      value: 
-      objectReference: {fileID: 11400000, guid: 36d76a363875b244cb0c2d11b8d727cb, type: 2}
-    - target: {fileID: 7560535550127891382, guid: f5649f5175c36674e993a3ebe00c2409, type: 3}
-      propertyPath: screenTransitions.Array.data[4].PossibleNext.Array.data[0].IsScene
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f5649f5175c36674e993a3ebe00c2409, type: 3}
