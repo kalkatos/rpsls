@@ -69,9 +69,12 @@ MonoBehaviour:
       SceneName: Game
     PossibleNext:
     - SceneName: Menu
-  screenSignals:
-  - {fileID: 11400000, guid: 0601b19581be1c547beade73f2b81967, type: 2}
+  ScreenSignals:
   - {fileID: 11400000, guid: 36d76a363875b244cb0c2d11b8d727cb, type: 2}
+  - {fileID: 11400000, guid: e3bf37822cb8516429c28aea7a3bb990, type: 2}
+  - {fileID: 11400000, guid: 21c9ef5eb14ea2e40b71829dca0dcfdf, type: 2}
+  - {fileID: 11400000, guid: 26052b75b821d804f84aa7214f18a129, type: 2}
+  - {fileID: 11400000, guid: 0601b19581be1c547beade73f2b81967, type: 2}
 --- !u!114 &799814901099012139
 MonoBehaviour:
   m_ObjectHideFlags: 0
