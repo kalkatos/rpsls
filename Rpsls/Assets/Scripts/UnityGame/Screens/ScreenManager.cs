@@ -6,30 +6,22 @@ using UnityEngine.SceneManagement;
 using Kalkatos.UnityGame.Signals;
 using System.Collections.Generic;
 using UnityEngine.Events;
-using Newtonsoft.Json;
 
 namespace Kalkatos.UnityGame.Screens
 {
-	[ExecuteAlways]
 	public class ScreenManager : MonoBehaviour
 	{
 		public static ScreenManager Instance { get; private set; }
 
 		[SerializeField] private ScreenTransition[] screenTransitions;
 
-		[SerializeField] private ScreenSignal[] screenSignals;
+		[HideInInspector] public ScreenSignal[] ScreenSignals;
 
 		private static string loadedScene;
 		private static Dictionary<ScreenSignal, UnityAction<bool>> signalDict = new Dictionary<ScreenSignal, UnityAction<bool>>();
 
 		private void Awake ()
 		{
-			if (!Application.isPlaying)
-			{
-				LoadScreenSignals();
-				return;
-			}
-
 			if (Instance == null)
 				Instance = this;
 			else if (Instance != this)
@@ -42,18 +34,16 @@ namespace Kalkatos.UnityGame.Screens
 			SceneManager.activeSceneChanged += HandleSceneChanged;
 			loadedScene = SceneManager.GetActiveScene().name;
 
-			Logger.Log("screenSignals = " + JsonConvert.SerializeObject(screenSignals, Formatting.Indented));
-			if (screenSignals != null)
-				for (int i = 0; i < screenSignals.Length; i++)
+			if (ScreenSignals != null)
+				for (int i = 0; i < ScreenSignals.Length; i++)
 				{
-					string name = screenSignals[i].name;
+					string name = ScreenSignals[i].name;
 					UnityAction<bool> ev = (b) =>
 					{
-						Logger.Log("[ScreenManager] Lambda - received signal to change to screen: " + name);
 						ScreenSignalReceived(name, b);
 					};
-					screenSignals[i].OnSignalEmittedWithParam.AddListener(ev);
-					signalDict.Add(screenSignals[i], ev);
+					ScreenSignals[i].OnSignalEmittedWithParam.AddListener(ev);
+					signalDict.Add(ScreenSignals[i], ev);
 				}
 		}
 
@@ -64,23 +54,11 @@ namespace Kalkatos.UnityGame.Screens
 				item.Key.OnSignalEmittedWithParam.RemoveListener(item.Value);
 		}
 
-		private void LoadScreenSignals ()
-		{
-#if UNITY_EDITOR
-			screenSignals = UnityEditor.AssetDatabase.FindAssets("t:" + nameof(ScreenSignal))
-				.Select(x => UnityEditor.AssetDatabase.GUIDToAssetPath(x))
-				.Select(x => UnityEditor.AssetDatabase.LoadAssetAtPath<ScreenSignal>(x)).ToArray();
-			UnityEditor.EditorUtility.SetDirty(gameObject);
-			Logger.Log("screenSignals = " + JsonConvert.SerializeObject(screenSignals, Formatting.Indented));
-#endif
-		}
-
 		private void ScreenSignalReceived (string signal, bool b)
 		{
-			Scene scene = SceneManager.GetSceneByName(signal);
-			Logger.Log($"Screen signal received: {signal} {b} || Scene: {scene}");
-			if (scene.IsValid())
-				LoadScene(signal);
+			Logger.Log($"Screen timeoutSignal received: {signal}");
+			try { LoadScene(signal); }
+			catch (Exception) { }
 		}
 
 		private void HandleSceneChanged (Scene oldScene, Scene newScene)
@@ -92,21 +70,30 @@ namespace Kalkatos.UnityGame.Screens
 		{
 			if (loadedScene == sceneName)
 			{
-				Debug.Log($"Trying to load scene that is already loaded: {sceneName} Use ReloadScene() instead.");
+				Debug.LogWarning($"Trying to load scene that is already loaded: {sceneName} Use ReloadScene() instead.");
 				return; 
 			}
 			SceneManager.LoadScene(sceneName);
 			Debug.Log("Loading scene " + sceneName);
 		}
 
-		private static void ReloadScene ()
-		{
-			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-		}
-
 		private static ScreenSignal GetScreenSignal (string name)
 		{
-			return Instance.screenSignals?.First(x => x.name == name);
+			return Instance.ScreenSignals?.First(x => x.name == name);
+		}
+
+		private static void SetScreenStatus (string name, bool b)
+		{
+			var screen = GetScreenSignal(name);
+			if (screen != null)
+				screen.EmitWithParam(b);
+			else
+				Logger.LogError($"Couldn't find screen {name}");
+		}
+
+		public static void ReloadScene ()
+		{
+			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 		}
 
 		public static void GoToNextScene (string next = "")
@@ -137,15 +124,6 @@ namespace Kalkatos.UnityGame.Screens
 				}
 			}
 			LoadScene(nextScreen.SceneName);
-		}
-
-		public static void SetScreenStatus (string name, bool b)
-		{
-			var screen = GetScreenSignal(name);
-			if (screen != null)
-				screen.EmitWithParam(b);
-			else
-				Logger.LogError($"Couldn't find screen {name}");
 		}
 
 		public static void OpenScreen (string name)

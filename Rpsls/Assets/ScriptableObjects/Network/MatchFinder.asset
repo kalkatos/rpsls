@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30fd5666cc85d3745be1fb255227989b, type: 3}
+  m_Name: MatchFinder
+  m_EditorClassIdentifier: 
+  onSuccess: {fileID: 11400000, guid: 5b4eb4e4bae2c0842849a34e9c46a814, type: 2}
+  onFailure: {fileID: 11400000, guid: acde1a9b833842d4bab6d55e65019471, type: 2}
