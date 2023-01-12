@@ -12,14 +12,12 @@ namespace Kalkatos.UnityGame.Signals
 		{
 			base.Emit();
 			base.EmitWithParam(DefaultState);
-			Logger.Log("Emitted signals for Screen " + name);
 		}
 
 		public override void EmitWithParam (bool param)
 		{
 			base.Emit();
 			base.EmitWithParam(param);
-			Logger.Log("Emitted signals for Screen " + name);
 		}
 	}
 }
