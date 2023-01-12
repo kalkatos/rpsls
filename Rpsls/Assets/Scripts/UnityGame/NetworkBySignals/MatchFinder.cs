@@ -26,4 +26,10 @@ namespace Kalkatos.UnityGame.NetworkBySignals
 				});
 		}
 	}
+
+	public class MatchGetter : ScriptableObject
+	{
+		[SerializeField] private Signal onSuccess;
+		[SerializeField] private Signal onFailure;
+	}
 }

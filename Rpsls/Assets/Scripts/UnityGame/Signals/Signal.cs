@@ -12,7 +12,6 @@ namespace Kalkatos.UnityGame.Signals
 		public virtual void Emit ()
 		{
 			OnSignalEmitted?.Invoke();
-			Logger.Log("Emitted timeoutSignal: " + name);
 		}
 	}
 
@@ -22,7 +21,6 @@ namespace Kalkatos.UnityGame.Signals
 		public virtual void EmitWithParam (T param) 
 		{
 			OnSignalEmittedWithParam?.Invoke(param);
-			Logger.Log("Emitted timeoutSignal (Typed): " + name);
 		}
 	}
 }
