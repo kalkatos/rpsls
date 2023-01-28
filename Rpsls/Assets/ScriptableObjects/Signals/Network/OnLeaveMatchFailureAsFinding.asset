@@ -9,8 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30fd5666cc85d3745be1fb255227989b, type: 3}
-  m_Name: MatchFinder
+  m_Script: {fileID: 11500000, guid: c908ebabdd980b64a8e6b3199822e23d, type: 3}
+  m_Name: OnLeaveMatchFailureAsFinding
   m_EditorClassIdentifier: 
-  onSuccess: {fileID: 11400000, guid: 5b4eb4e4bae2c0842849a34e9c46a814, type: 2}
-  onFailure: {fileID: 11400000, guid: acde1a9b833842d4bab6d55e65019471, type: 2}
+  OnSignalEmitted:
+    m_PersistentCalls:
+      m_Calls: []

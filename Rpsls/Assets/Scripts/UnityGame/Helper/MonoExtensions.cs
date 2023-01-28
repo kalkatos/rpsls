@@ -6,7 +6,7 @@ namespace Kalkatos.UnityGame
 {
     public static class MonoExtensions
     {
-        private static IEnumerator WaitCoroutine (float time, Action callback)
+        public static IEnumerator WaitCoroutine (float time, Action callback)
         {
             float endTime = Time.time + time;
             while (Time.time < endTime)

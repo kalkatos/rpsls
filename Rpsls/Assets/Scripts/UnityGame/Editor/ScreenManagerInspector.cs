@@ -3,15 +3,15 @@ using UnityEditor;
 using Kalkatos.UnityGame.Screens;
 using Kalkatos.UnityGame.Signals;
 using Sirenix.OdinInspector.Editor;
+using UnityEngine;
 
 namespace Kalkatos.UnityGame.Editor
 {
 	[CustomEditor(typeof(ScreenManager))]
     public class ScreenManagerInspector : OdinEditor
     {
-		protected override void OnEnable ()
+		private void GetScreenSignals ()
 		{
-			base.OnEnable();
 			ScreenManager manager = (ScreenManager)target;
 			ScreenSignal[] screenSignals = AssetDatabase.FindAssets("t:" + nameof(ScreenSignal))
 				.Select(x => AssetDatabase.GUIDToAssetPath(x))
@@ -22,6 +22,19 @@ namespace Kalkatos.UnityGame.Editor
 				manager.ScreenSignals = screenSignals;
 				EditorUtility.SetDirty(manager);
 			}
+		}
+
+		protected override void OnEnable ()
+		{
+			base.OnEnable();
+			GetScreenSignals();
+		}
+
+		public override void OnInspectorGUI ()
+		{
+			base.OnInspectorGUI();
+			if (GUILayout.Button("Force Get Screen Signals"))
+				GetScreenSignals();
 		}
 	}
 }

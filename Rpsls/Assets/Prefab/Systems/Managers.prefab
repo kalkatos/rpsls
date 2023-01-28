@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4226637753447291960}
-  - component: {fileID: 7560535550127891382}
   - component: {fileID: 799814901099012139}
   m_Layer: 0
   m_Name: Managers
@@ -33,48 +32,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7560535550127891382
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4226637753447291966}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fbdb6b7b8b99f5e459f8212c74db9e03, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  screenTransitions:
-  - Origin:
-      SceneName: Connection
-    PossibleNext:
-    - SceneName: Menu
-  - Origin:
-      SceneName: Menu
-    PossibleNext:
-    - SceneName: Login
-    - SceneName: Lobby
-    - SceneName: Game
-  - Origin:
-      SceneName: Login
-    PossibleNext:
-    - SceneName: Menu
-  - Origin:
-      SceneName: Lobby
-    PossibleNext:
-    - SceneName: Game
-    - SceneName: Menu
-  - Origin:
-      SceneName: Game
-    PossibleNext:
-    - SceneName: Menu
-  ScreenSignals:
-  - {fileID: 11400000, guid: 36d76a363875b244cb0c2d11b8d727cb, type: 2}
-  - {fileID: 11400000, guid: e3bf37822cb8516429c28aea7a3bb990, type: 2}
-  - {fileID: 11400000, guid: 21c9ef5eb14ea2e40b71829dca0dcfdf, type: 2}
-  - {fileID: 11400000, guid: 26052b75b821d804f84aa7214f18a129, type: 2}
-  - {fileID: 11400000, guid: 0601b19581be1c547beade73f2b81967, type: 2}
 --- !u!114 &799814901099012139
 MonoBehaviour:
   m_ObjectHideFlags: 0
