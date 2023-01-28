@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Kalkatos.Network.Model;
+using Kalkatos.Network.Unity;
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -11,6 +13,7 @@ namespace Kalkatos.UnityGame.Signals
 
 		public virtual void Emit ()
 		{
+			Logger.Log($"[Signal] {name} emitted.");
 			OnSignalEmitted?.Invoke();
 		}
 	}
@@ -20,6 +23,7 @@ namespace Kalkatos.UnityGame.Signals
 		public UnityEvent<T> OnSignalEmittedWithParam;
 		public virtual void EmitWithParam (T param) 
 		{
+			Logger.Log($"[TypedSignal] {name} emitted. Param = {param}");
 			OnSignalEmittedWithParam?.Invoke(param);
 		}
 	}

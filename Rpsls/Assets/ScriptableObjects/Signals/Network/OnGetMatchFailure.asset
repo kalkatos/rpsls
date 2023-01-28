@@ -9,8 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8fca46f6a8ae19c4ba7800dd80d58b3c, type: 3}
-  m_Name: Connector
+  m_Script: {fileID: 11500000, guid: c908ebabdd980b64a8e6b3199822e23d, type: 3}
+  m_Name: OnGetMatchFailure
   m_EditorClassIdentifier: 
-  onConnected: {fileID: 11400000, guid: aad8f10ad275d2844a6113ff56a49452, type: 2}
-  onNotConnectedError: {fileID: 11400000, guid: 09dbb000f861c2845a1f6e351e96cc74, type: 2}
+  OnSignalEmitted:
+    m_PersistentCalls:
+      m_Calls: []

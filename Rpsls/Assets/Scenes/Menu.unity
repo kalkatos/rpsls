@@ -714,42 +714,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8073681717421355509}
     m_Modifications:
-    - target: {fileID: 4175405611624324570, guid: 54b574c19377b68428fecf006a1d2133, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4478728416896090638, guid: 54b574c19377b68428fecf006a1d2133, type: 3}
-      propertyPath: signal
-      value: 
-      objectReference: {fileID: 11400000, guid: 36d76a363875b244cb0c2d11b8d727cb, type: 2}
-    - target: {fileID: 4478728416896090638, guid: 54b574c19377b68428fecf006a1d2133, type: 3}
-      propertyPath: action.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4478728416896090638, guid: 54b574c19377b68428fecf006a1d2133, type: 3}
-      propertyPath: action.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4478728416896090638, guid: 54b574c19377b68428fecf006a1d2133, type: 3}
-      propertyPath: action.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 5333167888117873098}
-    - target: {fileID: 4478728416896090638, guid: 54b574c19377b68428fecf006a1d2133, type: 3}
-      propertyPath: action.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4478728416896090638, guid: 54b574c19377b68428fecf006a1d2133, type: 3}
-      propertyPath: action.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: Activate
-      objectReference: {fileID: 0}
-    - target: {fileID: 4478728416896090638, guid: 54b574c19377b68428fecf006a1d2133, type: 3}
-      propertyPath: action.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: Kalkatos.UnityGame.ObjectCluster, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 4478728416896090638, guid: 54b574c19377b68428fecf006a1d2133, type: 3}
-      propertyPath: action.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
     - target: {fileID: 4478728416896090736, guid: 54b574c19377b68428fecf006a1d2133, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -838,14 +802,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Finding Match Screen
       objectReference: {fileID: 0}
-    - target: {fileID: 4478728416991604353, guid: 54b574c19377b68428fecf006a1d2133, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4490108590562455284, guid: 54b574c19377b68428fecf006a1d2133, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 54b574c19377b68428fecf006a1d2133, type: 3}
 --- !u!224 &5333167888117873097 stripped
@@ -853,17 +809,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 4478728416896090736, guid: 54b574c19377b68428fecf006a1d2133, type: 3}
   m_PrefabInstance: {fileID: 5333167888117873096}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &5333167888117873098 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4478728416896090737, guid: 54b574c19377b68428fecf006a1d2133, type: 3}
-  m_PrefabInstance: {fileID: 5333167888117873096}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9650dd6d9087ff14a953c79db402b94f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &8073681717421355509
 RectTransform:
   m_ObjectHideFlags: 0

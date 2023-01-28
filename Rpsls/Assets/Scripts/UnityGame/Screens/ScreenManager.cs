@@ -15,7 +15,7 @@ namespace Kalkatos.UnityGame.Screens
 
 		[SerializeField] private ScreenTransition[] screenTransitions;
 
-		[HideInInspector] public ScreenSignal[] ScreenSignals;
+		public ScreenSignal[] ScreenSignals;
 
 		private static string loadedScene;
 		private static Dictionary<ScreenSignal, UnityAction<bool>> signalDict = new Dictionary<ScreenSignal, UnityAction<bool>>();
@@ -70,11 +70,11 @@ namespace Kalkatos.UnityGame.Screens
 		{
 			if (loadedScene == sceneName)
 			{
-				Debug.LogWarning($"Trying to load scene that is already loaded: {sceneName} Use ReloadScene() instead.");
+				Logger.LogWarning($"Trying to load scene that is already loaded: {sceneName} Use ReloadScene() instead.");
 				return; 
 			}
 			SceneManager.LoadScene(sceneName);
-			Debug.Log("Loading scene " + sceneName);
+			Logger.Log("Loading scene " + sceneName);
 		}
 
 		private static ScreenSignal GetScreenSignal (string name)

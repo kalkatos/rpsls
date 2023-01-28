@@ -48,9 +48,10 @@ MonoBehaviour:
   onStartEvent:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 11400000, guid: 840491dbd469c0c46b69d80178c08cd2, type: 2}
-        m_TargetAssemblyTypeName: Kalkatos.Network.Unity.Connector, Assembly-CSharp
-        m_MethodName: TryConnection
+      - m_Target: {fileID: 11400000, guid: 86eef279e191ac24d932ff87bd66dd38, type: 2}
+        m_TargetAssemblyTypeName: Kalkatos.Network.Unity.NetworkEventDispatcher,
+          Assembly-CSharp
+        m_MethodName: Connect
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
