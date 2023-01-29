@@ -12,4 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 059d7237c5151794abf5a96510fd80f9, type: 3}
   m_Name: Menu
   m_EditorClassIdentifier: 
-  Param: 0
+  OnSignalEmitted:
+    m_PersistentCalls:
+      m_Calls: []
+  OnSignalEmittedWithParam:
+    m_PersistentCalls:
+      m_Calls: []
+  LastValue: 0
+  IsScene: 1

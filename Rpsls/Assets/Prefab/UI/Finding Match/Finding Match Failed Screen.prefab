@@ -326,6 +326,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   time: 3
+  loop: 0
+  loopCount: 0
   timeoutSignal: {fileID: 0}
   timeoutEvent:
     m_PersistentCalls:
@@ -342,3 +344,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  loopEndedSignal: {fileID: 0}
+  loopEndedEvent:
+    m_PersistentCalls:
+      m_Calls: []

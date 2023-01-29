@@ -21,9 +21,13 @@ namespace Kalkatos.UnityGame.Signals
 	public abstract class TypedSignal<T> : Signal
 	{
 		public UnityEvent<T> OnSignalEmittedWithParam;
+
+		public T LastValue;
+
 		public virtual void EmitWithParam (T param) 
 		{
 			Logger.Log($"[TypedSignal] {name} emitted. Param = {param}");
+			LastValue = param;
 			OnSignalEmittedWithParam?.Invoke(param);
 		}
 	}
