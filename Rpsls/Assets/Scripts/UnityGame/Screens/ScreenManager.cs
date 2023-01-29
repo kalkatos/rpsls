@@ -3,9 +3,6 @@ using System.Linq;
 using UnityEngine;
 using NaughtyAttributes;
 using UnityEngine.SceneManagement;
-using Kalkatos.UnityGame.Signals;
-using System.Collections.Generic;
-using UnityEngine.Events;
 
 namespace Kalkatos.UnityGame.Screens
 {
@@ -15,10 +12,7 @@ namespace Kalkatos.UnityGame.Screens
 
 		[SerializeField] private ScreenTransition[] screenTransitions;
 
-		public ScreenSignal[] ScreenSignals;
-
 		private static string loadedScene;
-		private static Dictionary<ScreenSignal, UnityAction<bool>> signalDict = new Dictionary<ScreenSignal, UnityAction<bool>>();
 
 		private void Awake ()
 		{
@@ -33,32 +27,11 @@ namespace Kalkatos.UnityGame.Screens
 			DontDestroyOnLoad(this);
 			SceneManager.activeSceneChanged += HandleSceneChanged;
 			loadedScene = SceneManager.GetActiveScene().name;
-
-			if (ScreenSignals != null)
-				for (int i = 0; i < ScreenSignals.Length; i++)
-				{
-					string name = ScreenSignals[i].name;
-					UnityAction<bool> ev = (b) =>
-					{
-						ScreenSignalReceived(name, b);
-					};
-					ScreenSignals[i].OnSignalEmittedWithParam.AddListener(ev);
-					signalDict.Add(ScreenSignals[i], ev);
-				}
 		}
 
 		private void OnDestroy ()
 		{
 			SceneManager.activeSceneChanged -= HandleSceneChanged;
-			foreach (var item in signalDict)
-				item.Key.OnSignalEmittedWithParam.RemoveListener(item.Value);
-		}
-
-		private void ScreenSignalReceived (string signal, bool b)
-		{
-			Logger.Log($"Screen timeoutSignal received: {signal}");
-			try { LoadScene(signal); }
-			catch (Exception) { }
 		}
 
 		private void HandleSceneChanged (Scene oldScene, Scene newScene)
@@ -75,20 +48,6 @@ namespace Kalkatos.UnityGame.Screens
 			}
 			SceneManager.LoadScene(sceneName);
 			Logger.Log("Loading scene " + sceneName);
-		}
-
-		private static ScreenSignal GetScreenSignal (string name)
-		{
-			return Instance.ScreenSignals?.First(x => x.name == name);
-		}
-
-		private static void SetScreenStatus (string name, bool b)
-		{
-			var screen = GetScreenSignal(name);
-			if (screen != null)
-				screen.EmitWithParam(b);
-			else
-				Logger.LogError($"Couldn't find screen {name}");
 		}
 
 		public static void ReloadScene ()
@@ -124,26 +83,6 @@ namespace Kalkatos.UnityGame.Screens
 				}
 			}
 			LoadScene(nextScreen.SceneName);
-		}
-
-		public static void OpenScreen (string name)
-		{
-			SetScreenStatus(name, true);
-		}
-
-		public static void OpenScreen (ScreenSignal signal)
-		{
-			signal.EmitWithParam(true);
-		}
-
-		public static void CloseScreen (string name)
-		{
-			SetScreenStatus(name, false);
-		}
-
-		public static void CloseScreen (ScreenSignal signal)
-		{
-			signal.EmitWithParam(false);
 		}
 	}
 
