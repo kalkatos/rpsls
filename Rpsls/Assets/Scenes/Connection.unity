@@ -552,22 +552,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d29bd0bc7060be74598cf2af10944016, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  signal: {fileID: 11400000, guid: 09dbb000f861c2845a1f6e351e96cc74, type: 2}
+  receivers:
+  - signal: {fileID: 11400000, guid: 09dbb000f861c2845a1f6e351e96cc74, type: 2}
+    action:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1030697266}
+          m_TargetAssemblyTypeName: Kalkatos.UnityGame.ObjectCluster, Assembly-CSharp
+          m_MethodName: Deactivate
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  signal: {fileID: 0}
   action:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1030697266}
-        m_TargetAssemblyTypeName: Kalkatos.UnityGame.ObjectCluster, Assembly-CSharp
-        m_MethodName: Deactivate
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &1074219545
 GameObject:
   m_ObjectHideFlags: 0
@@ -633,22 +638,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d29bd0bc7060be74598cf2af10944016, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  signal: {fileID: 11400000, guid: 09dbb000f861c2845a1f6e351e96cc74, type: 2}
+  receivers:
+  - signal: {fileID: 11400000, guid: 09dbb000f861c2845a1f6e351e96cc74, type: 2}
+    action:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1074219547}
+          m_TargetAssemblyTypeName: Kalkatos.UnityGame.ObjectCluster, Assembly-CSharp
+          m_MethodName: Activate
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  signal: {fileID: 0}
   action:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1074219547}
-        m_TargetAssemblyTypeName: Kalkatos.UnityGame.ObjectCluster, Assembly-CSharp
-        m_MethodName: Activate
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1001 &1082796138
 PrefabInstance:
   m_ObjectHideFlags: 0
