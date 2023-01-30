@@ -8,6 +8,12 @@ namespace Kalkatos.UnityGame.Signals
 		[SerializeField] private TMP_Text textComponent;
 		[SerializeField] private SignalString signal;
 
+		private void Reset ()
+		{
+			if (textComponent == null)
+				textComponent = GetComponent<TMP_Text>();
+		}
+
 		private void OnEnable ()
 		{
 			signal.OnSignalEmittedWithParam.AddListener(UpdateText);
