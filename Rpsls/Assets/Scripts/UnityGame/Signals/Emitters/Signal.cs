@@ -13,7 +13,8 @@ namespace Kalkatos.UnityGame.Signals
 
 		public virtual void Emit ()
 		{
-			Logger.Log($"[Signal] {name} emitted.");
+			if (SignalsSettings.Instance.EmitDebug)
+				Logger.Log($"[Signal] {name} emitted.");
 			OnSignalEmitted?.Invoke();
 		}
 	}
@@ -26,7 +27,8 @@ namespace Kalkatos.UnityGame.Signals
 
 		public virtual void EmitWithParam (T param) 
 		{
-			Logger.Log($"[TypedSignal] {name} emitted. Param = {param}");
+			if (SignalsSettings.Instance.EmitDebug)
+				Logger.Log($"[TypedSignal] {name} emitted. Param = {param}");
 			LastValue = param;
 			OnSignalEmittedWithParam?.Invoke(param);
 		}

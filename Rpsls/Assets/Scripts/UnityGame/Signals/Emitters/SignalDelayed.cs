@@ -7,12 +7,11 @@ namespace Kalkatos.UnityGame.Signals
 	public class SignalDelayed : Signal
 	{
 		public float Delay;
-		public Signal callbackSignal;
 		public UnityEvent callbackEvent;
 
 		public override void Emit ()
 		{
-			TimedEvent.Create(Delay, callbackSignal, callbackEvent);
+			TimedEvent.Create(Delay, callbackEvent);
 		}
 	}
 }
