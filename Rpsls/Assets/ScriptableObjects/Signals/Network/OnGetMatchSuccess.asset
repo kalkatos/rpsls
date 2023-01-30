@@ -15,10 +15,23 @@ MonoBehaviour:
   OnSignalEmitted:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 11400000, guid: e3bf37822cb8516429c28aea7a3bb990, type: 2}
+      - m_Target: {fileID: 11400000, guid: f5b2b8c4096fcdf4f9d217cb24bdc6fa, type: 2}
         m_TargetAssemblyTypeName: Kalkatos.UnityGame.Signals.ScreenSignal, Assembly-CSharp
         m_MethodName: Emit
         m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 11400000, guid: 3206f12136a2d3c41999502d3c88dc29, type: 2}
+        m_TargetAssemblyTypeName: Kalkatos.UnityGame.Signals.TypedSignal`1[[System.Boolean,
+          mscorlib
+        m_MethodName: EmitWithParam
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine

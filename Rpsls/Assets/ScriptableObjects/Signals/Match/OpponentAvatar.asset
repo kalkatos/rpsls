@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 059d7237c5151794abf5a96510fd80f9, type: 3}
-  m_Name: FindingMatch
+  m_Script: {fileID: 11500000, guid: bb6d6cca74288504bb771a097b89bbb2, type: 3}
+  m_Name: OpponentAvatar
   m_EditorClassIdentifier: 
   OnSignalEmitted:
     m_PersistentCalls:
@@ -19,4 +19,4 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   LastValue: 0
-  IsScene: 1
+  Param: 0
