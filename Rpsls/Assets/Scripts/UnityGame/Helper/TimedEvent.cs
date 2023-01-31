@@ -2,7 +2,6 @@
 using UnityEngine.Events;
 using Sirenix.OdinInspector;
 using System;
-using UnityEditor.PackageManager;
 
 namespace Kalkatos.UnityGame
 {

@@ -51,10 +51,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d29bd0bc7060be74598cf2af10944016, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  signal: {fileID: 0}
-  action:
-    m_PersistentCalls:
-      m_Calls: []
+  receivers: []
 --- !u!114 &6591935433565723370
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -102,10 +99,10 @@ RectTransform:
   m_Father: {fileID: 6591935433565723371}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.96, y: 13.714}
-  m_SizeDelta: {x: 1879.1, y: 1052.7}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -2.427, y: -20}
+  m_SizeDelta: {x: -305.051, y: -40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6591935433654908423
 CanvasRenderer:
