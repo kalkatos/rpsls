@@ -243,9 +243,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4478728416896090736}
     m_Modifications:
+    - target: {fileID: 1132983369339964286, guid: d929751cff6ea114a9757d4702b7272f, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 76.93
+      objectReference: {fileID: 0}
     - target: {fileID: 1314820970788991048, guid: d929751cff6ea114a9757d4702b7272f, type: 3}
       propertyPath: m_text
       value: Cancel
+      objectReference: {fileID: 0}
+    - target: {fileID: 1314820970788991048, guid: d929751cff6ea114a9757d4702b7272f, type: 3}
+      propertyPath: m_enableAutoSizing
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2834133796756384431, guid: d929751cff6ea114a9757d4702b7272f, type: 3}
       propertyPath: m_Pivot.x
@@ -277,11 +285,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2834133796756384431, guid: d929751cff6ea114a9757d4702b7272f, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 260
+      value: 371.74
       objectReference: {fileID: 0}
     - target: {fileID: 2834133796756384431, guid: d929751cff6ea114a9757d4702b7272f, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 100
+      value: 142.35
       objectReference: {fileID: 0}
     - target: {fileID: 2834133796756384431, guid: d929751cff6ea114a9757d4702b7272f, type: 3}
       propertyPath: m_LocalPosition.x
@@ -317,7 +325,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2834133796756384431, guid: d929751cff6ea114a9757d4702b7272f, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -344
+      value: -544
       objectReference: {fileID: 0}
     - target: {fileID: 2834133796756384431, guid: d929751cff6ea114a9757d4702b7272f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -393,12 +401,46 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d929751cff6ea114a9757d4702b7272f, type: 3}
+--- !u!1 &568841661253931721 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2834133796756384432, guid: d929751cff6ea114a9757d4702b7272f, type: 3}
+  m_PrefabInstance: {fileID: 2355439600302569593}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1032291262213109959
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 568841661253931721}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d29bd0bc7060be74598cf2af10944016, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  receivers:
+  - signal: {fileID: 11400000, guid: b151b8637088ae548b8aa7af1d20a128, type: 2}
+    action:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 7901468495692829524}
+          m_TargetAssemblyTypeName: UnityEngine.UI.Selectable, UnityEngine.UI
+          m_MethodName: set_interactable
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!114 &7901468495692829524 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5555071863678970669, guid: d929751cff6ea114a9757d4702b7272f, type: 3}
   m_PrefabInstance: {fileID: 2355439600302569593}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 568841661253931721}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
@@ -426,11 +468,11 @@ PrefabInstance:
     - target: {fileID: 6591935433565723285, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
       propertyPath: receivers.Array.data[1].signal
       value: 
-      objectReference: {fileID: 11400000, guid: ccf152a02a7eac34e96a3bc36c6e6910, type: 2}
+      objectReference: {fileID: 11400000, guid: d44517b07d6ca2f418b919661ecc2240, type: 2}
     - target: {fileID: 6591935433565723285, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
       propertyPath: receivers.Array.data[2].signal
       value: 
-      objectReference: {fileID: 11400000, guid: d44517b07d6ca2f418b919661ecc2240, type: 2}
+      objectReference: {fileID: 11400000, guid: ccf152a02a7eac34e96a3bc36c6e6910, type: 2}
     - target: {fileID: 6591935433565723285, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
       propertyPath: action.m_PersistentCalls.m_Calls.Array.size
       value: 0
@@ -754,6 +796,33 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6591935433565723368, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
   m_PrefabInstance: {fileID: 7303960763963857051}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1467449622476406621
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4478728416896090739}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77eccfe06d951384c88fb4fa357ca6e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onStartEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5333167888117873099}
+        m_TargetAssemblyTypeName: Kalkatos.UnityGame.TimedEvent, Assembly-CSharp
+        m_MethodName: StartTimer
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &5333167888117873099
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -823,30 +892,3 @@ MonoBehaviour:
   FinalTimeoutEvent:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &1467449622476406621
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4478728416896090739}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 77eccfe06d951384c88fb4fa357ca6e7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onStartEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 5333167888117873099}
-        m_TargetAssemblyTypeName: Kalkatos.UnityGame.TimedEvent, Assembly-CSharp
-        m_MethodName: StartTimer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2

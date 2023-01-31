@@ -5,8 +5,8 @@ namespace Kalkatos.UnityGame.Signals
 {
 	public class TmpTextSignalBinding : MonoBehaviour
 	{
-		[SerializeField] private TMP_Text textComponent;
 		[SerializeField] private SignalString signal;
+		[SerializeField] private TMP_Text textComponent;
 
 		private void Reset ()
 		{

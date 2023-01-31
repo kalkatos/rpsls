@@ -7,8 +7,6 @@ namespace Kalkatos.UnityGame.Signals
 	public class SignalReceiver : MonoBehaviour
 	{
 		[SerializeField] private SignalReceiverBit[] receivers;
-		[SerializeField] private Signal signal;
-		[SerializeField] private UnityEvent action;
 
 		private void Awake ()
 		{
