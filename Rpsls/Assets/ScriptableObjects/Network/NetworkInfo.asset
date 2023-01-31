@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 838ab9915803a1a4686f4fcc49da48f6, type: 3}
-  m_Name: NetworkInfoDispatcher
+  m_Name: NetworkInfo
   m_EditorClassIdentifier: 
   OnPlayerNicknameChanged:
     m_PersistentCalls:
