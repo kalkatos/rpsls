@@ -1,6 +1,6 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+using Sirenix.OdinInspector;
 
 namespace Kalkatos.UnityGame.Signals
 {
@@ -8,21 +8,37 @@ namespace Kalkatos.UnityGame.Signals
 	public class ScreenSignal : TypedSignal<bool>
 	{
 		public bool IsScene;
+		[ShowIf(nameof(IsScene))] public bool LoadAsync;
 
 		public override void Emit ()
 		{
 			base.Emit();
 			base.EmitWithParam(true);
 			if (IsScene)
-				SceneManager.LoadScene(name);
+			{
+				if (LoadAsync)
+					SceneManager.LoadSceneAsync(name);
+				else
+					SceneManager.LoadScene(name);
+			}
 		}
 
 		public override void EmitWithParam (bool param)
 		{
 			base.Emit();
 			base.EmitWithParam(param);
-			if (param && IsScene)
-				SceneManager.LoadScene(name);
+			if (IsScene)
+			{
+				if (param)
+				{
+					if (LoadAsync)
+						SceneManager.LoadSceneAsync(name);
+					else
+						SceneManager.LoadScene(name);
+				}
+				else
+					SceneManager.UnloadSceneAsync(name);
+			}
 		}
 	}
 }
