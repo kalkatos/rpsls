@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 059d7237c5151794abf5a96510fd80f9, type: 3}
-  m_Name: Game
+  m_Script: {fileID: 11500000, guid: a257090b3a755374f89a29aeb9a9f2d4, type: 3}
+  m_Name: MatchReady
   m_EditorClassIdentifier: 
   OnSignalEmitted:
     m_PersistentCalls:
@@ -19,5 +19,4 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   LastValue: 0
-  IsScene: 1
-  LoadAsync: 1
+  Param: 0

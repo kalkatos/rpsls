@@ -798,6 +798,27 @@ MonoBehaviour:
     FinalTimeoutEvent:
       m_PersistentCalls:
         m_Calls: []
+  - time: 5
+    loop: 0
+    loopCount: 0
+    TimeoutEvent:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 11400000, guid: e3bf37822cb8516429c28aea7a3bb990, type: 2}
+          m_TargetAssemblyTypeName: Kalkatos.UnityGame.Signals.ScreenSignal, Assembly-CSharp
+          m_MethodName: Emit
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    FinalTimeoutEvent:
+      m_PersistentCalls:
+        m_Calls: []
   multipleEvents: 0
   loop: 0
   loopCount: 0
