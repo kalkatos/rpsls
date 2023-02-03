@@ -25,26 +25,15 @@ namespace Kalkatos.UnityGame.Signals
 	[Serializable]
 	public class SignalReceiverBit
 	{
-		[OnValueChanged(nameof(VerifySignal))] public Signal signal;
-		[HideInInspector] public bool isAnyOtherTypedSignal;
-		[HideIf(nameof(isAnyOtherTypedSignal))] public UnityEvent action;
-		[HideInInspector] public bool isBoolSignal;
-		[ShowIf(nameof(isBoolSignal))] public UnityEvent<bool> actionBool;
-		[HideInInspector] public bool isStringSignal;
-		[ShowIf(nameof(isStringSignal))] public UnityEvent<string> actionString;
-		[HideInInspector] public bool isIntSignal;
-		[ShowIf(nameof(isIntSignal))] public UnityEvent<int> actionInt;
-
-		private void VerifySignal ()
-		{
-			isAnyOtherTypedSignal = false;
-			isBoolSignal = signal != null && signal is TypedSignal<bool>;
-			isAnyOtherTypedSignal |= isBoolSignal;
-			isStringSignal = signal != null && signal is TypedSignal<string>;
-			isAnyOtherTypedSignal |= isStringSignal;
-			isIntSignal = signal != null && signal is TypedSignal<int>;
-			isAnyOtherTypedSignal |= isIntSignal;
-		}
+		[OnValueChanged(nameof(VerifySignal)), SerializeField] private Signal signal;
+		[HideIf(nameof(isAnyOtherTypedSignal)), SerializeField] private UnityEvent action;
+		[ShowIf(nameof(isBoolSignal)), SerializeField] private UnityEvent<bool> actionBool;
+		[ShowIf(nameof(isStringSignal)), SerializeField] private UnityEvent<string> actionString;
+		[ShowIf(nameof(isIntSignal)), SerializeField] private UnityEvent<int> actionInt;
+		[HideInInspector, SerializeField] private bool isAnyOtherTypedSignal;
+		[HideInInspector, SerializeField] private bool isBoolSignal;
+		[HideInInspector, SerializeField] private bool isStringSignal;
+		[HideInInspector, SerializeField] private bool isIntSignal;
 
 		public void Initialize ()
 		{
@@ -68,6 +57,17 @@ namespace Kalkatos.UnityGame.Signals
 				((TypedSignal<string>)signal)?.OnSignalEmittedWithParam.RemoveListener(HandleStringSignalEmitted);
 			else
 				signal?.OnSignalEmitted.RemoveListener(HandleSignalEmitted);
+		}
+
+		private void VerifySignal ()
+		{
+			isAnyOtherTypedSignal = false;
+			isBoolSignal = signal != null && signal is TypedSignal<bool>;
+			isAnyOtherTypedSignal |= isBoolSignal;
+			isStringSignal = signal != null && signal is TypedSignal<string>;
+			isAnyOtherTypedSignal |= isStringSignal;
+			isIntSignal = signal != null && signal is TypedSignal<int>;
+			isAnyOtherTypedSignal |= isIntSignal;
 		}
 
 		private void HandleSignalEmitted ()
