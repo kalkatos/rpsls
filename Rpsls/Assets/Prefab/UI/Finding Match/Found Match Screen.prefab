@@ -590,8 +590,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: f5b2b8c4096fcdf4f9d217cb24bdc6fa, type: 2}
     - target: {fileID: 6591935433565723285, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
+      propertyPath: receivers.Array.data[0].isBoolSignal
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6591935433565723285, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
       propertyPath: action.m_PersistentCalls.m_Calls.Array.size
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6591935433565723285, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
+      propertyPath: receivers.Array.data[0].isAnyOtherTypedSignal
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6591935433565723285, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
       propertyPath: action.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
@@ -611,11 +619,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6591935433565723285, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
       propertyPath: receivers.Array.data[0].action.m_PersistentCalls.m_Calls.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6591935433565723285, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
       propertyPath: action.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: Kalkatos.UnityGame.ObjectCluster, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 6591935433565723285, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
+      propertyPath: receivers.Array.data[0].actionBool.m_PersistentCalls.m_Calls.Array.size
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6591935433565723285, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
       propertyPath: receivers.Array.data[0].action.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
@@ -626,11 +638,27 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 6193591840604024158}
     - target: {fileID: 6591935433565723285, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
+      propertyPath: receivers.Array.data[0].actionBool.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6591935433565723285, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
       propertyPath: receivers.Array.data[0].action.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6591935433565723285, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
       propertyPath: receivers.Array.data[0].action.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: StartTimer
+      objectReference: {fileID: 0}
+    - target: {fileID: 6591935433565723285, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
+      propertyPath: receivers.Array.data[0].actionBool.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 6193591840604024158}
+    - target: {fileID: 6591935433565723285, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
+      propertyPath: receivers.Array.data[0].actionBool.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6591935433565723285, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
+      propertyPath: receivers.Array.data[0].actionBool.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: StartTimer
       objectReference: {fileID: 0}
     - target: {fileID: 6591935433565723285, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
@@ -642,7 +670,15 @@ PrefabInstance:
       value: Kalkatos.UnityGame.TimedEvent, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 6591935433565723285, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
+      propertyPath: receivers.Array.data[0].actionBool.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Kalkatos.UnityGame.TimedEvent, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 6591935433565723285, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
       propertyPath: receivers.Array.data[0].action.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 6591935433565723285, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
+      propertyPath: receivers.Array.data[0].actionBool.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 6591935433565723368, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
@@ -682,14 +718,6 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6591935433565723371, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6591935433565723371, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6591935433565723371, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -715,14 +743,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6591935433565723371, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6591935433565723371, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6591935433565723371, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
-      propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6591935433565723371, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}

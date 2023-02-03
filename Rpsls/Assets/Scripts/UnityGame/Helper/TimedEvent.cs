@@ -24,7 +24,7 @@ namespace Kalkatos.UnityGame
 			foreach (var ev in events)
 			{
 				ev.SetParent(this);
-				ev.FinalTimeoutEvent.AddListener(HandleEventTimeout);
+				ev.TimeoutEvent.AddListener(HandleEventTimeout);
 			}
 		}
 

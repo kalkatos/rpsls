@@ -53,6 +53,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   receivers:
   - signal: {fileID: 11400000, guid: 09dbb000f861c2845a1f6e351e96cc74, type: 2}
+    isAnyOtherTypedSignal: 0
     action:
       m_PersistentCalls:
         m_Calls:
@@ -68,6 +69,18 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+    isBoolSignal: 0
+    actionBool:
+      m_PersistentCalls:
+        m_Calls: []
+    isStringSignal: 0
+    actionString:
+      m_PersistentCalls:
+        m_Calls: []
+    isIntSignal: 0
+    actionInt:
+      m_PersistentCalls:
+        m_Calls: []
 --- !u!114 &1030697266
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -135,6 +148,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   receivers:
   - signal: {fileID: 11400000, guid: 09dbb000f861c2845a1f6e351e96cc74, type: 2}
+    isAnyOtherTypedSignal: 0
     action:
       m_PersistentCalls:
         m_Calls:
@@ -150,6 +164,18 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+    isBoolSignal: 0
+    actionBool:
+      m_PersistentCalls:
+        m_Calls: []
+    isStringSignal: 0
+    actionString:
+      m_PersistentCalls:
+        m_Calls: []
+    isIntSignal: 0
+    actionInt:
+      m_PersistentCalls:
+        m_Calls: []
 --- !u!114 &1074219547
 MonoBehaviour:
   m_ObjectHideFlags: 0
