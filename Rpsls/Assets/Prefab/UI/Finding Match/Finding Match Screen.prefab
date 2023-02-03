@@ -718,26 +718,6 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6591935433565723371, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 608.73474
-      objectReference: {fileID: 0}
-    - target: {fileID: 6591935433565723371, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 260.8863
-      objectReference: {fileID: 0}
-    - target: {fileID: 6591935433565723371, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.75927305
-      objectReference: {fileID: 0}
-    - target: {fileID: 6591935433565723371, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.75927305
-      objectReference: {fileID: 0}
-    - target: {fileID: 6591935433565723371, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.75927305
-      objectReference: {fileID: 0}
-    - target: {fileID: 6591935433565723371, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -766,14 +746,6 @@ PrefabInstance:
       value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 6591935433565723371, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6591935433565723371, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6591935433565723371, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
@@ -784,10 +756,6 @@ PrefabInstance:
     - target: {fileID: 6591935433565723371, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6591935433654908421, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -2.427002
       objectReference: {fileID: 0}
     - target: {fileID: 6591935433654908442, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
       propertyPath: m_IsActive

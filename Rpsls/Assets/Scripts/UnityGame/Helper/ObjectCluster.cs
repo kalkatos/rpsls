@@ -8,7 +8,7 @@ namespace Kalkatos.UnityGame
 		[SerializeField] private bool useChildren = true;
 		[SerializeField, HideIf(nameof(useChildren))] private GameObject[] objects;
 
-		private void SetActive (bool b)
+		public void SetActive (bool b)
 		{
 			if (useChildren)
 				for (int i = 0; i < transform.childCount; i++)
