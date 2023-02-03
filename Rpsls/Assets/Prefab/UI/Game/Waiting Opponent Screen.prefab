@@ -218,7 +218,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6591935433565723368, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
       propertyPath: m_Name
-      value: Waiting Opponent
+      value: Waiting Opponent Screen
       objectReference: {fileID: 0}
     - target: {fileID: 6591935433565723371, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
       propertyPath: m_Pivot.x
@@ -290,12 +290,44 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
+--- !u!1 &4623158129987219924 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6591935433565723368, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
+  m_PrefabInstance: {fileID: 1969062094941072188}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &323935290058252017
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4623158129987219924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77eccfe06d951384c88fb4fa357ca6e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onStartEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 11400000, guid: c23dbb2de4b5960408450e4cdd9e5242, type: 2}
+        m_TargetAssemblyTypeName: Kalkatos.UnityGame.Signals.ScreenSignal, Assembly-CSharp
+        m_MethodName: EmitWithParam
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &4623158129987219926 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6591935433565723370, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
   m_PrefabInstance: {fileID: 1969062094941072188}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 4623158129987219924}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9650dd6d9087ff14a953c79db402b94f, type: 3}
