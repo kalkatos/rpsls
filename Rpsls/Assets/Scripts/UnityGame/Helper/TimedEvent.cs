@@ -2,6 +2,7 @@
 using UnityEngine.Events;
 using Sirenix.OdinInspector;
 using System;
+using System.Collections;
 
 namespace Kalkatos.UnityGame
 {
@@ -106,9 +107,11 @@ namespace Kalkatos.UnityGame
 		public float time;
 		public bool loop;
 		[ShowIf(nameof(loop))] public int loopCount;
-
+		public bool useUpdateEvent;
 		public UnityEvent TimeoutEvent;
 		[ShowIf(nameof(loop))] public UnityEvent FinalTimeoutEvent;
+		[ShowIf(nameof(useUpdateEvent))] public bool InvertUpdateEvent;
+		[ShowIf(nameof(useUpdateEvent))] public UnityEvent<float> UpdateEvent;
 
 		private int loopCounter;
 		private Coroutine currentWait;
@@ -156,7 +159,21 @@ namespace Kalkatos.UnityGame
 		private void RunTimer (float time)
 		{
 			loopCounter++;
-			currentWait = parent.StartCoroutine(MonoExtensions.WaitCoroutine(time, HandleTimerEnded));
+			currentWait = parent.StartCoroutine(WaitCoroutine(time, HandleTimerEnded));
+		}
+
+		private IEnumerator WaitCoroutine (float time, Action callback)
+		{
+			float startingTime = time;
+			while (time > 0)
+			{
+				time -= Time.deltaTime;
+				if (time < 0)
+					time = 0;
+				UpdateEvent?.Invoke(InvertUpdateEvent ? time / startingTime : 1 - time / startingTime);
+				yield return null;
+			}
+			callback?.Invoke();
 		}
 
 		private void HandleTimerEnded ()

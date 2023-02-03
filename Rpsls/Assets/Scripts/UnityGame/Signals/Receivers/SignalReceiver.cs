@@ -28,12 +28,14 @@ namespace Kalkatos.UnityGame.Signals
 		[OnValueChanged(nameof(VerifySignal)), SerializeField] private Signal signal;
 		[HideIf(nameof(isAnyOtherTypedSignal)), SerializeField] private UnityEvent action;
 		[ShowIf(nameof(isBoolSignal)), SerializeField] private UnityEvent<bool> actionBool;
-		[ShowIf(nameof(isStringSignal)), SerializeField] private UnityEvent<string> actionString;
 		[ShowIf(nameof(isIntSignal)), SerializeField] private UnityEvent<int> actionInt;
+		[ShowIf(nameof(isStringSignal)), SerializeField] private UnityEvent<string> actionString;
+		[ShowIf(nameof(isFloatSignal)), SerializeField] private UnityEvent<float> actionFloat;
 		[HideInInspector, SerializeField] private bool isAnyOtherTypedSignal;
 		[HideInInspector, SerializeField] private bool isBoolSignal;
-		[HideInInspector, SerializeField] private bool isStringSignal;
 		[HideInInspector, SerializeField] private bool isIntSignal;
+		[HideInInspector, SerializeField] private bool isStringSignal;
+		[HideInInspector, SerializeField] private bool isFloatSignal;
 
 		public void Initialize ()
 		{
@@ -43,6 +45,8 @@ namespace Kalkatos.UnityGame.Signals
 				((TypedSignal<int>)signal).OnSignalEmittedWithParam.AddListener(HandleIntSignalEmitted);
 			else if (signal is TypedSignal<string>)
 				((TypedSignal<string>)signal).OnSignalEmittedWithParam.AddListener(HandleStringSignalEmitted);
+			else if (signal is TypedSignal<float>)
+				((TypedSignal<float>)signal).OnSignalEmittedWithParam.AddListener(HandleFloatSignalEmitted);
 			else
 				signal.OnSignalEmitted.AddListener(HandleSignalEmitted);
 		}
@@ -55,6 +59,8 @@ namespace Kalkatos.UnityGame.Signals
 				((TypedSignal<int>)signal)?.OnSignalEmittedWithParam.RemoveListener(HandleIntSignalEmitted);
 			else if (signal is TypedSignal<string>)
 				((TypedSignal<string>)signal)?.OnSignalEmittedWithParam.RemoveListener(HandleStringSignalEmitted);
+			else if (signal is TypedSignal<float>)
+				((TypedSignal<float>)signal).OnSignalEmittedWithParam.RemoveListener(HandleFloatSignalEmitted);
 			else
 				signal?.OnSignalEmitted.RemoveListener(HandleSignalEmitted);
 		}
@@ -63,11 +69,10 @@ namespace Kalkatos.UnityGame.Signals
 		{
 			isAnyOtherTypedSignal = false;
 			isBoolSignal = signal != null && signal is TypedSignal<bool>;
-			isAnyOtherTypedSignal |= isBoolSignal;
-			isStringSignal = signal != null && signal is TypedSignal<string>;
-			isAnyOtherTypedSignal |= isStringSignal;
 			isIntSignal = signal != null && signal is TypedSignal<int>;
-			isAnyOtherTypedSignal |= isIntSignal;
+			isStringSignal = signal != null && signal is TypedSignal<string>;
+			isFloatSignal = signal != null && signal is TypedSignal<float>;
+			isAnyOtherTypedSignal = isBoolSignal || isIntSignal || isStringSignal || isFloatSignal;
 		}
 
 		private void HandleSignalEmitted ()
@@ -88,6 +93,11 @@ namespace Kalkatos.UnityGame.Signals
 		private void HandleStringSignalEmitted (string value)
 		{
 			actionString?.Invoke(value);
+		}
+
+		private void HandleFloatSignalEmitted (float value)
+		{
+			actionFloat?.Invoke(value);
 		}
 	}
 }

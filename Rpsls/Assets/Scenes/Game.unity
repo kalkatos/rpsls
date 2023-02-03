@@ -310,191 +310,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bffd7f09c2d568347b2702ee158c4549, type: 3}
---- !u!1 &1781629312
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1781629315}
-  - component: {fileID: 1781629314}
-  - component: {fileID: 1781629313}
-  - component: {fileID: 1781629316}
-  m_Layer: 0
-  m_Name: Handshaking
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1781629313
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1781629312}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de1cc8c0f9aecf34ea299473550368fe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  events:
-  - time: 2
-    loop: 1
-    loopCount: 14
-    TimeoutEvent:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 11400000, guid: 86eef279e191ac24d932ff87bd66dd38, type: 2}
-          m_TargetAssemblyTypeName: Kalkatos.Network.Unity.NetworkClientSO, Assembly-CSharp
-          m_MethodName: GetMatchState
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-    FinalTimeoutEvent:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 11400000, guid: 397b4aa5aaec1694bb60b12cc8f959b1, type: 2}
-          m_TargetAssemblyTypeName: Kalkatos.UnityGame.Signals.ScreenSignal, Assembly-CSharp
-          m_MethodName: Emit
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  multipleEvents: 0
-  loop: 0
-  loopCount: 0
-  TimeoutEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  AnyTimeoutEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  FinalTimeoutEvent:
-    m_PersistentCalls:
-      m_Calls: []
---- !u!114 &1781629314
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1781629312}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 77eccfe06d951384c88fb4fa357ca6e7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onStartEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 11400000, guid: 86eef279e191ac24d932ff87bd66dd38, type: 2}
-        m_TargetAssemblyTypeName: Kalkatos.Network.Unity.NetworkClientSO, Assembly-CSharp
-        m_MethodName: SendSimpleAction
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: Handshaking
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1781629313}
-        m_TargetAssemblyTypeName: Kalkatos.UnityGame.TimedEvent, Assembly-CSharp
-        m_MethodName: StartTimer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!4 &1781629315
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1781629312}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1781629316
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1781629312}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d29bd0bc7060be74598cf2af10944016, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  receivers:
-  - signal: {fileID: 11400000, guid: 3d046532ebe80d24baa0914c9ecc636f, type: 2}
-    action:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1781629313}
-          m_TargetAssemblyTypeName: Kalkatos.UnityGame.TimedEvent, Assembly-CSharp
-          m_MethodName: Stop
-          m_Mode: 6
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-        - m_Target: {fileID: 11400000, guid: c23dbb2de4b5960408450e4cdd9e5242, type: 2}
-          m_TargetAssemblyTypeName: Kalkatos.UnityGame.Signals.ScreenSignal, Assembly-CSharp
-          m_MethodName: EmitWithParam
-          m_Mode: 6
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-    actionBool:
-      m_PersistentCalls:
-        m_Calls: []
-    actionString:
-      m_PersistentCalls:
-        m_Calls: []
-    actionInt:
-      m_PersistentCalls:
-        m_Calls: []
-    isAnyOtherTypedSignal: 0
-    isBoolSignal: 0
-    isStringSignal: 0
-    isIntSignal: 0
 --- !u!1001 &1982979894
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -559,6 +374,46 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 506465132729493453, guid: a75b5a3ecf2deb04c846b4a31776afa5, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -51.010834
+      objectReference: {fileID: 0}
+    - target: {fileID: 1568309059155149238, guid: a75b5a3ecf2deb04c846b4a31776afa5, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1568309059155149238, guid: a75b5a3ecf2deb04c846b4a31776afa5, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1568309059155149238, guid: a75b5a3ecf2deb04c846b4a31776afa5, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1607523667039406417, guid: a75b5a3ecf2deb04c846b4a31776afa5, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1607523667039406417, guid: a75b5a3ecf2deb04c846b4a31776afa5, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1607523667039406417, guid: a75b5a3ecf2deb04c846b4a31776afa5, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1994297583030884857, guid: a75b5a3ecf2deb04c846b4a31776afa5, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -3.9505005
+      objectReference: {fileID: 0}
+    - target: {fileID: 3770945975018911288, guid: a75b5a3ecf2deb04c846b4a31776afa5, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 108.740295
+      objectReference: {fileID: 0}
+    - target: {fileID: 4306554036018332112, guid: a75b5a3ecf2deb04c846b4a31776afa5, type: 3}
+      propertyPath: m_Name
+      value: Gameplay Screen
+      objectReference: {fileID: 0}
     - target: {fileID: 5477934712507541944, guid: a75b5a3ecf2deb04c846b4a31776afa5, type: 3}
       propertyPath: m_Camera
       value: 
@@ -566,6 +421,30 @@ PrefabInstance:
     - target: {fileID: 6861198048119491263, guid: a75b5a3ecf2deb04c846b4a31776afa5, type: 3}
       propertyPath: m_Name
       value: Game Canvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 6863087170013455026, guid: a75b5a3ecf2deb04c846b4a31776afa5, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -1.000061
+      objectReference: {fileID: 0}
+    - target: {fileID: 6863087170013455026, guid: a75b5a3ecf2deb04c846b4a31776afa5, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -239.70717
+      objectReference: {fileID: 0}
+    - target: {fileID: 7628652354093716517, guid: a75b5a3ecf2deb04c846b4a31776afa5, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7628652354093716517, guid: a75b5a3ecf2deb04c846b4a31776afa5, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7661388640540859586, guid: a75b5a3ecf2deb04c846b4a31776afa5, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7661388640540859586, guid: a75b5a3ecf2deb04c846b4a31776afa5, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7948288808645557536, guid: a75b5a3ecf2deb04c846b4a31776afa5, type: 3}
       propertyPath: m_Pivot.x
@@ -653,3 +532,60 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a75b5a3ecf2deb04c846b4a31776afa5, type: 3}
+--- !u!1001 &2940236919416126388
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2940236917976398388, guid: c2501fc0738d2744dbcf483ef571f3fe, type: 3}
+      propertyPath: m_Name
+      value: Handshaking
+      objectReference: {fileID: 0}
+    - target: {fileID: 2940236917976398391, guid: c2501fc0738d2744dbcf483ef571f3fe, type: 3}
+      propertyPath: m_RootOrder
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2940236917976398391, guid: c2501fc0738d2744dbcf483ef571f3fe, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2940236917976398391, guid: c2501fc0738d2744dbcf483ef571f3fe, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2940236917976398391, guid: c2501fc0738d2744dbcf483ef571f3fe, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2940236917976398391, guid: c2501fc0738d2744dbcf483ef571f3fe, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2940236917976398391, guid: c2501fc0738d2744dbcf483ef571f3fe, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2940236917976398391, guid: c2501fc0738d2744dbcf483ef571f3fe, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2940236917976398391, guid: c2501fc0738d2744dbcf483ef571f3fe, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2940236917976398391, guid: c2501fc0738d2744dbcf483ef571f3fe, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2940236917976398391, guid: c2501fc0738d2744dbcf483ef571f3fe, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2940236917976398391, guid: c2501fc0738d2744dbcf483ef571f3fe, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c2501fc0738d2744dbcf483ef571f3fe, type: 3}
