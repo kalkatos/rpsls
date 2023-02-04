@@ -10,20 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c908ebabdd980b64a8e6b3199822e23d, type: 3}
-  m_Name: OnGetMatchStateSucess
+  m_Name: OnSendButtonClick
   m_EditorClassIdentifier: 
   OnSignalEmitted:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 11400000, guid: 2df8a555a7b1b78488db4df340b66fad, type: 2}
-        m_TargetAssemblyTypeName: Kalkatos.UnityGame.Signals.SignalBool, Assembly-CSharp
-        m_MethodName: Emit
-        m_Mode: 1
+      - m_Target: {fileID: 11400000, guid: 86eef279e191ac24d932ff87bd66dd38, type: 2}
+        m_TargetAssemblyTypeName: Kalkatos.Network.Unity.NetworkClientSO, Assembly-CSharp
+        m_MethodName: SendAction
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 11400000, guid: a616470e66f81e04f886cbc96fb6aee7, type: 2}
+          m_ObjectArgumentAssemblyTypeName: Kalkatos.Network.Unity.ActionSO, Assembly-CSharp
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: TurnFinished
           m_BoolArgument: 0
         m_CallState: 2
