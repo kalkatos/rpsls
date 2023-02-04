@@ -3,19 +3,21 @@ using UnityEngine.Events;
 using Sirenix.OdinInspector;
 using System;
 using System.Collections;
+using UnityEngine.Serialization;
 
 namespace Kalkatos.UnityGame
 {
+
 	public class TimedEvent : MonoBehaviour
 	{
 		[SerializeField] private TimedEventBit[] events;
-		[SerializeField] private bool multipleEvents;
-		[SerializeField, ShowIf(nameof(multipleEvents))] private bool loop;
-		[SerializeField, ShowIf(nameof(multipleEvents)), ShowIf(nameof(loop))] private int loopCount;
+		[SerializeField, FormerlySerializedAs("multipleEvents")] private bool isSequence;
+		[SerializeField, ShowIf(nameof(isSequence)), FormerlySerializedAs("loop")] private bool loopSequence;
+		[SerializeField, ShowIf(nameof(isSequence)), ShowIf(nameof(loopSequence)), FormerlySerializedAs("loopCount")] private int loopSequenceCount;
 
-		[ShowIf(nameof(multipleEvents))] public UnityEvent TimeoutEvent;
-		[ShowIf(nameof(multipleEvents))] public UnityEvent AnyTimeoutEvent;
-		[ShowIf(nameof(multipleEvents)), ShowIf(nameof(loop))] public UnityEvent FinalTimeoutEvent;
+		[ShowIf(nameof(isSequence)), FormerlySerializedAs("TimeoutEvent")] public UnityEvent SequenceTimeoutEvent;
+		[ShowIf(nameof(isSequence))] public UnityEvent AnyTimeoutEvent;
+		[ShowIf(nameof(isSequence)), ShowIf(nameof(loopSequence))] public UnityEvent FinalTimeoutEvent;
 
 		private int currentEvent = 0;
 		private int loopCounter;
@@ -69,8 +71,8 @@ namespace Kalkatos.UnityGame
 			Rewind();
 			if (invoke)
 			{
-				TimeoutEvent?.Invoke();
-				if (loop)
+				SequenceTimeoutEvent?.Invoke();
+				if (loopSequence)
 					FinalTimeoutEvent?.Invoke();
 			}
 		}
@@ -82,10 +84,10 @@ namespace Kalkatos.UnityGame
 			if (currentEvent >= events.Length)
 			{
 				currentEvent = 0;
-				TimeoutEvent?.Invoke();
-				if (loop)
+				SequenceTimeoutEvent?.Invoke();
+				if (loopSequence)
 				{
-					if (loopCount == 0 || loopCounter < loopCount)
+					if (loopSequenceCount == 0 || loopCounter < loopSequenceCount)
 					{
 						loopCounter++;
 						events[currentEvent].StartTimer();
@@ -109,7 +111,7 @@ namespace Kalkatos.UnityGame
 		[ShowIf(nameof(loop))] public int loopCount;
 		public bool useUpdateEvent;
 		public UnityEvent TimeoutEvent;
-		[ShowIf(nameof(loop))] public UnityEvent FinalTimeoutEvent;
+		[ShowIf(nameof(loop)), FormerlySerializedAs("FinalTimeoutEvent")] public UnityEvent EndOfLoopEvent;
 		[ShowIf(nameof(useUpdateEvent))] public bool InvertUpdateEvent;
 		[ShowIf(nameof(useUpdateEvent))] public UnityEvent<float> UpdateEvent;
 
@@ -187,7 +189,7 @@ namespace Kalkatos.UnityGame
 					RunTimer(time);
 				else
 				{
-					FinalTimeoutEvent?.Invoke();
+					EndOfLoopEvent?.Invoke();
 				}
 			}
 		}

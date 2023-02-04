@@ -17,6 +17,18 @@ MonoBehaviour:
       m_Calls: []
   OnSignalEmittedWithParam:
     m_PersistentCalls:
-      m_Calls: []
-  LastValue: 
+      m_Calls:
+      - m_Target: {fileID: 11400000, guid: a616470e66f81e04f886cbc96fb6aee7, type: 2}
+        m_TargetAssemblyTypeName: Kalkatos.Network.Unity.ActionSO, Assembly-CSharp
+        m_MethodName: SetParameter
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  LastValue: ROCK
   Param: 
