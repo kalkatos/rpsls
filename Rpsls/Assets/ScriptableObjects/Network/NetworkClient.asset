@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22a98aeb9ba3a2b419d0dc6edc88f343, type: 3}
   m_Name: NetworkClient
   m_EditorClassIdentifier: 
+  StateBuilder: {fileID: 11400000, guid: efb662086412cf0458505fd7979fe4ba, type: 2}
   OnConnectSuccess:
     m_PersistentCalls:
       m_Calls:
