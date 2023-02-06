@@ -49,16 +49,16 @@ MonoBehaviour:
   onStartEvent:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 11400000, guid: 86eef279e191ac24d932ff87bd66dd38, type: 2}
-        m_TargetAssemblyTypeName: Kalkatos.Network.Unity.NetworkClientSO, Assembly-CSharp
-        m_MethodName: SendSimpleAction
+      - m_Target: {fileID: 11400000, guid: 19c530a1dd9b0eb42bc30250208edb36, type: 2}
+        m_TargetAssemblyTypeName: Kalkatos.Network.Unity.StatePiece, Assembly-CSharp
+        m_MethodName: SetValue
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Handshaking
+          m_StringArgument: 1
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 2940236917976398389}
@@ -105,10 +105,10 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-    FinalTimeoutEvent:
+    EndOfLoopEvent:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 11400000, guid: 397b4aa5aaec1694bb60b12cc8f959b1, type: 2}
+        - m_Target: {fileID: 11400000, guid: 9ee45f3b61c8ff74199113913e6a925a, type: 2}
           m_TargetAssemblyTypeName: Kalkatos.UnityGame.Signals.ScreenSignal, Assembly-CSharp
           m_MethodName: Emit
           m_Mode: 1
@@ -124,10 +124,36 @@ MonoBehaviour:
     UpdateEvent:
       m_PersistentCalls:
         m_Calls: []
-  multipleEvents: 0
-  loop: 0
-  loopCount: 0
-  TimeoutEvent:
+  - time: 4
+    loop: 0
+    loopCount: 0
+    useUpdateEvent: 0
+    TimeoutEvent:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 11400000, guid: 0601b19581be1c547beade73f2b81967, type: 2}
+          m_TargetAssemblyTypeName: Kalkatos.UnityGame.Signals.ScreenSignal, Assembly-CSharp
+          m_MethodName: Emit
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    EndOfLoopEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    InvertUpdateEvent: 0
+    UpdateEvent:
+      m_PersistentCalls:
+        m_Calls: []
+  isSequence: 0
+  loopSequence: 0
+  loopSequenceCount: 0
+  SequenceTimeoutEvent:
     m_PersistentCalls:
       m_Calls: []
   AnyTimeoutEvent:

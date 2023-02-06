@@ -3,7 +3,6 @@ using UnityEngine.Events;
 using Sirenix.OdinInspector;
 using System;
 using System.Collections;
-using UnityEngine.Serialization;
 
 namespace Kalkatos.UnityGame
 {
@@ -11,11 +10,11 @@ namespace Kalkatos.UnityGame
 	public class TimedEvent : MonoBehaviour
 	{
 		[SerializeField] private TimedEventBit[] events;
-		[SerializeField, FormerlySerializedAs("multipleEvents")] private bool isSequence;
-		[SerializeField, ShowIf(nameof(isSequence)), FormerlySerializedAs("loop")] private bool loopSequence;
-		[SerializeField, ShowIf(nameof(isSequence)), ShowIf(nameof(loopSequence)), FormerlySerializedAs("loopCount")] private int loopSequenceCount;
+		[SerializeField] private bool isSequence;
+		[SerializeField, ShowIf(nameof(isSequence))] private bool loopSequence;
+		[SerializeField, ShowIf(nameof(isSequence)), ShowIf(nameof(loopSequence))] private int loopSequenceCount;
 
-		[ShowIf(nameof(isSequence)), FormerlySerializedAs("TimeoutEvent")] public UnityEvent SequenceTimeoutEvent;
+		[ShowIf(nameof(isSequence))] public UnityEvent SequenceTimeoutEvent;
 		[ShowIf(nameof(isSequence))] public UnityEvent AnyTimeoutEvent;
 		[ShowIf(nameof(isSequence)), ShowIf(nameof(loopSequence))] public UnityEvent FinalTimeoutEvent;
 
@@ -111,7 +110,7 @@ namespace Kalkatos.UnityGame
 		[ShowIf(nameof(loop))] public int loopCount;
 		public bool useUpdateEvent;
 		public UnityEvent TimeoutEvent;
-		[ShowIf(nameof(loop)), FormerlySerializedAs("FinalTimeoutEvent")] public UnityEvent EndOfLoopEvent;
+		[ShowIf(nameof(loop))] public UnityEvent EndOfLoopEvent;
 		[ShowIf(nameof(useUpdateEvent))] public bool InvertUpdateEvent;
 		[ShowIf(nameof(useUpdateEvent))] public UnityEvent<float> UpdateEvent;
 

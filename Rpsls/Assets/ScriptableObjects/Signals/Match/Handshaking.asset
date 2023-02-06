@@ -9,19 +9,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 199bd6e455ffc5a4e87dd267bc8b259d, type: 3}
-  m_Name: MyChoiceToSend
+  m_Script: {fileID: 11500000, guid: feba3f24fc6c1fe4fb1c0b93987df3eb, type: 3}
+  m_Name: Handshaking
   m_EditorClassIdentifier: 
-  OnSignalEmitted:
+  key: Handshaking
+  value: 1
+  onKeySet:
     m_PersistentCalls:
       m_Calls: []
-  OnSignalEmittedWithParam:
+  onValueSet:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 11400000, guid: a616470e66f81e04f886cbc96fb6aee7, type: 2}
-        m_TargetAssemblyTypeName: Kalkatos.Network.Unity.ActionSO, Assembly-CSharp
-        m_MethodName: SetParameter
-        m_Mode: 0
+      - m_Target: {fileID: 11400000, guid: 86eef279e191ac24d932ff87bd66dd38, type: 2}
+        m_TargetAssemblyTypeName: Kalkatos.Network.Unity.NetworkClientSO, Assembly-CSharp
+        m_MethodName: SendAction
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -30,5 +32,3 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  LastValue: ROCK
-  Param: 

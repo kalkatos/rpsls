@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5bb01d5bdaf00b4db7b24366cd8c4ae, type: 3}
+  m_Name: StateBuilder
+  m_EditorClassIdentifier: 
+  PublicStatePieces: []
+  PrivateStatePieces:
+  - {fileID: 11400000, guid: 19c530a1dd9b0eb42bc30250208edb36, type: 2}
+  - {fileID: 11400000, guid: d8ec3f68910a4734eb0c506c748c58a0, type: 2}
+  - {fileID: 11400000, guid: 67baad2fcfa431f4cbec8b687ff1dcf3, type: 2}

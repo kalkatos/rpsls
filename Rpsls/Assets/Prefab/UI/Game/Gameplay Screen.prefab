@@ -409,7 +409,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 1
           m_CallState: 2
-    FinalTimeoutEvent:
+    EndOfLoopEvent:
       m_PersistentCalls:
         m_Calls: []
     InvertUpdateEvent: 0
@@ -436,7 +436,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-    FinalTimeoutEvent:
+    EndOfLoopEvent:
       m_PersistentCalls:
         m_Calls: []
     InvertUpdateEvent: 1
@@ -475,7 +475,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-    FinalTimeoutEvent:
+    EndOfLoopEvent:
       m_PersistentCalls:
         m_Calls: []
     InvertUpdateEvent: 0
@@ -512,18 +512,18 @@ PrefabInstance:
     - target: {fileID: 2354673804972540629, guid: fb886555829fa4942b53a01169ab5d67, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 11400000, guid: fbcc725b15975a54792ff5af7c43d6c3, type: 2}
+      objectReference: {fileID: 11400000, guid: d8ec3f68910a4734eb0c506c748c58a0, type: 2}
     - target: {fileID: 2354673804972540629, guid: fb886555829fa4942b53a01169ab5d67, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2354673804972540629, guid: fb886555829fa4942b53a01169ab5d67, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: EmitWithParam
+      value: SetValue
       objectReference: {fileID: 0}
     - target: {fileID: 2354673804972540629, guid: fb886555829fa4942b53a01169ab5d67, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: Kalkatos.UnityGame.Signals.TypedSignal`1[[System.String, mscorlib
+      value: Kalkatos.Network.Unity.StatePiece, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 2354673804972540629, guid: fb886555829fa4942b53a01169ab5d67, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
@@ -1130,18 +1130,18 @@ PrefabInstance:
     - target: {fileID: 2354673804972540629, guid: fb886555829fa4942b53a01169ab5d67, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 11400000, guid: fbcc725b15975a54792ff5af7c43d6c3, type: 2}
+      objectReference: {fileID: 11400000, guid: d8ec3f68910a4734eb0c506c748c58a0, type: 2}
     - target: {fileID: 2354673804972540629, guid: fb886555829fa4942b53a01169ab5d67, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2354673804972540629, guid: fb886555829fa4942b53a01169ab5d67, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: EmitWithParam
+      value: SetValue
       objectReference: {fileID: 0}
     - target: {fileID: 2354673804972540629, guid: fb886555829fa4942b53a01169ab5d67, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: Kalkatos.UnityGame.Signals.TypedSignal`1[[System.String, mscorlib
+      value: Kalkatos.Network.Unity.StatePiece, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 2354673804972540629, guid: fb886555829fa4942b53a01169ab5d67, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
@@ -1359,18 +1359,18 @@ PrefabInstance:
     - target: {fileID: 2354673804972540629, guid: fb886555829fa4942b53a01169ab5d67, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 11400000, guid: fbcc725b15975a54792ff5af7c43d6c3, type: 2}
+      objectReference: {fileID: 11400000, guid: d8ec3f68910a4734eb0c506c748c58a0, type: 2}
     - target: {fileID: 2354673804972540629, guid: fb886555829fa4942b53a01169ab5d67, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2354673804972540629, guid: fb886555829fa4942b53a01169ab5d67, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: EmitWithParam
+      value: SetValue
       objectReference: {fileID: 0}
     - target: {fileID: 2354673804972540629, guid: fb886555829fa4942b53a01169ab5d67, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: Kalkatos.UnityGame.Signals.TypedSignal`1[[System.String, mscorlib
+      value: Kalkatos.Network.Unity.StatePiece, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 2354673804972540629, guid: fb886555829fa4942b53a01169ab5d67, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument

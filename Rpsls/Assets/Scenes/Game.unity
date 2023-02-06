@@ -374,46 +374,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 506465132729493453, guid: a75b5a3ecf2deb04c846b4a31776afa5, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -51.010834
-      objectReference: {fileID: 0}
-    - target: {fileID: 1568309059155149238, guid: a75b5a3ecf2deb04c846b4a31776afa5, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1568309059155149238, guid: a75b5a3ecf2deb04c846b4a31776afa5, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1568309059155149238, guid: a75b5a3ecf2deb04c846b4a31776afa5, type: 3}
-      propertyPath: m_AnchorMin.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1607523667039406417, guid: a75b5a3ecf2deb04c846b4a31776afa5, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1607523667039406417, guid: a75b5a3ecf2deb04c846b4a31776afa5, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1607523667039406417, guid: a75b5a3ecf2deb04c846b4a31776afa5, type: 3}
-      propertyPath: m_AnchorMin.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1994297583030884857, guid: a75b5a3ecf2deb04c846b4a31776afa5, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -3.9505005
-      objectReference: {fileID: 0}
-    - target: {fileID: 3770945975018911288, guid: a75b5a3ecf2deb04c846b4a31776afa5, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 108.740295
-      objectReference: {fileID: 0}
-    - target: {fileID: 4306554036018332112, guid: a75b5a3ecf2deb04c846b4a31776afa5, type: 3}
-      propertyPath: m_Name
-      value: Gameplay Screen
-      objectReference: {fileID: 0}
     - target: {fileID: 5477934712507541944, guid: a75b5a3ecf2deb04c846b4a31776afa5, type: 3}
       propertyPath: m_Camera
       value: 
@@ -421,30 +381,6 @@ PrefabInstance:
     - target: {fileID: 6861198048119491263, guid: a75b5a3ecf2deb04c846b4a31776afa5, type: 3}
       propertyPath: m_Name
       value: Game Canvas
-      objectReference: {fileID: 0}
-    - target: {fileID: 6863087170013455026, guid: a75b5a3ecf2deb04c846b4a31776afa5, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -1.000061
-      objectReference: {fileID: 0}
-    - target: {fileID: 6863087170013455026, guid: a75b5a3ecf2deb04c846b4a31776afa5, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -239.70717
-      objectReference: {fileID: 0}
-    - target: {fileID: 7628652354093716517, guid: a75b5a3ecf2deb04c846b4a31776afa5, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7628652354093716517, guid: a75b5a3ecf2deb04c846b4a31776afa5, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7661388640540859586, guid: a75b5a3ecf2deb04c846b4a31776afa5, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7661388640540859586, guid: a75b5a3ecf2deb04c846b4a31776afa5, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7948288808645557536, guid: a75b5a3ecf2deb04c846b4a31776afa5, type: 3}
       propertyPath: m_Pivot.x
