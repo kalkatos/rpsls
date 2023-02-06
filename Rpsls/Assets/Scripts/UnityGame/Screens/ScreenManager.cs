@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using UnityEngine;
-using NaughtyAttributes;
 using UnityEngine.SceneManagement;
 
 namespace Kalkatos.UnityGame.Screens
@@ -89,7 +88,7 @@ namespace Kalkatos.UnityGame.Screens
 	[Serializable]
 	public class ScenePointer
 	{
-		[Scene] public string SceneName;
+		public string SceneName;
 	}
 
 	[Serializable]
