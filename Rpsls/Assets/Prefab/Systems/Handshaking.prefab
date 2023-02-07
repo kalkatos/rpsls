@@ -61,6 +61,18 @@ MonoBehaviour:
           m_StringArgument: 1
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 11400000, guid: 86eef279e191ac24d932ff87bd66dd38, type: 2}
+        m_TargetAssemblyTypeName: Kalkatos.Network.Unity.NetworkClientSO, Assembly-CSharp
+        m_MethodName: SendAction
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 2940236917976398389}
         m_TargetAssemblyTypeName: Kalkatos.UnityGame.TimedEvent, Assembly-CSharp
         m_MethodName: StartTimer
@@ -87,8 +99,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   events:
   - time: 2
+    loop: 0
+    loopCount: 0
+    useUpdateEvent: 0
+    TimeoutEvent:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 11400000, guid: 86eef279e191ac24d932ff87bd66dd38, type: 2}
+          m_TargetAssemblyTypeName: Kalkatos.Network.Unity.NetworkClientSO, Assembly-CSharp
+          m_MethodName: GetMatchState
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    EndOfLoopEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    InvertUpdateEvent: 0
+    UpdateEvent:
+      m_PersistentCalls:
+        m_Calls: []
+  - time: 5
     loop: 1
-    loopCount: 14
+    loopCount: 6
     useUpdateEvent: 0
     TimeoutEvent:
       m_PersistentCalls:
@@ -175,8 +213,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   receivers:
-  - signal: {fileID: 11400000, guid: 3d046532ebe80d24baa0914c9ecc636f, type: 2}
+  - signal: {fileID: 11400000, guid: 2df8a555a7b1b78488db4df340b66fad, type: 2}
     action:
+      m_PersistentCalls:
+        m_Calls: []
+    actionBool:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 2940236917976398389}
@@ -191,34 +232,6 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-        - m_Target: {fileID: 11400000, guid: c23dbb2de4b5960408450e4cdd9e5242, type: 2}
-          m_TargetAssemblyTypeName: Kalkatos.UnityGame.Signals.ScreenSignal, Assembly-CSharp
-          m_MethodName: EmitWithParam
-          m_Mode: 6
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-        - m_Target: {fileID: 11400000, guid: 2df8a555a7b1b78488db4df340b66fad, type: 2}
-          m_TargetAssemblyTypeName: Kalkatos.UnityGame.Signals.TypedSignal`1[[System.Boolean,
-            mscorlib
-          m_MethodName: EmitWithParam
-          m_Mode: 6
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 1
-          m_CallState: 2
-    actionBool:
-      m_PersistentCalls:
-        m_Calls: []
     actionInt:
       m_PersistentCalls:
         m_Calls: []
@@ -228,8 +241,8 @@ MonoBehaviour:
     actionFloat:
       m_PersistentCalls:
         m_Calls: []
-    isAnyOtherTypedSignal: 0
-    isBoolSignal: 0
+    isAnyOtherTypedSignal: 1
+    isBoolSignal: 1
     isIntSignal: 0
     isStringSignal: 0
     isFloatSignal: 0
