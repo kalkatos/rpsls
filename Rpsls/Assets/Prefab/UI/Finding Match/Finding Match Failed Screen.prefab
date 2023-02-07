@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &7034509372630361933
 RectTransform:
   m_ObjectHideFlags: 0
@@ -332,7 +332,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6591935433654908442, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
@@ -373,6 +373,7 @@ MonoBehaviour:
   - time: 3
     loop: 0
     loopCount: 0
+    useUpdateEvent: 0
     TimeoutEvent:
       m_PersistentCalls:
         m_Calls:
@@ -388,13 +389,17 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-    FinalTimeoutEvent:
+    EndOfLoopEvent:
       m_PersistentCalls:
         m_Calls: []
-  multipleEvents: 0
-  loop: 0
-  loopCount: 0
-  TimeoutEvent:
+    InvertUpdateEvent: 0
+    UpdateEvent:
+      m_PersistentCalls:
+        m_Calls: []
+  isSequence: 0
+  loopSequence: 0
+  loopSequenceCount: 0
+  SequenceTimeoutEvent:
     m_PersistentCalls:
       m_Calls: []
   AnyTimeoutEvent:

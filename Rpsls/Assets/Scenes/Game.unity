@@ -382,6 +382,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Game Canvas
       objectReference: {fileID: 0}
+    - target: {fileID: 6863087170013455026, guid: a75b5a3ecf2deb04c846b4a31776afa5, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -239.70715
+      objectReference: {fileID: 0}
     - target: {fileID: 7948288808645557536, guid: a75b5a3ecf2deb04c846b4a31776afa5, type: 3}
       propertyPath: m_Pivot.x
       value: 0
