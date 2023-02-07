@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc2f931bdd3f9144c820b07c1fae48a4, type: 3}
   m_Name: SignalsSettings
   m_EditorClassIdentifier: 
-  EmitDebug: 1
+  EmitDebug: 0

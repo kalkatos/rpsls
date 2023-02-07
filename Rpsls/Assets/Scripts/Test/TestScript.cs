@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using Kalkatos.Network.Model;
-using System.Linq;
 using Newtonsoft.Json;
 #if UNITY_EDITOR
 using UnityEditor;
@@ -14,34 +10,22 @@ public class TestScript : MonoBehaviour
 	[MenuItem("Test/Test")]
     public static void Test ()
     {
-		StateInfo stateInfo = new StateInfo
-		{
-			PrivateProperties = new Dictionary<string, string> { { "Valae", "1" } },
-			PublicProperties = new Dictionary<string, string> { { "Chimp", "Seux" }, { "Champ", "Doue" } },
-		};
-		HashState(stateInfo);
-		Debug.Log(stateInfo.Hash);
+		Debug.Log(JsonConvert.SerializeObject(new Foo { Index = 1 }));
+	}
 
-		void HashState (StateInfo stateInfo)
+	public class Foo
+	{
+		public int Index;
+		public int Hash;
+
+		public Foo ()
 		{
-			unchecked
-			{
-				stateInfo.Hash = 23;
-				foreach (var item in stateInfo.PublicProperties)
-				{
-					foreach (char c in item.Key)
-						stateInfo.Hash = stateInfo.Hash * 31 + c;
-					foreach (char c in item.Value)
-						stateInfo.Hash = stateInfo.Hash * 31 + c;
-				}
-				foreach (var item in stateInfo.PrivateProperties)
-				{
-					foreach (char c in item.Key)
-						stateInfo.Hash = stateInfo.Hash * 31 + c;
-					foreach (char c in item.Value)
-						stateInfo.Hash = stateInfo.Hash * 31 + c;
-				}
-			}
+			UpdateHash();
+		}
+
+		public void UpdateHash ()
+		{
+			Hash = Index + 3;
 		}
 	}
 

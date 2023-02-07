@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5bb01d5bdaf00b4db7b24366cd8c4ae, type: 3}
   m_Name: StateBuilder
   m_EditorClassIdentifier: 
-  PublicStatePieces: []
+  PublicStatePieces:
+  - {fileID: 11400000, guid: 6455eae98433bda409bb376549a01ee8, type: 2}
   PrivateStatePieces:
   - {fileID: 11400000, guid: 19c530a1dd9b0eb42bc30250208edb36, type: 2}
   - {fileID: 11400000, guid: d8ec3f68910a4734eb0c506c748c58a0, type: 2}

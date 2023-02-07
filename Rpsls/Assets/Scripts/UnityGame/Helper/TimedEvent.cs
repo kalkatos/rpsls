@@ -79,7 +79,9 @@ namespace Kalkatos.UnityGame
 		private void HandleEventTimeout ()
 		{
 			AnyTimeoutEvent?.Invoke();
-			currentEvent++;
+			bool changeEvent = events[currentEvent].IsOverWithLoops;
+			if (changeEvent)
+				currentEvent++;
 			if (currentEvent >= events.Length)
 			{
 				currentEvent = 0;
@@ -95,7 +97,7 @@ namespace Kalkatos.UnityGame
 						FinalTimeoutEvent?.Invoke();
 				}
 			}
-			else
+			else if (changeEvent)
 				events[currentEvent].StartTimer();
 		}
 
@@ -118,7 +120,7 @@ namespace Kalkatos.UnityGame
 		private Coroutine currentWait;
 		private TimedEvent parent;
 
-		public bool Loop { get => loop; set => loop = value; }
+		public bool IsOverWithLoops => !loop || (loopCount > 0 && loopCounter >= loopCount);
 
 		public TimedEventBit (TimedEvent parent)
 		{
@@ -149,7 +151,10 @@ namespace Kalkatos.UnityGame
 		public void Stop (bool invoke = false)
 		{
 			if (currentWait != null)
-				parent.StopCoroutine(currentWait);
+			{
+				Logger.Log("[Timed Event] << STOP >> timed event " + parent.name);
+				parent.StopCoroutine(currentWait); 
+			}
 			Rewind();
 			if (invoke)
 			{
@@ -174,6 +179,7 @@ namespace Kalkatos.UnityGame
 				UpdateEvent?.Invoke(InvertUpdateEvent ? time / startingTime : 1 - time / startingTime);
 				yield return null;
 			}
+			Logger.Log("[Timed Event] >> INVOKE << callback for " + parent.name);
 			callback?.Invoke();
 		}
 

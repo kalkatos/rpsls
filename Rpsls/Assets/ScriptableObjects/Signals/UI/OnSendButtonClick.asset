@@ -18,11 +18,10 @@ MonoBehaviour:
       - m_Target: {fileID: 11400000, guid: 86eef279e191ac24d932ff87bd66dd38, type: 2}
         m_TargetAssemblyTypeName: Kalkatos.Network.Unity.NetworkClientSO, Assembly-CSharp
         m_MethodName: SendAction
-        m_Mode: 2
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 11400000, guid: efb662086412cf0458505fd7979fe4ba, type: 2}
-          m_ObjectArgumentAssemblyTypeName: Kalkatos.Network.Unity.StateBuilder,
-            Assembly-CSharp
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: TurnFinished
