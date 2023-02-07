@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: StateBuilder
   m_EditorClassIdentifier: 
   PublicStatePieces:
-  - {fileID: 11400000, guid: 6455eae98433bda409bb376549a01ee8, type: 2}
+  - {fileID: 11400000, guid: 88e2e3e02c0035c4cbe31a6b6bb9775b, type: 2}
   PrivateStatePieces:
-  - {fileID: 11400000, guid: 19c530a1dd9b0eb42bc30250208edb36, type: 2}
-  - {fileID: 11400000, guid: d8ec3f68910a4734eb0c506c748c58a0, type: 2}
-  - {fileID: 11400000, guid: 67baad2fcfa431f4cbec8b687ff1dcf3, type: 2}
+  - {fileID: 11400000, guid: 2758d9185f3a30b49b08ac365c967b06, type: 2}
+  - {fileID: 11400000, guid: 276a560ed99305d4a9740b54b91ad27b, type: 2}
+  - {fileID: 11400000, guid: 8404a8763994cf745a5124dc1c5bf379, type: 2}

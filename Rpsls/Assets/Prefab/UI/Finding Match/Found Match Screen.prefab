@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &159545067
 RectTransform:
   m_ObjectHideFlags: 0
@@ -35,7 +35,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -30}
+  m_AnchoredPosition: {x: 0, y: -105}
   m_SizeDelta: {x: 936.85, y: 234.21}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &159545069
@@ -153,7 +153,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1154066828
 RectTransform:
   m_ObjectHideFlags: 0
@@ -171,7 +171,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -460, y: -319}
+  m_AnchoredPosition: {x: -273, y: 110.99999}
   m_SizeDelta: {x: 936.85, y: 234.21}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1154066830
@@ -302,7 +302,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1607027042
 RectTransform:
   m_ObjectHideFlags: 0
@@ -318,10 +318,10 @@ RectTransform:
   m_Father: {fileID: 2297923261496621389}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 276}
-  m_SizeDelta: {x: 936.85, y: 234.21}
+  m_AnchorMin: {x: 0.5, y: 0.7}
+  m_AnchorMax: {x: 0.5, y: 0.7}
+  m_AnchoredPosition: {x: 0, y: 123}
+  m_SizeDelta: {x: 936.85, y: 234.20996}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1607027044
 CanvasRenderer:
@@ -438,7 +438,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2012403980
 RectTransform:
   m_ObjectHideFlags: 0
@@ -456,7 +456,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 460, y: -319}
+  m_AnchoredPosition: {x: 259, y: -372}
   m_SizeDelta: {x: 936.85, y: 234.21}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2012403982
@@ -550,7 +550,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 1
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 0, z: 21.266418, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -735,15 +735,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6591935433565723371, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 6591935433565723371, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 6591935433565723371, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 6591935433565723371, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -757,9 +757,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6591935433654908421, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -2.427002
+      objectReference: {fileID: 0}
     - target: {fileID: 6591935433654908442, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
@@ -800,6 +804,7 @@ MonoBehaviour:
   - time: 1.5
     loop: 0
     loopCount: 0
+    useUpdateEvent: 0
     TimeoutEvent:
       m_PersistentCalls:
         m_Calls:
@@ -815,12 +820,17 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-    FinalTimeoutEvent:
+    EndOfLoopEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    InvertUpdateEvent: 0
+    UpdateEvent:
       m_PersistentCalls:
         m_Calls: []
   - time: 5
     loop: 0
     loopCount: 0
+    useUpdateEvent: 0
     TimeoutEvent:
       m_PersistentCalls:
         m_Calls:
@@ -836,13 +846,17 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-    FinalTimeoutEvent:
+    EndOfLoopEvent:
       m_PersistentCalls:
         m_Calls: []
-  multipleEvents: 0
-  loop: 0
-  loopCount: 0
-  TimeoutEvent:
+    InvertUpdateEvent: 0
+    UpdateEvent:
+      m_PersistentCalls:
+        m_Calls: []
+  isSequence: 0
+  loopSequence: 0
+  loopSequenceCount: 0
+  SequenceTimeoutEvent:
     m_PersistentCalls:
       m_Calls: []
   AnyTimeoutEvent:

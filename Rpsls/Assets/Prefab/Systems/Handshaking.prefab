@@ -49,9 +49,10 @@ MonoBehaviour:
   onStartEvent:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 11400000, guid: 19c530a1dd9b0eb42bc30250208edb36, type: 2}
-        m_TargetAssemblyTypeName: Kalkatos.Network.Unity.StatePiece, Assembly-CSharp
-        m_MethodName: SetValue
+      - m_Target: {fileID: 11400000, guid: 2758d9185f3a30b49b08ac365c967b06, type: 2}
+        m_TargetAssemblyTypeName: Kalkatos.UnityGame.Scriptable.TypedSignal`1[[System.String,
+          mscorlib
+        m_MethodName: EmitWithParam
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
