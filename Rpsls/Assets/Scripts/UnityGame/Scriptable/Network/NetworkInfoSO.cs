@@ -16,22 +16,22 @@ namespace Kalkatos.UnityGame.Scriptable.Network
 
 		public void UpdateMatchStatus ()
 		{
-			if (!NetworkClient.IsConnected)
-			{
-				IsInMatch?.Invoke(false);
-				return;
-			}
-			if (NetworkClient.MatchInfo == null)
-			{
-				IsInMatch?.Invoke(false);
-				return; 
-			}
-			if (string.IsNullOrEmpty(NetworkClient.MatchInfo.MatchId))
-			{
-				IsInMatch?.Invoke(false);
-				return; 
-			}
-			IsInMatch?.Invoke(true);
+			//if (!NetworkClient.IsConnected)
+			//{
+			//	IsInMatch?.Invoke(false);
+			//	return;
+			//}
+			//if (NetworkClient.MatchInfo == null)
+			//{
+			//	IsInMatch?.Invoke(false);
+			//	return; 
+			//}
+			//if (string.IsNullOrEmpty(NetworkClient.MatchInfo.MatchId))
+			//{
+			//	IsInMatch?.Invoke(false);
+			//	return; 
+			//}
+			//IsInMatch?.Invoke(true);
 		}
 
 		public void UpdatePlayerData ()

@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3a7c0f108a441b04dafab40277e4cb97, type: 3}
-  m_Name: TurnReady
+  m_Name: MatchReady
   m_EditorClassIdentifier: 
   OnSignalEmitted:
     m_PersistentCalls:
@@ -24,9 +24,8 @@ MonoBehaviour:
     Event:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 11400000, guid: 2df8a555a7b1b78488db4df340b66fad, type: 2}
-          m_TargetAssemblyTypeName: Kalkatos.UnityGame.Scriptable.TypedSignal`1[[System.Boolean,
-            mscorlib
+        - m_Target: {fileID: 11400000, guid: c23dbb2de4b5960408450e4cdd9e5242, type: 2}
+          m_TargetAssemblyTypeName: Kalkatos.UnityGame.Scriptable.ScreenSignal, Assembly-CSharp
           m_MethodName: EmitWithParam
           m_Mode: 6
           m_Arguments:
@@ -35,6 +34,6 @@ MonoBehaviour:
             m_IntArgument: 0
             m_FloatArgument: 0
             m_StringArgument: 
-            m_BoolArgument: 1
+            m_BoolArgument: 0
           m_CallState: 2
-  Key: TurnReady
+  Key: MatchReady

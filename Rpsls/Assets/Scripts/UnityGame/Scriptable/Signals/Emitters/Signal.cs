@@ -1,6 +1,4 @@
-﻿using Kalkatos.Network.Model;
-using Kalkatos.Network.Unity;
-using Sirenix.OdinInspector;
+﻿using Sirenix.OdinInspector;
 using System;
 using UnityEngine;
 using UnityEngine.Events;
@@ -26,6 +24,8 @@ namespace Kalkatos.UnityGame.Scriptable
 		public UnityEvent<T> OnSignalEmittedWithParam;
 
 		[PropertyOrder(1), FormerlySerializedAs ("LastValue")] public T Value;
+		[Space(10)]
+		[PropertyOrder(2), SerializeField] private ValueBinding<T>[] ValueBindings;
 
 		public virtual void EmitWithParam (T param) 
 		{
@@ -33,6 +33,17 @@ namespace Kalkatos.UnityGame.Scriptable
 				Logger.Log($"[TypedSignal] {name} emitted. Param = {param}");
 			Value = param;
 			OnSignalEmittedWithParam?.Invoke(param);
+			if (ValueBindings != null)
+				foreach (var item in ValueBindings)
+					if (param.Equals(item.ExpectedValue))
+						item.Event?.Invoke(param);
 		}
+	}
+
+	[Serializable]
+	public class ValueBinding<T>
+	{
+		public T ExpectedValue;
+		public UnityEvent<T> Event;
 	}
 }

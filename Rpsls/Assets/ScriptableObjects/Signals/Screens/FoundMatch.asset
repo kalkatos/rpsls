@@ -18,6 +18,7 @@ MonoBehaviour:
   OnSignalEmittedWithParam:
     m_PersistentCalls:
       m_Calls: []
-  LastValue: 1
+  Value: 1
+  ValueBindings: []
   IsScene: 0
   LoadAsync: 0

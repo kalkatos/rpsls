@@ -15,10 +15,9 @@ MonoBehaviour:
   OnSignalEmitted:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 11400000, guid: 86eef279e191ac24d932ff87bd66dd38, type: 2}
-        m_TargetAssemblyTypeName: Kalkatos.Network.Unity.NetworkEventDispatcher,
-          Assembly-CSharp
-        m_MethodName: LeaveMatch
+      - m_Target: {fileID: 11400000, guid: 0601b19581be1c547beade73f2b81967, type: 2}
+        m_TargetAssemblyTypeName: Kalkatos.UnityGame.Scriptable.ScreenSignal, Assembly-CSharp
+        m_MethodName: Emit
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
