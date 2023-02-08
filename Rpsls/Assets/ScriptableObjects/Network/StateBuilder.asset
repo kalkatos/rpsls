@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PublicStatePieces:
   - {fileID: 11400000, guid: 88e2e3e02c0035c4cbe31a6b6bb9775b, type: 2}
+  - {fileID: 11400000, guid: 56a9fe40a4109c346b1e10cea49b0bb8, type: 2}
   PrivateStatePieces:
   - {fileID: 11400000, guid: 2758d9185f3a30b49b08ac365c967b06, type: 2}
   - {fileID: 11400000, guid: 276a560ed99305d4a9740b54b91ad27b, type: 2}

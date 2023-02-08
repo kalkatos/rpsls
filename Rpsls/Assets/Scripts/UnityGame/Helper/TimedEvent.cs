@@ -152,7 +152,7 @@ namespace Kalkatos.UnityGame
 		{
 			if (currentWait != null)
 			{
-				Logger.Log("[Timed Event] << STOP >> timed event " + parent.name);
+				//Logger.Log("[Timed Event] << STOP >> timed event " + parent.name);
 				parent.StopCoroutine(currentWait); 
 			}
 			Rewind();
@@ -179,7 +179,7 @@ namespace Kalkatos.UnityGame
 				UpdateEvent?.Invoke(InvertUpdateEvent ? time / startingTime : 1 - time / startingTime);
 				yield return null;
 			}
-			Logger.Log("[Timed Event] >> INVOKE << callback for " + parent.name);
+			//Logger.Log("[Timed Event] >> INVOKE << callback for " + parent.name);
 			callback?.Invoke();
 		}
 
