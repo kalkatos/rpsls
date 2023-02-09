@@ -3,6 +3,7 @@ using UnityEngine.Events;
 using Sirenix.OdinInspector;
 using System;
 using System.Collections;
+using Kalkatos.UnityGame.Scriptable;
 
 namespace Kalkatos.UnityGame
 {
@@ -23,11 +24,12 @@ namespace Kalkatos.UnityGame
 
 		private void Awake ()
 		{
-			foreach (var ev in events)
-			{
-				ev.SetParent(this);
-				ev.TimeoutEvent.AddListener(HandleEventTimeout);
-			}
+			if (events != null)
+				foreach (var ev in events)
+				{
+					ev.SetParent(this);
+					ev.TimeoutEvent.AddListener(HandleEventTimeout);
+				}
 		}
 
 		public static void Create (float time, UnityEvent ev = null)
@@ -35,20 +37,7 @@ namespace Kalkatos.UnityGame
 			GameObject timerGO = new GameObject("Timer");
 			var timer = timerGO.AddComponent<TimedEvent>();
 			timer.AddTimer(time, ev);
-		}
-
-		public void AddTimer (float time, UnityEvent ev)
-		{
-			TimedEventBit[] newEvents = new TimedEventBit[events.Length + 1];
-			for (int i = 0; i < events.Length; i++)
-				newEvents[i] = events[i];
-			TimedEventBit newBit = new TimedEventBit(this)
-			{
-				time = time,
-				TimeoutEvent = ev
-			};
-			newEvents[newEvents.Length - 1] = newBit;
-			events = newEvents;
+			timer.StartTimer();
 		}
 
 		public void Rewind ()
@@ -76,6 +65,18 @@ namespace Kalkatos.UnityGame
 			}
 		}
 
+		private void AddTimer (float time, UnityEvent ev)
+		{
+			events = new TimedEventBit[]
+			{
+				new TimedEventBit(this)
+				{
+					timeAsGetter = new FloatValueGetter { SimpleValue = time },
+					TimeoutEvent = ev
+				}
+			};
+		}
+
 		private void HandleEventTimeout ()
 		{
 			AnyTimeoutEvent?.Invoke();
@@ -100,16 +101,68 @@ namespace Kalkatos.UnityGame
 			else if (changeEvent)
 				events[currentEvent].StartTimer();
 		}
+	}
 
-		
+	[Serializable]
+	public class ValueGetter<T>
+	{
+		public virtual T Value { get; }
+	}
+
+	public enum FloatGetterType
+	{
+		Simple,
+		Random,
+		SignalFloat,
+		SignalString
+	}
+
+	[Serializable]
+	public class FloatValueGetter : ValueGetter<float>
+	{
+		[HorizontalGroup(15), HideLabel]
+		public FloatGetterType Type;
+		[HorizontalGroup, ShowIf(nameof(Type), FloatGetterType.Simple), HideLabel]
+		public float SimpleValue;
+		[HorizontalGroup, ShowIf(nameof(Type), FloatGetterType.Random), HideLabel]
+		public Vector2 RandomValue;
+		[HorizontalGroup, ShowIf(nameof(Type), FloatGetterType.SignalFloat), HideLabel]
+		public TypedSignal<float> TimeSignal;
+		[HorizontalGroup, ShowIf(nameof(Type), FloatGetterType.SignalString), HideLabel]
+		public TypedSignal<string> TimeStringSignal;
+
+		public override float Value
+		{
+			get
+			{
+				switch (Type)
+				{
+					case FloatGetterType.Simple:
+						return SimpleValue;
+					case FloatGetterType.Random:
+						return UnityEngine.Random.Range(RandomValue.x, RandomValue.y);
+					case FloatGetterType.SignalFloat:
+						return TimeSignal.Value;
+					case FloatGetterType.SignalString:
+						if (DateTime.TryParse(TimeStringSignal.Value, out DateTime result))
+							return Mathf.Max((float)(result - DateTime.UtcNow).TotalSeconds, 0);
+						else if (float.TryParse(TimeStringSignal.Value, out float floatResult))
+							return floatResult;
+						return base.Value;
+					default:
+						return base.Value;
+				}
+			}
+		}
 	}
 
 	[Serializable]
 	public class TimedEventBit
 	{
-		public float time;
-		public bool loop;
-		[ShowIf(nameof(loop))] public int loopCount;
+		[InlineProperty]
+		public FloatValueGetter timeAsGetter;
+		[HorizontalGroup] public bool loop;
+		[HorizontalGroup, HideLabel, ShowIf(nameof(loop))] public int loopCount;
 		public bool useUpdateEvent;
 		public UnityEvent TimeoutEvent;
 		[ShowIf(nameof(loop))] public UnityEvent EndOfLoopEvent;
@@ -139,7 +192,7 @@ namespace Kalkatos.UnityGame
 
 		public void StartTimer ()
 		{
-			StartTimer(time);
+			StartTimer(timeAsGetter.Value);
 		}
 
 		public void StartTimer (float time)
@@ -188,10 +241,10 @@ namespace Kalkatos.UnityGame
 			TimeoutEvent?.Invoke();
 			if (loop)
 			{
-				if (Mathf.Approximately(time, 0))
+				if (Mathf.Approximately(timeAsGetter.Value, 0))
 					Logger.LogWarning($"[{nameof(TimedEvent)}] Time is equal to 0 and is set to loop.");
 				else if (loopCount == 0 || loopCounter < loopCount)
-					RunTimer(time);
+					RunTimer(timeAsGetter.Value);
 				else
 				{
 					EndOfLoopEvent?.Invoke();

@@ -20,10 +20,24 @@ MonoBehaviour:
       m_Calls: []
   Value: 
   ValueBindings:
-  - ExpectedValue: 1
+  - ExpectedValue: 
+    Equality: 1
     Event:
       m_PersistentCalls:
         m_Calls:
+        - m_Target: {fileID: 11400000, guid: 3d834ef0aca4011419ccd54ff1de0af9, type: 2}
+          m_TargetAssemblyTypeName: Kalkatos.UnityGame.Scriptable.TypedSignal`1[[System.Boolean,
+            mscorlib
+          m_MethodName: EmitWithParam
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
         - m_Target: {fileID: 11400000, guid: 2df8a555a7b1b78488db4df340b66fad, type: 2}
           m_TargetAssemblyTypeName: Kalkatos.UnityGame.Scriptable.TypedSignal`1[[System.Boolean,
             mscorlib
