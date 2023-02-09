@@ -3,8 +3,8 @@ using Sirenix.OdinInspector;
 
 namespace Kalkatos.UnityGame.Scriptable.Network
 {
-	[CreateAssetMenu(fileName = "NewStateSignal", menuName = "Signals/Signal (State)", order = 4)]
-	public class StateSignal : TypedSignal<string>
+	[CreateAssetMenu(fileName = "NewSignalState", menuName = "Signals/Signal (State)", order = 4)]
+	public class SignalState : TypedSignal<string>
 	{
 		[PropertyOrder(0)]
 		public string Key;

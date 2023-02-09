@@ -439,6 +439,23 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+    actionBool:
+      m_PersistentCalls:
+        m_Calls: []
+    actionInt:
+      m_PersistentCalls:
+        m_Calls: []
+    actionString:
+      m_PersistentCalls:
+        m_Calls: []
+    actionFloat:
+      m_PersistentCalls:
+        m_Calls: []
+    isAnyOtherTypedSignal: 0
+    isBoolSignal: 0
+    isIntSignal: 0
+    isStringSignal: 0
+    isFloatSignal: 0
 --- !u!114 &7901468495692829524 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5555071863678970669, guid: d929751cff6ea114a9757d4702b7272f, type: 3}
@@ -824,9 +841,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   events:
-  - time: 10
+  - timeAsGetter:
+      Type: 0
+      SimpleValue: 10
+      RandomValue: {x: 0, y: 0}
+      TimeSignal: {fileID: 0}
+      TimeStringSignal: {fileID: 0}
+    time: 10
     loop: 0
     loopCount: 0
+    useUpdateEvent: 0
     TimeoutEvent:
       m_PersistentCalls:
         m_Calls:
@@ -843,12 +867,23 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-    FinalTimeoutEvent:
+    EndOfLoopEvent:
       m_PersistentCalls:
         m_Calls: []
-  - time: 5
+    InvertUpdateEvent: 0
+    UpdateEvent:
+      m_PersistentCalls:
+        m_Calls: []
+  - timeAsGetter:
+      Type: 1
+      SimpleValue: 0
+      RandomValue: {x: 2, y: 5}
+      TimeSignal: {fileID: 0}
+      TimeStringSignal: {fileID: 0}
+    time: 5
     loop: 1
-    loopCount: 3
+    loopCount: 5
+    useUpdateEvent: 0
     TimeoutEvent:
       m_PersistentCalls:
         m_Calls:
@@ -865,13 +900,17 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-    FinalTimeoutEvent:
+    EndOfLoopEvent:
       m_PersistentCalls:
         m_Calls: []
-  multipleEvents: 0
-  loop: 0
-  loopCount: 2
-  TimeoutEvent:
+    InvertUpdateEvent: 0
+    UpdateEvent:
+      m_PersistentCalls:
+        m_Calls: []
+  isSequence: 0
+  loopSequence: 0
+  loopSequenceCount: 0
+  SequenceTimeoutEvent:
     m_PersistentCalls:
       m_Calls: []
   AnyTimeoutEvent:

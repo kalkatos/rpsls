@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &159545067
 RectTransform:
   m_ObjectHideFlags: 0
@@ -153,7 +153,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1154066828
 RectTransform:
   m_ObjectHideFlags: 0
@@ -302,7 +302,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1607027042
 RectTransform:
   m_ObjectHideFlags: 0
@@ -438,7 +438,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2012403980
 RectTransform:
   m_ObjectHideFlags: 0
@@ -588,7 +588,7 @@ PrefabInstance:
     - target: {fileID: 6591935433565723285, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
       propertyPath: receivers.Array.data[0].signal
       value: 
-      objectReference: {fileID: 11400000, guid: f5b2b8c4096fcdf4f9d217cb24bdc6fa, type: 2}
+      objectReference: {fileID: 11400000, guid: e4f327ae39f86f4439f13a299078a7a6, type: 2}
     - target: {fileID: 6591935433565723285, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
       propertyPath: receivers.Array.data[0].isBoolSignal
       value: 1
@@ -763,7 +763,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6591935433654908442, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
@@ -801,7 +801,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   events:
-  - time: 1.5
+  - timeAsGetter:
+      Type: 0
+      SimpleValue: 1.5
+      RandomValue: {x: 0, y: 0}
+      TimeSignal: {fileID: 0}
+      TimeStringSignal: {fileID: 0}
     loop: 0
     loopCount: 0
     useUpdateEvent: 0
@@ -827,7 +832,12 @@ MonoBehaviour:
     UpdateEvent:
       m_PersistentCalls:
         m_Calls: []
-  - time: 5
+  - timeAsGetter:
+      Type: 0
+      SimpleValue: 5
+      RandomValue: {x: 0, y: 0}
+      TimeSignal: {fileID: 0}
+      TimeStringSignal: {fileID: 0}
     loop: 0
     loopCount: 0
     useUpdateEvent: 0
@@ -835,16 +845,16 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 11400000, guid: e3bf37822cb8516429c28aea7a3bb990, type: 2}
-          m_TargetAssemblyTypeName: Kalkatos.UnityGame.Signals.ScreenSignal, Assembly-CSharp
-          m_MethodName: Emit
-          m_Mode: 1
+          m_TargetAssemblyTypeName: Kalkatos.UnityGame.Scriptable.ScreenSignal, Assembly-CSharp
+          m_MethodName: EmitWithParam
+          m_Mode: 6
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
             m_StringArgument: 
-            m_BoolArgument: 0
+            m_BoolArgument: 1
           m_CallState: 2
     EndOfLoopEvent:
       m_PersistentCalls:

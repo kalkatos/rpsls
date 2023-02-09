@@ -53,7 +53,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   receivers:
   - signal: {fileID: 11400000, guid: 09dbb000f861c2845a1f6e351e96cc74, type: 2}
-    isAnyOtherTypedSignal: 0
     action:
       m_PersistentCalls:
         m_Calls:
@@ -69,18 +68,23 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-    isBoolSignal: 0
     actionBool:
       m_PersistentCalls:
         m_Calls: []
-    isStringSignal: 0
-    actionString:
-      m_PersistentCalls:
-        m_Calls: []
-    isIntSignal: 0
     actionInt:
       m_PersistentCalls:
         m_Calls: []
+    actionString:
+      m_PersistentCalls:
+        m_Calls: []
+    actionFloat:
+      m_PersistentCalls:
+        m_Calls: []
+    isAnyOtherTypedSignal: 0
+    isBoolSignal: 0
+    isIntSignal: 0
+    isStringSignal: 0
+    isFloatSignal: 0
 --- !u!114 &1030697266
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -148,7 +152,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   receivers:
   - signal: {fileID: 11400000, guid: 09dbb000f861c2845a1f6e351e96cc74, type: 2}
-    isAnyOtherTypedSignal: 0
     action:
       m_PersistentCalls:
         m_Calls:
@@ -164,18 +167,23 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-    isBoolSignal: 0
     actionBool:
       m_PersistentCalls:
         m_Calls: []
-    isStringSignal: 0
-    actionString:
-      m_PersistentCalls:
-        m_Calls: []
-    isIntSignal: 0
     actionInt:
       m_PersistentCalls:
         m_Calls: []
+    actionString:
+      m_PersistentCalls:
+        m_Calls: []
+    actionFloat:
+      m_PersistentCalls:
+        m_Calls: []
+    isAnyOtherTypedSignal: 0
+    isBoolSignal: 0
+    isIntSignal: 0
+    isStringSignal: 0
+    isFloatSignal: 0
 --- !u!114 &1074219547
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -223,10 +231,10 @@ RectTransform:
   m_Father: {fileID: 1074219546}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 585.01, y: 117.03998}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: -0.5, y: 0.5}
+  m_SizeDelta: {x: -132.43298, y: 588.84204}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1722042300
 CanvasRenderer:
@@ -301,7 +309,7 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 0
+  m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}

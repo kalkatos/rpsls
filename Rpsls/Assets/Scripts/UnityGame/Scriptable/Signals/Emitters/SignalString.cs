@@ -6,7 +6,7 @@ namespace Kalkatos.UnityGame.Scriptable
 	[CreateAssetMenu(fileName = "NewSignalString", menuName = "Signals/Signal (String)", order = 2)]
 	public class SignalString : TypedSignal<string>
 	{
-		[FormerlySerializedAs("Param")] public string DefaultValue;
+		public string DefaultValue;
 
 		public override void Emit ()
 		{

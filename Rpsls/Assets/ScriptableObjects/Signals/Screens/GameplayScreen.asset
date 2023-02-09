@@ -71,4 +71,5 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   Value: 1
+  ValueBindings: []
   DefaultValue: 1

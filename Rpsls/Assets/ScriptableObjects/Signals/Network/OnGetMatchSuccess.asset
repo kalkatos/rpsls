@@ -15,8 +15,8 @@ MonoBehaviour:
   OnSignalEmitted:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 11400000, guid: f5b2b8c4096fcdf4f9d217cb24bdc6fa, type: 2}
-        m_TargetAssemblyTypeName: Kalkatos.UnityGame.Signals.ScreenSignal, Assembly-CSharp
+      - m_Target: {fileID: 11400000, guid: e4f327ae39f86f4439f13a299078a7a6, type: 2}
+        m_TargetAssemblyTypeName: Kalkatos.UnityGame.Scriptable.SignalBool, Assembly-CSharp
         m_MethodName: Emit
         m_Mode: 1
         m_Arguments:

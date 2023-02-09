@@ -49,11 +49,10 @@ MonoBehaviour:
   onStartEvent:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 11400000, guid: 2758d9185f3a30b49b08ac365c967b06, type: 2}
-        m_TargetAssemblyTypeName: Kalkatos.UnityGame.Scriptable.TypedSignal`1[[System.String,
-          mscorlib
-        m_MethodName: EmitWithParam
-        m_Mode: 5
+      - m_Target: {fileID: 11400000, guid: a25628ef2282a744584492b2882146b1, type: 2}
+        m_TargetAssemblyTypeName: Kalkatos.UnityGame.Scriptable.SignalTime, Assembly-CSharp
+        m_MethodName: Emit
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -86,6 +85,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 11400000, guid: 3d834ef0aca4011419ccd54ff1de0af9, type: 2}
+        m_TargetAssemblyTypeName: Kalkatos.UnityGame.Scriptable.TypedSignal`1[[System.Boolean,
+          mscorlib
+        m_MethodName: EmitWithParam
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &2940236917976398389
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -99,7 +111,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   events:
-  - time: 2
+  - timeAsGetter:
+      Type: 0
+      SimpleValue: 2
+      RandomValue: {x: 0, y: 0}
+      TimeSignal: {fileID: 0}
+      TimeStringSignal: {fileID: 0}
     loop: 0
     loopCount: 0
     useUpdateEvent: 0
@@ -125,9 +142,14 @@ MonoBehaviour:
     UpdateEvent:
       m_PersistentCalls:
         m_Calls: []
-  - time: 5
+  - timeAsGetter:
+      Type: 1
+      SimpleValue: 0
+      RandomValue: {x: 2, y: 5}
+      TimeSignal: {fileID: 0}
+      TimeStringSignal: {fileID: 0}
     loop: 1
-    loopCount: 6
+    loopCount: 8
     useUpdateEvent: 0
     TimeoutEvent:
       m_PersistentCalls:
@@ -147,23 +169,29 @@ MonoBehaviour:
     EndOfLoopEvent:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 11400000, guid: 9ee45f3b61c8ff74199113913e6a925a, type: 2}
-          m_TargetAssemblyTypeName: Kalkatos.UnityGame.Signals.ScreenSignal, Assembly-CSharp
-          m_MethodName: Emit
-          m_Mode: 1
+        - m_Target: {fileID: 11400000, guid: a5cef06c1d6d86540abe026f771300ae, type: 2}
+          m_TargetAssemblyTypeName: Kalkatos.UnityGame.Scriptable.TypedSignal`1[[System.Boolean,
+            mscorlib
+          m_MethodName: EmitWithParam
+          m_Mode: 6
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
             m_StringArgument: 
-            m_BoolArgument: 0
+            m_BoolArgument: 1
           m_CallState: 2
     InvertUpdateEvent: 0
     UpdateEvent:
       m_PersistentCalls:
         m_Calls: []
-  - time: 4
+  - timeAsGetter:
+      Type: 0
+      SimpleValue: 4
+      RandomValue: {x: 0, y: 0}
+      TimeSignal: {fileID: 0}
+      TimeStringSignal: {fileID: 0}
     loop: 0
     loopCount: 0
     useUpdateEvent: 0

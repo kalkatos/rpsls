@@ -12,10 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5bb01d5bdaf00b4db7b24366cd8c4ae, type: 3}
   m_Name: StateBuilder
   m_EditorClassIdentifier: 
-  PublicStatePieces:
+  PublicStateSignals:
   - {fileID: 11400000, guid: 88e2e3e02c0035c4cbe31a6b6bb9775b, type: 2}
-  - {fileID: 11400000, guid: 56a9fe40a4109c346b1e10cea49b0bb8, type: 2}
-  PrivateStatePieces:
+  PrivateStateSignals:
   - {fileID: 11400000, guid: 2758d9185f3a30b49b08ac365c967b06, type: 2}
   - {fileID: 11400000, guid: 276a560ed99305d4a9740b54b91ad27b, type: 2}
   - {fileID: 11400000, guid: 8404a8763994cf745a5124dc1c5bf379, type: 2}
