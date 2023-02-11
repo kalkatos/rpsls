@@ -176,7 +176,7 @@ MonoBehaviour:
       SimpleValue: 1
       RandomValue: {x: 0, y: 0}
       TimeSignal: {fileID: 0}
-      TimeStringSignal: {fileID: 11400000, guid: 88e2e3e02c0035c4cbe31a6b6bb9775b, type: 2}
+      TimeStringSignal: {fileID: 11400000, guid: 9b011dfb8ea0bfc409a28241b1de0a04, type: 2}
     loop: 0
     loopCount: 0
     useUpdateEvent: 0
@@ -204,11 +204,11 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls: []
   - timeAsGetter:
-      Type: 0
+      Type: 3
       SimpleValue: 10
       RandomValue: {x: 0, y: 0}
       TimeSignal: {fileID: 0}
-      TimeStringSignal: {fileID: 0}
+      TimeStringSignal: {fileID: 11400000, guid: b4134d836c1380f4e839ce773ffb589d, type: 2}
     loop: 0
     loopCount: 0
     useUpdateEvent: 1
@@ -264,7 +264,7 @@ MonoBehaviour:
   - timeAsGetter:
       Type: 1
       SimpleValue: 0
-      RandomValue: {x: 1, y: 3}
+      RandomValue: {x: 0.5, y: 1.5}
       TimeSignal: {fileID: 0}
       TimeStringSignal: {fileID: 0}
     loop: 1
