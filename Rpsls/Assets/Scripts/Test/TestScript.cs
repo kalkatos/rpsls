@@ -1,5 +1,6 @@
 using UnityEngine;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -10,23 +11,9 @@ public class TestScript : MonoBehaviour
 	[MenuItem("Test/Test")]
     public static void Test ()
     {
-		Debug.Log(JsonConvert.SerializeObject(new Foo { Index = 1 }));
-	}
-
-	public class Foo
-	{
-		public int Index;
-		public int Hash;
-
-		public Foo ()
-		{
-			UpdateHash();
-		}
-
-		public void UpdateHash ()
-		{
-			Hash = Index + 3;
-		}
+		Dictionary<string, string> dict = new Dictionary<string, string> ();
+		dict["Key1"] = "Value1";
+		Debug.Log(JsonConvert.SerializeObject(dict));
 	}
 
 #endif

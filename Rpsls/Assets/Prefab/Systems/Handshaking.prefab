@@ -49,10 +49,11 @@ MonoBehaviour:
   onStartEvent:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 11400000, guid: a25628ef2282a744584492b2882146b1, type: 2}
-        m_TargetAssemblyTypeName: Kalkatos.UnityGame.Scriptable.SignalTime, Assembly-CSharp
-        m_MethodName: Emit
-        m_Mode: 1
+      - m_Target: {fileID: 11400000, guid: 2758d9185f3a30b49b08ac365c967b06, type: 2}
+        m_TargetAssemblyTypeName: Kalkatos.UnityGame.Scriptable.TypedSignal`1[[System.String,
+          mscorlib
+        m_MethodName: EmitWithParam
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
