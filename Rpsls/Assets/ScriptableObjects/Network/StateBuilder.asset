@@ -14,7 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PublicStateSignals:
   - {fileID: 11400000, guid: 88e2e3e02c0035c4cbe31a6b6bb9775b, type: 2}
+  - {fileID: 11400000, guid: 9b011dfb8ea0bfc409a28241b1de0a04, type: 2}
+  - {fileID: 11400000, guid: b4134d836c1380f4e839ce773ffb589d, type: 2}
+  - {fileID: 11400000, guid: d730c66ff92ae044c8c1d95c330bf36b, type: 2}
   PrivateStateSignals:
   - {fileID: 11400000, guid: 2758d9185f3a30b49b08ac365c967b06, type: 2}
   - {fileID: 11400000, guid: 276a560ed99305d4a9740b54b91ad27b, type: 2}
   - {fileID: 11400000, guid: 8404a8763994cf745a5124dc1c5bf379, type: 2}
+  - {fileID: 11400000, guid: 039e682400331bf4b9dcbbc12cd78a6c, type: 2}
+  - {fileID: 11400000, guid: 81b402ca434eb0d41adf4064190eaf96, type: 2}
+  PrivateStateSignalsToSend:
+  - {fileID: 11400000, guid: 2758d9185f3a30b49b08ac365c967b06, type: 2}
+  - {fileID: 11400000, guid: 276a560ed99305d4a9740b54b91ad27b, type: 2}
