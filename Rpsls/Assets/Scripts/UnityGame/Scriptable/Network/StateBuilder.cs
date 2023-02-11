@@ -7,8 +7,11 @@ namespace Kalkatos.UnityGame.Scriptable.Network
 	[CreateAssetMenu(fileName = "StateBuilder", menuName = "Network/State Builder")]
 	public class StateBuilder : ScriptableObject
 	{
+		[Header("Receiving")]
 		public List<SignalState> PublicStateSignals;
 		public List<SignalState> PrivateStateSignals;
+		[Header("Sending")]
+		public List<SignalState> PrivateStateSignalsToSend;
 
 		private StateInfo lastState = null;
 
@@ -23,18 +26,12 @@ namespace Kalkatos.UnityGame.Scriptable.Network
 
 		public StateInfo BuildChangedPieces (StateInfo origin)
 		{
-			StateInfo result = new StateInfo { PublicProperties = new Dictionary<string, string>(), PrivateProperties = new Dictionary<string, string>() };
-			foreach (var item in PublicStateSignals)
-			{
-				if (origin != null && origin.PublicProperties.ContainsKey(item.Key) && origin.PublicProperties[item.Key] == item.Value)
-					continue;
-				result.PublicProperties.Add(item.Key, item.Value);
-			}
-			foreach (var item in PrivateStateSignals)
+			StateInfo result = new StateInfo();
+			foreach (var item in PrivateStateSignalsToSend)
 			{
 				if (origin != null && origin.PrivateProperties.ContainsKey(item.Key) && origin.PrivateProperties[item.Key] == item.Value)
 					continue;
-				result.PrivateProperties.Add(item.Key, item.Value);
+				result.PrivateProperties[item.Key] = item.Value;
 			}
 			return result;
 		}
@@ -43,11 +40,13 @@ namespace Kalkatos.UnityGame.Scriptable.Network
 		{
 			foreach (var item in PublicStateSignals)
 				if (stateInfo.PublicProperties.ContainsKey(item.Key)
-					&& (lastState == null || stateInfo.PublicProperties[item.Key] != lastState.PublicProperties[item.Key]))
+					&& (lastState == null || !lastState.PublicProperties.ContainsKey(item.Key) 
+					|| stateInfo.PublicProperties[item.Key] != lastState.PublicProperties[item.Key]))
 					item.EmitWithParam(stateInfo.PublicProperties[item.Key]);
 			foreach (var item in PrivateStateSignals)
 				if (stateInfo.PrivateProperties.ContainsKey(item.Key)
-					&& (lastState == null || stateInfo.PrivateProperties[item.Key] != lastState.PrivateProperties[item.Key]))
+					&& (lastState == null || !lastState.PrivateProperties.ContainsKey(item.Key)
+					|| stateInfo.PrivateProperties[item.Key] != lastState.PrivateProperties[item.Key]))
 					item.EmitWithParam(stateInfo.PrivateProperties[item.Key]);
 			lastState = stateInfo.Clone();
 		}
