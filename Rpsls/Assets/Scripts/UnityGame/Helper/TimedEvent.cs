@@ -145,7 +145,7 @@ namespace Kalkatos.UnityGame
 						return TimeSignal.Value;
 					case FloatGetterType.SignalString:
 						if (DateTime.TryParse(TimeStringSignal.Value, out DateTime result))
-							return Mathf.Max((float)(result - DateTime.UtcNow).TotalSeconds, 0);
+							return Mathf.Max((float)(result.ToUniversalTime() - DateTime.UtcNow).TotalSeconds, 0);
 						else if (float.TryParse(TimeStringSignal.Value, out float floatResult))
 							return floatResult;
 						return base.Value;

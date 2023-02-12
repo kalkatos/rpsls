@@ -151,6 +151,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7948288808645557536}
     m_Modifications:
+    - target: {fileID: 3157547807647289880, guid: b2a4f86771abc6d4ab3cd8db68abf195, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4162349555446705814, guid: b2a4f86771abc6d4ab3cd8db68abf195, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4623158129560493350, guid: b2a4f86771abc6d4ab3cd8db68abf195, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4623158129987219924, guid: b2a4f86771abc6d4ab3cd8db68abf195, type: 3}
       propertyPath: m_Name
       value: Waiting Opponent Screen
@@ -237,6 +249,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4623158129987219927, guid: b2a4f86771abc6d4ab3cd8db68abf195, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7803584103348230921, guid: b2a4f86771abc6d4ab3cd8db68abf195, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -535,11 +551,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 536485300387097753, guid: 92a88ffc8e7d5254cb907ccaa38cb168, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -239.70717
+      value: -239.70728
       objectReference: {fileID: 0}
     - target: {fileID: 691329593723274951, guid: 92a88ffc8e7d5254cb907ccaa38cb168, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1951480416694034808, guid: 92a88ffc8e7d5254cb907ccaa38cb168, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 58.181602
       objectReference: {fileID: 0}
     - target: {fileID: 2078545775767472779, guid: 92a88ffc8e7d5254cb907ccaa38cb168, type: 3}
       propertyPath: m_IsActive

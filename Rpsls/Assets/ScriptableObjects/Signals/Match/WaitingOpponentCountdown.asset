@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 199bd6e455ffc5a4e87dd267bc8b259d, type: 3}
-  m_Name: ScheduledTimeToStart
+  m_Name: WaitingOpponentCountdown
   m_EditorClassIdentifier: 
   OnSignalEmitted:
     m_PersistentCalls:
@@ -18,5 +18,6 @@ MonoBehaviour:
   OnSignalEmittedWithParam:
     m_PersistentCalls:
       m_Calls: []
-  LastValue: Kalkatos
-  Param: 
+  Value: 
+  ValueBindings: []
+  DefaultValue: 

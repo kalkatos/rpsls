@@ -23,6 +23,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 8404a8763994cf745a5124dc1c5bf379, type: 2}
   - {fileID: 11400000, guid: 039e682400331bf4b9dcbbc12cd78a6c, type: 2}
   - {fileID: 11400000, guid: 81b402ca434eb0d41adf4064190eaf96, type: 2}
+  - {fileID: 11400000, guid: e7e58eaede74dbd46b0ae5c092f754b6, type: 2}
   PrivateStateSignalsToSend:
   - {fileID: 11400000, guid: 2758d9185f3a30b49b08ac365c967b06, type: 2}
   - {fileID: 11400000, guid: 276a560ed99305d4a9740b54b91ad27b, type: 2}
