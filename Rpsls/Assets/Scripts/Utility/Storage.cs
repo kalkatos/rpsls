@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Net.Sockets;
 using Newtonsoft.Json;
 #if UNITY_5_3_OR_NEWER
 using UnityEngine;
@@ -11,10 +12,20 @@ namespace Kalkatos
 	public class Storage
 	{
 #if UNITY_5_3_OR_NEWER
-		private static UnityStorage storage = new UnityStorage();
+		private static IStorage storage = new UnityStorage();
 #else
-		private static FileStorage storage = new FileStorage();
+		private static IStorage storage = new FileStorage();
 #endif
+
+		public static void SetFilePath (string path)
+		{
+			storage.FilePath = path;
+		}
+
+		public static void SetFileName (string fileName)
+		{
+			storage.FileName = fileName;
+		}
 
 		public static void Save (string key, string value)
 		{
@@ -54,6 +65,8 @@ namespace Kalkatos
 
 	public interface IStorage
 	{
+		string FileName { get; set; }
+		string FilePath { get; set; }
 		void Save (string key, string value);
 		void Save (string key, int value);
 		void Save (string key, float value);
@@ -65,6 +78,12 @@ namespace Kalkatos
 
 	public class FileStorage : IStorage
 	{
+		private string filePath = "";
+		private string fileName = "player-prefs.json";
+
+		public virtual string FilePath { get => filePath; set => filePath = value; }
+		public virtual string FileName { get => fileName; set => fileName = value; }
+
 		public string Load (string key, string defaultValue)
 		{
 			return OpenLoad(key, defaultValue);
@@ -99,9 +118,9 @@ namespace Kalkatos
 
 		public void Delete (string key)
 		{
-			if (File.Exists("player-prefs.json"))
+			if (File.Exists($"{FilePath}/{FileName}"))
 			{
-				var prefs = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText("player-prefs.json"));
+				var prefs = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText($"{FilePath}/{FileName}"));
 				if (prefs.ContainsKey(key))
 					prefs.Remove(key);
 				SaveDictionary(prefs);
@@ -110,9 +129,9 @@ namespace Kalkatos
 		
 		private string OpenLoad (string key, string defaultValue)
 		{
-			if (File.Exists("player-prefs.json"))
+			if (File.Exists($"{FilePath}/{FileName}"))
 			{
-				var prefs = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText("player-prefs.json"));
+				var prefs = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText($"{FilePath}/{FileName}"));
 				if (prefs.ContainsKey(key))
 					return prefs[key];
 				return defaultValue;
@@ -124,9 +143,9 @@ namespace Kalkatos
 		private void OpenSave (string key, string value)
 		{
 			Dictionary<string, string> prefs = null;
-			if (File.Exists("player-prefs.json"))
+			if (File.Exists($"{FilePath}/{FileName}"))
 			{
-				prefs = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText("player-prefs.json"));
+				prefs = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText($"{FilePath}/{FileName}"));
 				if (prefs.ContainsKey(key))
 					prefs[key] = value;
 				else
@@ -139,13 +158,16 @@ namespace Kalkatos
 
 		private void SaveDictionary (Dictionary<string, string> dict)
 		{
-			File.WriteAllText("player-prefs.json", JsonConvert.SerializeObject(dict));
+			File.WriteAllText($"{FilePath}/{FileName}", JsonConvert.SerializeObject(dict));
 		}
 	}
 
 #if UNITY_5_3_OR_NEWER
 	public class UnityStorage : IStorage
 	{
+		public string FilePath { get => saveMethod.FilePath; set => saveMethod.FilePath = value; }
+		public string FileName { get => saveMethod.FileName; set => saveMethod.FileName = value; }
+
 		private static UnityStorageOption option;
 		public static UnityStorageOption Option
 		{
@@ -158,14 +180,14 @@ namespace Kalkatos
 					case UnityStorageOption.PlayerPrefs:
 						saveMethod = new PlayerPrefsMethod();
 						break;
-					case UnityStorageOption.JsonFile:
-						saveMethod = new FileStorage();
+					case UnityStorageOption.PersistentDataPath:
+						saveMethod = new PersistentDataPathMethod();
 						break;
 				}
 			}
 		}
 
-		private static IStorage saveMethod = new FileStorage();
+		private static IStorage saveMethod = new PersistentDataPathMethod();
 
 		public void Save (string key, string value) => saveMethod.Save(key, value);
 		public void Save (string key, int value) => saveMethod.Save(key, value);
@@ -177,6 +199,8 @@ namespace Kalkatos
 
 		private class PlayerPrefsMethod : IStorage
 		{
+			public string FilePath { get; set; }
+			public string FileName { get; set; }
 			public void Save (string key, string value) => PlayerPrefs.SetString(key, value);
 			public void Save (string key, int value) => PlayerPrefs.SetInt(key, value);
 			public void Save (string key, float value) => PlayerPrefs.SetFloat(key, value);
@@ -186,22 +210,16 @@ namespace Kalkatos
 			public void Delete (string key) => PlayerPrefs.DeleteKey(key);
 		}
 
-		private class JsonMethod : IStorage
+		private class PersistentDataPathMethod : FileStorage
 		{
-			public void Save (string key, string value) => throw new System.NotImplementedException();
-			public void Save (string key, int value) => throw new System.NotImplementedException();
-			public void Save (string key, float value) => throw new System.NotImplementedException();
-			public string Load (string key, string defaultValue) => throw new System.NotImplementedException();
-			public int Load (string key, int defaultValue) => throw new System.NotImplementedException();
-			public float Load (string key, float defaultValue) => throw new System.NotImplementedException();
-			public void Delete (string key) => throw new System.NotImplementedException();
+			public override string FilePath { get => Application.persistentDataPath; set { } }
 		}
 	}
 
 	public enum UnityStorageOption
 	{
 		PlayerPrefs,
-		JsonFile
+		PersistentDataPath
 	}
 #endif
 }
