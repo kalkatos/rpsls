@@ -92,39 +92,6 @@ MonoBehaviour:
     isIntSignal: 0
     isStringSignal: 0
     isFloatSignal: 0
-  - signal: {fileID: 11400000, guid: 3d046532ebe80d24baa0914c9ecc636f, type: 2}
-    action:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 8457858460111480015}
-          m_TargetAssemblyTypeName: Kalkatos.UnityGame.TimedEvent, Assembly-CSharp
-          m_MethodName: Stop
-          m_Mode: 6
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-    actionBool:
-      m_PersistentCalls:
-        m_Calls: []
-    actionInt:
-      m_PersistentCalls:
-        m_Calls: []
-    actionString:
-      m_PersistentCalls:
-        m_Calls: []
-    actionFloat:
-      m_PersistentCalls:
-        m_Calls: []
-    isAnyOtherTypedSignal: 0
-    isBoolSignal: 0
-    isIntSignal: 0
-    isStringSignal: 0
-    isFloatSignal: 0
   - signal: {fileID: 11400000, guid: 3209aead66ab17e4992cf59db4d38b7d, type: 2}
     action:
       m_PersistentCalls:
@@ -293,8 +260,8 @@ MonoBehaviour:
     UpdateEvent:
       m_PersistentCalls:
         m_Calls: []
-  isSequence: 0
-  loopSequence: 0
+  isSequence: 1
+  loopSequence: 1
   loopSequenceCount: 0
   SequenceTimeoutEvent:
     m_PersistentCalls:
