@@ -144,10 +144,10 @@ TextureImporter:
       name: card_frame
       rect:
         serializedVersion: 2
-        x: 23
-        y: 452
-        width: 423
-        height: 551
+        x: 0
+        y: 435
+        width: 468
+        height: 589
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -165,10 +165,10 @@ TextureImporter:
       name: rock_image
       rect:
         serializedVersion: 2
-        x: 449
-        y: 699
-        width: 396
-        height: 322
+        x: 468
+        y: 682
+        width: 340
+        height: 340
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -186,10 +186,10 @@ TextureImporter:
       name: paper_image
       rect:
         serializedVersion: 2
-        x: 455
-        y: 369
-        width: 300
-        height: 323
+        x: 468
+        y: 342
+        width: 340
+        height: 340
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -207,10 +207,10 @@ TextureImporter:
       name: paper_logo
       rect:
         serializedVersion: 2
-        x: 33
-        y: 272
-        width: 405
-        height: 96
+        x: 0
+        y: 290
+        width: 468
+        height: 145
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -228,10 +228,10 @@ TextureImporter:
       name: scissors_image
       rect:
         serializedVersion: 2
-        x: 496
-        y: 14
-        width: 231
-        height: 336
+        x: 468
+        y: 2
+        width: 340
+        height: 340
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -249,10 +249,10 @@ TextureImporter:
       name: rock_logo
       rect:
         serializedVersion: 2
-        x: 33
-        y: 139
-        width: 397
-        height: 98
+        x: 0
+        y: 145
+        width: 468
+        height: 145
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -270,10 +270,10 @@ TextureImporter:
       name: scissors_logo
       rect:
         serializedVersion: 2
-        x: 32
-        y: 24
-        width: 437
-        height: 94
+        x: 0
+        y: 0
+        width: 468
+        height: 145
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -283,6 +283,27 @@ TextureImporter:
       bones: []
       spriteID: c182dfe871166114491b38b11226a1c7
       internalID: -875092594
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: clear
+      rect:
+        serializedVersion: 2
+        x: 873
+        y: 929
+        width: 30
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e7ff0ba509ec56e49bb98a1ae2eb51c9
+      internalID: 1050006709
       vertices: []
       indices: 
       edges: []
@@ -304,6 +325,7 @@ TextureImporter:
       rock_image: -1995929596
       Placeholders_8: 1650306508
       Placeholders_27: -1267103911
+      clear: 1050006709
       card_frame: -1068419413
       Placeholders_17: -1631853012
       paper_image: -2110852491
