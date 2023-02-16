@@ -24,6 +24,7 @@ namespace Kalkatos.UnityGame.Rps
 		[SerializeField] private SignalBool gameplayScreen;
 		[SerializeField] private SignalFloat turnTimer;
 		[SerializeField] private SignalBool turnTimerControl;
+		[SerializeField] private SignalBool matchEndedScreen;
 
 		private string phase = "0";
 		private StateInfo currentState = null;
@@ -149,6 +150,10 @@ namespace Kalkatos.UnityGame.Rps
 						break;
 				}
 			}
+			// Match is over
+			matchEndedScreen?.EmitWithParam(true);
+			yield return new WaitForSeconds(5);
+			menuScreen.EmitWithParam(true);
 			Logger.Log("Execution Ended");
 		}
 
