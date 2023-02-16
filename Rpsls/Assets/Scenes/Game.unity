@@ -291,6 +291,7 @@ MonoBehaviour:
   gameplayScreen: {fileID: 11400000, guid: 2df8a555a7b1b78488db4df340b66fad, type: 2}
   turnTimer: {fileID: 11400000, guid: 088af6fe21510e848b3166a5e1e3fc03, type: 2}
   turnTimerControl: {fileID: 11400000, guid: 43fa252533d250943b09212da359fc95, type: 2}
+  matchEndedScreen: {fileID: 11400000, guid: dadce2462eb2d344bb3e7370252df4e7, type: 2}
 --- !u!4 &371587872
 Transform:
   m_ObjectHideFlags: 0
@@ -427,17 +428,41 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1186539493693432717, guid: a75b5a3ecf2deb04c846b4a31776afa5, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -0.11506653
+      objectReference: {fileID: 0}
+    - target: {fileID: 1186539493693432717, guid: a75b5a3ecf2deb04c846b4a31776afa5, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.16288757
+      objectReference: {fileID: 0}
+    - target: {fileID: 2198932829793490736, guid: a75b5a3ecf2deb04c846b4a31776afa5, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -0.11506653
+      objectReference: {fileID: 0}
+    - target: {fileID: 2198932829793490736, guid: a75b5a3ecf2deb04c846b4a31776afa5, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.16288757
+      objectReference: {fileID: 0}
     - target: {fileID: 5477934712507541944, guid: a75b5a3ecf2deb04c846b4a31776afa5, type: 3}
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 46833669}
+    - target: {fileID: 5709229766115068455, guid: a75b5a3ecf2deb04c846b4a31776afa5, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -0.11506653
+      objectReference: {fileID: 0}
+    - target: {fileID: 5709229766115068455, guid: a75b5a3ecf2deb04c846b4a31776afa5, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.16288757
+      objectReference: {fileID: 0}
     - target: {fileID: 6861198048119491263, guid: a75b5a3ecf2deb04c846b4a31776afa5, type: 3}
       propertyPath: m_Name
       value: Game Canvas
       objectReference: {fileID: 0}
     - target: {fileID: 6863087170013455026, guid: a75b5a3ecf2deb04c846b4a31776afa5, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -239.70724
+      value: -239.70726
       objectReference: {fileID: 0}
     - target: {fileID: 7948288808645557536, guid: a75b5a3ecf2deb04c846b4a31776afa5, type: 3}
       propertyPath: m_Pivot.x
