@@ -44,3 +44,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a545c3acf2e8bf74bb0b70022e71b17b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameId: rps

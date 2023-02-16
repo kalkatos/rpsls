@@ -81,17 +81,14 @@ namespace Kalkatos.UnityGame.Rps
 					yield break;
 				}
 				else
-					yield return new WaitForSeconds(Random.Range(2, 5));
+					yield return new WaitForSeconds(Random.Range(0.5f, 1.5f));
 			}
 			waitingOpponentScreen?.EmitWithParam(false);
 			gameplayScreen?.EmitWithParam(true);
 			Logger.Log(" ========= Turn Logic =========");
-			bool isFirstLoop = true;
 			while (phase != "3")
 			{
-				if (!isFirstLoop)
-					yield return WaitMatchState();
-				isFirstLoop = false;
+				yield return WaitMatchState();
 				phase = currentState.PublicProperties["Phase"];
 				DateTime utcNow = DateTime.UtcNow;
 				switch (phase)
