@@ -29,6 +29,7 @@ namespace Kalkatos.UnityGame.Rps
 		private string phase = "0";
 		private StateInfo currentState = null;
 		private Coroutine countdownCoroutine;
+		private bool hasSentMoveThisTurn;
 
 		private void Awake ()
 		{
@@ -69,10 +70,8 @@ namespace Kalkatos.UnityGame.Rps
 						currentState = success;
 						StopCoroutine(countdownCoroutine);
 						waitingOpponentCountdown?.EmitWithParam("0");
-						Logger.Log($"UTC: {DateTime.UtcNow.ToString("u")} | Received state: \n{JsonConvert.SerializeObject(currentState, Formatting.Indented)}");
 						stateBuilder.ReceiveState(currentState);
-					},
-					(failure) => { });
+					}, null);
 				if (Time.time - handshakingWaitStart >= 30)
 				{
 					waitingOpponentScreen?.EmitWithParam(false);
@@ -91,38 +90,25 @@ namespace Kalkatos.UnityGame.Rps
 			while (phase != "3")
 			{
 				if (!isFirstLoop)
-				{
-					while (true)
-					{
-						bool hasResponse = false;
-						int lastStateHash = currentState.Hash;
-						NetworkClient.GetMatchState(success => { hasResponse = true; currentState = success; }, failure => { hasResponse = true; });
-						while (!hasResponse)
-							yield return null;
-						if (currentState.Hash != lastStateHash)
-							break;
-						else
-							yield return new WaitForSeconds(Random.Range(0.5f, 1.5f));
-					}
-					stateBuilder.ReceiveState(currentState);
-				}
+					yield return WaitMatchState();
 				isFirstLoop = false;
 				phase = currentState.PublicProperties["Phase"];
 				DateTime utcNow = DateTime.UtcNow;
 				switch (phase)
 				{
 					case "0":
+						hasSentMoveThisTurn = false;
 						Logger.Log($"Phase: 0 | UTC: {utcNow.ToString("u")} | State: \n{JsonConvert.SerializeObject(currentState, Formatting.Indented)}");
 						DateTime startPlayPhaseTime = DateTime.Parse(currentState.PublicProperties["PlayPhaseStartTime"]).ToUniversalTime();
 						turnTimerControl.EmitWithParam(false);
 						if (utcNow < startPlayPhaseTime)
-						{
 							yield return new WaitForSeconds((float)(startPlayPhaseTime - utcNow).TotalSeconds + Random.Range(0, 0.3f));
-						}
 						else
 							Logger.LogError("Error in phase 0, it's pass the start play phase time");
 						break;
 					case "1":
+						if (hasSentMoveThisTurn)
+							break;
 						Logger.Log($"Phase: 1 | UTC: {utcNow.ToString("u")} | State: \n{JsonConvert.SerializeObject(currentState, Formatting.Indented)}");
 						DateTime endPlayPhaseTime = DateTime.Parse(currentState.PublicProperties["PlayPhaseEndTime"]).ToUniversalTime();
 						turnTimerControl.EmitWithParam(true);
@@ -130,10 +116,9 @@ namespace Kalkatos.UnityGame.Rps
 						{
 							float timeRemaining = (float)(endPlayPhaseTime - utcNow).TotalSeconds;
 							StartCoroutine(TurnTimerCoroutine(timeRemaining));
-							yield return new WaitForSeconds(timeRemaining + Random.Range(0, 0.3f));
 						}
-						else
-							Logger.LogError("Error in phase 1, it's pass the end play phase time");
+						while (!hasSentMoveThisTurn && DateTime.UtcNow < endPlayPhaseTime)
+							yield return null;
 						break;
 					case "2":
 						Logger.Log($"Phase: 2 | UTC: {utcNow.ToString("u")} | State: \n{JsonConvert.SerializeObject(currentState, Formatting.Indented)}");
@@ -155,6 +140,23 @@ namespace Kalkatos.UnityGame.Rps
 			yield return new WaitForSeconds(5);
 			menuScreen.EmitWithParam(true);
 			Logger.Log("Execution Ended");
+		}
+
+		private IEnumerator WaitMatchState ()
+		{
+			while (true)
+			{
+				bool hasResponse = false;
+				int lastStateHash = currentState.Hash;
+				NetworkClient.GetMatchState(success => { hasResponse = true; currentState = success; }, failure => { hasResponse = true; });
+				while (!hasResponse)
+					yield return null;
+				if (currentState.Hash != lastStateHash)
+					break;
+				else
+					yield return new WaitForSeconds(Random.Range(0.5f, 1.5f));
+			}
+			stateBuilder.ReceiveState(currentState);
 		}
 
 		private IEnumerator CountdownCoroutine (int time)
@@ -184,6 +186,7 @@ namespace Kalkatos.UnityGame.Rps
 
 		private void HandleSendButtonClicked ()
 		{
+			hasSentMoveThisTurn = true;
 			turnTimerControl.EmitWithParam(false);
 		}
 	}
