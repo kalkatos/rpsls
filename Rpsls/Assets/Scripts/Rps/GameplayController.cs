@@ -25,11 +25,11 @@ namespace Kalkatos.UnityGame.Rps
 		[SerializeField] private SignalFloat turnTimer;
 		[SerializeField] private SignalBool turnTimerControl;
 		[SerializeField] private SignalBool matchEndedScreen;
+		[SerializeField] private SignalBool hasSentMove;
 
 		private string phase = "0";
 		private StateInfo currentState = null;
 		private Coroutine countdownCoroutine;
-		private bool hasSentMoveThisTurn;
 
 		private void Awake ()
 		{
@@ -94,7 +94,7 @@ namespace Kalkatos.UnityGame.Rps
 				switch (phase)
 				{
 					case "0":
-						hasSentMoveThisTurn = false;
+						hasSentMove?.EmitWithParam(false);
 						Logger.Log($"Phase: 0 | UTC: {utcNow.ToString("u")} | State: \n{JsonConvert.SerializeObject(currentState, Formatting.Indented)}");
 						DateTime startPlayPhaseTime = DateTime.Parse(currentState.PublicProperties["PlayPhaseStartTime"]).ToUniversalTime();
 						turnTimerControl.EmitWithParam(false);
@@ -104,7 +104,7 @@ namespace Kalkatos.UnityGame.Rps
 							Logger.LogError("Error in phase 0, it's pass the start play phase time");
 						break;
 					case "1":
-						if (hasSentMoveThisTurn)
+						if (hasSentMove.Value)
 							break;
 						Logger.Log($"Phase: 1 | UTC: {utcNow.ToString("u")} | State: \n{JsonConvert.SerializeObject(currentState, Formatting.Indented)}");
 						DateTime endPlayPhaseTime = DateTime.Parse(currentState.PublicProperties["PlayPhaseEndTime"]).ToUniversalTime();
@@ -114,10 +114,11 @@ namespace Kalkatos.UnityGame.Rps
 							float timeRemaining = (float)(endPlayPhaseTime - utcNow).TotalSeconds;
 							StartCoroutine(TurnTimerCoroutine(timeRemaining));
 						}
-						while (!hasSentMoveThisTurn && DateTime.UtcNow < endPlayPhaseTime)
+						while (!hasSentMove.Value && DateTime.UtcNow < endPlayPhaseTime)
 							yield return null;
 						break;
 					case "2":
+						hasSentMove?.EmitWithParam(false);
 						Logger.Log($"Phase: 2 | UTC: {utcNow.ToString("u")} | State: \n{JsonConvert.SerializeObject(currentState, Formatting.Indented)}");
 						DateTime endTurnTime = DateTime.Parse(currentState.PublicProperties["TurnEndTime"]).ToUniversalTime();
 						turnTimerControl.EmitWithParam(false);
@@ -183,8 +184,8 @@ namespace Kalkatos.UnityGame.Rps
 
 		private void HandleSendButtonClicked ()
 		{
-			hasSentMoveThisTurn = true;
-			turnTimerControl.EmitWithParam(false);
+			hasSentMove?.EmitWithParam(true);
+			//turnTimerControl.EmitWithParam(false);
 		}
 	}
 }
