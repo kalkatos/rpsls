@@ -26,6 +26,9 @@ namespace Kalkatos.UnityGame.Rps
 		[SerializeField] private SignalBool turnTimerControl;
 		[SerializeField] private SignalBool matchEndedScreen;
 		[SerializeField] private SignalBool hasSentMove;
+		[Header("DEBUG")]
+		[SerializeField] private bool autoPlay;
+		[SerializeField] private SignalState myMoveSignal;
 
 		private string phase = "0";
 		private StateInfo currentState = null;
@@ -114,6 +117,11 @@ namespace Kalkatos.UnityGame.Rps
 							float timeRemaining = (float)(endPlayPhaseTime - utcNow).TotalSeconds;
 							StartCoroutine(TurnTimerCoroutine(timeRemaining));
 						}
+
+						// DEBUG
+						if (autoPlay)
+							StartCoroutine(RandomMove());
+
 						while (!hasSentMove.Value && DateTime.UtcNow < endPlayPhaseTime)
 							yield return null;
 						break;
@@ -185,7 +193,27 @@ namespace Kalkatos.UnityGame.Rps
 		private void HandleSendButtonClicked ()
 		{
 			hasSentMove?.EmitWithParam(true);
-			//turnTimerControl.EmitWithParam(false);
+		}
+
+		// DEBUG
+		private IEnumerator RandomMove ()
+		{
+			yield return new WaitForSeconds(Random.Range(0.5f, 1.5f));
+			int move = Random.Range(0, 3);
+			switch (move)
+			{
+				case 0:
+					myMoveSignal.EmitWithParam("ROCK");
+					break;
+				case 1:
+					myMoveSignal.EmitWithParam("PAPER");
+					break;
+				case 2:
+					myMoveSignal.EmitWithParam("SCISSORS");
+					break;
+			}
+			yield return new WaitForSeconds(Random.Range(0.25f, 0.5f));
+			onSendButtonClicked.Emit();
 		}
 	}
 }
