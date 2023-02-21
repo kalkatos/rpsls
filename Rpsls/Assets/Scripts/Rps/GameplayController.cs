@@ -84,7 +84,7 @@ namespace Kalkatos.UnityGame.Rps
 					yield break;
 				}
 				else
-					yield return new WaitForSeconds(Random.Range(0.5f, 1.5f));
+					yield return new WaitForSeconds(Random.Range(1f, 2f));
 			}
 			waitingOpponentScreen?.EmitWithParam(false);
 			gameplayScreen?.EmitWithParam(true);
@@ -160,7 +160,7 @@ namespace Kalkatos.UnityGame.Rps
 				if (currentState.Hash != lastStateHash)
 					break;
 				else
-					yield return new WaitForSeconds(Random.Range(0.5f, 1.5f));
+					yield return new WaitForSeconds(Random.Range(1f, 2f));
 			}
 			stateBuilder.ReceiveState(currentState);
 		}
@@ -185,7 +185,7 @@ namespace Kalkatos.UnityGame.Rps
 				if (!turnTimerControl.Value)
 					yield break;
 				time = Mathf.Max(time - Time.deltaTime, 0);
-				turnTimer.EmitWithParam(Mathf.Clamp01(time / 9));
+				turnTimer.EmitWithParam(Mathf.Clamp01(time / 10));
 				yield return null;
 			}
 		}
@@ -198,7 +198,7 @@ namespace Kalkatos.UnityGame.Rps
 		// DEBUG
 		private IEnumerator RandomMove ()
 		{
-			yield return new WaitForSeconds(Random.Range(0.5f, 1.5f));
+			yield return new WaitForSeconds(Random.Range(1.5f, 3.5f));
 			int move = Random.Range(0, 3);
 			switch (move)
 			{
@@ -212,7 +212,7 @@ namespace Kalkatos.UnityGame.Rps
 					myMoveSignal.EmitWithParam("SCISSORS");
 					break;
 			}
-			yield return new WaitForSeconds(Random.Range(0.25f, 0.5f));
+			yield return new WaitForSeconds(Random.Range(0.5f, 1.5f));
 			onSendButtonClicked.Emit();
 		}
 	}
