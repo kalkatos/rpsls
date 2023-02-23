@@ -8,12 +8,12 @@ using UnityEngine;
 public class AutoPlay : MonoBehaviour
 {
     [SerializeField] private Signal playButtonClickSignal;
-    [SerializeField] private int secondsToWait = 5;
+    [SerializeField] private int secondsToWait = 3;
 
     void Start()
     {
         DateTime now = DateTime.UtcNow;
-        float seconds = secondsToWait + (float)TimeSpan.FromTicks(now.Ticks % (secondsToWait * TimeSpan.TicksPerSecond)).TotalSeconds;
+        float seconds = secondsToWait + (float)TimeSpan.FromTicks(secondsToWait * TimeSpan.TicksPerSecond - now.Ticks % (secondsToWait * TimeSpan.TicksPerSecond)).TotalSeconds;
 		Debug.Log($"Waiting {seconds} seconds.");
         StartCoroutine(ClickPlayButton(seconds));
     }
