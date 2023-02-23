@@ -28,6 +28,7 @@ namespace Kalkatos.UnityGame.Rps
 		[SerializeField] private SignalBool hasSentMove;
 		[Header("DEBUG")]
 		[SerializeField] private bool autoPlay;
+		[SerializeField] private bool fixedDelay;
 		[SerializeField] private SignalState myMoveSignal;
 
 		private string phase = "0";
@@ -198,7 +199,7 @@ namespace Kalkatos.UnityGame.Rps
 		// DEBUG
 		private IEnumerator RandomMove ()
 		{
-			yield return new WaitForSeconds(Random.Range(1.5f, 3.5f));
+			yield return new WaitForSeconds(fixedDelay ? 2f : Random.Range(1.5f, 3.5f));
 			int move = Random.Range(0, 3);
 			switch (move)
 			{
@@ -212,7 +213,7 @@ namespace Kalkatos.UnityGame.Rps
 					myMoveSignal.EmitWithParam("SCISSORS");
 					break;
 			}
-			yield return new WaitForSeconds(Random.Range(0.5f, 1.5f));
+			yield return new WaitForSeconds(fixedDelay ? 1f : Random.Range(0.5f, 1.5f));
 			onSendButtonClicked.Emit();
 		}
 	}
