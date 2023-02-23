@@ -55,7 +55,7 @@ namespace Kalkatos.UnityGame.Rps
 			Logger.Log(" ========= Send Handshaking =========");
 			waitingOpponentScreen?.EmitWithParam(true);
 			NetworkClient.SendAction(
-				new StateInfo { PrivateProperties = new Dictionary<string, string> { { "Handshaking", "1" } } },
+				new ActionInfo { PrivateChanges = new Dictionary<string, string> { { "Handshaking", "1" } } },
 				(success) => { currentState = success; },
 				(failure) => {});
 			while (currentState == null)

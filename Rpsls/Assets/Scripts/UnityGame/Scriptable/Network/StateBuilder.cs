@@ -24,14 +24,14 @@ namespace Kalkatos.UnityGame.Scriptable.Network
 				item.Value = "";
 		}
 
-		public StateInfo BuildChangedPieces (StateInfo origin)
+		public ActionInfo BuildChangedPieces (StateInfo origin)
 		{
-			StateInfo result = new StateInfo();
+			ActionInfo result = new ActionInfo();
 			foreach (var item in PrivateStateSignalsToSend)
 			{
 				if (origin != null && origin.PrivateProperties.ContainsKey(item.Key) && origin.PrivateProperties[item.Key] == item.Value)
 					continue;
-				result.PrivateProperties[item.Key] = item.Value;
+				result.PrivateChanges[item.Key] = item.Value;
 			}
 			return result;
 		}
