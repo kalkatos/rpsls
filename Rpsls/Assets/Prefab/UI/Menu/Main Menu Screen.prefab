@@ -333,11 +333,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6067696467860351032, guid: 8f5aa5a9725234591a8805567925c461, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 616.502
+      value: 1012.88
       objectReference: {fileID: 0}
     - target: {fileID: 6067696467860351032, guid: 8f5aa5a9725234591a8805567925c461, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 197.31494
+      value: 309.97
       objectReference: {fileID: 0}
     - target: {fileID: 6067696467860351032, guid: 8f5aa5a9725234591a8805567925c461, type: 3}
       propertyPath: m_LocalPosition.x
@@ -387,13 +387,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6067696468438814954, guid: 8f5aa5a9725234591a8805567925c461, type: 3}
+      propertyPath: m_PixelsPerUnitMultiplier
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 6067696468864908896, guid: 8f5aa5a9725234591a8805567925c461, type: 3}
+      propertyPath: m_PixelsPerUnitMultiplier
+      value: 0.25
+      objectReference: {fileID: 0}
     - target: {fileID: 7016391421997232863, guid: 8f5aa5a9725234591a8805567925c461, type: 3}
       propertyPath: m_text
       value: Play
       objectReference: {fileID: 0}
     - target: {fileID: 7016391421997232863, guid: 8f5aa5a9725234591a8805567925c461, type: 3}
       propertyPath: m_fontSize
-      value: 112.1
+      value: 146.95
       objectReference: {fileID: 0}
     - target: {fileID: 7016391421997232863, guid: 8f5aa5a9725234591a8805567925c461, type: 3}
       propertyPath: m_enableAutoSizing
@@ -401,7 +409,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8996290145784007145, guid: 8f5aa5a9725234591a8805567925c461, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 128.164
+      value: 167.978
       objectReference: {fileID: 0}
     - target: {fileID: 8996290145784007145, guid: 8f5aa5a9725234591a8805567925c461, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -527,11 +535,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6067696467860351032, guid: 8f5aa5a9725234591a8805567925c461, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 860.065
+      value: 1012.9
       objectReference: {fileID: 0}
     - target: {fileID: 6067696467860351032, guid: 8f5aa5a9725234591a8805567925c461, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 197.315
+      value: 309.97
       objectReference: {fileID: 0}
     - target: {fileID: 6067696467860351032, guid: 8f5aa5a9725234591a8805567925c461, type: 3}
       propertyPath: m_LocalPosition.x
@@ -589,13 +597,21 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: f2f4580479a744a0688440b82c21ddd5, type: 3}
+    - target: {fileID: 6067696468438814954, guid: 8f5aa5a9725234591a8805567925c461, type: 3}
+      propertyPath: m_PixelsPerUnitMultiplier
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 6067696468864908896, guid: 8f5aa5a9725234591a8805567925c461, type: 3}
+      propertyPath: m_PixelsPerUnitMultiplier
+      value: 0.25
+      objectReference: {fileID: 0}
     - target: {fileID: 7016391421997232863, guid: 8f5aa5a9725234591a8805567925c461, type: 3}
       propertyPath: m_text
       value: Reconnect
       objectReference: {fileID: 0}
     - target: {fileID: 7016391421997232863, guid: 8f5aa5a9725234591a8805567925c461, type: 3}
       propertyPath: m_fontSize
-      value: 112.1
+      value: 146.95
       objectReference: {fileID: 0}
     - target: {fileID: 7016391421997232863, guid: 8f5aa5a9725234591a8805567925c461, type: 3}
       propertyPath: m_enableAutoSizing
@@ -603,7 +619,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8996290145784007145, guid: 8f5aa5a9725234591a8805567925c461, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 128.164
+      value: 167.978
       objectReference: {fileID: 0}
     - target: {fileID: 8996290145784007145, guid: 8f5aa5a9725234591a8805567925c461, type: 3}
       propertyPath: m_AnchoredPosition.y
