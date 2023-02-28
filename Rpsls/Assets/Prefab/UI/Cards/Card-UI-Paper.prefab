@@ -87,14 +87,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2341891742965851583, guid: ab77dbdc06a9a26428bfad851b12300a, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: -2110852491, guid: 5755073bb2faa2b469de8d500b2a9069, type: 3}
     - target: {fileID: 5099693959439982042, guid: ab77dbdc06a9a26428bfad851b12300a, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 2122489677, guid: 5755073bb2faa2b469de8d500b2a9069, type: 3}
+      objectReference: {fileID: 310191256, guid: 5755073bb2faa2b469de8d500b2a9069, type: 3}
     - target: {fileID: 7973735483723059655, guid: ab77dbdc06a9a26428bfad851b12300a, type: 3}
       propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
       value: PAPER

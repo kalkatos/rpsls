@@ -141,13 +141,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: card_frame
+      name: card_bg
       rect:
         serializedVersion: 2
         x: 0
-        y: 435
-        width: 468
-        height: 589
+        y: 512
+        width: 512
+        height: 512
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -162,54 +162,12 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: rock_image
-      rect:
-        serializedVersion: 2
-        x: 468
-        y: 682
-        width: 340
-        height: 340
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 4d08f870225b82a459cc07aeb70971d3
-      internalID: -1995929596
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: paper_image
-      rect:
-        serializedVersion: 2
-        x: 468
-        y: 342
-        width: 340
-        height: 340
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 05aeace5c5b1607459f6312d044c2b0d
-      internalID: -2110852491
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: paper_logo
+      name: rock_logo
       rect:
         serializedVersion: 2
         x: 0
         y: 290
-        width: 468
+        width: 512
         height: 145
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -225,33 +183,12 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: scissors_image
-      rect:
-        serializedVersion: 2
-        x: 468
-        y: 2
-        width: 340
-        height: 340
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 27f1c4ca1ed8a2a409c9748651fc6f29
-      internalID: 594049702
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: rock_logo
+      name: paper_logo
       rect:
         serializedVersion: 2
         x: 0
         y: 145
-        width: 468
+        width: 512
         height: 145
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -272,7 +209,7 @@ TextureImporter:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 468
+        width: 512
         height: 145
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -291,12 +228,12 @@ TextureImporter:
       name: clear
       rect:
         serializedVersion: 2
-        x: 873
-        y: 929
-        width: 30
-        height: 30
+        x: 0
+        y: 436
+        width: 76
+        height: 76
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -304,6 +241,27 @@ TextureImporter:
       bones: []
       spriteID: e7ff0ba509ec56e49bb98a1ae2eb51c9
       internalID: 1050006709
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: card_frame
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 512
+        width: 512
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d584313b54a4f0b40824f95af6806cce
+      internalID: 656632883
       vertices: []
       indices: 
       edges: []
@@ -326,8 +284,9 @@ TextureImporter:
       Placeholders_8: 1650306508
       Placeholders_27: -1267103911
       clear: 1050006709
-      card_frame: -1068419413
+      card_frame: 656632883
       Placeholders_17: -1631853012
+      card_bg: -1068419413
       paper_image: -2110852491
       Placeholders_14: -153932836
       Placeholders_4: -1862433159
@@ -336,11 +295,11 @@ TextureImporter:
       Placeholders_23: -300604101
       Placeholders_22: -2048878130
       Placeholders_6: 1201232266
-      rock_logo: 310191256
+      rock_logo: 2122489677
       Placeholders_19: -1014193573
       Placeholders_9: -1710635003
       Placeholders_24: 847788684
-      paper_logo: 2122489677
+      paper_logo: 310191256
       scissors_image: 594049702
       Placeholders_11: 747569695
       Placeholders_18: -600410407
