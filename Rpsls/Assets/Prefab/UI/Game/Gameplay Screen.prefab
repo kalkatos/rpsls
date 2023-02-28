@@ -732,6 +732,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Winner Text
       objectReference: {fileID: 0}
+    - target: {fileID: 8581721169188519504, guid: f4bc63f1e6ec210408b12fe2a1b64008, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f4bc63f1e6ec210408b12fe2a1b64008, type: 3}
 --- !u!114 &647416967417922092 stripped
