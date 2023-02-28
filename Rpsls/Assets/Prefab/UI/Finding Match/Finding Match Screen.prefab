@@ -93,8 +93,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 80
-  m_fontSizeBase: 80
+  m_fontSize: 100
+  m_fontSizeBase: 100
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -245,7 +245,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1132983369339964286, guid: d929751cff6ea114a9757d4702b7272f, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 76.93
+      value: 107.712
       objectReference: {fileID: 0}
     - target: {fileID: 1314820970788991048, guid: d929751cff6ea114a9757d4702b7272f, type: 3}
       propertyPath: m_text
@@ -253,7 +253,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1314820970788991048, guid: d929751cff6ea114a9757d4702b7272f, type: 3}
       propertyPath: m_fontSize
-      value: 67.3
+      value: 94.2
       objectReference: {fileID: 0}
     - target: {fileID: 1314820970788991048, guid: d929751cff6ea114a9757d4702b7272f, type: 3}
       propertyPath: m_enableAutoSizing
@@ -289,11 +289,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2834133796756384431, guid: d929751cff6ea114a9757d4702b7272f, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 370
+      value: 567.89
       objectReference: {fileID: 0}
     - target: {fileID: 2834133796756384431, guid: d929751cff6ea114a9757d4702b7272f, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 140
+      value: 214.88
       objectReference: {fileID: 0}
     - target: {fileID: 2834133796756384431, guid: d929751cff6ea114a9757d4702b7272f, type: 3}
       propertyPath: m_LocalPosition.x
@@ -350,6 +350,14 @@ PrefabInstance:
     - target: {fileID: 2834133796756384432, guid: d929751cff6ea114a9757d4702b7272f, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2834133797334848125, guid: d929751cff6ea114a9757d4702b7272f, type: 3}
+      propertyPath: m_PixelsPerUnitMultiplier
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 2834133797765070071, guid: d929751cff6ea114a9757d4702b7272f, type: 3}
+      propertyPath: m_PixelsPerUnitMultiplier
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 5555071863678970669, guid: d929751cff6ea114a9757d4702b7272f, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
