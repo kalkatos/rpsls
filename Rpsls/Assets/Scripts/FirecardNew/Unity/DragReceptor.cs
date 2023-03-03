@@ -16,7 +16,7 @@ namespace Kalkatos.Firecard.Unity
 			StartCoroutine(MoveToZero(eventData.pointerCurrentRaycast.worldPosition));
 		}
 
-		private IEnumerator MoveToZero (Vector3 targetPosition)
+		private IEnumerator MoveToZero (Vector3 targetPosition) 
 		{
 			float time = 0.3f;
 			float elapsedTime = 0;

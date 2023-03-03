@@ -20,7 +20,7 @@ namespace Kalkatos.Firecard.Unity
 		[SerializeField, ShowIf(nameof(interactionSpace), InteractionSpace.World)] private Collider dragCollider;
 		[SerializeField] private bool useTilt;
 		[SerializeField, ShowIf(nameof(useTilt)), FoldoutGroup("Tilt")] private Transform tiltTransform;
-		[SerializeField, ShowIf(nameof(useTilt)), FoldoutGroup("Tilt")] private float tiltRate;
+		[SerializeField, ShowIf(nameof(useTilt)), FoldoutGroup("Tilt")] private float tiltRate; 
 		[SerializeField, ShowIf(nameof(useTilt)), FoldoutGroup("Tilt")] private float maxTiltAngle;
 		[SerializeField, Range(0f, 1f), ShowIf(nameof(useTilt)), FoldoutGroup("Tilt")] private float tiltDamp;
 

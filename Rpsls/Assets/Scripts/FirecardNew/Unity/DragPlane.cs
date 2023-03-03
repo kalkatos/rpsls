@@ -13,7 +13,7 @@ namespace Kalkatos.Firecard.Unity
 
 		private void OnDrawGizmosSelected ()
 		{
-			Color oldColor = Gizmos.color;
+			Color oldColor = Gizmos.color; 
 			Gizmos.color = Color.magenta;
 			Vector3 scale = transform.localScale;
 			Vector3 upLeft = transform.TransformPoint(-10 * scale.x, 0, 10 * scale.z);
