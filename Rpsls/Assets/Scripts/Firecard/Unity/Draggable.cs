@@ -1,19 +1,30 @@
 using Sirenix.OdinInspector;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 namespace Kalkatos.Firecard.Unity
 {
-	public class DraggableCardUI : MonoBehaviour, IBeginDragHandler, IPointerDownHandler, IDragHandler, IEndDragHandler
+	public class Draggable : MonoBehaviour, IBeginDragHandler, IPointerDownHandler, IDragHandler, IEndDragHandler
 	{
+		[FoldoutGroup("Events"), PropertyOrder(99)] public UnityEvent<PointerEventData> OnPointerDownEvent;
+		[FoldoutGroup("Events"), PropertyOrder(99)] public UnityEvent<PointerEventData> OnBeginDragEvent;
+		[FoldoutGroup("Events"), PropertyOrder(99)] public UnityEvent<PointerEventData> OnDragEvent;
+		[FoldoutGroup("Events"), PropertyOrder(99)] public UnityEvent<PointerEventData> OnEndDragEvent;
 
 		[SerializeField] private bool useDragPlane;
-		[SerializeField] private Transform visualObject;
+		[SerializeField] private InteractionSpace interactionSpace;
+		[SerializeField, ShowIf(nameof(interactionSpace), InteractionSpace.UI)] private Image raycastImage;
+		[SerializeField, ShowIf(nameof(interactionSpace), InteractionSpace.World)] private Collider dragCollider;
 		[SerializeField] private bool useTilt;
+		[SerializeField, ShowIf(nameof(useTilt)), FoldoutGroup("Tilt")] private Transform tiltTransform;
 		[SerializeField, ShowIf(nameof(useTilt)), FoldoutGroup("Tilt")] private float tiltRate;
 		[SerializeField, ShowIf(nameof(useTilt)), FoldoutGroup("Tilt")] private float maxTiltAngle;
 		[SerializeField, Range(0f, 1f), ShowIf(nameof(useTilt)), FoldoutGroup("Tilt")] private float tiltDamp;
+
+		public enum InteractionSpace { World, UI }
 
 		private Plane dragPlane;
 		private Vector3 dragOffset;
@@ -23,8 +34,8 @@ namespace Kalkatos.Firecard.Unity
 
 		private void Awake ()
 		{
-			if (visualObject == null)
-				visualObject = transform;
+			if (tiltTransform == null)
+				tiltTransform = transform;
 		}
 
 		private void Start ()
@@ -43,8 +54,8 @@ namespace Kalkatos.Firecard.Unity
 			if (useTilt)
 			{
 				Vector3 velocity = Vector3.zero;
-				visualObject.forward = Vector3.SmoothDamp(visualObject.forward, targetTilt, ref velocity, tiltDamp);
-				targetTilt = -(dragPlane.normal + tiltRate / 100f * Vector3.ClampMagnitude(visualObject.TransformDirection(dragDelta), maxTiltAngle));
+				tiltTransform.forward = Vector3.SmoothDamp(tiltTransform.forward, targetTilt, ref velocity, tiltDamp);
+				targetTilt = -(dragPlane.normal + tiltRate / 100f * Vector3.ClampMagnitude(tiltTransform.TransformDirection(dragDelta), maxTiltAngle));
 			}
 		}
 
@@ -56,17 +67,24 @@ namespace Kalkatos.Firecard.Unity
 			Ray objRay = new Ray(cameraPos, transform.position - cameraPos);
 			if (dragPlane.Raycast(objRay, out float distance))
 				dragOffset = GetEventWorldPosition(eventData) - objRay.GetPoint(distance);
+			OnPointerDownEvent?.Invoke(eventData);
 		}
 
 		public void OnBeginDrag (PointerEventData eventData)
 		{
 			correctDraggableCoroutine = StartCoroutine(CorrectDraggable());
+			if (raycastImage != null)
+				raycastImage.raycastTarget = false;
+			if (dragCollider != null)
+				dragCollider.enabled = false;
+			OnBeginDragEvent?.Invoke(eventData);
 		}
 
 		public void OnDrag (PointerEventData eventData)
 		{
 			transform.position = GetEventWorldPosition(eventData) - dragOffset;
 			dragDelta = eventData.delta;
+			OnDragEvent?.Invoke(eventData);
 		}
 
 		public void OnEndDrag (PointerEventData eventData)
@@ -77,8 +95,11 @@ namespace Kalkatos.Firecard.Unity
 				correctDraggableCoroutine = null;
 			}
 			dragDelta = Vector2.zero;
-			//DEBUG
-			StartCoroutine(MoveToZero());
+			if (raycastImage != null)
+				raycastImage.raycastTarget = true;
+			if (dragCollider != null)
+				dragCollider.enabled = true;
+			OnEndDragEvent?.Invoke(eventData);
 		}
 
 		private Vector3 GetEventWorldPosition (PointerEventData eventData)
@@ -96,22 +117,6 @@ namespace Kalkatos.Firecard.Unity
 				dragOffset = Vector3.Lerp(dragOffset, Vector3.zero, 0.1f);
 				yield return null;
 			}
-		}
-
-		// TEMP
-		private IEnumerator MoveToZero ()
-		{
-			float time = 0.3f;
-			float elapsedTime = 0;
-			Vector3 startPosition = transform.localPosition;
-			Vector3 targetPosition = new Vector3(startPosition.x, startPosition.y, 0);
-			while (elapsedTime < time)
-			{
-				elapsedTime += Time.deltaTime;
-				transform.localPosition = Vector3.Lerp(startPosition, targetPosition, Mathf.Clamp01(elapsedTime / time));
-				yield return null;
-			}
-			transform.localPosition = targetPosition;
 		}
 	}
 }
