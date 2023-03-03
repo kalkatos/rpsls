@@ -1,18 +1,12 @@
 // Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
 
-Shader "Firecard-Engine/Single-sided Sprites"
+Shader "Firecard/Sprites Cull Back"
 {
 	Properties
 	{
 		[PerRendererData] _MainTex ("Sprite Texture", 2D) = "white" {}
 		_Color ("Tint", Color) = (1,1,1,1)
 		[MaterialToggle] PixelSnap ("Pixel snap", Float) = 0
-		_Stencil("Stencil", Float) = 0
-		_StencilOp("Stencil operation", Float) = 2
-		_StencilComp("Stencil Comparison", Float) = 8
-		_StencilWriteMask("Stencil Write Mask", Float) = 255
-		_StencilReadMask("Stencil Read Mask", Float) = 255
-		_ColorMask("Color Mask", Float) = 15
 	}
 
 	SubShader

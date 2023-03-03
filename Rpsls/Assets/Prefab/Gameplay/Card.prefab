@@ -73,7 +73,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 1050006709, guid: 5755073bb2faa2b469de8d500b2a9069, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c124d1d05c5a4b94f81378238755f8fb, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -157,7 +157,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 1050006709, guid: 5755073bb2faa2b469de8d500b2a9069, type: 3}
+  m_Sprite: {fileID: -875092594, guid: 5755073bb2faa2b469de8d500b2a9069, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -465,6 +465,7 @@ GameObject:
   - component: {fileID: 531387276762158386}
   - component: {fileID: 5460054276072779000}
   - component: {fileID: 1832235942249523059}
+  - component: {fileID: 4021411782244536916}
   m_Layer: 0
   m_Name: Card
   m_TagString: Untagged
@@ -524,23 +525,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Delegates:
-  - eventID: 4
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: 
-          m_MethodName: 
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: 
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
+  m_Delegates: []
+--- !u!114 &4021411782244536916
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7230899555982591759}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40daac87a57e61e43b0532fc3f975264, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnPointerDownEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnBeginDragEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnDragEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnEndDragEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  useDragPlane: 1
+  interactionSpace: 0
+  raycastImage: {fileID: 0}
+  dragCollider: {fileID: 5460054276072779000}
+  useTilt: 1
+  tiltTransform: {fileID: 2374953101875933068}
+  tiltRate: 5
+  maxTiltAngle: 7
+  tiltDamp: 0.035
 --- !u!1 &7778160914691145676
 GameObject:
   m_ObjectHideFlags: 0
