@@ -1,6 +1,3 @@
 [submodule "Rpsls/Assets/Scripts/Network"]
 	path = Rpsls/Assets/Scripts/Network
 	url = https://github.com/kalkatos/network.git
-[submodule "Rpsls/Assets/Scripts/Firecard"]
-	path = Rpsls/Assets/Scripts/Firecard
-	url = https://github.com/kalkatos/firecard-engine.git
