@@ -7,7 +7,6 @@ using Kalkatos.UnityGame.Scriptable;
 
 namespace Kalkatos.UnityGame
 {
-
 	public class TimedEvent : MonoBehaviour
 	{
 		[SerializeField] private TimedEventBit[] events;
@@ -104,59 +103,6 @@ namespace Kalkatos.UnityGame
 	}
 
 	[Serializable]
-	public class ValueGetter<T>
-	{
-		public virtual T Value { get; }
-	}
-
-	public enum FloatGetterType
-	{
-		Simple,
-		Random,
-		SignalFloat,
-		SignalString
-	}
-
-	[Serializable]
-	public class FloatValueGetter : ValueGetter<float>
-	{
-		[HorizontalGroup(15), HideLabel]
-		public FloatGetterType Type;
-		[HorizontalGroup, ShowIf(nameof(Type), FloatGetterType.Simple), HideLabel]
-		public float SimpleValue;
-		[HorizontalGroup, ShowIf(nameof(Type), FloatGetterType.Random), HideLabel]
-		public Vector2 RandomValue;
-		[HorizontalGroup, ShowIf(nameof(Type), FloatGetterType.SignalFloat), HideLabel]
-		public TypedSignal<float> TimeSignal;
-		[HorizontalGroup, ShowIf(nameof(Type), FloatGetterType.SignalString), HideLabel]
-		public TypedSignal<string> TimeStringSignal;
-
-		public override float Value
-		{
-			get
-			{
-				switch (Type)
-				{
-					case FloatGetterType.Simple:
-						return SimpleValue;
-					case FloatGetterType.Random:
-						return UnityEngine.Random.Range(RandomValue.x, RandomValue.y);
-					case FloatGetterType.SignalFloat:
-						return TimeSignal.Value;
-					case FloatGetterType.SignalString:
-						if (DateTime.TryParse(TimeStringSignal.Value, out DateTime result))
-							return Mathf.Max((float)(result.ToUniversalTime() - DateTime.UtcNow).TotalSeconds, 0);
-						else if (float.TryParse(TimeStringSignal.Value, out float floatResult))
-							return floatResult;
-						return base.Value;
-					default:
-						return base.Value;
-				}
-			}
-		}
-	}
-
-	[Serializable]
 	public class TimedEventBit
 	{
 		[InlineProperty]
@@ -192,7 +138,7 @@ namespace Kalkatos.UnityGame
 
 		public void StartTimer ()
 		{
-			StartTimer(timeAsGetter.Value);
+			StartTimer(timeAsGetter.GetValue());
 		}
 
 		public void StartTimer (float time)
@@ -241,10 +187,10 @@ namespace Kalkatos.UnityGame
 			TimeoutEvent?.Invoke();
 			if (loop)
 			{
-				if (Mathf.Approximately(timeAsGetter.Value, 0))
+				if (Mathf.Approximately(timeAsGetter.GetValue(), 0))
 					Logger.LogWarning($"[{nameof(TimedEvent)}] Time is equal to 0 and is set to loop.");
 				else if (loopCount == 0 || loopCounter < loopCount)
-					RunTimer(timeAsGetter.Value);
+					RunTimer(timeAsGetter.GetValue());
 				else
 				{
 					EndOfLoopEvent?.Invoke();
