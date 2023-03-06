@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Kalkatos
+namespace Kalkatos.UnityGame
 {
 	[Serializable]
 	public class SerializableDictionary<TKey, TValue> : Dictionary<TKey, TValue>, ISerializationCallbackReceiver
@@ -37,4 +37,6 @@ namespace Kalkatos
 				Add(keys[i], values[i]);
 		}
 	}
+
+
 }

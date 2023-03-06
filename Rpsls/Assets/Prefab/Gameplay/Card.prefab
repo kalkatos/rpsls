@@ -466,6 +466,7 @@ GameObject:
   - component: {fileID: 5460054276072779000}
   - component: {fileID: 1832235942249523059}
   - component: {fileID: 4021411782244536916}
+  - component: {fileID: 3939575033120035840}
   m_Layer: 0
   m_Name: Card
   m_TagString: Untagged
@@ -559,6 +560,24 @@ MonoBehaviour:
   tiltRate: 5
   maxTiltAngle: 7
   tiltDamp: 0.035
+--- !u!114 &3939575033120035840
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7230899555982591759}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8fba3deb8b3f0634e80c87c01a9b756f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed:
+    Type: 2
+    SimpleValue: 0
+    RandomValue: {x: 0, y: 0}
+    ScriptableValue: {fileID: 11400000, guid: 0d91414254145724e8d2a19ebdded6b3, type: 2}
+  origin: {fileID: 0}
 --- !u!1 &7778160914691145676
 GameObject:
   m_ObjectHideFlags: 0
