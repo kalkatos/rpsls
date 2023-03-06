@@ -23,7 +23,7 @@ namespace Kalkatos.UnityGame.Scriptable
 		}
 	}
 
-	public abstract class TypedSignal<T> : Signal
+	public abstract class TypedSignal<T> : Signal, IValueGetter<T>
 	{
 		public UnityEvent<T> OnSignalEmittedWithParam;
 
@@ -42,6 +42,8 @@ namespace Kalkatos.UnityGame.Scriptable
 						|| (item.Equality == Equality.NotEquals && !param.Equals(item.ExpectedValue)))
 						item.Event?.Invoke(param);
 		}
+
+		public T GetValue () => Value;
 
 		protected override void Log ()
 		{
