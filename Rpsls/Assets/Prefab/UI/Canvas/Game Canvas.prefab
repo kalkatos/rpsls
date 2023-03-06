@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3974542404498348008}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Names
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -49,7 +49,7 @@ GameObject:
   - component: {fileID: 2653217063392045595}
   - component: {fileID: 7964404670826468046}
   - component: {fileID: 6918112243805982791}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Overlay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -125,7 +125,7 @@ GameObject:
   - component: {fileID: 259590573783048623}
   - component: {fileID: 5009302478936474423}
   - component: {fileID: 4339172717979514152}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Match Ended Screen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -336,12 +336,20 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4623158129560493350, guid: b2a4f86771abc6d4ab3cd8db68abf195, type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4623158129560493350, guid: b2a4f86771abc6d4ab3cd8db68abf195, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4623158129987219924, guid: b2a4f86771abc6d4ab3cd8db68abf195, type: 3}
       propertyPath: m_Name
       value: Waiting Opponent Screen
+      objectReference: {fileID: 0}
+    - target: {fileID: 4623158129987219924, guid: b2a4f86771abc6d4ab3cd8db68abf195, type: 3}
+      propertyPath: m_Layer
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4623158129987219927, guid: b2a4f86771abc6d4ab3cd8db68abf195, type: 3}
       propertyPath: m_Pivot.x
@@ -608,11 +616,7 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7948288808645557536}
     m_Modifications:
-    - target: {fileID: 324507949767322986, guid: 92a88ffc8e7d5254cb907ccaa38cb168, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0.00015258789
-      objectReference: {fileID: 0}
-    - target: {fileID: 691329593723274951, guid: 92a88ffc8e7d5254cb907ccaa38cb168, type: 3}
+    - target: {fileID: 1028314607504145662, guid: 92a88ffc8e7d5254cb907ccaa38cb168, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
@@ -627,14 +631,6 @@ PrefabInstance:
     - target: {fileID: 3571641507696859662, guid: 92a88ffc8e7d5254cb907ccaa38cb168, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3671712175763072848, guid: 92a88ffc8e7d5254cb907ccaa38cb168, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3716548086972935264, guid: 92a88ffc8e7d5254cb907ccaa38cb168, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5615604318167385412, guid: 92a88ffc8e7d5254cb907ccaa38cb168, type: 3}
       propertyPath: m_IsActive
@@ -728,7 +724,7 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6453465178136323631, guid: 92a88ffc8e7d5254cb907ccaa38cb168, type: 3}
+    - target: {fileID: 6958988941434078577, guid: 92a88ffc8e7d5254cb907ccaa38cb168, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
@@ -943,7 +939,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 84872020970807683, guid: f4bc63f1e6ec210408b12fe2a1b64008, type: 3}
       propertyPath: m_fontSizeBase
-      value: 150
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 84872020970807683, guid: f4bc63f1e6ec210408b12fe2a1b64008, type: 3}
       propertyPath: m_sharedMaterial
@@ -1090,12 +1086,20 @@ PrefabInstance:
     m_TransformParent: {fileID: 7948288808645557536}
     m_Modifications:
     - target: {fileID: 3287911175739917450, guid: 3611cad342085914f988456273c111b6, type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3287911175739917450, guid: 3611cad342085914f988456273c111b6, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5015492333673785528, guid: 3611cad342085914f988456273c111b6, type: 3}
       propertyPath: m_Name
       value: Waiting Opponent Failed Screen
+      objectReference: {fileID: 0}
+    - target: {fileID: 5015492333673785528, guid: 3611cad342085914f988456273c111b6, type: 3}
+      propertyPath: m_Layer
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5015492333673785531, guid: 3611cad342085914f988456273c111b6, type: 3}
       propertyPath: m_Pivot.x
@@ -1185,6 +1189,10 @@ PrefabInstance:
       propertyPath: receivers.Array.data[0].signal
       value: 
       objectReference: {fileID: 11400000, guid: a5cef06c1d6d86540abe026f771300ae, type: 2}
+    - target: {fileID: 5015492333783958602, guid: 3611cad342085914f988456273c111b6, type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 5015492333783958602, guid: 3611cad342085914f988456273c111b6, type: 3}
       propertyPath: m_IsActive
       value: 0
