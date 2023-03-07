@@ -13,8 +13,6 @@ namespace Kalkatos.UnityGame.Scriptable.Network
 		[Header("Sending")]
 		public List<SignalState> PrivateStateSignalsToSend;
 
-		private StateInfo lastState = null;
-
 		public void Initialize ()
 		{
 			Logger.Log("  [[[  StateBuilder  ]]]  Initializing state builder.");
@@ -39,16 +37,11 @@ namespace Kalkatos.UnityGame.Scriptable.Network
 		public void ReceiveState (StateInfo stateInfo)
 		{
 			foreach (var item in PublicStateSignals)
-				if (stateInfo.PublicProperties.ContainsKey(item.Key)
-					&& (lastState == null || !lastState.PublicProperties.ContainsKey(item.Key) 
-					|| stateInfo.PublicProperties[item.Key] != lastState.PublicProperties[item.Key]))
+				if (stateInfo.PublicProperties.ContainsKey(item.Key) && stateInfo.PublicProperties[item.Key] != item.Value)
 					item.EmitWithParam(stateInfo.PublicProperties[item.Key]);
 			foreach (var item in PrivateStateSignals)
-				if (stateInfo.PrivateProperties.ContainsKey(item.Key)
-					&& (lastState == null || !lastState.PrivateProperties.ContainsKey(item.Key)
-					|| stateInfo.PrivateProperties[item.Key] != lastState.PrivateProperties[item.Key]))
+				if (stateInfo.PrivateProperties.ContainsKey(item.Key) && stateInfo.PrivateProperties[item.Key] != item.Value)
 					item.EmitWithParam(stateInfo.PrivateProperties[item.Key]);
-			lastState = stateInfo.Clone();
 		}
 	}
 }
