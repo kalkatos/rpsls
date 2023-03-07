@@ -38,9 +38,7 @@ namespace Kalkatos.UnityGame.Scriptable
 			OnSignalEmittedWithParam?.Invoke(param);
 			if (ValueBindings != null)
 				foreach (var item in ValueBindings)
-					if ((item.Equality == Equality.Equals && param.Equals(item.ExpectedValue))
-						|| (item.Equality == Equality.NotEquals && !param.Equals(item.ExpectedValue)))
-						item.Event?.Invoke(param);
+					item.TreatValue(param);
 		}
 
 		public T GetValue () => Value;
@@ -55,14 +53,40 @@ namespace Kalkatos.UnityGame.Scriptable
 	[Serializable]
 	public class ValueBinding<T>
 	{
-		public T ExpectedValue;
-		public Equality Equality;
+		[HorizontalGroup(0.7f), LabelText("Condition")] public Equality Equality;
+		[HorizontalGroup, HideLabel, HideIf(nameof(Equality), Equality.Any)] public T ExpectedValue;
 		public UnityEvent<T> Event;
+
+		public void TreatValue (T value)
+		{
+			if (Equality == Equality.Any 
+				|| (Equality == Equality.Equals && value.Equals(ExpectedValue))
+				|| (Equality == Equality.NotEquals && !value.Equals(ExpectedValue))
+				|| (Equality == Equality.GreaterThan &&
+					((typeof(T) == typeof(int) && int.Parse(value.ToString()) > int.Parse(ExpectedValue.ToString()))
+					|| (typeof(T) == typeof(float) && int.Parse(value.ToString()) > float.Parse(ExpectedValue.ToString()))))
+				|| (Equality == Equality.LessThan &&
+					((typeof(T) == typeof(int) && int.Parse(value.ToString()) < int.Parse(ExpectedValue.ToString()))
+					|| (typeof(T) == typeof(float) && int.Parse(value.ToString()) < float.Parse(ExpectedValue.ToString()))))
+				|| (Equality == Equality.GreaterThanOrEquals &&
+					((typeof(T) == typeof(int) && int.Parse(value.ToString()) >= int.Parse(ExpectedValue.ToString()))
+					|| (typeof(T) == typeof(float) && int.Parse(value.ToString()) >= float.Parse(ExpectedValue.ToString()))))
+				|| (Equality == Equality.LessThanOrEquals &&
+					((typeof(T) == typeof(int) && int.Parse(value.ToString()) <= int.Parse(ExpectedValue.ToString()))
+					|| (typeof(T) == typeof(float) && int.Parse(value.ToString()) <= float.Parse(ExpectedValue.ToString()))))
+				)
+				Event?.Invoke(value);
+		}
 	}
 
 	public enum Equality
 	{
+		Any,
 		Equals,
 		NotEquals,
+		GreaterThan,
+		LessThan,
+		GreaterThanOrEquals,
+		LessThanOrEquals,
 	}
 }
