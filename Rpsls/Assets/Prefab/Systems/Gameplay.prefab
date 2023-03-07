@@ -52,41 +52,55 @@ MonoBehaviour:
         m_Calls: []
     actionBool:
       m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 11400000, guid: 43fa252533d250943b09212da359fc95, type: 2}
-          m_TargetAssemblyTypeName: Kalkatos.UnityGame.Scriptable.TypedSignal`1[[System.Boolean,
-            mscorlib
-          m_MethodName: EmitWithParam
-          m_Mode: 6
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-        - m_Target: {fileID: 8457858460111480015}
-          m_TargetAssemblyTypeName: Kalkatos.UnityGame.TimedEvent, Assembly-CSharp
-          m_MethodName: StartTimer
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
+        m_Calls: []
+    BoolValueBindings:
+    - Equality: 0
+      ExpectedValue: 0
+      Event:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 11400000, guid: 43fa252533d250943b09212da359fc95, type: 2}
+            m_TargetAssemblyTypeName: Kalkatos.UnityGame.Scriptable.TypedSignal`1[[System.Boolean,
+              mscorlib
+            m_MethodName: EmitWithParam
+            m_Mode: 0
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+    - Equality: 1
+      ExpectedValue: 1
+      Event:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 8457858460111480015}
+            m_TargetAssemblyTypeName: Kalkatos.UnityGame.TimedEvent, Assembly-CSharp
+            m_MethodName: StartTimer
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
     actionInt:
       m_PersistentCalls:
         m_Calls: []
+    IntValueBindings: []
     actionString:
       m_PersistentCalls:
         m_Calls: []
+    StringValueBindings: []
     actionFloat:
       m_PersistentCalls:
         m_Calls: []
+    FloatValueBindings: []
     isAnyOtherTypedSignal: 1
     isBoolSignal: 1
     isIntSignal: 0
@@ -111,15 +125,19 @@ MonoBehaviour:
     actionBool:
       m_PersistentCalls:
         m_Calls: []
+    BoolValueBindings: []
     actionInt:
       m_PersistentCalls:
         m_Calls: []
+    IntValueBindings: []
     actionString:
       m_PersistentCalls:
         m_Calls: []
+    StringValueBindings: []
     actionFloat:
       m_PersistentCalls:
         m_Calls: []
+    FloatValueBindings: []
     isAnyOtherTypedSignal: 0
     isBoolSignal: 0
     isIntSignal: 0
@@ -142,8 +160,7 @@ MonoBehaviour:
       Type: 3
       SimpleValue: 1
       RandomValue: {x: 0, y: 0}
-      TimeSignal: {fileID: 0}
-      TimeStringSignal: {fileID: 11400000, guid: 9b011dfb8ea0bfc409a28241b1de0a04, type: 2}
+      ScriptableValue: {fileID: 0}
     loop: 0
     loopCount: 0
     useUpdateEvent: 0
@@ -174,8 +191,7 @@ MonoBehaviour:
       Type: 3
       SimpleValue: 10
       RandomValue: {x: 0, y: 0}
-      TimeSignal: {fileID: 0}
-      TimeStringSignal: {fileID: 11400000, guid: b4134d836c1380f4e839ce773ffb589d, type: 2}
+      ScriptableValue: {fileID: 0}
     loop: 0
     loopCount: 0
     useUpdateEvent: 1
@@ -232,8 +248,7 @@ MonoBehaviour:
       Type: 1
       SimpleValue: 0
       RandomValue: {x: 0.5, y: 1.5}
-      TimeSignal: {fileID: 0}
-      TimeStringSignal: {fileID: 0}
+      ScriptableValue: {fileID: 0}
     loop: 1
     loopCount: 0
     useUpdateEvent: 0

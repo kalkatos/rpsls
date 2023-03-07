@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Kalkatos.UnityGame
+namespace Kalkatos.UnityGame.Debug
 {
     public class DebugOpener : MonoBehaviour
     {

@@ -4,7 +4,7 @@ namespace Kalkatos.Firecard.Unity
 {
 	public class MovementReceiver : MonoBehaviour
     {
-        [SerializeField] private bool canReceiveMovements;
+        [SerializeField] private bool canReceiveMovements = true;
         [SerializeField] private MovementHandling handling;
 
         private enum MovementHandling { MoveToCenter, Stack }

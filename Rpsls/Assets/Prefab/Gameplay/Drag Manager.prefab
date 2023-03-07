@@ -44,8 +44,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5360865281421289759}
-  - component: {fileID: 5360865281421289756}
   - component: {fileID: 8495649160476413514}
+  - component: {fileID: 5360865281421289756}
+  - component: {fileID: 8028023458154091387}
   m_Layer: 0
   m_Name: Drop Target
   m_TagString: Untagged
@@ -68,20 +69,6 @@ Transform:
   m_Father: {fileID: 5946054502939416029}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5360865281421289756
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5360865281421289757}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bcf1f3603bbe4af40a33db973270f360, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  canReceiveMovements: 1
-  handling: 0
 --- !u!212 &8495649160476413514
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -134,6 +121,63 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &5360865281421289756
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5360865281421289757}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bcf1f3603bbe4af40a33db973270f360, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canReceiveMovements: 0
+  handling: 0
+--- !u!114 &8028023458154091387
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5360865281421289757}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d29bd0bc7060be74598cf2af10944016, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  receivers:
+  - signal: {fileID: 11400000, guid: 43fa252533d250943b09212da359fc95, type: 2}
+    action:
+      m_PersistentCalls:
+        m_Calls: []
+    BoolValueBindings:
+    - Equality: 0
+      ExpectedValue: 0
+      Event:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 5360865281421289756}
+            m_TargetAssemblyTypeName: Kalkatos.Firecard.Unity.MovementReceiver, Assembly-CSharp
+            m_MethodName: SetReceivingStatus
+            m_Mode: 0
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+    IntValueBindings: []
+    StringValueBindings: []
+    FloatValueBindings: []
+    isAnyOtherTypedSignal: 1
+    isBoolSignal: 1
+    isIntSignal: 0
+    isStringSignal: 0
+    isFloatSignal: 0
 --- !u!1 &5360865281602997808
 GameObject:
   m_ObjectHideFlags: 0
@@ -252,6 +296,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5360865282451954925}
   - component: {fileID: 5360865282451954914}
+  - component: {fileID: 2106506921204998678}
   m_Layer: 0
   m_Name: Cards Origin
   m_TagString: Untagged
@@ -293,6 +338,49 @@ MonoBehaviour:
   paperCard: {fileID: 8438335137902844498}
   scissorsCard: {fileID: 7596288458166044413}
   moveSignal: {fileID: 11400000, guid: 276a560ed99305d4a9740b54b91ad27b, type: 2}
+--- !u!114 &2106506921204998678
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5360865282451954915}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d29bd0bc7060be74598cf2af10944016, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  receivers:
+  - signal: {fileID: 11400000, guid: 276a560ed99305d4a9740b54b91ad27b, type: 2}
+    action:
+      m_PersistentCalls:
+        m_Calls: []
+    BoolValueBindings: []
+    IntValueBindings: []
+    StringValueBindings:
+    - Equality: 1
+      ExpectedValue: 
+      Event:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 5360865282451954914}
+            m_TargetAssemblyTypeName: Kalkatos.UnityGame.Rps.CardsManager, Assembly-CSharp
+            m_MethodName: ReturnAllToOrigin
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+    FloatValueBindings: []
+    isAnyOtherTypedSignal: 1
+    isBoolSignal: 0
+    isIntSignal: 0
+    isStringSignal: 1
+    isFloatSignal: 0
 --- !u!1 &5360865282668857582
 GameObject:
   m_ObjectHideFlags: 0
@@ -336,6 +424,7 @@ GameObject:
   - component: {fileID: 5360865283485757506}
   - component: {fileID: 5360865283485757507}
   - component: {fileID: 5360865283485757517}
+  - component: {fileID: 7695615643648280239}
   m_Layer: 0
   m_Name: Drop Panel
   m_TagString: Untagged
@@ -410,6 +499,80 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  canReceiveDrop: 0
+--- !u!114 &7695615643648280239
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5360865283485757504}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d29bd0bc7060be74598cf2af10944016, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  receivers:
+  - signal: {fileID: 11400000, guid: 43fa252533d250943b09212da359fc95, type: 2}
+    action:
+      m_PersistentCalls:
+        m_Calls: []
+    BoolValueBindings:
+    - Equality: 0
+      ExpectedValue: 0
+      Event:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 5360865283485757517}
+            m_TargetAssemblyTypeName: Kalkatos.Firecard.Unity.DragReceptor, Assembly-CSharp
+            m_MethodName: SetDropStatus
+            m_Mode: 0
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+    IntValueBindings: []
+    StringValueBindings: []
+    FloatValueBindings: []
+    isAnyOtherTypedSignal: 1
+    isBoolSignal: 1
+    isIntSignal: 0
+    isStringSignal: 0
+    isFloatSignal: 0
+  - signal: {fileID: 11400000, guid: eae9c206a6453b94d961e47ce15fe755, type: 2}
+    action:
+      m_PersistentCalls:
+        m_Calls: []
+    BoolValueBindings:
+    - Equality: 1
+      ExpectedValue: 1
+      Event:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 5360865283485757517}
+            m_TargetAssemblyTypeName: Kalkatos.Firecard.Unity.DragReceptor, Assembly-CSharp
+            m_MethodName: SetDropStatus
+            m_Mode: 6
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+    IntValueBindings: []
+    StringValueBindings: []
+    FloatValueBindings: []
+    isAnyOtherTypedSignal: 1
+    isBoolSignal: 1
+    isIntSignal: 0
+    isStringSignal: 0
+    isFloatSignal: 0
 --- !u!1001 &5360865282301635541
 PrefabInstance:
   m_ObjectHideFlags: 0

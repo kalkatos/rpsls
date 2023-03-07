@@ -14,6 +14,7 @@ namespace Kalkatos.Firecard.Unity
 		[FoldoutGroup("Events"), PropertyOrder(99)] public UnityEvent<PointerEventData> OnDragEvent;
 		[FoldoutGroup("Events"), PropertyOrder(99)] public UnityEvent<PointerEventData> OnEndDragEvent;
 
+		[SerializeField] private bool canBeDragged = true;
 		[SerializeField] private bool useDragPlane;
 		[SerializeField] private InteractionSpace interactionSpace;
 		[SerializeField, ShowIf(nameof(interactionSpace), InteractionSpace.UI)] private Image raycastImage;
@@ -59,8 +60,15 @@ namespace Kalkatos.Firecard.Unity
 			}
 		}
 
+		public void SetDragStatus (bool b)
+		{
+			canBeDragged = b;
+		}
+
 		public void OnPointerDown (PointerEventData eventData)
 		{
+			if (!canBeDragged)
+				return;
 			if (!useDragPlane)
 				dragPlane = new Plane(-eventData.pressEventCamera.transform.forward, transform.position);
 			Vector3 cameraPos = eventData.pressEventCamera.transform.position;
@@ -72,6 +80,8 @@ namespace Kalkatos.Firecard.Unity
 
 		public void OnBeginDrag (PointerEventData eventData)
 		{
+			if (!canBeDragged)
+				return;
 			correctDraggableCoroutine = StartCoroutine(CorrectDraggable());
 			if (raycastImage != null)
 				raycastImage.raycastTarget = false;
@@ -82,6 +92,8 @@ namespace Kalkatos.Firecard.Unity
 
 		public void OnDrag (PointerEventData eventData)
 		{
+			if (!canBeDragged)
+				return;
 			transform.position = GetEventWorldPosition(eventData) - dragOffset;
 			dragDelta = eventData.delta;
 			OnDragEvent?.Invoke(eventData);
@@ -89,6 +101,8 @@ namespace Kalkatos.Firecard.Unity
 
 		public void OnEndDrag (PointerEventData eventData)
 		{
+			if (!canBeDragged)
+				return;
 			if (correctDraggableCoroutine != null)
 			{
 				StopCoroutine(correctDraggableCoroutine);

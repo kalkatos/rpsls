@@ -20,8 +20,8 @@ MonoBehaviour:
       m_Calls: []
   Value: 
   ValueBindings:
-  - ExpectedValue: 1
-    Equality: 0
+  - Equality: 1
+    ExpectedValue: 1
     Event:
       m_PersistentCalls:
         m_Calls:

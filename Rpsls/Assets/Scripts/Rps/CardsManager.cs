@@ -35,5 +35,12 @@ namespace Kalkatos.UnityGame.Rps
             if (card != lastDroppedCard)
                 card?.gameObject.GetComponent<MovementBehaviour>()?.MoveToOrigin();
 		}
+
+        public void ReturnAllToOrigin ()
+        {
+			rockCard.gameObject.GetComponent<MovementBehaviour>()?.MoveToOrigin();
+			paperCard.gameObject.GetComponent<MovementBehaviour>()?.MoveToOrigin();
+			scissorsCard.gameObject.GetComponent<MovementBehaviour>()?.MoveToOrigin();
+		}
     }
 }
