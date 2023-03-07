@@ -171,6 +171,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6591935433565723285, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
+      propertyPath: receivers.Array.data[1].BoolValueBindings.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6591935433565723285, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
       propertyPath: action.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 1
       objectReference: {fileID: 0}
@@ -295,12 +299,44 @@ PrefabInstance:
       value: Kalkatos.UnityGame.TimedEvent, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 6591935433565723285, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
+      propertyPath: receivers.Array.data[1].BoolValueBindings.Array.data[0].Event.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6591935433565723285, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
       propertyPath: receivers.Array.data[1].actionBool.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: Kalkatos.UnityGame.ObjectCluster, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 6591935433565723285, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
       propertyPath: receivers.Array.data[1].actionBool.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
       value: Kalkatos.UnityGame.TimedEvent, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 6591935433565723285, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
+      propertyPath: receivers.Array.data[1].BoolValueBindings.Array.data[0].Event.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6591935433565723285, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
+      propertyPath: receivers.Array.data[1].BoolValueBindings.Array.data[0].Event.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 7918406135995198420}
+    - target: {fileID: 6591935433565723285, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
+      propertyPath: receivers.Array.data[1].BoolValueBindings.Array.data[0].Event.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 3152625196811754977}
+    - target: {fileID: 6591935433565723285, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
+      propertyPath: receivers.Array.data[1].BoolValueBindings.Array.data[0].Event.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6591935433565723285, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
+      propertyPath: receivers.Array.data[1].BoolValueBindings.Array.data[0].Event.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6591935433565723285, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
+      propertyPath: receivers.Array.data[1].BoolValueBindings.Array.data[0].Event.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SetActive
+      objectReference: {fileID: 0}
+    - target: {fileID: 6591935433565723285, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
+      propertyPath: receivers.Array.data[1].BoolValueBindings.Array.data[0].Event.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: StartTimer
       objectReference: {fileID: 0}
     - target: {fileID: 6591935433565723285, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
       propertyPath: receivers.Array.data[0].action.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
@@ -316,6 +352,22 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6591935433565723285, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
       propertyPath: receivers.Array.data[1].actionBool.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 6591935433565723285, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
+      propertyPath: receivers.Array.data[1].BoolValueBindings.Array.data[0].Event.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Kalkatos.UnityGame.ObjectCluster, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 6591935433565723285, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
+      propertyPath: receivers.Array.data[1].BoolValueBindings.Array.data[0].Event.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: Kalkatos.UnityGame.TimedEvent, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 6591935433565723285, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
+      propertyPath: receivers.Array.data[1].BoolValueBindings.Array.data[0].Event.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 6591935433565723285, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
+      propertyPath: receivers.Array.data[1].BoolValueBindings.Array.data[0].Event.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 6591935433565723368, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
@@ -438,8 +490,7 @@ MonoBehaviour:
       Type: 0
       SimpleValue: 3
       RandomValue: {x: 0, y: 0}
-      TimeSignal: {fileID: 0}
-      TimeStringSignal: {fileID: 0}
+      ScriptableValue: {fileID: 0}
     loop: 0
     loopCount: 0
     useUpdateEvent: 0

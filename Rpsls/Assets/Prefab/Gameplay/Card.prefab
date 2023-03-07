@@ -551,6 +551,7 @@ MonoBehaviour:
   OnEndDragEvent:
     m_PersistentCalls:
       m_Calls: []
+  canBeDragged: 1
   useDragPlane: 1
   interactionSpace: 0
   raycastImage: {fileID: 0}

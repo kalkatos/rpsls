@@ -20,8 +20,8 @@ MonoBehaviour:
       m_Calls: []
   Value: 
   ValueBindings:
-  - ExpectedValue: Me
-    Equality: 0
+  - Equality: 1
+    ExpectedValue: Me
     Event:
       m_PersistentCalls:
         m_Calls:
@@ -38,8 +38,8 @@ MonoBehaviour:
             m_StringArgument: You Win!
             m_BoolArgument: 0
           m_CallState: 2
-  - ExpectedValue: Opponent
-    Equality: 0
+  - Equality: 1
+    ExpectedValue: Opponent
     Event:
       m_PersistentCalls:
         m_Calls:
