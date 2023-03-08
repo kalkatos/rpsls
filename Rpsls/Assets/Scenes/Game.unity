@@ -265,6 +265,38 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2417585501612517629, guid: 78bdf3d2e341dd54bae677855d3285c9, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2.3715386
+      objectReference: {fileID: 0}
+    - target: {fileID: 2417585501612517629, guid: 78bdf3d2e341dd54bae677855d3285c9, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.000982
+      objectReference: {fileID: 0}
+    - target: {fileID: 2417585501612517629, guid: 78bdf3d2e341dd54bae677855d3285c9, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -5.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3063307571858872129, guid: 78bdf3d2e341dd54bae677855d3285c9, type: 3}
+      propertyPath: m_Color.a
+      value: 0.2627451
+      objectReference: {fileID: 0}
+    - target: {fileID: 3063307571858872129, guid: 78bdf3d2e341dd54bae677855d3285c9, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3063307571858872129, guid: 78bdf3d2e341dd54bae677855d3285c9, type: 3}
+      propertyPath: m_Color.g
+      value: 0.40291238
+      objectReference: {fileID: 0}
+    - target: {fileID: 3063307571858872129, guid: 78bdf3d2e341dd54bae677855d3285c9, type: 3}
+      propertyPath: m_Color.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3063307571858872129, guid: 78bdf3d2e341dd54bae677855d3285c9, type: 3}
+      propertyPath: m_SortingLayer
+      value: -1
+      objectReference: {fileID: 0}
     - target: {fileID: 4770561446522296803, guid: 78bdf3d2e341dd54bae677855d3285c9, type: 3}
       propertyPath: m_RootOrder
       value: 8
@@ -313,6 +345,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Background
       objectReference: {fileID: 0}
+    - target: {fileID: 7767472315943554325, guid: 78bdf3d2e341dd54bae677855d3285c9, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 1536
+      objectReference: {fileID: 0}
+    - target: {fileID: 7767472315943554326, guid: 78bdf3d2e341dd54bae677855d3285c9, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 2732980173992395675}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 78bdf3d2e341dd54bae677855d3285c9, type: 3}
 --- !u!1 &932225535
@@ -449,7 +489,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -95
+  m_SortingOrder: -90
   m_Sprite: {fileID: 21300000, guid: a23e72b980efc4d3bbd5c35256b262b2, type: 3}
   m_Color: {r: 1, g: 0.9472604, b: 0.6933962, a: 1}
   m_FlipX: 0
@@ -678,7 +718,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -95
+  m_SortingOrder: -90
   m_Sprite: {fileID: 21300000, guid: a23e72b980efc4d3bbd5c35256b262b2, type: 3}
   m_Color: {r: 1, g: 0.9472604, b: 0.6933962, a: 1}
   m_FlipX: 0
@@ -1200,18 +1240,6 @@ PrefabInstance:
     - target: {fileID: 7982003456078722326, guid: 3b43c7c2dacbaa24e8f6e2225934ccbe, type: 3}
       propertyPath: m_Name
       value: Timer Bar World Canvas
-      objectReference: {fileID: 0}
-    - target: {fileID: 7982003456078722326, guid: 3b43c7c2dacbaa24e8f6e2225934ccbe, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8409192428526252681, guid: 3b43c7c2dacbaa24e8f6e2225934ccbe, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8409192428526252681, guid: 3b43c7c2dacbaa24e8f6e2225934ccbe, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3b43c7c2dacbaa24e8f6e2225934ccbe, type: 3}
