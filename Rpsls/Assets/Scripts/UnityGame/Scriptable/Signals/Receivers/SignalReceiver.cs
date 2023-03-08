@@ -27,13 +27,9 @@ namespace Kalkatos.UnityGame.Scriptable
 	{
 		[OnValueChanged(nameof(VerifySignal)), SerializeField] private Signal signal;
 		[HideIf(nameof(isAnyOtherTypedSignal)), SerializeField] private UnityEvent action;
-		//[ShowIf(nameof(isBoolSignal)), SerializeField] private UnityEvent<bool> actionBool;
 		[ShowIf(nameof(isBoolSignal)), SerializeField] private ValueBinding<bool>[] BoolValueBindings;
-		//[ShowIf(nameof(isIntSignal)), SerializeField] private UnityEvent<int> actionInt;
 		[ShowIf(nameof(isIntSignal)), SerializeField] private ValueBinding<int>[] IntValueBindings;
-		//[ShowIf(nameof(isStringSignal)), SerializeField] private UnityEvent<string> actionString;
 		[ShowIf(nameof(isStringSignal)), SerializeField] private ValueBinding<string>[] StringValueBindings;
-		//[ShowIf(nameof(isFloatSignal)), SerializeField] private UnityEvent<float> actionFloat;
 		[ShowIf(nameof(isFloatSignal)), SerializeField] private ValueBinding<float>[] FloatValueBindings;
 		[HideInInspector, SerializeField] private bool isAnyOtherTypedSignal;
 		[HideInInspector, SerializeField] private bool isBoolSignal;
@@ -88,28 +84,24 @@ namespace Kalkatos.UnityGame.Scriptable
 		{
 			foreach (var item in BoolValueBindings)
 				item.TreatValue(b);
-			//actionBool?.Invoke(b);
 		}
 
 		private void HandleIntSignalEmitted (int value)
 		{
 			foreach (var item in IntValueBindings)
 				item.TreatValue(value);
-			//actionInt?.Invoke(value);
 		}
 
 		private void HandleStringSignalEmitted (string value)
 		{
 			foreach (var item in StringValueBindings)
 				item.TreatValue(value);
-			//actionString?.Invoke(value);
 		}
 
 		private void HandleFloatSignalEmitted (float value)
 		{
 			foreach (var item in FloatValueBindings)
 				item.TreatValue(value);
-			//actionFloat?.Invoke(value);
 		}
 	}
 }

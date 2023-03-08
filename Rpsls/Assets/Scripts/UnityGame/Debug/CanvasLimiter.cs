@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Kalkatos.UnityGame.Debug
+namespace Kalkatos.UnityGame
 {
 	[ExecuteAlways]
     public class CanvasLimiter : MonoBehaviour
@@ -13,7 +13,8 @@ namespace Kalkatos.UnityGame.Debug
 			RectTransform rectTransform = (RectTransform)worldCanvas.transform;
 			float measuredAspectRatio = (float)Screen.width / Screen.height;
 			rectTransform.sizeDelta = new Vector2(Mathf.Min(rectTransform.sizeDelta.y * measuredAspectRatio, rectTransform.sizeDelta.y * maxAspectRatio.x / maxAspectRatio.y), rectTransform.sizeDelta.y);
-			//UnityEngine.Debug.Log($"{Screen.width}  {Screen.height}  {measuredAspectRatio}   {rectTransform.sizeDelta}");
+			if (Application.isPlaying && !Application.isEditor)
+				Destroy(this);
 		}
 	}
 }
