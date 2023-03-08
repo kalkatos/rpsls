@@ -99,7 +99,7 @@ namespace Kalkatos.UnityGame.Rps
 				{
 					case "0":
 						hasSentMove?.EmitWithParam(false);
-						Logger.Log($"Phase: 0 | UTC: {utcNow.ToString("u")} | State: \n{JsonConvert.SerializeObject(currentState, Formatting.Indented)}");
+						//Logger.Log($"Phase: 0 | UTC: {utcNow.ToString("u")} | State: \n{JsonConvert.SerializeObject(currentState, Formatting.Indented)}");
 						DateTime startPlayPhaseTime = DateTime.Parse(currentState.PublicProperties["PlayPhaseStartTime"]).ToUniversalTime();
 						turnTimerControl.EmitWithParam(false);
 						if (utcNow < startPlayPhaseTime)
@@ -110,7 +110,7 @@ namespace Kalkatos.UnityGame.Rps
 					case "1":
 						if (hasSentMove.Value)
 							break;
-						Logger.Log($"Phase: 1 | UTC: {utcNow.ToString("u")} | State: \n{JsonConvert.SerializeObject(currentState, Formatting.Indented)}");
+						//Logger.Log($"Phase: 1 | UTC: {utcNow.ToString("u")} | State: \n{JsonConvert.SerializeObject(currentState, Formatting.Indented)}");
 						DateTime endPlayPhaseTime = DateTime.Parse(currentState.PublicProperties["PlayPhaseEndTime"]).ToUniversalTime();
 						turnTimerControl.EmitWithParam(true);
 						if (utcNow < endPlayPhaseTime)
@@ -128,7 +128,7 @@ namespace Kalkatos.UnityGame.Rps
 						break;
 					case "2":
 						hasSentMove?.EmitWithParam(false);
-						Logger.Log($"Phase: 2 | UTC: {utcNow.ToString("u")} | State: \n{JsonConvert.SerializeObject(currentState, Formatting.Indented)}");
+						//Logger.Log($"Phase: 2 | UTC: {utcNow.ToString("u")} | State: \n{JsonConvert.SerializeObject(currentState, Formatting.Indented)}");
 						DateTime endTurnTime = DateTime.Parse(currentState.PublicProperties["TurnEndTime"]).ToUniversalTime();
 						turnTimerControl.EmitWithParam(false);
 						if (utcNow < endTurnTime)

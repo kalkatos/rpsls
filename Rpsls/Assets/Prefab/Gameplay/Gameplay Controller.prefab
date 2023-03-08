@@ -57,4 +57,4 @@ MonoBehaviour:
   hasSentMove: {fileID: 11400000, guid: eae9c206a6453b94d961e47ce15fe755, type: 2}
   autoPlay: 0
   fixedDelay: 0
-  myMoveSignal: {fileID: 0}
+  myMoveSignal: {fileID: 11400000, guid: 276a560ed99305d4a9740b54b91ad27b, type: 2}
