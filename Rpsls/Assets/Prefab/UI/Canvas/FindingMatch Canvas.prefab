@@ -25,7 +25,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7577068631498053084, guid: 957949dabb71b8c45b528f8c41f0008a, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 1536
+      value: 922.4703
       objectReference: {fileID: 0}
     - target: {fileID: 7577068631498053084, guid: 957949dabb71b8c45b528f8c41f0008a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -49,7 +49,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7617707627178540261, guid: 957949dabb71b8c45b528f8c41f0008a, type: 3}
       propertyPath: m_PresetInfoIsWorld
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 957949dabb71b8c45b528f8c41f0008a, type: 3}
@@ -182,10 +182,6 @@ PrefabInstance:
       propertyPath: m_fontSizeBase
       value: 100
       objectReference: {fileID: 0}
-    - target: {fileID: 1154066827, guid: a58406339730d214d829d8a6f44fdcc1, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 1154066829, guid: a58406339730d214d829d8a6f44fdcc1, type: 3}
       propertyPath: m_fontSizeBase
       value: 100
@@ -198,13 +194,13 @@ PrefabInstance:
       propertyPath: m_fontSizeBase
       value: 100
       objectReference: {fileID: 0}
-    - target: {fileID: 2012403979, guid: a58406339730d214d829d8a6f44fdcc1, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 2012403981, guid: a58406339730d214d829d8a6f44fdcc1, type: 3}
       propertyPath: m_fontSizeBase
       value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 380821654391449752, guid: a58406339730d214d829d8a6f44fdcc1, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1744717712889521895, guid: a58406339730d214d829d8a6f44fdcc1, type: 3}
       propertyPath: m_IsActive
@@ -303,6 +299,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2747354884665584116, guid: a58406339730d214d829d8a6f44fdcc1, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4864831940891732384, guid: a58406339730d214d829d8a6f44fdcc1, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
