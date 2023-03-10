@@ -334,10 +334,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9a949d250627644e8b6f99a32776733, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rockCard: {fileID: 6280580681771581479}
-  paperCard: {fileID: 8438335137902844498}
-  scissorsCard: {fileID: 7596288458166044413}
+  rockCard: {fileID: 5721873155419405270}
+  paperCard: {fileID: 7880114703590334883}
+  scissorsCard: {fileID: 8154408759625776396}
+  playCardTarget: {fileID: 5360865281421289756}
   moveSignal: {fileID: 11400000, guid: 276a560ed99305d4a9740b54b91ad27b, type: 2}
+  canPlay: {fileID: 11400000, guid: 15a5f5df531dbe5428d007e647ac273a, type: 2}
 --- !u!114 &2106506921204998678
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -475,21 +477,9 @@ MonoBehaviour:
   OnDropReceived:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5360865281421289756}
-        m_TargetAssemblyTypeName: Kalkatos.Firecard.Unity.MovementReceiver, Assembly-CSharp
-        m_MethodName: ReceiveMovement
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 5360865282451954914}
         m_TargetAssemblyTypeName: Kalkatos.UnityGame.Rps.CardsManager, Assembly-CSharp
-        m_MethodName: DropReceivedGoBackToOrigin
+        m_MethodName: UseCard
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -683,6 +673,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2526218713719581992, guid: 2850f1f2a179c984387319751091003e, type: 3}
   m_PrefabInstance: {fileID: 5360865282301635541}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8154408759625776396 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4273873174657226457, guid: 2850f1f2a179c984387319751091003e, type: 3}
+  m_PrefabInstance: {fileID: 5360865282301635541}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8fba3deb8b3f0634e80c87c01a9b756f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &5360865282872617135
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -788,6 +789,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7099e1720ccdccb45a53a021f2084a12, type: 3}
+--- !u!114 &5721873155419405270 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 364144799093445497, guid: 7099e1720ccdccb45a53a021f2084a12, type: 3}
+  m_PrefabInstance: {fileID: 5360865282872617135}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8fba3deb8b3f0634e80c87c01a9b756f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &6280580681771581479 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2111207774170228872, guid: 7099e1720ccdccb45a53a021f2084a12, type: 3}
@@ -898,6 +910,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4b16bc52f57f70049a40776b8bb16058, type: 3}
+--- !u!114 &7880114703590334883 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2827789978735530217, guid: 4b16bc52f57f70049a40776b8bb16058, type: 3}
+  m_PrefabInstance: {fileID: 5360865282919592266}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8fba3deb8b3f0634e80c87c01a9b756f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &8438335137902844498 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4575485198761732888, guid: 4b16bc52f57f70049a40776b8bb16058, type: 3}
