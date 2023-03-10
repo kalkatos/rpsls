@@ -7,6 +7,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 536406019100488194, guid: e1743bc5f7265c948ba0788f89271ba4, type: 3}
+      propertyPath: CardType
+      value: PAPER
+      objectReference: {fileID: 0}
     - target: {fileID: 580759729948950615, guid: e1743bc5f7265c948ba0788f89271ba4, type: 3}
       propertyPath: m_Size.x
       value: 4.05

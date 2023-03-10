@@ -18,5 +18,24 @@ MonoBehaviour:
   OnSignalEmittedWithParam:
     m_PersistentCalls:
       m_Calls: []
-  LastValue: 0
-  Param: 0
+  Value: 1
+  ValueBindings:
+  - Equality: 0
+    ExpectedValue: 0
+    Event:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 11400000, guid: 15a5f5df531dbe5428d007e647ac273a, type: 2}
+          m_TargetAssemblyTypeName: Kalkatos.UnityGame.Scriptable.TypedSignal`1[[System.Boolean,
+            mscorlib
+          m_MethodName: EmitWithParam
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  DefaultValue: 0
