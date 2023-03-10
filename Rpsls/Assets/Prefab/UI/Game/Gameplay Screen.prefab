@@ -102,6 +102,7 @@ GameObject:
   - component: {fileID: 62532726226462437}
   - component: {fileID: 58917377092683245}
   - component: {fileID: 2689723255255002317}
+  - component: {fileID: 6874600112640629223}
   m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
@@ -157,7 +158,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: a523f2d5eddbf4455b7994d3dd585af7, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 19bdc7fc9e4ae4fe9abc7388fc09b1ee, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -167,6 +168,25 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &6874600112640629223
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 242313749813275673}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90f0a4d0095ae3e42bf702aa2a75f681, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  signalType: 0
+  signalByIndex: {fileID: 11400000, guid: b8974c93bf6122645928f708fd13fb8f, type: 2}
+  signalByString: {fileID: 0}
+  visualType: 0
+  spriteRenderer: {fileID: 0}
+  uiImage: {fileID: 2689723255255002317}
+  sprites: {fileID: 11400000, guid: 20b9c81a836a9104fb70158199dcb727, type: 2}
 --- !u!1 &346997930398456304
 GameObject:
   m_ObjectHideFlags: 0
@@ -942,6 +962,7 @@ GameObject:
   - component: {fileID: 2164355512080442600}
   - component: {fileID: 4387365573534193084}
   - component: {fileID: 4196116866879879237}
+  - component: {fileID: 6265284342293244910}
   m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
@@ -997,7 +1018,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: a523f2d5eddbf4455b7994d3dd585af7, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 19bdc7fc9e4ae4fe9abc7388fc09b1ee, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1007,6 +1028,25 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &6265284342293244910
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8477488457618204408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90f0a4d0095ae3e42bf702aa2a75f681, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  signalType: 0
+  signalByIndex: {fileID: 11400000, guid: 2fb64ccab2daa0744855189be454caa5, type: 2}
+  signalByString: {fileID: 0}
+  visualType: 0
+  spriteRenderer: {fileID: 0}
+  uiImage: {fileID: 4196116866879879237}
+  sprites: {fileID: 11400000, guid: 20b9c81a836a9104fb70158199dcb727, type: 2}
 --- !u!1 &9147738657824326881
 GameObject:
   m_ObjectHideFlags: 0
