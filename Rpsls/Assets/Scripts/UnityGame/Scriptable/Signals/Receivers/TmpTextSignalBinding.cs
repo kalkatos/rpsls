@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using Sirenix.OdinInspector;
+using TMPro;
 using UnityEngine;
 
 namespace Kalkatos.UnityGame.Scriptable
@@ -6,12 +7,15 @@ namespace Kalkatos.UnityGame.Scriptable
 	public class TmpTextSignalBinding : MonoBehaviour
 	{
 		[SerializeField] private TypedSignal<string> signal;
-		[SerializeField] private TMP_Text textComponent;
+		[SerializeField, HideIf(nameof(textComponentInputField))] private TMP_Text textComponent;
+		[SerializeField, HideIf(nameof(textComponent))] private TMP_InputField textComponentInputField;
 
 		private void Reset ()
 		{
 			if (textComponent == null)
 				textComponent = GetComponent<TMP_Text>();
+			if (textComponentInputField == null)
+				textComponentInputField = GetComponent<TMP_InputField>();
 		}
 
 		private void OnEnable ()
@@ -27,7 +31,8 @@ namespace Kalkatos.UnityGame.Scriptable
 
 		private void UpdateText (string text)
 		{
-			textComponent.text = text;
+			textComponent?.SetText(text);
+			textComponentInputField?.SetTextWithoutNotify(text);
 		}
 	}
 }
