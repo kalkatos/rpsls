@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
 using Kalkatos.Network.Unity;
+using System.Collections.Generic;
 
 namespace Kalkatos.UnityGame.Scriptable.Network
 {
 	[CreateAssetMenu(fileName = "NetworkClientSO", menuName = "Network/Network Client")]
-	public class NetworkClientSO : ScriptableObject
+	public class NetworkClientScriptable : ScriptableObject
 	{
 		public StateBuilder StateBuilder;
 		public UnityEvent OnConnectSuccess;
@@ -24,6 +25,11 @@ namespace Kalkatos.UnityGame.Scriptable.Network
 		public void SetNickname (string nick)
 		{
 			NetworkClient.SetNickname(nick);
+		}
+
+		public void SetPlayerData (PlayerDataChange playerDataChange)
+		{
+			NetworkClient.SetPlayerData(new Dictionary<string, string>() { { playerDataChange.Key.GetValue(), playerDataChange.Value } });
 		}
 
 		public void Connect ()
