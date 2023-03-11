@@ -89,9 +89,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90f0a4d0095ae3e42bf702aa2a75f681, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  signalType: 0
-  signalByIndex: {fileID: 0}
-  signalByString: {fileID: 0}
+  valueType: 0
+  indexValue:
+    Type: 2
+    SimpleValue: 0
+    RandomValue: {x: 0, y: 0}
+    ScriptableValue: {fileID: 0}
+  nameValue:
+    Type: 0
+    SimpleValue: 
+    ScriptableValue: {fileID: 0}
   visualType: 0
   spriteRenderer: {fileID: 0}
   uiImage: {fileID: 6435430479905539359}
