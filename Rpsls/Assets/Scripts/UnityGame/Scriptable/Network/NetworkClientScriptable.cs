@@ -27,9 +27,9 @@ namespace Kalkatos.UnityGame.Scriptable.Network
 			NetworkClient.SetNickname(nick);
 		}
 
-		public void SetPlayerData (PlayerDataChange playerDataChange)
+		public void SetPlayerData (SignalState playerDataChange)
 		{
-			NetworkClient.SetPlayerData(new Dictionary<string, string>() { { playerDataChange.Key.GetValue(), playerDataChange.Value } });
+			NetworkClient.SetPlayerData(new Dictionary<string, string>() { { playerDataChange.Key, playerDataChange.Value } });
 		}
 
 		public void Connect ()
