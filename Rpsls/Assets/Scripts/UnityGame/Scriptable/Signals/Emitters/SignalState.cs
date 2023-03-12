@@ -17,16 +17,19 @@ namespace Kalkatos.UnityGame.Scriptable.Network
 		public void EmitWithParam (int value)
 		{
 			Value = value.ToString();
+			Emit();
 		}
 
 		public void EmitWithParam (float value)
 		{
 			Value = value.ToString();
+			Emit();
 		}
 
 		public void EmitWithParam (bool value)
 		{
 			Value = value ? "1" : "0";
+			Emit();
 		}
 	}
 }
