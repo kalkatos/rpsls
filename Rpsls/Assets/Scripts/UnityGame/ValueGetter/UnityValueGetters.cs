@@ -7,13 +7,13 @@ namespace Kalkatos.UnityGame
 	[Serializable, InlineProperty]
 	public class FloatValueGetter : IValueGetter<float>
 	{
-		[HorizontalGroup(15), HideLabel]
+		[HorizontalGroup(0.3f), HideLabel]
 		public ValueType Type;
-		[HorizontalGroup, HideLabel, ShowIf(nameof(Type), ValueType.Simple)]
+		[HorizontalGroup(0.7f), HideLabel, ShowIf(nameof(Type), ValueType.Simple)]
 		public float SimpleValue;
-		[HorizontalGroup, HideLabel, ShowIf(nameof(Type), ValueType.Random)]
+		[HorizontalGroup(0.7f), HideLabel, ShowIf(nameof(Type), ValueType.Random)]
 		public Vector2 RandomValue;
-		[HorizontalGroup, HideLabel, ShowIf(nameof(Type), ValueType.Scriptable)]
+		[HorizontalGroup(0.7f), HideLabel, ShowIf(nameof(Type), ValueType.Scriptable)]
 		public ScriptableObject ScriptableValue;
 
 		public enum ValueType { Simple, Random, Scriptable }
@@ -44,13 +44,13 @@ namespace Kalkatos.UnityGame
 	[Serializable, InlineProperty]
 	public class IntValueGetter : IValueGetter<int>
 	{
-		[HorizontalGroup(15), HideLabel]
+		[HorizontalGroup(0.3f), HideLabel]
 		public ValueType Type;
-		[HorizontalGroup, HideLabel, ShowIf(nameof(Type), ValueType.Simple)]
+		[HorizontalGroup(0.7f), HideLabel, ShowIf(nameof(Type), ValueType.Simple)]
 		public int SimpleValue;
-		[HorizontalGroup, HideLabel, ShowIf(nameof(Type), ValueType.Random)]
+		[HorizontalGroup(0.7f), HideLabel, ShowIf(nameof(Type), ValueType.Random)]
 		public Vector2Int RandomValue;
-		[HorizontalGroup, HideLabel, ShowIf(nameof(Type), ValueType.Scriptable)]
+		[HorizontalGroup(0.7f), HideLabel, ShowIf(nameof(Type), ValueType.Scriptable)]
 		public ScriptableObject ScriptableValue;
 
 		public enum ValueType { Simple, Random, Scriptable }
@@ -81,11 +81,11 @@ namespace Kalkatos.UnityGame
 	[Serializable, InlineProperty]
 	public class StringValueGetter : IValueGetter<string>
 	{
-		[HorizontalGroup(15), HideLabel]
+		[HorizontalGroup(0.3f), HideLabel]
 		public ValueType Type;
-		[HorizontalGroup, HideLabel, ShowIf(nameof(Type), ValueType.Simple)]
+		[HorizontalGroup(0.7f), HideLabel, ShowIf(nameof(Type), ValueType.Simple)]
 		public string SimpleValue;
-		[HorizontalGroup, HideLabel, ShowIf(nameof(Type), ValueType.Scriptable)]
+		[HorizontalGroup(0.7f), HideLabel, ShowIf(nameof(Type), ValueType.Scriptable)]
 		public ScriptableObject ScriptableValue;
 
 		public enum ValueType { Simple, Scriptable }
@@ -105,6 +105,39 @@ namespace Kalkatos.UnityGame
 					}
 					else
 						Logger.LogWarning($"[StringValueGetter] The scriptable value is null.");
+					break;
+			}
+			return default;
+		}
+	}
+
+	[Serializable, InlineProperty]
+	public class BoolValueGetter : IValueGetter<bool>
+	{
+		[HorizontalGroup(0.3f), HideLabel]
+		public ValueType Type;
+		[HorizontalGroup(0.7f), HideLabel, ShowIf(nameof(Type), ValueType.Simple)]
+		public bool SimpleValue;
+		[HorizontalGroup(0.7f), HideLabel, ShowIf(nameof(Type), ValueType.Scriptable)]
+		public ScriptableObject ScriptableValue;
+
+		public enum ValueType { Simple, Scriptable }
+
+		public bool GetValue ()
+		{
+			switch (Type)
+			{
+				case ValueType.Simple:
+					return SimpleValue;
+				case ValueType.Scriptable:
+					if (ScriptableValue != null)
+					{
+						if (ScriptableValue is IValueGetter<bool>)
+							return ((IValueGetter<bool>)ScriptableValue).GetValue();
+						Logger.LogWarning($"[BoolValueGetter] The scriptable {ScriptableValue.name} is not a IValueGetter.");
+					}
+					else
+						Logger.LogWarning($"[BoolValueGetter] The scriptable value is null.");
 					break;
 			}
 			return default;

@@ -6,6 +6,7 @@ namespace Kalkatos.UnityGame.Scriptable
 {
 	public class SpriteBinding : MonoBehaviour
 	{
+#pragma warning disable
 		[SerializeField, LabelText("Value"), HorizontalGroup("Value", 30)] private ValueType valueType;
 		[SerializeField, HideLabel, HorizontalGroup("Value"), ShowIf(nameof(valueType), ValueType.Int)] private IntValueGetter indexValue;
 		[SerializeField, HideLabel, HorizontalGroup("Value"), ShowIf(nameof(valueType), ValueType.String)] private StringValueGetter nameValue;
@@ -13,6 +14,7 @@ namespace Kalkatos.UnityGame.Scriptable
 		[SerializeField, HideLabel, HorizontalGroup("Renderer"), ShowIf(nameof(visualType), VisualType.Sprite)] private SpriteRenderer spriteRenderer;
 		[SerializeField, HideLabel, HorizontalGroup("Renderer"), ShowIf(nameof(visualType), VisualType.UI)] private Image uiImage;
 		[SerializeField] private SpriteListScriptable sprites;
+#pragma warning restore
 
 		public enum ValueType { Int, String }
 		public enum VisualType { UI, Sprite }
