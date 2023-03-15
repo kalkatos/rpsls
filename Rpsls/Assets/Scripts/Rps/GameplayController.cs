@@ -42,7 +42,6 @@ namespace Kalkatos.UnityGame.Rps
 
 		private void Start ()
 		{
-			Logger.Log("Gameplay Controller Starts");
 			StartCoroutine(GameplayLoop());
 		}
 
@@ -146,7 +145,6 @@ namespace Kalkatos.UnityGame.Rps
 			matchEndedScreen?.EmitWithParam(true);
 			yield return new WaitForSeconds(5);
 			menuScreen.EmitWithParam(true);
-			Logger.Log("Execution Ended");
 		}
 
 		private IEnumerator WaitMatchState ()
