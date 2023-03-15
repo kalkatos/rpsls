@@ -9,6 +9,7 @@ namespace Kalkatos.UnityGame.Scriptable.Network
 	public class NetworkClientScriptable : ScriptableObject
 	{
 		public StateBuilder StateBuilder;
+		public PlayerDataBuilder PlayerDataBuilder;
 		public UnityEvent OnConnectSuccess;
 		public UnityEvent OnConnectFailure;
 		public UnityEvent OnFindMatchSuccess;
@@ -32,9 +33,30 @@ namespace Kalkatos.UnityGame.Scriptable.Network
 			NetworkClient.SetPlayerData(new Dictionary<string, string>() { { playerDataChange.Key, playerDataChange.Value } });
 		}
 
+		public void SetPlayerData (string key)
+		{
+			if (PlayerDataBuilder == null || PlayerDataBuilder.MyInfo.OtherData == null)
+				return;
+			foreach (var item in PlayerDataBuilder.MyInfo.OtherData)
+			{
+				if (item.Key == key)
+				{
+					NetworkClient.SetPlayerData(new Dictionary<string, string>() { { key, item.Value } });
+					return;
+				}
+			}
+			Logger.LogWarning($"[NetworkClientScriptable] Couldn't find player data with key {key}.");
+		}
+
 		public void Connect ()
 		{
-			NetworkClient.Connect((success) => OnConnectSuccess?.Invoke(), (failure) => OnConnectFailure?.Invoke());
+			NetworkClient.Connect(
+				(success) =>
+				{
+					PlayerDataBuilder?.UpdatePlayerData();
+					OnConnectSuccess?.Invoke();
+				}, 
+				(failure) => OnConnectFailure?.Invoke());
 		}
 
 		public void FindMatch ()
@@ -44,7 +66,13 @@ namespace Kalkatos.UnityGame.Scriptable.Network
 
 		public void GetMatch ()
 		{
-			NetworkClient.GetMatch((success) => OnGetMatchSuccess?.Invoke(), (failure) => OnGetMatchFailure?.Invoke());
+			NetworkClient.GetMatch(
+				(success) =>
+				{
+					PlayerDataBuilder?.UpdateOtherPlayersData();
+					OnGetMatchSuccess?.Invoke();
+				}, 
+				(failure) => OnGetMatchFailure?.Invoke());
 		}
 
 		public void LeaveMatch ()

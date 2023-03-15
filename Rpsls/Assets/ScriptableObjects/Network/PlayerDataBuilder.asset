@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd0da7ef78f21b6438ad748ab684bba4, type: 3}
+  m_Name: PlayerDataBuilder
+  m_EditorClassIdentifier: 
+  MyInfo:
+    Alias: {fileID: 0}
+    Nickname: {fileID: 11400000, guid: f6beb1554dd6b3049b330e9a848c0cd3, type: 2}
+    OtherData:
+    - Key: Avatar
+      Type: 1
+      BoolValue: {fileID: 0}
+      IntValue: {fileID: 11400000, guid: 2fb64ccab2daa0744855189be454caa5, type: 2}
+      FloatValue: {fileID: 0}
+      StringValue: {fileID: 0}
+  OtherPlayersInfo:
+  - Alias: {fileID: 0}
+    Nickname: {fileID: 11400000, guid: e61f4474d40739f4287b5e871c0e2670, type: 2}
+    OtherData:
+    - Key: Avatar
+      Type: 1
+      BoolValue: {fileID: 0}
+      IntValue: {fileID: 11400000, guid: b8974c93bf6122645928f708fd13fb8f, type: 2}
+      FloatValue: {fileID: 0}
+      StringValue: {fileID: 0}

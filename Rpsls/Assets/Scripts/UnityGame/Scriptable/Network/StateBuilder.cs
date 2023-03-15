@@ -15,7 +15,7 @@ namespace Kalkatos.UnityGame.Scriptable.Network
 
 		public void Initialize ()
 		{
-			Logger.Log("  [[[  StateBuilder  ]]]  Initializing state builder.");
+			Logger.Log("[StateBuilder] Initializing state builder.");
 			foreach (var item in PublicStateSignals)
 				item.Value = "";
 			foreach (var item in PrivateStateSignals)
