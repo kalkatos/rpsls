@@ -10,6 +10,7 @@ namespace Kalkatos.UnityGame.Scriptable.Network
 	{
 		public StateBuilder StateBuilder;
 		public PlayerDataBuilder PlayerDataBuilder;
+		public UnityEvent OnNotConnected;
 		public UnityEvent OnConnectSuccess;
 		public UnityEvent OnConnectFailure;
 		public UnityEvent OnFindMatchSuccess;
@@ -55,8 +56,14 @@ namespace Kalkatos.UnityGame.Scriptable.Network
 				{
 					PlayerDataBuilder?.UpdatePlayerData();
 					OnConnectSuccess?.Invoke();
-				}, 
-				(failure) => OnConnectFailure?.Invoke());
+				},
+				(failure) =>
+				{
+					if (failure.Tag == Kalkatos.Network.Model.NetworkErrorTag.NotConnected)
+						OnNotConnected?.Invoke();
+					else
+						OnConnectFailure?.Invoke();
+				});
 		}
 
 		public void FindMatch ()
