@@ -31,12 +31,12 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7918406135995198421}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 67}
-  m_SizeDelta: {x: 1398.585, y: 531.772}
+  m_SizeDelta: {x: 820, y: 531.772}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4607556229267586851
 CanvasRenderer:
@@ -69,14 +69,14 @@ MonoBehaviour:
   m_text: Failed to find a match...
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 015573da50ed04390be9f20287a541d6, type: 2}
-  m_sharedMaterial: {fileID: -2237749729835323621, guid: 015573da50ed04390be9f20287a541d6, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: a5b4ad1ff083f284d8993e6f4a99c828, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4280950668
-  m_fontColor: {r: 0.54901963, g: 0.12156863, b: 0.16470589, a: 1}
+    rgba: 4282725851
+  m_fontColor: {r: 0.8584906, g: 0.20652366, b: 0.27231875, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -441,6 +441,10 @@ PrefabInstance:
     - target: {fileID: 6591935433565723371, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6591935433654908421, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6591935433654908421, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
       propertyPath: m_AnchoredPosition.x
