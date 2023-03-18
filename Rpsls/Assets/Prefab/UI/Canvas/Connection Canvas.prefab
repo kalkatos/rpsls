@@ -430,7 +430,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7577068631498053084, guid: 957949dabb71b8c45b528f8c41f0008a, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 945.2308
+      value: 1536
       objectReference: {fileID: 0}
     - target: {fileID: 7577068631498053084, guid: 957949dabb71b8c45b528f8c41f0008a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -714,6 +714,34 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 575863240988076869}
     m_Modifications:
+    - target: {fileID: 4517016819539832119, guid: ecf51088bf19ad947a2cec96388121ec, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4517016819539832119, guid: ecf51088bf19ad947a2cec96388121ec, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4517016819539832119, guid: ecf51088bf19ad947a2cec96388121ec, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 7862631348664448482}
+    - target: {fileID: 4517016819539832119, guid: ecf51088bf19ad947a2cec96388121ec, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4517016819539832119, guid: ecf51088bf19ad947a2cec96388121ec, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Quit
+      objectReference: {fileID: 0}
+    - target: {fileID: 4517016819539832119, guid: ecf51088bf19ad947a2cec96388121ec, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Kalkatos.UnityGame.Quitter, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4517016819539832119, guid: ecf51088bf19ad947a2cec96388121ec, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 4862779569997096118, guid: ecf51088bf19ad947a2cec96388121ec, type: 3}
       propertyPath: m_text
       value: Quit
@@ -729,7 +757,7 @@ PrefabInstance:
     - target: {fileID: 4862779570013120964, guid: ecf51088bf19ad947a2cec96388121ec, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 7451239355576121766}
+      objectReference: {fileID: 0}
     - target: {fileID: 4862779570013120964, guid: ecf51088bf19ad947a2cec96388121ec, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
@@ -858,20 +886,24 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7027603353008109138, guid: ecf51088bf19ad947a2cec96388121ec, type: 3}
+      propertyPath: m_text
+      value: Quit
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ecf51088bf19ad947a2cec96388121ec, type: 3}
---- !u!1 &1558332568771664482 stripped
+--- !u!1 &157833153846255474 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 4862779570013120954, guid: ecf51088bf19ad947a2cec96388121ec, type: 3}
+  m_CorrespondingSourceObject: {fileID: 6119515707197566122, guid: ecf51088bf19ad947a2cec96388121ec, type: 3}
   m_PrefabInstance: {fileID: 6258982543490954200}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &7451239355576121766
+--- !u!114 &7862631348664448482
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1558332568771664482}
+  m_GameObject: {fileID: 157833153846255474}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bd056055808c1994690ac30f2b0aeab5, type: 3}
