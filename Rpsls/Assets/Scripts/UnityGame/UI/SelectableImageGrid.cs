@@ -13,7 +13,7 @@ namespace Kalkatos.UnityGame.UI
 		[SerializeField] private SpriteListScriptable spriteList;
 		[SerializeField] private SelectableImage mold;
 		[SerializeField] private Transform origin;
-		[SerializeField] private Image selectedImage;
+		[SerializeField] private Transform selectedImage;
 		[SerializeField] private IntValueGetter startingIndex;
 
 		private List<SelectableImage> imageList = new List<SelectableImage>();
@@ -39,8 +39,8 @@ namespace Kalkatos.UnityGame.UI
 		{
 			if (index < imageList.Count)
 			{
-				selectedImage.transform.SetParent(imageList[index].transform, false);
-				selectedImage.transform.localPosition = Vector3.zero;
+				selectedImage.SetParent(imageList[index].transform, false);
+				selectedImage.localPosition = Vector3.zero;
 			}
 		}
 
@@ -67,7 +67,7 @@ namespace Kalkatos.UnityGame.UI
 
 		private void HandleClickOnSelectable (SelectableImage image)
 		{
-			selectedImage.transform.SetParent(image.transform, false);
+			selectedImage.SetParent(image.transform, false);
 			OnImageSelected?.Invoke(image.Index);
 		}
 	}
