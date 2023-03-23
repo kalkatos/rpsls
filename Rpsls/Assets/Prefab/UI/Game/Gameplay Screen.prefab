@@ -1,43 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &2078545775767472779
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6272011917904486626}
-  m_Layer: 5
-  m_Name: Scores
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &6272011917904486626
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2078545775767472779}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 5427548903173163450}
-  - {fileID: 8127006470257949566}
-  m_Father: {fileID: 6260147688039038671}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &7173279790867025915
 GameObject:
   m_ObjectHideFlags: 0
@@ -72,7 +34,6 @@ RectTransform:
   - {fileID: 4371620268125221902}
   - {fileID: 1951480416694034808}
   - {fileID: 7789670998785865747}
-  - {fileID: 6272011917904486626}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -122,6 +83,36 @@ MonoBehaviour:
             m_TargetAssemblyTypeName: Kalkatos.UnityGame.ObjectCluster, Assembly-CSharp
             m_MethodName: SetActive
             m_Mode: 0
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+    IntValueBindings: []
+    StringValueBindings: []
+    FloatValueBindings: []
+    isAnyOtherTypedSignal: 1
+    isBoolSignal: 1
+    isIntSignal: 0
+    isStringSignal: 0
+    isFloatSignal: 0
+  - signal: {fileID: 11400000, guid: 3d834ef0aca4011419ccd54ff1de0af9, type: 2}
+    action:
+      m_PersistentCalls:
+        m_Calls: []
+    BoolValueBindings:
+    - Equality: 1
+      ExpectedValue: 0
+      Event:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 3089441298465496482}
+            m_TargetAssemblyTypeName: Kalkatos.UnityGame.ObjectCluster, Assembly-CSharp
+            m_MethodName: Activate
+            m_Mode: 1
             m_Arguments:
               m_ObjectArgument: {fileID: 0}
               m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -552,8 +543,12 @@ PrefabInstance:
       value: Opponent Name Plate In Game
       objectReference: {fileID: 0}
     - target: {fileID: 2312104835733235061, guid: a2793d9b4e01a7945ab05d6a0a4fbcc4, type: 3}
+      propertyPath: autoKill
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2312104835733235061, guid: a2793d9b4e01a7945ab05d6a0a4fbcc4, type: 3}
       propertyPath: endValueV3.x
-      value: 2000
+      value: 1000
       objectReference: {fileID: 0}
     - target: {fileID: 2979976583820984211, guid: a2793d9b4e01a7945ab05d6a0a4fbcc4, type: 3}
       propertyPath: m_LocalRotation.x
@@ -649,7 +644,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8472257740388918594, guid: a2793d9b4e01a7945ab05d6a0a4fbcc4, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -231.00003
+      value: -231
       objectReference: {fileID: 0}
     - target: {fileID: 8472257740388918594, guid: a2793d9b4e01a7945ab05d6a0a4fbcc4, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -683,7 +678,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 6272011917904486626}
+    m_TransformParent: {fileID: 1524691589596059104}
     m_Modifications:
     - target: {fileID: 84872020970807683, guid: f4bc63f1e6ec210408b12fe2a1b64008, type: 3}
       propertyPath: m_text
@@ -731,7 +726,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1352379455237636823, guid: f4bc63f1e6ec210408b12fe2a1b64008, type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1352379455237636823, guid: f4bc63f1e6ec210408b12fe2a1b64008, type: 3}
       propertyPath: m_AnchorMax.x
@@ -775,19 +770,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1352379455237636823, guid: f4bc63f1e6ec210408b12fe2a1b64008, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 1352379455237636823, guid: f4bc63f1e6ec210408b12fe2a1b64008, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 1352379455237636823, guid: f4bc63f1e6ec210408b12fe2a1b64008, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 1352379455237636823, guid: f4bc63f1e6ec210408b12fe2a1b64008, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 95
+      value: 95.00446
       objectReference: {fileID: 0}
     - target: {fileID: 1352379455237636823, guid: f4bc63f1e6ec210408b12fe2a1b64008, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -831,11 +826,6 @@ MonoBehaviour:
   signal: {fileID: 11400000, guid: 039e682400331bf4b9dcbbc12cd78a6c, type: 2}
   textComponent: {fileID: 6393877461618060014}
   textComponentInputField: {fileID: 0}
---- !u!224 &5427548903173163450 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 1352379455237636823, guid: f4bc63f1e6ec210408b12fe2a1b64008, type: 3}
-  m_PrefabInstance: {fileID: 6455376852361628525}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &6393877461618060014 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 84872020970807683, guid: f4bc63f1e6ec210408b12fe2a1b64008, type: 3}
@@ -857,6 +847,10 @@ PrefabInstance:
     - target: {fileID: 2189366008907253389, guid: a2793d9b4e01a7945ab05d6a0a4fbcc4, type: 3}
       propertyPath: m_Name
       value: Player Name Plate In Game
+      objectReference: {fileID: 0}
+    - target: {fileID: 2312104835733235061, guid: a2793d9b4e01a7945ab05d6a0a4fbcc4, type: 3}
+      propertyPath: autoKill
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6274028396833513919, guid: a2793d9b4e01a7945ab05d6a0a4fbcc4, type: 3}
       propertyPath: indexValue.ScriptableValue
@@ -932,7 +926,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8472257740388918594, guid: a2793d9b4e01a7945ab05d6a0a4fbcc4, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 231.769
+      value: 231.76904
       objectReference: {fileID: 0}
     - target: {fileID: 8472257740388918594, guid: a2793d9b4e01a7945ab05d6a0a4fbcc4, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -962,7 +956,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 6272011917904486626}
+    m_TransformParent: {fileID: 4371620268125221902}
     m_Modifications:
     - target: {fileID: 84872020970807683, guid: f4bc63f1e6ec210408b12fe2a1b64008, type: 3}
       propertyPath: m_text
@@ -1010,7 +1004,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1352379455237636823, guid: f4bc63f1e6ec210408b12fe2a1b64008, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1352379455237636823, guid: f4bc63f1e6ec210408b12fe2a1b64008, type: 3}
       propertyPath: m_AnchorMax.x
@@ -1054,19 +1048,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1352379455237636823, guid: f4bc63f1e6ec210408b12fe2a1b64008, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 1352379455237636823, guid: f4bc63f1e6ec210408b12fe2a1b64008, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 1352379455237636823, guid: f4bc63f1e6ec210408b12fe2a1b64008, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 1352379455237636823, guid: f4bc63f1e6ec210408b12fe2a1b64008, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -95
+      value: -95.77354
       objectReference: {fileID: 0}
     - target: {fileID: 1352379455237636823, guid: f4bc63f1e6ec210408b12fe2a1b64008, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -1121,8 +1115,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!224 &8127006470257949566 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 1352379455237636823, guid: f4bc63f1e6ec210408b12fe2a1b64008, type: 3}
-  m_PrefabInstance: {fileID: 7065145749914220969}
-  m_PrefabAsset: {fileID: 0}
