@@ -152,6 +152,18 @@ PrefabInstance:
       propertyPath: autoKill
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4822791640049671881, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
+      propertyPath: autoPlay
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4822791640049671881, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6361618888703226545, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6591935433565723285, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
       propertyPath: receivers.Array.size
       value: 1
@@ -352,7 +364,9 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6361618888703226545, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
+    - {fileID: 4822791640049671881, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 43ba3030a410ea84d86e095c2a0d2a2b, type: 3}
 --- !u!114 &4623158129987219926 stripped
 MonoBehaviour:
