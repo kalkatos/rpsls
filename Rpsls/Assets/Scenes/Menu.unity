@@ -598,37 +598,9 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2220258099884073528, guid: 7fc6afb28a377554b9a7310c0396be9c, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2220258099884073528, guid: 7fc6afb28a377554b9a7310c0396be9c, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2220258099884073528, guid: 7fc6afb28a377554b9a7310c0396be9c, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2220258099884073528, guid: 7fc6afb28a377554b9a7310c0396be9c, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2220258099884073528, guid: 7fc6afb28a377554b9a7310c0396be9c, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2220258099884073528, guid: 7fc6afb28a377554b9a7310c0396be9c, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 5693389114937535664, guid: 7fc6afb28a377554b9a7310c0396be9c, type: 3}
       propertyPath: m_Name
       value: Menu Canvas
-      objectReference: {fileID: 0}
-    - target: {fileID: 6092827562182806573, guid: 7fc6afb28a377554b9a7310c0396be9c, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6642999532569382839, guid: 7fc6afb28a377554b9a7310c0396be9c, type: 3}
       propertyPath: m_Camera
