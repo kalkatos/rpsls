@@ -636,7 +636,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9113274599162682159, guid: 7fc6afb28a377554b9a7310c0396be9c, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 1536
+      value: 945.2308
       objectReference: {fileID: 0}
     - target: {fileID: 9113274599162682159, guid: 7fc6afb28a377554b9a7310c0396be9c, type: 3}
       propertyPath: m_SizeDelta.y
@@ -749,3 +749,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bffd7f09c2d568347b2702ee158c4549, type: 3}
+--- !u!1 &7665867349147598121 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1393659004243741703, guid: bffd7f09c2d568347b2702ee158c4549, type: 3}
+  m_PrefabInstance: {fileID: 7665867349147598120}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7665867349147598122
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7665867349147598121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cf89cd6ca7dbf044885d4f9569a9296, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isActive: 0
+  playButtonClickSignal: {fileID: 11400000, guid: 422ec635f9feb024287054b3541bdefc, type: 2}
+  secondsToWait: 3

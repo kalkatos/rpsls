@@ -311,7 +311,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4501207139770476986, guid: 8f5aa5a9725234591a8805567925c461, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4501207139770476986, guid: 8f5aa5a9725234591a8805567925c461, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
@@ -496,7 +496,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   receivers:
-  - signal: {fileID: 11400000, guid: 43fa252533d250943b09212da359fc95, type: 2}
+  - signal: {fileID: 11400000, guid: b9f047127979de44ebe11512a433980e, type: 2}
     action:
       m_PersistentCalls:
         m_Calls: []
