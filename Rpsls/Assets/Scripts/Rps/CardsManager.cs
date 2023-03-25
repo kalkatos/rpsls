@@ -8,7 +8,7 @@ namespace Kalkatos.UnityGame.Rps
     public class CardsManager : MonoBehaviour
     {
 		public static CardsManager Instance;
-		
+
         [SerializeField] private MovementBehaviour rockCard;
         [SerializeField] private MovementBehaviour paperCard;
         [SerializeField] private MovementBehaviour scissorsCard;
@@ -55,6 +55,7 @@ namespace Kalkatos.UnityGame.Rps
 			if (movement != scissorsCard)
 				scissorsCard.MoveToOrigin();
 			playCardTarget.ReceiveMovement(card.transform);
+			card.BeUsed();
 		}
 	}
 }
