@@ -1,3 +1,4 @@
+using Kalkatos.Firecard.Unity;
 using Kalkatos.Network.Model;
 using Kalkatos.Network.Unity;
 using Kalkatos.UnityGame.Scriptable;
@@ -21,6 +22,7 @@ namespace Kalkatos.UnityGame.Rps
 		[SerializeField] private SignalBool waitingOpponentFailedScreen;
 		[Header("Gameplay")]
 		[SerializeField] private Signal onSendButtonClicked;
+		[SerializeField] private Signal returnAllToOrigin;
 		[SerializeField] private SignalBool gameplayScreen;
 		[SerializeField] private SignalFloat turnTimer;
 		[SerializeField] private SignalBool turnTimerControl;
@@ -30,6 +32,9 @@ namespace Kalkatos.UnityGame.Rps
 		[SerializeField] private bool autoPlay;
 		[SerializeField] private bool fixedDelay;
 		[SerializeField] private SignalState myMoveSignal;
+		[SerializeField] private CardBehaviour rockCard;
+		[SerializeField] private CardBehaviour paperCard;
+		[SerializeField] private CardBehaviour scissorsCard;
 
 		private string phase = "0";
 		private StateInfo currentState = null;
@@ -95,10 +100,9 @@ namespace Kalkatos.UnityGame.Rps
 			gameplayScreen?.EmitWithParam(true);
 			hasSentMove.EmitWithParam(false);
 			Logger.Log(" ========= Turn Logic =========");
+			phase = "0";
 			while (phase != "3")
 			{
-				yield return WaitMatchState();
-				phase = currentState.PublicProperties["Phase"];
 				DateTime utcNow = DateTime.UtcNow;
 				switch (phase)
 				{
@@ -106,7 +110,7 @@ namespace Kalkatos.UnityGame.Rps
 					case "1":
 						if (hasSentMove.Value)
 							break;
-						Logger.Log("Phase 1");
+						returnAllToOrigin?.Emit();
 						// TODO Countdown before the bar
 						yield return new WaitForSeconds(3);
 						Logger.Log($"Phase: 1 | UTC: {utcNow.ToString("u")} | State: \n{JsonConvert.SerializeObject(currentState, Formatting.Indented)}");
@@ -135,6 +139,8 @@ namespace Kalkatos.UnityGame.Rps
 					default:
 						break;
 				}
+				yield return WaitMatchState();
+				phase = currentState.PublicProperties["Phase"];
 			}
 			// Match is over
 			matchEndedScreen?.EmitWithParam(true);
@@ -197,13 +203,13 @@ namespace Kalkatos.UnityGame.Rps
 			switch (move)
 			{
 				case 0:
-					myMoveSignal.EmitWithParam("ROCK");
+					rockCard.Use();
 					break;
 				case 1:
-					myMoveSignal.EmitWithParam("PAPER");
+					paperCard.Use();
 					break;
 				case 2:
-					myMoveSignal.EmitWithParam("SCISSORS");
+					scissorsCard.Use();
 					break;
 			}
 			yield return new WaitForSeconds(fixedDelay ? 1f : Random.Range(0.5f, 1.5f));
