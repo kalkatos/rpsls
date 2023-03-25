@@ -1,3 +1,4 @@
+using Kalkatos.Firecard.Unity;
 using Kalkatos.Network.Model;
 using Kalkatos.Network.Unity;
 using Kalkatos.UnityGame.Scriptable;
@@ -21,6 +22,7 @@ namespace Kalkatos.UnityGame.Rps
 		[SerializeField] private SignalBool waitingOpponentFailedScreen;
 		[Header("Gameplay")]
 		[SerializeField] private Signal onSendButtonClicked;
+		[SerializeField] private Signal returnAllToOrigin;
 		[SerializeField] private SignalBool gameplayScreen;
 		[SerializeField] private SignalFloat turnTimer;
 		[SerializeField] private SignalBool turnTimerControl;
@@ -30,10 +32,14 @@ namespace Kalkatos.UnityGame.Rps
 		[SerializeField] private bool autoPlay;
 		[SerializeField] private bool fixedDelay;
 		[SerializeField] private SignalState myMoveSignal;
+		[SerializeField] private CardBehaviour rockCard;
+		[SerializeField] private CardBehaviour paperCard;
+		[SerializeField] private CardBehaviour scissorsCard;
 
 		private string phase = "0";
 		private StateInfo currentState = null;
 		private Coroutine countdownCoroutine;
+		private bool hasExecutedTurnResult;
 
 		private void Awake ()
 		{
@@ -60,6 +66,8 @@ namespace Kalkatos.UnityGame.Rps
 				(failure) => {});
 			while (currentState == null)
 				yield return null;
+
+			
 			Logger.Log(" ========= Wait for opponent =========");
 			countdownCoroutine = StartCoroutine(CountdownCoroutine(30));
 			float handshakingWaitStart = Time.time;
@@ -87,36 +95,28 @@ namespace Kalkatos.UnityGame.Rps
 					yield return new WaitForSeconds(Random.Range(1f, 2f));
 			}
 			waitingOpponentScreen?.EmitWithParam(false);
+
+
 			gameplayScreen?.EmitWithParam(true);
+			hasSentMove.EmitWithParam(false);
 			Logger.Log(" ========= Turn Logic =========");
+			phase = "0";
 			while (phase != "3")
 			{
-				yield return WaitMatchState();
-				phase = currentState.PublicProperties["Phase"];
 				DateTime utcNow = DateTime.UtcNow;
 				switch (phase)
 				{
 					case "0":
-						hasSentMove?.EmitWithParam(false);
-						//Logger.Log($"Phase: 0 | UTC: {utcNow.ToString("u")} | State: \n{JsonConvert.SerializeObject(currentState, Formatting.Indented)}");
-						DateTime startPlayPhaseTime = DateTime.Parse(currentState.PublicProperties["PlayPhaseStartTime"]).ToUniversalTime();
-						turnTimerControl.EmitWithParam(false);
-						if (utcNow < startPlayPhaseTime)
-							yield return new WaitForSeconds((float)(startPlayPhaseTime - utcNow).TotalSeconds + Random.Range(0, 0.3f));
-						else
-							Logger.LogError("Error in phase 0, it's pass the start play phase time");
-						break;
 					case "1":
 						if (hasSentMove.Value)
 							break;
-						//Logger.Log($"Phase: 1 | UTC: {utcNow.ToString("u")} | State: \n{JsonConvert.SerializeObject(currentState, Formatting.Indented)}");
-						DateTime endPlayPhaseTime = DateTime.Parse(currentState.PublicProperties["PlayPhaseEndTime"]).ToUniversalTime();
+						returnAllToOrigin?.Emit();
+						// TODO Countdown before the bar
+						yield return new WaitForSeconds(3);
+						Logger.Log($"Phase: 1 | UTC: {utcNow.ToString("u")} | State: \n{JsonConvert.SerializeObject(currentState, Formatting.Indented)}");
+						DateTime endPlayPhaseTime = DateTime.UtcNow.AddSeconds(10);
 						turnTimerControl.EmitWithParam(true);
-						if (utcNow < endPlayPhaseTime)
-						{
-							float timeRemaining = (float)(endPlayPhaseTime - utcNow).TotalSeconds;
-							StartCoroutine(TurnTimerCoroutine(timeRemaining));
-						}
+						StartCoroutine(TurnTimerCoroutine(10));
 
 						// DEBUG
 						if (autoPlay)
@@ -124,22 +124,23 @@ namespace Kalkatos.UnityGame.Rps
 
 						while (!hasSentMove.Value && DateTime.UtcNow < endPlayPhaseTime)
 							yield return null;
+						//turnTimerControl?.EmitWithParam(false);
+						hasExecutedTurnResult = false;
 						break;
 					case "2":
-						hasSentMove?.EmitWithParam(false);
-						//Logger.Log($"Phase: 2 | UTC: {utcNow.ToString("u")} | State: \n{JsonConvert.SerializeObject(currentState, Formatting.Indented)}");
-						DateTime endTurnTime = DateTime.Parse(currentState.PublicProperties["TurnEndTime"]).ToUniversalTime();
+						if (hasExecutedTurnResult)
+							break;
 						turnTimerControl.EmitWithParam(false);
-						if (utcNow < endTurnTime)
-						{
-							yield return new WaitForSeconds((float)(endTurnTime - utcNow).TotalSeconds + Random.Range(0, 0.3f)); 
-						}
-						else
-							Logger.LogError("Error in phase 2, it's pass the end turn time");
+						hasSentMove?.EmitWithParam(false);
+						Logger.Log($"Phase: 2 | UTC: {utcNow.ToString("u")} | State: \n{JsonConvert.SerializeObject(currentState, Formatting.Indented)}");
+						yield return new WaitForSeconds(5);
+						hasExecutedTurnResult = true;
 						break;
 					default:
 						break;
 				}
+				yield return WaitMatchState();
+				phase = currentState.PublicProperties["Phase"];
 			}
 			// Match is over
 			matchEndedScreen?.EmitWithParam(true);
@@ -202,13 +203,13 @@ namespace Kalkatos.UnityGame.Rps
 			switch (move)
 			{
 				case 0:
-					myMoveSignal.EmitWithParam("ROCK");
+					rockCard.Use();
 					break;
 				case 1:
-					myMoveSignal.EmitWithParam("PAPER");
+					paperCard.Use();
 					break;
 				case 2:
-					myMoveSignal.EmitWithParam("SCISSORS");
+					scissorsCard.Use();
 					break;
 			}
 			yield return new WaitForSeconds(fixedDelay ? 1f : Random.Range(0.5f, 1.5f));

@@ -529,6 +529,39 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6284e527e7ab43e4da398fa81061578c, type: 3}
+--- !u!114 &1111586248 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4681451543542651662, guid: 6284e527e7ab43e4da398fa81061578c, type: 3}
+  m_PrefabInstance: {fileID: 1111586247}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43b56a5901e8041459dfcd8fc98d4f6f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1111586249 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6667111279424309153, guid: 6284e527e7ab43e4da398fa81061578c, type: 3}
+  m_PrefabInstance: {fileID: 1111586247}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43b56a5901e8041459dfcd8fc98d4f6f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1111586250 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9130399127536819668, guid: 6284e527e7ab43e4da398fa81061578c, type: 3}
+  m_PrefabInstance: {fileID: 1111586247}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43b56a5901e8041459dfcd8fc98d4f6f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1116067475
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -831,7 +864,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7948288808645557536, guid: a75b5a3ecf2deb04c846b4a31776afa5, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 945.5614
+      value: 945.2308
       objectReference: {fileID: 0}
     - target: {fileID: 7948288808645557536, guid: a75b5a3ecf2deb04c846b4a31776afa5, type: 3}
       propertyPath: m_LocalPosition.x
@@ -866,6 +899,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1188097081657636616, guid: 6e0d71042f6c82a42984abba91c82992, type: 3}
+      propertyPath: rockCard
+      value: 
+      objectReference: {fileID: 1111586250}
+    - target: {fileID: 1188097081657636616, guid: 6e0d71042f6c82a42984abba91c82992, type: 3}
+      propertyPath: paperCard
+      value: 
+      objectReference: {fileID: 1111586249}
+    - target: {fileID: 1188097081657636616, guid: 6e0d71042f6c82a42984abba91c82992, type: 3}
+      propertyPath: scissorsCard
+      value: 
+      objectReference: {fileID: 1111586248}
     - target: {fileID: 1188097081657636617, guid: 6e0d71042f6c82a42984abba91c82992, type: 3}
       propertyPath: m_Name
       value: Gameplay Controller
@@ -1186,7 +1231,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7982003456078722322, guid: 3b43c7c2dacbaa24e8f6e2225934ccbe, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 945.5614
+      value: 945.2308
       objectReference: {fileID: 0}
     - target: {fileID: 7982003456078722322, guid: 3b43c7c2dacbaa24e8f6e2225934ccbe, type: 3}
       propertyPath: m_SizeDelta.y
