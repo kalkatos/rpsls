@@ -900,6 +900,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1188097081657636616, guid: 6e0d71042f6c82a42984abba91c82992, type: 3}
+      propertyPath: autoPlay
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1188097081657636616, guid: 6e0d71042f6c82a42984abba91c82992, type: 3}
       propertyPath: rockCard
       value: 
       objectReference: {fileID: 1111586250}
