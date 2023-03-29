@@ -783,6 +783,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8155767844540484574, guid: 7642c4f585cef2d44b22752b12ada24a, type: 3}
+      propertyPath: events.Array.data[1].loopCount
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 8696299923481546763, guid: 7642c4f585cef2d44b22752b12ada24a, type: 3}
       propertyPath: m_IsActive
       value: 0
