@@ -552,7 +552,6 @@ GameObject:
   - component: {fileID: 4021411782244536916}
   - component: {fileID: 3939575033120035840}
   - component: {fileID: 536406019100488194}
-  - component: {fileID: 7635416804121831542}
   m_Layer: 0
   m_Name: Card
   m_TagString: Untagged
@@ -675,6 +674,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8fba3deb8b3f0634e80c87c01a9b756f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnMoved:
+    m_PersistentCalls:
+      m_Calls: []
   speed:
     Type: 2
     SimpleValue: 0
@@ -710,61 +712,6 @@ MonoBehaviour:
           m_BoolArgument: 1
         m_CallState: 2
   CardType: 
---- !u!114 &7635416804121831542
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7230899555982591759}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d29bd0bc7060be74598cf2af10944016, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  receivers:
-  - signal: {fileID: 11400000, guid: 15a5f5df531dbe5428d007e647ac273a, type: 2}
-    action:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: 
-          m_MethodName: 
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: 
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-    BoolValueBindings:
-    - Equality: 0
-      ExpectedValue: 0
-      Event:
-        m_PersistentCalls:
-          m_Calls:
-          - m_Target: {fileID: 2392504609314231828}
-            m_TargetAssemblyTypeName: UnityEngine.Renderer, UnityEngine
-            m_MethodName: set_enabled
-            m_Mode: 0
-            m_Arguments:
-              m_ObjectArgument: {fileID: 0}
-              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-              m_IntArgument: 0
-              m_FloatArgument: 0
-              m_StringArgument: 
-              m_BoolArgument: 0
-            m_CallState: 2
-    IntValueBindings: []
-    StringValueBindings: []
-    FloatValueBindings: []
-    isAnyOtherTypedSignal: 1
-    isBoolSignal: 1
-    isIntSignal: 0
-    isStringSignal: 0
-    isFloatSignal: 0
 --- !u!1 &7778160914691145676
 GameObject:
   m_ObjectHideFlags: 0
