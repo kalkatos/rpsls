@@ -1,10 +1,14 @@
 using Kalkatos.UnityGame;
+using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Kalkatos.Firecard.Unity
 {
 	public class MovementBehaviour : MonoBehaviour
     {
+        [PropertyOrder(99)] public UnityEvent<Transform> OnMoved;
+
         [SerializeField] private FloatValueGetter speed;
         [SerializeField] private Transform origin;
         
@@ -34,6 +38,7 @@ namespace Kalkatos.Firecard.Unity
 		public void MoveTo (Transform targetTransform)
         {
 			MoveTo(targetTransform.position);
+            OnMoved?.Invoke(targetTransform);
         }
 
         public void MoveToOrigin ()
