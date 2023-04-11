@@ -198,6 +198,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2477697583516471615}
     m_Modifications:
+    - target: {fileID: 648257210997187482, guid: 4b16bc52f57f70049a40776b8bb16058, type: 3}
+      propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2827789978735530217, guid: 4b16bc52f57f70049a40776b8bb16058, type: 3}
       propertyPath: origin
       value: 
@@ -254,7 +258,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Card-Paper
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4195278875856441268, guid: 4b16bc52f57f70049a40776b8bb16058, type: 3}
+    - {fileID: 1649382825376577259, guid: 4b16bc52f57f70049a40776b8bb16058, type: 3}
+    - {fileID: 204069594762940547, guid: 4b16bc52f57f70049a40776b8bb16058, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 4b16bc52f57f70049a40776b8bb16058, type: 3}
 --- !u!4 &24628387208006073 stripped
 Transform:
@@ -279,6 +286,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2477697583516471615}
     m_Modifications:
+    - target: {fileID: 1481296687944279466, guid: 2850f1f2a179c984387319751091003e, type: 3}
+      propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2526218713719581992, guid: 2850f1f2a179c984387319751091003e, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -335,7 +346,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Card-Scissors
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2758757043013454212, guid: 2850f1f2a179c984387319751091003e, type: 3}
+    - {fileID: 761748193305194715, guid: 2850f1f2a179c984387319751091003e, type: 3}
+    - {fileID: 2208044979886921395, guid: 2850f1f2a179c984387319751091003e, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 2850f1f2a179c984387319751091003e, type: 3}
 --- !u!4 &7417110441983838761 stripped
 Transform:
@@ -412,11 +426,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3084110035222470666, guid: 7099e1720ccdccb45a53a021f2084a12, type: 3}
+      propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 6339042461855514742, guid: 7099e1720ccdccb45a53a021f2084a12, type: 3}
       propertyPath: m_Name
       value: Card-Rock
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1732610611225431076, guid: 7099e1720ccdccb45a53a021f2084a12, type: 3}
+    - {fileID: 3805593585312003451, guid: 7099e1720ccdccb45a53a021f2084a12, type: 3}
+    - {fileID: 2370837289828356883, guid: 7099e1720ccdccb45a53a021f2084a12, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 7099e1720ccdccb45a53a021f2084a12, type: 3}
 --- !u!4 &7815626141961099944 stripped
 Transform:

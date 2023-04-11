@@ -12,7 +12,6 @@ namespace Kalkatos.UnityGame.Scriptable
 
 		public override void Emit ()
 		{
-			base.Emit();
 			base.EmitWithParam(true);
 			if (IsScene)
 			{
@@ -25,7 +24,6 @@ namespace Kalkatos.UnityGame.Scriptable
 
 		public override void EmitWithParam (bool param)
 		{
-			base.Emit();
 			base.EmitWithParam(param);
 			if (IsScene)
 			{
