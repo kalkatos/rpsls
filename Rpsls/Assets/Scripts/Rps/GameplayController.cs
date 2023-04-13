@@ -133,7 +133,7 @@ namespace Kalkatos.UnityGame.Rps
 						turnTimerControl.EmitWithParam(false);
 						hasSentMove?.EmitWithParam(false);
 						Logger.Log($"Phase: 2 | UTC: {utcNow.ToString("u")} | State: \n{JsonConvert.SerializeObject(currentState, Formatting.Indented)}");
-						yield return new WaitForSeconds(5);
+						yield return new WaitForSeconds(3);
 						hasExecutedTurnResult = true;
 						break;
 					default:
