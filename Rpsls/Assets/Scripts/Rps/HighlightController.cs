@@ -22,14 +22,14 @@ namespace Kalkatos.UnityGame.Rps
 		private void Awake ()
 		{
             cardBehaviour.OnCardUsed.AddListener(OnCardUsed);
-            movementBehaviour.OnMoved.AddListener(OnMoved);
+            movementBehaviour.OnMovedToOrigin.AddListener(OnMovedToOrigin);
             canPlaySignal.OnSignalEmittedWithParam.AddListener(OnCanPlay);
 		}
 
 		private void OnDestroy ()
 		{
 			cardBehaviour.OnCardUsed.RemoveListener(OnCardUsed);
-			movementBehaviour.OnMoved.RemoveListener(OnMoved);
+			movementBehaviour.OnMovedToOrigin.RemoveListener(OnMovedToOrigin);
 			canPlaySignal.OnSignalEmittedWithParam.RemoveListener(OnCanPlay);
 		}
 
@@ -41,15 +41,12 @@ namespace Kalkatos.UnityGame.Rps
 				HighlightOff("Can Play");
 		}
 
-		private void OnMoved (Transform destination)
+		private void OnMovedToOrigin ()
 		{
-            if (destination.name.Contains("Origin"))
-			{
-				if (canPlaySignal.Value)
-					HighlightOn($"Moved to {destination?.name}");
-				else
-					HighlightOff($"Moved to {destination?.name}");
-			}
+			if (canPlaySignal.Value)
+				HighlightOn($"Moved to Origin");
+			else
+				HighlightOff($"Moved to Origin");
 		}
 
 		private void OnCardUsed ()

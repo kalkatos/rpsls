@@ -8,6 +8,7 @@ namespace Kalkatos.Firecard.Unity
 	public class MovementBehaviour : MonoBehaviour
     {
         [PropertyOrder(99)] public UnityEvent<Transform> OnMoved;
+        [PropertyOrder(99)] public UnityEvent OnMovedToOrigin;
 
         [SerializeField] private FloatValueGetter speed;
         [SerializeField] private Transform origin;
@@ -44,7 +45,10 @@ namespace Kalkatos.Firecard.Unity
         public void MoveToOrigin ()
         {
             if (origin != null)
+            {
                 MoveTo(origin);
+                OnMovedToOrigin?.Invoke();
+			}
         }
     }
 }
