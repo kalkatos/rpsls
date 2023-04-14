@@ -41,7 +41,14 @@ namespace Kalkatos.UnityGame.Rps
 		{
 			if (winner == winnerToPlayAnimation && isPlayed)
                 SendAttack();
+            else if (string.IsNullOrEmpty(winner))
+                ResetAnimation();
 		}
+
+        private void ResetAnimation ()
+        {
+            animator.SetTrigger("reset");
+        }
 
 		public void SendAttack ()
         {
