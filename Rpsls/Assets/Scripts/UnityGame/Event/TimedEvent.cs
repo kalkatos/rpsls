@@ -164,7 +164,8 @@ namespace Kalkatos.UnityGame
 		private void RunTimer (float time)
 		{
 			loopCounter++;
-			currentWait = parent.StartCoroutine(WaitCoroutine(time, HandleTimerEnded));
+			if (parent.gameObject.activeSelf)
+				currentWait = parent.StartCoroutine(WaitCoroutine(time, HandleTimerEnded));
 		}
 
 		private IEnumerator WaitCoroutine (float time, Action callback)
