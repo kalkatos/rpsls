@@ -120,7 +120,12 @@ namespace Kalkatos.UnityGame.Rps
 
 						// DEBUG
 						if (autoPlay)
-							StartCoroutine(RandomMove());
+						{
+							if (Input.GetKey(KeyCode.Escape))
+								autoPlay = false;
+							else
+								StartCoroutine(RandomMove());
+						}
 
 						while (!hasSentMove.Value && DateTime.UtcNow < endPlayPhaseTime)
 							yield return null;
