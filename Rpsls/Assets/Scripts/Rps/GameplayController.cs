@@ -131,6 +131,7 @@ namespace Kalkatos.UnityGame.Rps
 							yield return null;
 						//turnTimerControl?.EmitWithParam(false);
 						hasExecutedTurnResult = false;
+						yield return new WaitForSeconds(1f);
 						break;
 					case "2":
 						if (hasExecutedTurnResult)
