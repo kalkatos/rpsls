@@ -3,7 +3,23 @@ guid: 193d8af2f3317e645af8ecec87237262
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - stateBuilder: {fileID: 11400000, guid: efb662086412cf0458505fd7979fe4ba, type: 2}
+  - menuScreen: {instanceID: 0}
+  - waitingOpponentScreen: {instanceID: 0}
+  - waitingOpponentCountdown: {instanceID: 0}
+  - waitingOpponentFailedScreen: {instanceID: 0}
+  - onSendButtonClicked: {instanceID: 0}
+  - returnAllToOrigin: {instanceID: 0}
+  - gameplayScreen: {instanceID: 0}
+  - turnTimer: {instanceID: 0}
+  - turnTimerControl: {instanceID: 0}
+  - matchEndedScreen: {instanceID: 0}
+  - hasSentMove: {instanceID: 0}
+  - myMoveSignal: {instanceID: 0}
+  - rockCard: {instanceID: 0}
+  - paperCard: {instanceID: 0}
+  - scissorsCard: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
