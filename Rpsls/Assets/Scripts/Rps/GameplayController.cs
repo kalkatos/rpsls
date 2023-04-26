@@ -12,15 +12,17 @@ using Random = UnityEngine.Random;
 
 namespace Kalkatos.UnityGame.Rps
 {
-    public class GameplayController : MonoBehaviour
-    {
+	public class GameplayController : MonoBehaviour
+	{
+		[Header("Config")]
+		[SerializeField] int opponentTimeout = 20;
+		[SerializeField] int delayBeforeWaitScreenPopup = 4;
+		[Header("References")]
 		[SerializeField] private StateBuilder stateBuilder;
-		[Header("Handshaking")]
 		[SerializeField] private ScreenSignal menuScreen;
 		[SerializeField] private SignalBool waitingOpponentScreen;
 		[SerializeField] private SignalString waitingOpponentCountdown;
 		[SerializeField] private SignalBool waitingOpponentFailedScreen;
-		[Header("Gameplay")]
 		[SerializeField] private Signal onSendButtonClicked;
 		[SerializeField] private Signal returnAllToOrigin;
 		[SerializeField] private SignalBool gameplayScreen;
@@ -28,10 +30,9 @@ namespace Kalkatos.UnityGame.Rps
 		[SerializeField] private SignalBool turnTimerControl;
 		[SerializeField] private SignalBool matchEndedScreen;
 		[SerializeField] private SignalBool hasSentMove;
-		[Header("DEBUG")]
+		[Header("TESTS")]
 		[SerializeField] private bool autoPlay;
 		[SerializeField] private bool fixedDelay;
-		[SerializeField] private SignalState myMoveSignal;
 		[SerializeField] private CardBehaviour rockCard;
 		[SerializeField] private CardBehaviour paperCard;
 		[SerializeField] private CardBehaviour scissorsCard;
@@ -40,6 +41,7 @@ namespace Kalkatos.UnityGame.Rps
 		private StateInfo currentState = null;
 		private Coroutine countdownCoroutine;
 		private bool hasExecutedTurnResult;
+		private float endPlayPhaseTime;
 
 		private void Awake ()
 		{
@@ -63,11 +65,11 @@ namespace Kalkatos.UnityGame.Rps
 			NetworkClient.SendAction(
 				new ActionInfo { PrivateChanges = new Dictionary<string, string> { { "Handshaking", "1" } } },
 				(success) => { currentState = success; },
-				(failure) => {});
+				(failure) => { });
 			while (currentState == null)
 				yield return null;
 
-			
+
 			Logger.Log(" ========= Wait for opponent =========");
 			countdownCoroutine = StartCoroutine(CountdownCoroutine(30));
 			float handshakingWaitStart = Time.time;
@@ -75,9 +77,9 @@ namespace Kalkatos.UnityGame.Rps
 			while (!hasHandshakingFromBothPlayers)
 			{
 				NetworkClient.GetMatchState(
-					(success) => 
-					{ 
-						hasHandshakingFromBothPlayers = true; 
+					(success) =>
+					{
+						hasHandshakingFromBothPlayers = true;
 						currentState = success;
 						StopCoroutine(countdownCoroutine);
 						waitingOpponentCountdown?.EmitWithParam("0");
@@ -103,7 +105,7 @@ namespace Kalkatos.UnityGame.Rps
 			phase = "0";
 			while (phase != "3")
 			{
-				DateTime utcNow = DateTime.UtcNow;
+				endPlayPhaseTime = Time.time;
 				switch (phase)
 				{
 					case "0":
@@ -113,8 +115,8 @@ namespace Kalkatos.UnityGame.Rps
 						returnAllToOrigin?.Emit();
 						// TODO Countdown before the bar
 						yield return new WaitForSeconds(3);
-						Logger.Log($"Phase: 1 | UTC: {utcNow.ToString("u")} | State: \n{JsonConvert.SerializeObject(currentState, Formatting.Indented)}");
-						DateTime endPlayPhaseTime = DateTime.UtcNow.AddSeconds(10);
+						Logger.Log($"Phase: 1 | UTC: {DateTime.UtcNow.ToString("u")} | State: \n{JsonConvert.SerializeObject(currentState, Formatting.Indented)}");
+						endPlayPhaseTime = Time.time + 10;
 						turnTimerControl.EmitWithParam(true);
 						StartCoroutine(TurnTimerCoroutine(10));
 
@@ -127,18 +129,22 @@ namespace Kalkatos.UnityGame.Rps
 								StartCoroutine(RandomMove());
 						}
 
-						while (!hasSentMove.Value && DateTime.UtcNow < endPlayPhaseTime)
+						while (!hasSentMove.Value && Time.time < endPlayPhaseTime)
 							yield return null;
-						//turnTimerControl?.EmitWithParam(false);
 						hasExecutedTurnResult = false;
 						yield return new WaitForSeconds(1f);
+						if (!hasSentMove.Value)
+						{
+							onSendButtonClicked.Emit();
+							turnTimerControl.EmitWithParam(false);
+						}
 						break;
 					case "2":
 						if (hasExecutedTurnResult)
 							break;
 						turnTimerControl.EmitWithParam(false);
 						hasSentMove?.EmitWithParam(false);
-						Logger.Log($"Phase: 2 | UTC: {utcNow.ToString("u")} | State: \n{JsonConvert.SerializeObject(currentState, Formatting.Indented)}");
+						Logger.Log($"Phase: 2 | UTC: {DateTime.UtcNow.ToString("u")} | State: \n{JsonConvert.SerializeObject(currentState, Formatting.Indented)}");
 						yield return new WaitForSeconds(3);
 						hasExecutedTurnResult = true;
 						break;
@@ -149,6 +155,8 @@ namespace Kalkatos.UnityGame.Rps
 				phase = currentState.PublicProperties["Phase"];
 			}
 			// Match is over
+			if (waitingOpponentFailedScreen.Value)
+				waitingOpponentFailedScreen.EmitWithParam(false);
 			matchEndedScreen?.EmitWithParam(true);
 			yield return new WaitForSeconds(5);
 			menuScreen.EmitWithParam(true);
@@ -156,6 +164,8 @@ namespace Kalkatos.UnityGame.Rps
 
 		private IEnumerator WaitMatchState ()
 		{
+			float timeForScreenPopup = endPlayPhaseTime + delayBeforeWaitScreenPopup;
+			float timeForOpponentTimeout = timeForScreenPopup + opponentTimeout;
 			while (true)
 			{
 				bool hasResponse = false;
@@ -164,9 +174,36 @@ namespace Kalkatos.UnityGame.Rps
 				while (!hasResponse)
 					yield return null;
 				if (currentState.Hash != lastStateHash)
+				{
+					if (waitingOpponentScreen.Value)
+					{
+						waitingOpponentScreen.EmitWithParam(false);
+						StopCoroutine(countdownCoroutine);
+					}
 					break;
-				else
-					yield return new WaitForSeconds(Random.Range(1f, 2f));
+				}
+				else if (Time.time > endPlayPhaseTime)
+				{
+					if (!waitingOpponentScreen.Value)
+					{
+						if (Time.time >= timeForScreenPopup)
+						{
+							if (turnTimerControl.Value)
+								turnTimerControl.EmitWithParam(false);
+							waitingOpponentScreen.EmitWithParam(true);
+							countdownCoroutine = StartCoroutine(CountdownCoroutine(opponentTimeout));
+						}
+					}
+					else if (Time.time >= timeForOpponentTimeout)
+					{
+						waitingOpponentScreen.EmitWithParam(false);
+						StopCoroutine(countdownCoroutine);
+						waitingOpponentFailedScreen.EmitWithParam(true);
+						yield return new WaitForSeconds(delayBeforeWaitScreenPopup);
+						break;
+					}
+				}
+				yield return new WaitForSeconds(Random.Range(1f, 2f));
 			}
 			stateBuilder.ReceiveState(currentState);
 		}
