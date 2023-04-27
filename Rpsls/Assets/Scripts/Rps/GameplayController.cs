@@ -36,6 +36,7 @@ namespace Kalkatos.UnityGame.Rps
 		[SerializeField] private CardBehaviour rockCard;
 		[SerializeField] private CardBehaviour paperCard;
 		[SerializeField] private CardBehaviour scissorsCard;
+		[SerializeField] private ScreenSignal menuScreenSignal;
 
 		private string phase = "0";
 		private StateInfo currentState = null;
@@ -58,51 +59,78 @@ namespace Kalkatos.UnityGame.Rps
 			onSendButtonClicked?.OnSignalEmitted.RemoveListener(HandleSendButtonClicked);
 		}
 
+		private void Update ()
+		{
+			if (Input.GetKeyDown(KeyCode.M))
+				menuScreenSignal?.EmitWithParam(true);
+		}
+
 		private IEnumerator GameplayLoop ()
 		{
-			Logger.Log(" ========= Send Handshaking =========");
-			waitingOpponentScreen?.EmitWithParam(true);
-			NetworkClient.SendAction(
-				new ActionInfo { PrivateChanges = new Dictionary<string, string> { { "Handshaking", "1" } } },
-				(success) => { currentState = success; },
-				(failure) => { });
-			while (currentState == null)
+			bool hasResponse = false;
+			NetworkClient.GetMatchState(
+				success => 
+				{ 
+					hasResponse = true; 
+					currentState = success; 
+				}, 
+				failure => 
+				{ 
+					hasResponse = true;
+				});
+			while (!hasResponse)
 				yield return null;
 
-
-			Logger.Log(" ========= Wait for opponent =========");
-			countdownCoroutine = StartCoroutine(CountdownCoroutine(30));
-			float handshakingWaitStart = Time.time;
-			bool hasHandshakingFromBothPlayers = false;
-			while (!hasHandshakingFromBothPlayers)
+			if (currentState == null)
 			{
-				NetworkClient.GetMatchState(
-					(success) =>
-					{
-						hasHandshakingFromBothPlayers = true;
-						currentState = success;
-						StopCoroutine(countdownCoroutine);
-						waitingOpponentCountdown?.EmitWithParam("0");
-						stateBuilder.ReceiveState(currentState);
-					}, null);
-				if (Time.time - handshakingWaitStart >= 30)
-				{
-					waitingOpponentScreen?.EmitWithParam(false);
-					waitingOpponentFailedScreen?.EmitWithParam(true);
-					yield return new WaitForSeconds(4);
-					menuScreen?.EmitWithParam(true);
-					yield break;
-				}
-				else
-					yield return new WaitForSeconds(Random.Range(1f, 2f));
-			}
-			waitingOpponentScreen?.EmitWithParam(false);
+				Logger.Log(" ========= Send Handshaking =========");
+				waitingOpponentScreen?.EmitWithParam(true);
+				NetworkClient.SendAction(
+					new ActionInfo { PrivateChanges = new Dictionary<string, string> { { "Handshaking", "1" } } },
+					(success) => { currentState = success; },
+					(failure) => { });
+				while (currentState == null)
+					yield return null;
 
+
+				Logger.Log(" ========= Wait for opponent =========");
+				countdownCoroutine = StartCoroutine(CountdownCoroutine(30));
+				float handshakingWaitStart = Time.time;
+				bool hasHandshakingFromBothPlayers = false;
+				while (!hasHandshakingFromBothPlayers)
+				{
+					NetworkClient.GetMatchState(
+						(success) =>
+						{
+							hasHandshakingFromBothPlayers = true;
+							currentState = success;
+							StopCoroutine(countdownCoroutine);
+							waitingOpponentCountdown?.EmitWithParam("0");
+							stateBuilder.ReceiveState(currentState);
+						}, null);
+					if (Time.time - handshakingWaitStart >= 30)
+					{
+						waitingOpponentScreen?.EmitWithParam(false);
+						waitingOpponentFailedScreen?.EmitWithParam(true);
+						yield return new WaitForSeconds(4);
+						menuScreen?.EmitWithParam(true);
+						yield break;
+					}
+					else
+						yield return new WaitForSeconds(Random.Range(1f, 2f));
+				}
+				waitingOpponentScreen?.EmitWithParam(false);
+			}
+			else
+			{
+				stateBuilder.ReceiveState(currentState);
+				Logger.Log($" : : > >  State {JsonConvert.SerializeObject(currentState, Formatting.Indented)}");
+			}
 
 			gameplayScreen?.EmitWithParam(true);
-			hasSentMove.EmitWithParam(false);
+			hasSentMove.EmitWithParam(currentState != null && currentState.PrivateProperties["MyMove"] != "");
 			Logger.Log(" ========= Turn Logic =========");
-			phase = "0";
+			phase = currentState?.PublicProperties["Phase"] ?? "0";
 			while (phase != "3")
 			{
 				endPlayPhaseTime = Time.time;
@@ -170,7 +198,13 @@ namespace Kalkatos.UnityGame.Rps
 			{
 				bool hasResponse = false;
 				int lastStateHash = currentState.Hash;
-				NetworkClient.GetMatchState(success => { hasResponse = true; currentState = success; }, failure => { hasResponse = true; });
+				NetworkClient.GetMatchState(success => { hasResponse = true; currentState = success; }, 
+					failure => 
+					{ 
+						hasResponse = true;
+						if (failure.Tag == NetworkErrorTag.NotFound)
+							menuScreen.EmitWithParam(true);
+					});
 				while (!hasResponse)
 					yield return null;
 				if (currentState.Hash != lastStateHash)

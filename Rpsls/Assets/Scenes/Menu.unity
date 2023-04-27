@@ -692,6 +692,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7fc6afb28a377554b9a7310c0396be9c, type: 3}
+--- !u!1 &5049942611439138402 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6499882282217607784, guid: 7fc6afb28a377554b9a7310c0396be9c, type: 3}
+  m_PrefabInstance: {fileID: 5049942611439138401}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &5049942611439138403 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8953525894294360227, guid: 7fc6afb28a377554b9a7310c0396be9c, type: 3}
+  m_PrefabInstance: {fileID: 5049942611439138401}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7665867349147598120
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -768,4 +778,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isActive: 0
   playButtonClickSignal: {fileID: 11400000, guid: 422ec635f9feb024287054b3541bdefc, type: 2}
+  reconnectButtonClickSignal: {fileID: 11400000, guid: 782dafb152853ee48bbf1f4fb2ef86fa, type: 2}
+  menuSignal: {fileID: 11400000, guid: 0601b19581be1c547beade73f2b81967, type: 2}
   secondsToWait: 3
+  playButton: {fileID: 5049942611439138403}
+  reconnectButton: {fileID: 5049942611439138402}

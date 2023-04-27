@@ -58,7 +58,6 @@ namespace Kalkatos.UnityGame.Rps
 		{
 			if (isHighlighted)
 				return;
-			Logger.Log($"[Highlight {name}] ON : {reason}");
 			OnHighlightOn?.Invoke();
 			isHighlighted = true;
 		}
@@ -67,7 +66,6 @@ namespace Kalkatos.UnityGame.Rps
 		{
 			if (!isHighlighted)
 				return;
-			Logger.Log($"[Highlight {name}] OFF : {reason}");
 			OnHighlightOff?.Invoke();
 			isHighlighted = false;
 		}
