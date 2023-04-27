@@ -44,6 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 193d8af2f3317e645af8ecec87237262, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  opponentTimeout: 20
+  delayBeforeWaitScreenPopup: 4
   stateBuilder: {fileID: 11400000, guid: efb662086412cf0458505fd7979fe4ba, type: 2}
   menuScreen: {fileID: 11400000, guid: 0601b19581be1c547beade73f2b81967, type: 2}
   waitingOpponentScreen: {fileID: 11400000, guid: 3d834ef0aca4011419ccd54ff1de0af9, type: 2}
@@ -58,4 +60,7 @@ MonoBehaviour:
   hasSentMove: {fileID: 11400000, guid: eae9c206a6453b94d961e47ce15fe755, type: 2}
   autoPlay: 0
   fixedDelay: 0
-  myMoveSignal: {fileID: 11400000, guid: 276a560ed99305d4a9740b54b91ad27b, type: 2}
+  rockCard: {fileID: 0}
+  paperCard: {fileID: 0}
+  scissorsCard: {fileID: 0}
+  menuScreenSignal: {fileID: 11400000, guid: 0601b19581be1c547beade73f2b81967, type: 2}

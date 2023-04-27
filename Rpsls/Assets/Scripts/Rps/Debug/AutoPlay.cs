@@ -7,7 +7,11 @@ public class AutoPlay : MonoBehaviour
 {
     [SerializeField] private bool isActive = true;
     [SerializeField] private Signal playButtonClickSignal;
+    [SerializeField] private Signal reconnectButtonClickSignal;
+    [SerializeField] private ScreenSignal menuSignal;
     [SerializeField] private int secondsToWait = 3;
+    [SerializeField] private GameObject playButton;
+    [SerializeField] private GameObject reconnectButton;
 
     void Start()
     {
@@ -26,13 +30,24 @@ public class AutoPlay : MonoBehaviour
 
 	private void Update ()
 	{
-		if (Input.GetKeyDown(KeyCode.Space))
-            playButtonClickSignal.Emit();
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if (reconnectButton.activeSelf)
+                reconnectButtonClickSignal.Emit();
+            else
+                playButtonClickSignal.Emit();
+        }
 	}
 
 	private IEnumerator ClickPlayButton (float timeToWait)
     {
-        yield return new WaitForSeconds(timeToWait);
+        yield return new WaitForSeconds(2f);
+        if (reconnectButton.activeSelf)
+        {
+            reconnectButtonClickSignal.Emit();
+            yield break;
+        }
+        yield return new WaitForSeconds(Mathf.Max(timeToWait - 2, 0.1f));
         playButtonClickSignal.Emit();
 	}
 }
