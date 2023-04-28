@@ -30,6 +30,7 @@ namespace Kalkatos.UnityGame.Rps
 		[SerializeField] private SignalBool turnTimerControl;
 		[SerializeField] private SignalBool matchEndedScreen;
 		[SerializeField] private SignalBool hasSentMove;
+		[SerializeField] private SignalState myMove;
 		[Header("TESTS")]
 		[SerializeField] private bool autoPlay;
 		[SerializeField] private bool fixedDelay;
@@ -63,6 +64,9 @@ namespace Kalkatos.UnityGame.Rps
 		{
 			if (Input.GetKeyDown(KeyCode.M))
 				menuScreenSignal?.EmitWithParam(true);
+			if (Input.GetKeyDown(KeyCode.D))
+				autoPlay = !autoPlay;
+
 		}
 
 		private IEnumerator GameplayLoop ()
@@ -150,12 +154,7 @@ namespace Kalkatos.UnityGame.Rps
 
 						// DEBUG
 						if (autoPlay)
-						{
-							if (Input.GetKey(KeyCode.Escape))
-								autoPlay = false;
-							else
-								StartCoroutine(RandomMove());
-						}
+							StartCoroutine(RandomMove());
 
 						while (!hasSentMove.Value && Time.time < endPlayPhaseTime)
 							yield return null;
@@ -163,6 +162,7 @@ namespace Kalkatos.UnityGame.Rps
 						yield return new WaitForSeconds(1f);
 						if (!hasSentMove.Value)
 						{
+							myMove.EmitWithParam("NOTHING");
 							onSendButtonClicked.Emit();
 							turnTimerControl.EmitWithParam(false);
 						}
