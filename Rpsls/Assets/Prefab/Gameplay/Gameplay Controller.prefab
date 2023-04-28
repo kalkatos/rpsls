@@ -58,6 +58,7 @@ MonoBehaviour:
   turnTimerControl: {fileID: 11400000, guid: 43fa252533d250943b09212da359fc95, type: 2}
   matchEndedScreen: {fileID: 11400000, guid: dadce2462eb2d344bb3e7370252df4e7, type: 2}
   hasSentMove: {fileID: 11400000, guid: eae9c206a6453b94d961e47ce15fe755, type: 2}
+  myMove: {fileID: 11400000, guid: 276a560ed99305d4a9740b54b91ad27b, type: 2}
   autoPlay: 0
   fixedDelay: 0
   rockCard: {fileID: 0}
