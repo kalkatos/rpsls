@@ -31,6 +31,7 @@ namespace Kalkatos.UnityGame.Rps
 		[SerializeField] private SignalBool matchEndedScreen;
 		[SerializeField] private SignalBool hasSentMove;
 		[SerializeField] private SignalState myMove;
+		[SerializeField] private Signal onLeaveMatchSuccess;
 		[Header("TESTS")]
 		[SerializeField] private bool autoPlay;
 		[SerializeField] private bool fixedDelay;
@@ -48,6 +49,7 @@ namespace Kalkatos.UnityGame.Rps
 		private void Awake ()
 		{
 			onSendButtonClicked?.OnSignalEmitted.AddListener(HandleSendButtonClicked);
+			onLeaveMatchSuccess?.OnSignalEmitted.AddListener(HandleLeaveMatch);
 		}
 
 		private void Start ()
@@ -58,6 +60,7 @@ namespace Kalkatos.UnityGame.Rps
 		private void OnDestroy ()
 		{
 			onSendButtonClicked?.OnSignalEmitted.RemoveListener(HandleSendButtonClicked);
+			onLeaveMatchSuccess?.OnSignalEmitted.RemoveListener(HandleLeaveMatch);
 		}
 
 		private void Update ()
@@ -270,6 +273,18 @@ namespace Kalkatos.UnityGame.Rps
 		private void HandleSendButtonClicked ()
 		{
 			hasSentMove?.EmitWithParam(true);
+		}
+
+		private void HandleLeaveMatch ()
+		{
+			StopAllCoroutines();
+			StartCoroutine(LeaveMatch());
+		}
+
+		private IEnumerator LeaveMatch ()
+		{
+			yield return new WaitForSeconds(5);
+			menuScreen.EmitWithParam(true);
 		}
 
 		// DEBUG

@@ -18,60 +18,6 @@ MonoBehaviour:
   OnSignalEmittedWithParam:
     m_PersistentCalls:
       m_Calls: []
-  Value: Tie
-  ValueBindings:
-  - Equality: 1
-    ExpectedValue: Me
-    Event:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 11400000, guid: 4b037736f2fe9fb4b951b347a811bf8b, type: 2}
-          m_TargetAssemblyTypeName: Kalkatos.UnityGame.Scriptable.TypedSignal`1[[System.String,
-            mscorlib
-          m_MethodName: EmitWithParam
-          m_Mode: 5
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: You Win!
-            m_BoolArgument: 0
-          m_CallState: 2
-  - Equality: 1
-    ExpectedValue: Opponent
-    Event:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 11400000, guid: 4b037736f2fe9fb4b951b347a811bf8b, type: 2}
-          m_TargetAssemblyTypeName: Kalkatos.UnityGame.Scriptable.TypedSignal`1[[System.String,
-            mscorlib
-          m_MethodName: EmitWithParam
-          m_Mode: 5
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: You Lose...
-            m_BoolArgument: 0
-          m_CallState: 2
-  - Equality: 1
-    ExpectedValue: Tie
-    Event:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 11400000, guid: 4b037736f2fe9fb4b951b347a811bf8b, type: 2}
-          m_TargetAssemblyTypeName: Kalkatos.UnityGame.Scriptable.TypedSignal`1[[System.String,
-            mscorlib
-          m_MethodName: EmitWithParam
-          m_Mode: 5
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: Tie!
-            m_BoolArgument: 0
-          m_CallState: 2
+  Value: 
+  ValueBindings: []
   Key: MatchWinner
