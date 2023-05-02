@@ -138,7 +138,7 @@ namespace Kalkatos.UnityGame.Rps
 			hasSentMove.EmitWithParam(currentState != null && currentState.PrivateProperties["MyMove"] != "");
 			Logger.Log(" ========= Turn Logic =========");
 			phase = currentState?.PublicProperties["Phase"] ?? "0";
-			while (phase != "3")
+			while (true)
 			{
 				endPlayPhaseTime = Time.time;
 				switch (phase)
@@ -171,6 +171,7 @@ namespace Kalkatos.UnityGame.Rps
 						}
 						break;
 					case "2":
+					case "3":
 						if (hasExecutedTurnResult)
 							break;
 						turnTimerControl.EmitWithParam(false);
@@ -182,6 +183,8 @@ namespace Kalkatos.UnityGame.Rps
 					default:
 						break;
 				}
+				if (phase == "3")
+					break;
 				yield return WaitMatchState();
 				phase = currentState.PublicProperties["Phase"];
 			}
