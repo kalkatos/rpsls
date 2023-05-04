@@ -7,3 +7,6 @@
 [submodule "Rpsls/Assets/Scripts/CSharpGame"]
 	path = Rpsls/Assets/Scripts/CSharpGame
 	url = https://github.com/kalkatos/csharpgame.git
+[submodule "Rpsls/Assets/Scripts/UnityGame"]
+	path = Rpsls/Assets/Scripts/UnityGame
+	url = https://github.com/kalkatos/unitygame.git
