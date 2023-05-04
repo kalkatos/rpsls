@@ -1,9 +1,6 @@
 [submodule "Rpsls/Assets/Scripts/Network"]
 	path = Rpsls/Assets/Scripts/Network
 	url = https://github.com/kalkatos/network.git
-[submodule "Rpsls/Assets/Scripts/UnityGame"]
-	path = Rpsls/Assets/Scripts/UnityGame
-	url = https://github.com/kalkatos/unitygame.git
 [submodule "Rpsls/Assets/Scripts/Scriptable"]
 	path = Rpsls/Assets/Scripts/Scriptable
 	url = https://github.com/kalkatos/scriptable.git
