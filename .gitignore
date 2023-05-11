@@ -76,4 +76,6 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
 # Local prefs
-player-prefs.json
+player-prefs.json*
+uris.cfg*
+TestScript*
