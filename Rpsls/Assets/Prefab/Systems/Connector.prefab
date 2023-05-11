@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 916986812555565910}
   - component: {fileID: 916986812555565911}
+  - component: {fileID: 7503481476845738784}
   m_Layer: 0
   m_Name: Connector
   m_TagString: Untagged
@@ -73,3 +74,15 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &7503481476845738784
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 916986812555565908}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10d1454592d66454cb383a6fae766a55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
