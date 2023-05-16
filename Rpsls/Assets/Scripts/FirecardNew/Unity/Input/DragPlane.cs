@@ -1,7 +1,13 @@
-﻿using UnityEngine;
+﻿// (c) 2023 Alex Kalkatos
+// This code is licensed under MIT license (see LICENSE.txt for details)
+
+using UnityEngine;
 
 namespace Kalkatos.Firecard.Unity
 {
+	/// <summary>
+	/// Defines a plane with the transform's up direction as normal.
+	/// </summary>
 	public class DragPlane : MonoBehaviour
 	{
 		public static DragPlane Instance;

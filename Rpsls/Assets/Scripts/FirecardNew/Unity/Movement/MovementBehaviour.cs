@@ -1,3 +1,6 @@
+// (c) 2023 Alex Kalkatos
+// This code is licensed under MIT license (see LICENSE.txt for details)
+
 using Kalkatos.UnityGame;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -5,6 +8,9 @@ using UnityEngine.Events;
 
 namespace Kalkatos.Firecard.Unity
 {
+    /// <summary>
+    /// Manages movement of objects.
+    /// </summary>
 	public class MovementBehaviour : MonoBehaviour
     {
         [PropertyOrder(99)] public UnityEvent<Transform> OnMoved;
