@@ -1,7 +1,13 @@
-﻿using UnityEngine;
+﻿// (c) 2023 Alex Kalkatos
+// This code is licensed under MIT license (see LICENSE.txt for details)
+
+using UnityEngine;
 
 namespace Kalkatos.Firecard.Unity
 {
+    /// <summary>
+    /// Receives a movement and positions objects in relation to itself.
+    /// </summary>
 	public class MovementReceiver : MonoBehaviour
     {
         [SerializeField] private bool canReceiveMovements = true;

@@ -1,3 +1,6 @@
+// (c) 2023 Alex Kalkatos
+// This code is licensed under MIT license (see LICENSE.txt for details)
+
 using Sirenix.OdinInspector;
 using System.Collections;
 using UnityEngine;
@@ -7,6 +10,9 @@ using UnityEngine.UI;
 
 namespace Kalkatos.Firecard.Unity
 {
+	/// <summary>
+	/// MonoBehaviour to be used for any world object that can be moved by dragging. The object needs a collider and the camera needs a PhysicsRaycaster.
+	/// </summary>
 	public class Draggable : MonoBehaviour, IBeginDragHandler, IPointerDownHandler, IDragHandler, IEndDragHandler
 	{
 		[FoldoutGroup("Events"), PropertyOrder(99)] public UnityEvent<PointerEventData> OnPointerDownEvent;
