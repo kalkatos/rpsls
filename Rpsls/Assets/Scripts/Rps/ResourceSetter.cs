@@ -9,9 +9,13 @@ namespace Kalkatos.UnityGame.Rps
     {
 		private void Awake ()
 		{
-			byte[] bytes = File.ReadAllBytes($"{Application.dataPath}/uris.cfg");
+			byte[] bytes = File.ReadAllBytes($"{Application.dataPath}/urlprefix.cfg");
+			if (bytes == null)
+				return;
 			string config = Encoding.UTF8.GetString(bytes);
-			Storage.Save("Uris", config);
+			if (string.IsNullOrEmpty(config))
+				return;
+			Storage.Save("UrlPrefix", config);
 		}
 	}
 }
