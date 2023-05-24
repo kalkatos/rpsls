@@ -9,7 +9,7 @@ namespace Kalkatos.UnityGame.Rps
     {
 		private void Awake ()
 		{
-			byte[] bytes = File.ReadAllBytes($"{Application.dataPath}/urlprefix.cfg");
+			byte[] bytes = File.ReadAllBytes($"{Application.dataPath}/Resources/urlprefix.cfg");
 			if (bytes == null)
 				return;
 			string config = Encoding.UTF8.GetString(bytes);
