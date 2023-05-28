@@ -45,6 +45,7 @@ namespace Kalkatos.UnityGame.Rps
 		private Coroutine countdownCoroutine;
 		private bool hasExecutedTurnResult;
 		private float endPlayPhaseTime;
+		private AutoPlaySettings settings;
 
 		private void Awake ()
 		{
@@ -54,6 +55,8 @@ namespace Kalkatos.UnityGame.Rps
 
 		private void Start ()
 		{
+			settings = AutoPlaySettings.Instance;
+			autoPlay = settings?.AutoPlay ?? false;
 			StartCoroutine(GameplayLoop());
 		}
 

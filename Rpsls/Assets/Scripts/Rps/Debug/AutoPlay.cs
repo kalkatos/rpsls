@@ -13,8 +13,13 @@ public class AutoPlay : MonoBehaviour
     [SerializeField] private GameObject playButton;
     [SerializeField] private GameObject reconnectButton;
 
+    private AutoPlaySettings settings;
+
     void Start()
     {
+        settings = AutoPlaySettings.Instance;
+        if (!(settings?.AutoPlay ?? false))
+            return;
         if (!isActive)
             return;
         if (Input.GetKey(KeyCode.Escape))
