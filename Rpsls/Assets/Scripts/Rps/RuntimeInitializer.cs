@@ -12,7 +12,6 @@ namespace Kalkatos.UnityGame.Rps
 
 		private static void LoadUrlPrefix ()
 		{
-			Logger.Log("Runtime Start Runner");
 			TextAsset configAsset = (TextAsset)Resources.Load("urlprefix");
 			if (configAsset == null)
 			{
