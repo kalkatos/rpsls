@@ -20,8 +20,7 @@ public class AutoPlay : MonoBehaviour
         settings = AutoPlaySettings.Instance;
         if (!(settings?.AutoPlay ?? false))
             return;
-        if (!isActive)
-            return;
+        isActive = settings.AutoPlay;
         if (Input.GetKey(KeyCode.Escape))
         {
             isActive = false;
@@ -35,7 +34,13 @@ public class AutoPlay : MonoBehaviour
 
 	private void Update ()
 	{
-        if (Input.GetKeyDown(KeyCode.Space))
+		if (Input.GetKeyDown(KeyCode.Escape))
+		{
+			isActive = false;
+            if (settings != null)
+                settings.AutoPlay = false;
+		}
+		if (Input.GetKeyDown(KeyCode.Space))
         {
             if (reconnectButton.activeSelf)
                 reconnectButtonClickSignal.Emit();
@@ -49,10 +54,14 @@ public class AutoPlay : MonoBehaviour
         yield return new WaitForSeconds(2f);
         if (reconnectButton.activeSelf)
         {
+            if (!isActive)
+				yield break;
             reconnectButtonClickSignal.Emit();
             yield break;
         }
         yield return new WaitForSeconds(Mathf.Max(timeToWait - 2, 0.1f));
-        playButtonClickSignal.Emit();
+		if (!isActive)
+			yield break;
+		playButtonClickSignal.Emit();
 	}
 }
