@@ -661,8 +661,8 @@ MonoBehaviour:
   raycastImage: {fileID: 0}
   dragCollider: {fileID: 5460054276072779000}
   useTilt: 1
-  tiltTransform: {fileID: 2374953101875933068}
-  tiltRate: 5
+  tiltTransform: {fileID: 3381386476056932337}
+  tiltRate: 7
   maxTiltAngle: 7
   tiltDamp: 0.035
 --- !u!114 &3939575033120035840
