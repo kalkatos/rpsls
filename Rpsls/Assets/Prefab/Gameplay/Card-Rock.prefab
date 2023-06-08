@@ -7,6 +7,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 531387276762158386, guid: e1743bc5f7265c948ba0788f89271ba4, type: 3}
+      propertyPath: m_SortingLayer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 536406019100488194, guid: e1743bc5f7265c948ba0788f89271ba4, type: 3}
       propertyPath: CardType
       value: ROCK
@@ -29,19 +33,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1718353916406120040, guid: e1743bc5f7265c948ba0788f89271ba4, type: 3}
       propertyPath: m_Size.x
-      value: 5.12
+      value: 2.44
       objectReference: {fileID: 0}
     - target: {fileID: 1718353916406120040, guid: e1743bc5f7265c948ba0788f89271ba4, type: 3}
       propertyPath: m_Size.y
-      value: 5.12
+      value: 2.28
       objectReference: {fileID: 0}
     - target: {fileID: 1718353916406120040, guid: e1743bc5f7265c948ba0788f89271ba4, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: c124d1d05c5a4b94f81378238755f8fb, type: 3}
+      objectReference: {fileID: 1196859099, guid: ee6ef6eceaefcff419ecfbbb9ecbdf12, type: 3}
     - target: {fileID: 1718353916406120040, guid: e1743bc5f7265c948ba0788f89271ba4, type: 3}
       propertyPath: m_WasSpriteAssigned
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3239915677116805955, guid: e1743bc5f7265c948ba0788f89271ba4, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3239915677116805955, guid: e1743bc5f7265c948ba0788f89271ba4, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3381386476056932337, guid: e1743bc5f7265c948ba0788f89271ba4, type: 3}
       propertyPath: m_RootOrder
