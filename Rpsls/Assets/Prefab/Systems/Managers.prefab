@@ -41,7 +41,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4226637753447291966}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59861aad25b9efb439d421b8e349f652, type: 3}
+  m_Script: {fileID: 11500000, guid: f8934d43b01f07c4dbce8ee12110e72f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   gameId: rps

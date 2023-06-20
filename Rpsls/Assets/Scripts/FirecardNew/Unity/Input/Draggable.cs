@@ -38,6 +38,7 @@ namespace Kalkatos.Firecard.Unity
 		private Vector2 dragDelta;
 		private Vector3 targetTilt = Vector3.back;
 		private Coroutine correctDraggableCoroutine;
+		private bool isBeingDragged;
 
 		private void Awake ()
 		{
@@ -58,7 +59,7 @@ namespace Kalkatos.Firecard.Unity
 
 		private void Update ()
 		{
-			if (useTilt)
+			if (useTilt && isBeingDragged)
 			{
 				Vector3 velocity = Vector3.zero;
 				tiltTransform.forward = Vector3.SmoothDamp(tiltTransform.forward, targetTilt, ref velocity, tiltDamp);
@@ -93,6 +94,7 @@ namespace Kalkatos.Firecard.Unity
 				raycastImage.raycastTarget = false;
 			if (dragCollider != null)
 				dragCollider.enabled = false;
+			isBeingDragged = true;
 			OnBeginDragEvent?.Invoke(eventData);
 		}
 
@@ -119,6 +121,7 @@ namespace Kalkatos.Firecard.Unity
 				raycastImage.raycastTarget = true;
 			if (dragCollider != null)
 				dragCollider.enabled = true;
+			isBeingDragged = false;
 			OnEndDragEvent?.Invoke(eventData);
 		}
 
