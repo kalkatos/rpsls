@@ -6,9 +6,9 @@ A multiplayer game of rock-paper-scissors made in Unity using [serverless backen
 
 This project needs the following Assets to work properly: (Not included in this repo)
 
-Demigiant
-GUI PRO Kit - Casual Game
-GUIPackCartoon
-ParrelSync
-Sirenix
-TextMesh Pro
+* Demigiant DoTween Pro
+* GUI PRO Kit - Casual Game
+* GUIPackCartoon
+* ParrelSync
+* Sirenix OdinInspector
+* TextMesh Pro
