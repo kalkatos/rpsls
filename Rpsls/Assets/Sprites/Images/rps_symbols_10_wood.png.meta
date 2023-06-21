@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: fdc63fb674187f74c8abfa66b2e448bd
+guid: 86c92ba007131294b960b30b384b0289
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -149,7 +149,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: rps_symbols_07_r
+      name: rps_symbols_10_r
       rect:
         serializedVersion: 2
         x: 0
@@ -170,7 +170,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: rps_symbols_07_p
+      name: rps_symbols_10_p
       rect:
         serializedVersion: 2
         x: 512
@@ -191,7 +191,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: rps_symbols_07_s
+      name: rps_symbols_10_s
       rect:
         serializedVersion: 2
         x: 1024
@@ -222,9 +222,9 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      rps_symbols_07_p: 751421254
-      rps_symbols_07_r: 1196859099
-      rps_symbols_07_s: 1621835735
+      rps_symbols_10_p: 751421254
+      rps_symbols_10_r: 1196859099
+      rps_symbols_10_s: 1621835735
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

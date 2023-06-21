@@ -32,13 +32,14 @@ namespace Kalkatos.Firecard.Unity
 		[SerializeField, ShowIf(nameof(useTilt)), FoldoutGroup("Tilt"), Range(0f, 1f)] private float tiltDamp;
 
 		public enum InteractionSpace { World, UI }
+		public enum InteractionStatus { Untouched, BeingDragged, Recovering }
 
 		private Plane dragPlane;
 		private Vector3 dragOffset;
 		private Vector2 dragDelta;
 		private Vector3 targetTilt = Vector3.back;
 		private Coroutine correctDraggableCoroutine;
-		private bool isBeingDragged;
+		private InteractionStatus status;
 
 		private void Awake ()
 		{
@@ -59,11 +60,21 @@ namespace Kalkatos.Firecard.Unity
 
 		private void Update ()
 		{
-			if (useTilt && isBeingDragged)
+			if (useTilt)
 			{
-				Vector3 velocity = Vector3.zero;
-				tiltTransform.forward = Vector3.SmoothDamp(tiltTransform.forward, targetTilt, ref velocity, tiltDamp);
-				targetTilt = -(dragPlane.normal + tiltRate / 100f * Vector3.ClampMagnitude(tiltTransform.TransformDirection(dragDelta), maxTiltAngle));
+				if (status == InteractionStatus.BeingDragged)
+				{
+					Vector3 velocity = Vector3.zero;
+					tiltTransform.forward = Vector3.SmoothDamp(tiltTransform.forward, targetTilt, ref velocity, tiltDamp);
+					targetTilt = -(dragPlane.normal + tiltRate / 100f * Vector3.ClampMagnitude(tiltTransform.TransformDirection(dragDelta), maxTiltAngle));
+				}
+				else if (status == InteractionStatus.Recovering)
+				{
+					Vector3 velocity = Vector3.zero;
+					tiltTransform.forward = Vector3.SmoothDamp(tiltTransform.forward, tiltTransform.parent.forward, ref velocity, tiltDamp);
+					if (Vector3.Dot(tiltTransform.forward, tiltTransform.parent.forward) > 0.999f)
+						status = InteractionStatus.Untouched;
+				}
 			}
 		}
 
@@ -94,7 +105,7 @@ namespace Kalkatos.Firecard.Unity
 				raycastImage.raycastTarget = false;
 			if (dragCollider != null)
 				dragCollider.enabled = false;
-			isBeingDragged = true;
+			status = InteractionStatus.BeingDragged;
 			OnBeginDragEvent?.Invoke(eventData);
 		}
 
@@ -121,7 +132,7 @@ namespace Kalkatos.Firecard.Unity
 				raycastImage.raycastTarget = true;
 			if (dragCollider != null)
 				dragCollider.enabled = true;
-			isBeingDragged = false;
+			status = InteractionStatus.Recovering;
 			OnEndDragEvent?.Invoke(eventData);
 		}
 
