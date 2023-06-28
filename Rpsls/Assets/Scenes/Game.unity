@@ -104,7 +104,7 @@ NavMeshSettings:
   serializedVersion: 2
   m_ObjectHideFlags: 0
   m_BuildSettings:
-    serializedVersion: 3
+    serializedVersion: 2
     agentTypeID: 0
     agentRadius: 0.5
     agentHeight: 2
@@ -117,7 +117,7 @@ NavMeshSettings:
     cellSize: 0.16666667
     manualTileSize: 0
     tileSize: 256
-    buildHeightMesh: 0
+    accuratePlacement: 0
     maxJobWorkers: 0
     preserveTilesOutsideBounds: 0
     debug:
@@ -128,7 +128,6 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 3862459424999941381, guid: deb63dc1f87a51c40867036e167b0b8d, type: 3}
@@ -152,9 +151,6 @@ PrefabInstance:
       value: Canvas Camera
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: deb63dc1f87a51c40867036e167b0b8d, type: 3}
 --- !u!20 &46833669 stripped
 Camera:
@@ -234,12 +230,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: -90
-  m_Sprite: {fileID: 21300000, guid: abc93376631f40242a5cccd2ebc233e5, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3ca2f14637d20604795d78fb954b9751, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 1
-  m_Size: {x: 1.41, y: 1.8}
+  m_Size: {x: 1.77, y: 1.88}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -362,7 +358,6 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 4770561446522296803, guid: 739e66fa21a963441ba3566fa25663dd, type: 3}
@@ -414,9 +409,6 @@ PrefabInstance:
       value: Background
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 739e66fa21a963441ba3566fa25663dd, type: 3}
 --- !u!1 &932225535
 GameObject:
@@ -485,12 +477,15 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 3817490125345506446, guid: 6284e527e7ab43e4da398fa81061578c, type: 3}
       propertyPath: m_Name
       value: Drag Manager
+      objectReference: {fileID: 0}
+    - target: {fileID: 5360865283485757506, guid: 6284e527e7ab43e4da398fa81061578c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 24.8
       objectReference: {fileID: 0}
     - target: {fileID: 5946054502939416029, guid: 6284e527e7ab43e4da398fa81061578c, type: 3}
       propertyPath: m_RootOrder
@@ -537,9 +532,6 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6284e527e7ab43e4da398fa81061578c, type: 3}
 --- !u!114 &1111586248 stripped
 MonoBehaviour:
@@ -579,7 +571,6 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1393659004243741703, guid: bffd7f09c2d568347b2702ee158c4549, type: 3}
@@ -631,9 +622,6 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bffd7f09c2d568347b2702ee158c4549, type: 3}
 --- !u!1 &1366983278
 GameObject:
@@ -739,12 +727,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: -90
-  m_Sprite: {fileID: 21300000, guid: abc93376631f40242a5cccd2ebc233e5, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3ca2f14637d20604795d78fb954b9751, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 1
-  m_Size: {x: 1.41, y: 1.8}
+  m_Size: {x: 1.77, y: 1.88}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -755,7 +743,6 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 4226637753447291960, guid: f5649f5175c36674e993a3ebe00c2409, type: 3}
@@ -807,16 +794,12 @@ PrefabInstance:
       value: Managers
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f5649f5175c36674e993a3ebe00c2409, type: 3}
 --- !u!1001 &534478414053880495
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 5477934712507541944, guid: a75b5a3ecf2deb04c846b4a31776afa5, type: 3}
@@ -833,7 +816,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7948288808645557536, guid: a75b5a3ecf2deb04c846b4a31776afa5, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 944.53217
+      value: 1536
       objectReference: {fileID: 0}
     - target: {fileID: 7948288808645557536, guid: a75b5a3ecf2deb04c846b4a31776afa5, type: 3}
       propertyPath: m_LocalPosition.x
@@ -856,16 +839,12 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a75b5a3ecf2deb04c846b4a31776afa5, type: 3}
 --- !u!1001 &1188097081286609943
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1188097081657636616, guid: 6e0d71042f6c82a42984abba91c82992, type: 3}
@@ -933,16 +912,12 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6e0d71042f6c82a42984abba91c82992, type: 3}
 --- !u!1001 &1394562864668479016
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 4162432161488764781, guid: 66fbb35cfa8d8364ba4c7d19d99e9827, type: 3}
@@ -1034,16 +1009,12 @@ PrefabInstance:
       value: Debugger Canvas
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 66fbb35cfa8d8364ba4c7d19d99e9827, type: 3}
 --- !u!1001 &2186078989802961226
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1889808333576529677, guid: fca1c428d8cc24a4fbda39775e27da65, type: 3}
@@ -1071,16 +1042,12 @@ PrefabInstance:
       value: Opponent Move
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fca1c428d8cc24a4fbda39775e27da65, type: 3}
 --- !u!1001 &2627937295352709965
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2627937294698410905, guid: b1c9c9342df2cc54f81cf6a58ed0739e, type: 3}
@@ -1104,16 +1071,12 @@ PrefabInstance:
       value: End Game Drag Blocker
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b1c9c9342df2cc54f81cf6a58ed0739e, type: 3}
 --- !u!1001 &2732980173992395674
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2732980174437963370, guid: 0ed3a1b8a6ba493408626702a8ec5e31, type: 3}
@@ -1173,9 +1136,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 46833669}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0ed3a1b8a6ba493408626702a8ec5e31, type: 3}
 --- !u!20 &2732980173992395675 stripped
 Camera:
@@ -1187,7 +1147,6 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 7982003456078722321, guid: 3b43c7c2dacbaa24e8f6e2225934ccbe, type: 3}
@@ -1224,7 +1183,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7982003456078722322, guid: 3b43c7c2dacbaa24e8f6e2225934ccbe, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 944.53217
+      value: 1536
       objectReference: {fileID: 0}
     - target: {fileID: 7982003456078722322, guid: 3b43c7c2dacbaa24e8f6e2225934ccbe, type: 3}
       propertyPath: m_SizeDelta.y
@@ -1283,7 +1242,4 @@ PrefabInstance:
       value: Timer Bar World Canvas
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3b43c7c2dacbaa24e8f6e2225934ccbe, type: 3}
