@@ -13,17 +13,17 @@ MonoBehaviour:
   m_Name: Avatars
   m_EditorClassIdentifier: 
   Sprites:
-  - {fileID: 21300000, guid: 0b26b4d08bb04438188cbf6ee6967deb, type: 3}
-  - {fileID: 21300000, guid: 580145f6a94af450ab9791dcc7a3d7e3, type: 3}
+  - {fileID: 21300000, guid: 7e86aefbfde295443adb66432a294200, type: 3}
+  - {fileID: 21300000, guid: 5a47d1a2c76c2d74e8333b1a0dfc91fc, type: 3}
+  - {fileID: 21300000, guid: cc5731398c15d5142b7717e8a34876d4, type: 3}
+  - {fileID: 21300000, guid: e6342fbc6b7126a429fde7462d51afa9, type: 3}
+  - {fileID: 21300000, guid: 4b556d8e0c6930e4e930a16dfab2f895, type: 3}
+  - {fileID: 21300000, guid: e995db9b80364a847bdb63d691ee69ef, type: 3}
   - {fileID: 21300000, guid: 4216e6e3b20434bdab230ccba3fe7fe9, type: 3}
-  - {fileID: 21300000, guid: 8c5ab5bec548f4441a5bd28f73a4d813, type: 3}
-  - {fileID: 21300000, guid: fbb5b95e45a08431580a85533acb6656, type: 3}
-  - {fileID: 21300000, guid: 0f6903faa7eda43428f2fc851a0fab9c, type: 3}
-  - {fileID: 21300000, guid: 158835e055be84d9aafb05d24b64dee2, type: 3}
-  - {fileID: 21300000, guid: 2fb6fa49cc10c431f83468e9cdf3e4ad, type: 3}
   - {fileID: 21300000, guid: 8e5f5e12bfe3b44e39a1b95d2bf11409, type: 3}
-  - {fileID: 21300000, guid: 22325ada622de40a289999b1e1386690, type: 3}
   - {fileID: 21300000, guid: 5151842b709d1416da434d4dfbba9941, type: 3}
   - {fileID: 21300000, guid: f104d51f53bf743148d50fd115ae62a9, type: 3}
   - {fileID: 21300000, guid: 7a67927c3393648999f16c298968a6a9, type: 3}
   - {fileID: 21300000, guid: 09bba7d9ca3c34d6b9c90079ea1833dd, type: 3}
+  - {fileID: 21300000, guid: 0f6903faa7eda43428f2fc851a0fab9c, type: 3}
+  - {fileID: 21300000, guid: 580145f6a94af450ab9791dcc7a3d7e3, type: 3}
