@@ -99,11 +99,9 @@ namespace Kalkatos.UnityGame.Rps
 					new ActionInfo { PrivateChanges = new Dictionary<string, string> { { "Handshaking", "1" } } },
 					(success) => { currentState = success; },
 					(failure) => { });
-				while (currentState == null)
-					yield return null;
+				yield return WaitMatchState();
 
-
-				Logger.Log(" ========= Wait for opponent =========");
+                Logger.Log(" ========= Wait for opponent =========");
 				countdownCoroutine = StartCoroutine(CountdownCoroutine(30));
 				float handshakingWaitStart = Time.time;
 				bool hasHandshakingFromBothPlayers = false;
@@ -114,7 +112,8 @@ namespace Kalkatos.UnityGame.Rps
 						{
 							hasHandshakingFromBothPlayers = true;
 							currentState = success;
-							StopCoroutine(countdownCoroutine);
+							if (countdownCoroutine != null)
+								StopCoroutine(countdownCoroutine);
 							waitingOpponentCountdown?.EmitWithParam("0");
 							stateBuilder.ReceiveState(currentState);
 						}, null);
@@ -206,8 +205,9 @@ namespace Kalkatos.UnityGame.Rps
 			while (true)
 			{
 				bool hasResponse = false;
-				int lastStateHash = currentState.Hash;
-				NetworkClient.GetMatchState(success => { hasResponse = true; currentState = success; }, 
+				int lastStateHash = currentState?.Hash ?? 0;
+				NetworkClient.GetMatchState(
+					success => { hasResponse = true; currentState = success; }, 
 					failure => 
 					{ 
 						hasResponse = true;
@@ -216,12 +216,13 @@ namespace Kalkatos.UnityGame.Rps
 					});
 				while (!hasResponse)
 					yield return null;
-				if (currentState.Hash != lastStateHash)
+				if (currentState != null && currentState.Hash != lastStateHash)
 				{
 					if (waitingOpponentScreen.Value)
 					{
 						waitingOpponentScreen.EmitWithParam(false);
-						StopCoroutine(countdownCoroutine);
+						if (countdownCoroutine != null)
+							StopCoroutine(countdownCoroutine);
 					}
 					break;
 				}
@@ -240,7 +241,8 @@ namespace Kalkatos.UnityGame.Rps
 					else if (Time.time >= timeForOpponentTimeout)
 					{
 						waitingOpponentScreen.EmitWithParam(false);
-						StopCoroutine(countdownCoroutine);
+						if (countdownCoroutine != null)
+							StopCoroutine(countdownCoroutine);
 						waitingOpponentFailedScreen.EmitWithParam(true);
 						yield return new WaitForSeconds(delayBeforeWaitScreenPopup);
 						break;
