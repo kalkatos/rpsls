@@ -44,7 +44,7 @@ namespace Kalkatos.UnityGame.Rps
 		private StateInfo currentState = null;
 		private Coroutine countdownCoroutine;
 		private bool hasExecutedTurnResult;
-		private float endPlayPhaseTime;
+		private float endPlayPhaseTime = float.MaxValue;
 		private AutoPlaySettings settings;
 
 		private void Awake ()
@@ -77,34 +77,19 @@ namespace Kalkatos.UnityGame.Rps
 
 		private IEnumerator GameplayLoop ()
 		{
-			bool hasResponse = false;
-			NetworkClient.GetMatchState(
-				success => 
-				{ 
-					hasResponse = true; 
-					currentState = success; 
-				}, 
-				failure => 
-				{ 
-					hasResponse = true;
-				});
-			while (!hasResponse)
-				yield return null;
+			yield return null;
+			Logger.Log(" ========= Send Handshaking =========");
+			NetworkClient.SendAction(new ActionInfo { PrivateChanges = new Dictionary<string, string> { { "Handshaking", "1" } } }, null, null);
+			yield return new WaitForSeconds(Random.Range(1f, 2f));
+			yield return WaitMatchStateSimple();
 
 			if (currentState == null)
 			{
-				Logger.Log(" ========= Send Handshaking =========");
-				waitingOpponentScreen?.EmitWithParam(true);
-				NetworkClient.SendAction(
-					new ActionInfo { PrivateChanges = new Dictionary<string, string> { { "Handshaking", "1" } } },
-					(success) => { currentState = success; },
-					(failure) => { });
-				yield return WaitMatchState();
-
                 Logger.Log(" ========= Wait for opponent =========");
 				countdownCoroutine = StartCoroutine(CountdownCoroutine(30));
 				float handshakingWaitStart = Time.time;
 				bool hasHandshakingFromBothPlayers = false;
+				waitingOpponentScreen?.EmitWithParam(true);
 				while (!hasHandshakingFromBothPlayers)
 				{
 					NetworkClient.GetMatchState(
@@ -198,7 +183,27 @@ namespace Kalkatos.UnityGame.Rps
 			menuScreen.EmitWithParam(true);
 		}
 
-		private IEnumerator WaitMatchState ()
+        private IEnumerator WaitMatchStateSimple ()
+		{
+			bool hasResponse = false;
+            NetworkClient.GetMatchState(
+                success =>
+                {
+                    currentState = success;
+                    hasResponse = true;
+                },
+                failure =>
+                {
+                    hasResponse = true;
+                    if (failure.Tag == NetworkErrorTag.NotFound)
+                        menuScreen.EmitWithParam(true);
+                });
+			while (!hasResponse)
+				yield return null;
+		}
+
+
+        private IEnumerator WaitMatchState ()
 		{
 			float timeForScreenPopup = endPlayPhaseTime + delayBeforeWaitScreenPopup;
 			float timeForOpponentTimeout = timeForScreenPopup + opponentTimeout;
@@ -207,7 +212,11 @@ namespace Kalkatos.UnityGame.Rps
 				bool hasResponse = false;
 				int lastStateHash = currentState?.Hash ?? 0;
 				NetworkClient.GetMatchState(
-					success => { hasResponse = true; currentState = success; }, 
+					success =>
+					{ 
+						currentState = success;
+						hasResponse = true; 
+					}, 
 					failure => 
 					{ 
 						hasResponse = true;
