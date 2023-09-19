@@ -15,9 +15,10 @@ namespace Kalkatos.UnityGame.Rps
 	public class GameplayController : MonoBehaviour
 	{
 		[Header("Config")]
-		[SerializeField] int opponentTimeout = 20;
-		[SerializeField] int delayBeforeWaitScreenPopup = 4;
-		[Header("References")]
+		[SerializeField] private int opponentTimeout = 20;
+		[SerializeField] private int delayBeforeWaitScreenPopup = 4;
+        [SerializeField] private Vector2 minMaxWaitTime = new(1, 2);
+        [Header("References")]
 		[SerializeField] private StateBuilder stateBuilder;
 		[SerializeField] private ScreenSignal menuScreen;
 		[SerializeField] private SignalBool waitingOpponentScreen;
@@ -80,7 +81,7 @@ namespace Kalkatos.UnityGame.Rps
 			yield return null;
 			Logger.Log(" ========= Send Handshaking =========");
 			NetworkClient.SendAction(new ActionInfo { PrivateChanges = new Dictionary<string, string> { { "Handshaking", "1" } } }, null, null);
-			yield return new WaitForSeconds(Random.Range(1f, 2f));
+			yield return new WaitForSeconds(Random.Range(minMaxWaitTime.x, minMaxWaitTime.y));
 			yield return WaitMatchStateSimple();
 
 			if (currentState == null)
@@ -111,8 +112,8 @@ namespace Kalkatos.UnityGame.Rps
 						yield break;
 					}
 					else
-						yield return new WaitForSeconds(Random.Range(1f, 2f));
-				}
+                        yield return new WaitForSeconds(Random.Range(minMaxWaitTime.x, minMaxWaitTime.y));
+                }
 				waitingOpponentScreen?.EmitWithParam(false);
 			}
 			else
@@ -257,8 +258,8 @@ namespace Kalkatos.UnityGame.Rps
 						break;
 					}
 				}
-				yield return new WaitForSeconds(Random.Range(1f, 2f));
-			}
+                yield return new WaitForSeconds(Random.Range(minMaxWaitTime.x, minMaxWaitTime.y));
+            }
 			stateBuilder.ReceiveState(currentState);
 		}
 

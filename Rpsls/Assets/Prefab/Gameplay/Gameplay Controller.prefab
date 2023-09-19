@@ -46,6 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   opponentTimeout: 20
   delayBeforeWaitScreenPopup: 4
+  minMaxWaitTime: {x: 0.5, y: 1.5}
   stateBuilder: {fileID: 11400000, guid: efb662086412cf0458505fd7979fe4ba, type: 2}
   menuScreen: {fileID: 11400000, guid: 0601b19581be1c547beade73f2b81967, type: 2}
   waitingOpponentScreen: {fileID: 11400000, guid: 3d834ef0aca4011419ccd54ff1de0af9, type: 2}
