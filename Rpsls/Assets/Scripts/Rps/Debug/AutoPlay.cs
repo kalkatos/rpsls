@@ -15,21 +15,10 @@ public class AutoPlay : MonoBehaviour
 
     private AutoPlaySettings settings;
 
-    void Start()
+    private void Start()
     {
         settings = AutoPlaySettings.Instance;
-        if (!(settings?.AutoPlay ?? false))
-            return;
-        isActive = settings.AutoPlay;
-        if (Input.GetKey(KeyCode.Escape))
-        {
-            isActive = false;
-            return;
-        }
-        DateTime now = DateTime.UtcNow;
-        float seconds = secondsToWait + (float)TimeSpan.FromTicks(secondsToWait * TimeSpan.TicksPerSecond - now.Ticks % (secondsToWait * TimeSpan.TicksPerSecond)).TotalSeconds;
-		Debug.Log($"Waiting {seconds} seconds.");
-        StartCoroutine(ClickPlayButton(seconds));
+        TryRunAutoPlay();
     }
 
 	private void Update ()
@@ -40,6 +29,13 @@ public class AutoPlay : MonoBehaviour
             if (settings != null)
                 settings.AutoPlay = false;
 		}
+        if (!isActive && Input.GetKeyDown(KeyCode.G))
+        {
+            isActive = true;
+            if (settings != null)
+                settings.AutoPlay = true;
+            TryRunAutoPlay();
+        }
 		if (Input.GetKeyDown(KeyCode.Space))
         {
             if (reconnectButton.activeSelf)
@@ -48,6 +44,22 @@ public class AutoPlay : MonoBehaviour
                 playButtonClickSignal.Emit();
         }
 	}
+
+    private void TryRunAutoPlay ()
+    {
+        if (!(settings?.AutoPlay ?? false))
+            return;
+        isActive = settings.AutoPlay;
+        if (Input.GetKey(KeyCode.Escape))
+        {
+            isActive = false;
+            return;
+        }
+        DateTime now = DateTime.UtcNow;
+        float seconds = secondsToWait + (float)TimeSpan.FromTicks(secondsToWait * TimeSpan.TicksPerSecond - now.Ticks % (secondsToWait * TimeSpan.TicksPerSecond)).TotalSeconds;
+        Debug.Log($"Waiting {seconds} seconds.");
+        StartCoroutine(ClickPlayButton(seconds));
+    }
 
 	private IEnumerator ClickPlayButton (float timeToWait)
     {
