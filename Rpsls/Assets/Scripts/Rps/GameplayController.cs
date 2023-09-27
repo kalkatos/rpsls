@@ -80,16 +80,10 @@ namespace Kalkatos.UnityGame.Rps
 		{
 			yield return null;
 			Logger.Log(" ========= Send Handshaking =========");
-			bool hasSentHandshaking = false;
 			ActionInfo handshakingAction = new ActionInfo { PrivateChanges = new Dictionary<string, string> { { "Handshaking", "1" } } };
-			while (!hasSentHandshaking)
-			{
-				bool hasResponse = false;
-				NetworkClient.SendAction(handshakingAction, (success) => { hasSentHandshaking = true; hasResponse = true; }, (failure) => hasResponse = true);
-				while (!hasResponse)
-					yield return null;
-				yield return new WaitForSeconds(Random.Range(minMaxWaitTime.x, minMaxWaitTime.y));
-			}
+			NetworkClient.SendAction(handshakingAction, null, null);
+			yield return new WaitForSeconds(Random.Range(minMaxWaitTime.x, minMaxWaitTime.y));
+
 			yield return WaitMatchStateSimple();
 
 			if (currentState == null)
