@@ -10,3 +10,6 @@
 [submodule "Rpsls/Assets/Scripts/UnityGame"]
 	path = Rpsls/Assets/Scripts/UnityGame
 	url = https://github.com/kalkatos/unitygame.git
+[submodule "Rpsls/Assets/Scripts/Analytics"]
+	path = Rpsls/Assets/Scripts/Analytics
+	url = https://github.com/kalkatos/analytics.git
