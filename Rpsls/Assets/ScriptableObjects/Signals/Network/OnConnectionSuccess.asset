@@ -27,3 +27,29 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 11400000, guid: 13bd4fdebcd6f69498f1bbad5cb00daa, type: 2}
+        m_TargetAssemblyTypeName: Kalkatos.Analytics.Unity.AnalyticsScriptable, Assembly-CSharp
+        m_MethodName: SendUniqueEvent
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 11400000, guid: 7397806a620ea174885ac1608e120255, type: 2}
+          m_ObjectArgumentAssemblyTypeName: Kalkatos.UnityGame.Scriptable.SignalString,
+            Assembly-CSharp
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 11400000, guid: 13bd4fdebcd6f69498f1bbad5cb00daa, type: 2}
+        m_TargetAssemblyTypeName: Kalkatos.Analytics.Unity.AnalyticsScriptable, Assembly-CSharp
+        m_MethodName: SendEvent
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 11400000, guid: 07f8762160329b34aadfabc8e0265b0c, type: 2}
+          m_ObjectArgumentAssemblyTypeName: Kalkatos.UnityGame.Scriptable.SignalString,
+            Assembly-CSharp
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
