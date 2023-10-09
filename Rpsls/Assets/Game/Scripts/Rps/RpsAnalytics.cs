@@ -16,6 +16,7 @@ namespace Kalkatos.UnityGame.Rps
         [SerializeField] private SignalBool onChangePaperScreenOpened;
         [SerializeField] private SignalBool onChangeScissorsScreenOpened;
         [SerializeField] private Signal onChangeNicknameSignal;
+        [SerializeField] private SignalString playerNickname;
 
         // Analytics event handles
         private const string SESSION_START = "session_start";
@@ -68,6 +69,11 @@ namespace Kalkatos.UnityGame.Rps
             SubscribeToSignals();
         }
 
+        private void OnDestroy ()
+        {
+            UnsubscribeToSignals();
+        }
+
         private void SubscribeToSignals ()
         {
             onConnectionSuccessSignal?.OnSignalEmitted.AddListener(HandleConnectionSuccess);
@@ -92,37 +98,37 @@ namespace Kalkatos.UnityGame.Rps
 
         private void HandleConnectionSuccess ()
         {
-            
+            AnalyticsController.SendEvent(CONNECTION_SUCCESS);
         }
 
         private void HandleConnectionFailure ()
         {
-            
+            AnalyticsController.SendEvent(CONNECTION_FAILURE);
         }
 
         private void HandleChangeAvatarScreenOpened (bool isOpen)
         {
-            
+            AnalyticsController.SendUniqueEvent(BTN_CHANGE_AVATAR);
         }
 
         private void HandleChangeRockScreenOpened (bool isOpen)
         {
-            
+            AnalyticsController.SendUniqueEvent(BTN_CHANGE_ROCK);
         }
 
         private void HandleChangePaperScreenOpened (bool isOpen)
         {
-            
+            AnalyticsController.SendUniqueEvent(BTN_CHANGE_PAPER);
         }
 
         private void HandleChangeScissorsScreenOpened (bool isOpen)
         {
-            
+            AnalyticsController.SendUniqueEvent(BTN_CHANGE_SCISSORS);
         }
 
         private void HandleChangeNickname ()
         {
-            
+            AnalyticsController.SendEventWithString(BTN_CHANGE_NICKNAME, playerNickname.Value);
         }
     }
 }

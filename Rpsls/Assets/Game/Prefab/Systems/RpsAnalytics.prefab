@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6171206395556752799
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6171206395556752797}
+  - component: {fileID: 6171206395556752796}
+  m_Layer: 0
+  m_Name: RpsAnalytics
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6171206395556752797
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6171206395556752799}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6171206395556752796
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6171206395556752799}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0485cbd06cc4dd94eb1b7868a4abd3e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onConnectionSuccessSignal: {fileID: 11400000, guid: aad8f10ad275d2844a6113ff56a49452, type: 2}
+  onConnectionFailureSignal: {fileID: 11400000, guid: 09dbb000f861c2845a1f6e351e96cc74, type: 2}
+  onChangeAvatarScreenOpened: {fileID: 11400000, guid: 27c7c63e00bba87478369ebaeb2f4f12, type: 2}
+  onChangeRockScreenOpened: {fileID: 11400000, guid: 6569ad0459c237f43a344a1782f86610, type: 2}
+  onChangePaperScreenOpened: {fileID: 11400000, guid: 76f299fa4e414a542b570a8fc1d14b51, type: 2}
+  onChangeScissorsScreenOpened: {fileID: 11400000, guid: 8f9ff8535ab89c5459cb545dc5176ac1, type: 2}
+  onChangeNicknameSignal: {fileID: 11400000, guid: 91176c4aae397574aaeb99d08e35236e, type: 2}
+  playerNickname: {fileID: 11400000, guid: f6beb1554dd6b3049b330e9a848c0cd3, type: 2}
