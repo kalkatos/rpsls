@@ -67,6 +67,8 @@ namespace Kalkatos.UnityGame.Rps
                 Storage.Delete(SESSION_CLICKS_PLAY);
             }
             SubscribeToSignals();
+
+            DontDestroyOnLoad(gameObject);
         }
 
         private void OnDestroy ()
