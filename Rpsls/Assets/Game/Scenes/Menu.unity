@@ -598,9 +598,85 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 252646471890213851, guid: 7fc6afb28a377554b9a7310c0396be9c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 252646471890213851, guid: 7fc6afb28a377554b9a7310c0396be9c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_Target
+      value: 
+      objectReference: {fileID: 11400000, guid: 91176c4aae397574aaeb99d08e35236e, type: 2}
+    - target: {fileID: 252646471890213851, guid: 7fc6afb28a377554b9a7310c0396be9c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 252646471890213851, guid: 7fc6afb28a377554b9a7310c0396be9c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_MethodName
+      value: Emit
+      objectReference: {fileID: 0}
+    - target: {fileID: 252646471890213851, guid: 7fc6afb28a377554b9a7310c0396be9c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_TargetAssemblyTypeName
+      value: Kalkatos.UnityGame.Scriptable.Signal, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 252646471890213851, guid: 7fc6afb28a377554b9a7310c0396be9c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 1121726925350199528, guid: 7fc6afb28a377554b9a7310c0396be9c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1445137653763693645, guid: 7fc6afb28a377554b9a7310c0396be9c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2111861666540271890, guid: 7fc6afb28a377554b9a7310c0396be9c, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2202914304842042861, guid: 7fc6afb28a377554b9a7310c0396be9c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3884351016382964306, guid: 7fc6afb28a377554b9a7310c0396be9c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4134870815415137120, guid: 7fc6afb28a377554b9a7310c0396be9c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4831062388066430462, guid: 7fc6afb28a377554b9a7310c0396be9c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5693389114937535664, guid: 7fc6afb28a377554b9a7310c0396be9c, type: 3}
       propertyPath: m_Name
       value: Menu Canvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 6273290425625089799, guid: 7fc6afb28a377554b9a7310c0396be9c, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6273290425625089799, guid: 7fc6afb28a377554b9a7310c0396be9c, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6273290425625089799, guid: 7fc6afb28a377554b9a7310c0396be9c, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6273290425625089799, guid: 7fc6afb28a377554b9a7310c0396be9c, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6273290425625089799, guid: 7fc6afb28a377554b9a7310c0396be9c, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 382.70154
+      objectReference: {fileID: 0}
+    - target: {fileID: 6273290425625089799, guid: 7fc6afb28a377554b9a7310c0396be9c, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6642999532569382839, guid: 7fc6afb28a377554b9a7310c0396be9c, type: 3}
       propertyPath: m_Camera
@@ -636,7 +712,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9113274599162682159, guid: 7fc6afb28a377554b9a7310c0396be9c, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 1536
+      value: 945.2308
       objectReference: {fileID: 0}
     - target: {fileID: 9113274599162682159, guid: 7fc6afb28a377554b9a7310c0396be9c, type: 3}
       propertyPath: m_SizeDelta.y

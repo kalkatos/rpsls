@@ -801,17 +801,16 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 11400000, guid: 86eef279e191ac24d932ff87bd66dd38, type: 2}
-        m_TargetAssemblyTypeName: Kalkatos.UnityGame.Scriptable.Network.NetworkClientScriptable,
-          Assembly-CSharp
-        m_MethodName: SetPlayerData
-        m_Mode: 5
+      - m_Target: {fileID: 11400000, guid: 91176c4aae397574aaeb99d08e35236e, type: 2}
+        m_TargetAssemblyTypeName: Kalkatos.UnityGame.Scriptable.Signal, Assembly-CSharp
+        m_MethodName: Emit
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Nickname
+          m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!95 &932707342434163742
@@ -1395,7 +1394,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7577068631498053084, guid: 957949dabb71b8c45b528f8c41f0008a, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 944.8927
+      value: 1216.4009
       objectReference: {fileID: 0}
     - target: {fileID: 7577068631498053084, guid: 957949dabb71b8c45b528f8c41f0008a, type: 3}
       propertyPath: m_LocalPosition.x
