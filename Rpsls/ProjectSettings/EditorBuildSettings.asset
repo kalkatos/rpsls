@@ -6,21 +6,21 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Connection.unity
+    path: Assets/Game/Scenes/Connection.unity
     guid: 66dd23b4177bcef42b87ee73b9d01e2f
   - enabled: 1
-    path: Assets/Scenes/Menu.unity
+    path: Assets/Game/Scenes/Menu.unity
     guid: 550be6c971893f6449f399be1fc837c7
   - enabled: 1
-    path: Assets/Scenes/Unused/Login.unity
+    path: Assets/Game/Scenes/Unused/Login.unity
     guid: ad74cfcd44d16a04f82a28fefda59cf8
   - enabled: 1
-    path: Assets/Scenes/Unused/Lobby.unity
+    path: Assets/Game/Scenes/Unused/Lobby.unity
     guid: cb9a5d6dba62de94fb5f5d434594290a
   - enabled: 1
-    path: Assets/Scenes/Game.unity
+    path: Assets/Game/Scenes/Game.unity
     guid: 8d32d7779391e8040ad6b1e52a15a828
   - enabled: 1
-    path: Assets/Scenes/FindingMatch.unity
+    path: Assets/Game/Scenes/FindingMatch.unity
     guid: 03bc6afbdad4e584b9488d0f5daa87b1
   m_configObjects: {}
