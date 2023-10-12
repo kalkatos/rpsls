@@ -52,3 +52,7 @@ MonoBehaviour:
   onChangeScissorsScreenOpened: {fileID: 11400000, guid: 8f9ff8535ab89c5459cb545dc5176ac1, type: 2}
   onChangeNicknameSignal: {fileID: 11400000, guid: 91176c4aae397574aaeb99d08e35236e, type: 2}
   playerNickname: {fileID: 11400000, guid: f6beb1554dd6b3049b330e9a848c0cd3, type: 2}
+  playerAvatarSignal: {fileID: 11400000, guid: 2fb64ccab2daa0744855189be454caa5, type: 2}
+  rockCardSignal: {fileID: 11400000, guid: 77bbb2c728ff6a944916a04ef1b63f4d, type: 2}
+  paperCardSignal: {fileID: 11400000, guid: 80dad2793e001954eb75fd0c8b9f252b, type: 2}
+  scissorsCardSignal: {fileID: 11400000, guid: d5c970eb19ce2484dbeb00b2b5b6a9d7, type: 2}

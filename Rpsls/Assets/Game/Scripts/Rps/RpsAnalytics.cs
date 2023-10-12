@@ -17,6 +17,10 @@ namespace Kalkatos.UnityGame.Rps
         [SerializeField] private SignalBool onChangeScissorsScreenOpened;
         [SerializeField] private Signal onChangeNicknameSignal;
         [SerializeField] private SignalString playerNickname;
+        [SerializeField] private SignalInt playerAvatarSignal;
+        [SerializeField] private SignalInt rockCardSignal;
+        [SerializeField] private SignalInt paperCardSignal;
+        [SerializeField] private SignalInt scissorsCardSignal;
 
         // Analytics event handles
         private const string SESSION_START = "session_start";
@@ -53,6 +57,8 @@ namespace Kalkatos.UnityGame.Rps
 
         private void Awake ()
         {
+            Logger.Log("Player Avatar Default Value is " + playerAvatarSignal.Value);
+
             AnalyticsController.Initialize(new GameAnalyticsSender());
             AnalyticsController.SendEvent(SESSION_START);
             long currentDay = DateTime.Today.Ticks;
@@ -78,24 +84,32 @@ namespace Kalkatos.UnityGame.Rps
 
         private void SubscribeToSignals ()
         {
-            onConnectionSuccessSignal?.OnSignalEmitted.AddListener(HandleConnectionSuccess);
-            onConnectionFailureSignal?.OnSignalEmitted.AddListener(HandleConnectionFailure);
-            onChangeAvatarScreenOpened?.OnSignalEmittedWithParam.AddListener(HandleChangeAvatarScreenOpened);
-            onChangeRockScreenOpened?.OnSignalEmittedWithParam.AddListener(HandleChangeRockScreenOpened);
-            onChangePaperScreenOpened?.OnSignalEmittedWithParam.AddListener(HandleChangePaperScreenOpened);
-            onChangeScissorsScreenOpened?.OnSignalEmittedWithParam.AddListener(HandleChangeScissorsScreenOpened);
-            onChangeNicknameSignal?.OnSignalEmitted.AddListener(HandleChangeNickname);
+            onConnectionSuccessSignal.OnSignalEmitted.AddListener(HandleConnectionSuccess);
+            onConnectionFailureSignal.OnSignalEmitted.AddListener(HandleConnectionFailure);
+            onChangeAvatarScreenOpened.OnSignalEmittedWithParam.AddListener(HandleChangeAvatarScreenOpened);
+            onChangeRockScreenOpened.OnSignalEmittedWithParam.AddListener(HandleChangeRockScreenOpened);
+            onChangePaperScreenOpened.OnSignalEmittedWithParam.AddListener(HandleChangePaperScreenOpened);
+            onChangeScissorsScreenOpened.OnSignalEmittedWithParam.AddListener(HandleChangeScissorsScreenOpened);
+            onChangeNicknameSignal.OnSignalEmitted.AddListener(HandleChangeNickname);
+            playerAvatarSignal.OnSignalEmittedWithParam.AddListener(HandleAvatarChanged);
+            rockCardSignal.OnSignalEmittedWithParam.AddListener(HandleRockCardChanged);
+            paperCardSignal.OnSignalEmittedWithParam.AddListener(HandlePaperCardChanged);
+            scissorsCardSignal.OnSignalEmittedWithParam.AddListener(HandleScissorsCardChanged);
         }
 
         private void UnsubscribeToSignals ()
         {
-            onConnectionSuccessSignal?.OnSignalEmitted.RemoveListener(HandleConnectionSuccess);
-            onConnectionFailureSignal?.OnSignalEmitted.RemoveListener(HandleConnectionFailure);
-            onChangeAvatarScreenOpened?.OnSignalEmittedWithParam.RemoveListener(HandleChangeAvatarScreenOpened);
-            onChangeRockScreenOpened?.OnSignalEmittedWithParam.RemoveListener(HandleChangeRockScreenOpened);
-            onChangePaperScreenOpened?.OnSignalEmittedWithParam.RemoveListener(HandleChangePaperScreenOpened);
-            onChangeScissorsScreenOpened?.OnSignalEmittedWithParam.RemoveListener(HandleChangeScissorsScreenOpened);
-            onChangeNicknameSignal?.OnSignalEmitted.RemoveListener(HandleChangeNickname);
+            onConnectionSuccessSignal.OnSignalEmitted.RemoveListener(HandleConnectionSuccess);
+            onConnectionFailureSignal.OnSignalEmitted.RemoveListener(HandleConnectionFailure);
+            onChangeAvatarScreenOpened.OnSignalEmittedWithParam.RemoveListener(HandleChangeAvatarScreenOpened);
+            onChangeRockScreenOpened.OnSignalEmittedWithParam.RemoveListener(HandleChangeRockScreenOpened);
+            onChangePaperScreenOpened.OnSignalEmittedWithParam.RemoveListener(HandleChangePaperScreenOpened);
+            onChangeScissorsScreenOpened.OnSignalEmittedWithParam.RemoveListener(HandleChangeScissorsScreenOpened);
+            onChangeNicknameSignal.OnSignalEmitted.RemoveListener(HandleChangeNickname);
+            playerAvatarSignal.OnSignalEmittedWithParam.RemoveListener(HandleAvatarChanged);
+            rockCardSignal.OnSignalEmittedWithParam.RemoveListener(HandleRockCardChanged);
+            paperCardSignal.OnSignalEmittedWithParam.RemoveListener(HandlePaperCardChanged);
+            scissorsCardSignal.OnSignalEmittedWithParam.RemoveListener(HandleScissorsCardChanged);
         }
 
         private void HandleConnectionSuccess ()
@@ -131,6 +145,30 @@ namespace Kalkatos.UnityGame.Rps
         private void HandleChangeNickname ()
         {
             AnalyticsController.SendEventWithString(BTN_CHANGE_NICKNAME, playerNickname.Value);
+        }
+
+        private void HandleAvatarChanged (int index)
+        {
+            if (onChangeAvatarScreenOpened.Value)
+                AnalyticsController.SendEventWithNumber(SELECTED_AVATAR, index);
+        }
+
+        private void HandleRockCardChanged (int index)
+        {
+            if (onChangeRockScreenOpened.Value)
+                AnalyticsController.SendEventWithNumber(SELECTED_ROCK, index);
+        }
+
+        private void HandlePaperCardChanged (int index)
+        {
+            if (onChangePaperScreenOpened.Value)
+                AnalyticsController.SendEventWithNumber(SELECTED_PAPER, index);
+        }
+
+        private void HandleScissorsCardChanged (int index)
+        {
+            if (onChangeScissorsScreenOpened.Value)
+                AnalyticsController.SendEventWithNumber(SELECTED_SCISSORS, index);
         }
     }
 }
