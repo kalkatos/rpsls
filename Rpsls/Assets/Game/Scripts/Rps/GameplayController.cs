@@ -19,6 +19,7 @@ namespace Kalkatos.UnityGame.Rps
 		[SerializeField] private int delayBeforeWaitScreenPopup = 4;
         [SerializeField] private Vector2 minMaxWaitTime = new(1, 2);
         [Header("References")]
+		[SerializeField] private Signal onGameSceneLoaded;
 		[SerializeField] private StateBuilder stateBuilder;
 		[SerializeField] private ScreenSignal menuScreen;
 		[SerializeField] private SignalBool waitingOpponentScreen;
@@ -58,6 +59,7 @@ namespace Kalkatos.UnityGame.Rps
 		{
 			settings = AutoPlaySettings.Instance;
 			autoPlay = settings?.AutoPlay ?? false;
+			onGameSceneLoaded?.Emit();
 			StartCoroutine(GameplayLoop());
 		}
 

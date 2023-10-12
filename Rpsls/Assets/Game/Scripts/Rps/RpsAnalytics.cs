@@ -21,6 +21,21 @@ namespace Kalkatos.UnityGame.Rps
         [SerializeField] private SignalInt rockCardSignal;
         [SerializeField] private SignalInt paperCardSignal;
         [SerializeField] private SignalInt scissorsCardSignal;
+        [SerializeField] private Signal onPlayButtonClicked;
+        [SerializeField] private Signal onReconnectButtonClicked;
+        [SerializeField] private Signal onCancelButtonClicked;
+        [SerializeField] private Signal onMatchFoundSuccess;
+        [SerializeField] private Signal onGameSceneLoaded;
+        [SerializeField] private SignalBool onWaitingOpponent;
+        [SerializeField] private SignalBool onOpponentLeft;
+        [SerializeField] private SignalBool onMatchStarted;
+        [SerializeField] private SignalBool onMatchEnded;
+        [SerializeField] private SignalState matchWinner;
+        [SerializeField] private Signal onSendButtonClicked;
+        [SerializeField] private SignalState myMove;
+        [SerializeField] private Signal onLeaveButtonClicked;
+        [SerializeField] private SignalState myScore;
+        [SerializeField] private SignalState opponentScore;
 
         // Analytics event handles
         private const string SESSION_START = "session_start";
@@ -57,8 +72,6 @@ namespace Kalkatos.UnityGame.Rps
 
         private void Awake ()
         {
-            Logger.Log("Player Avatar Default Value is " + playerAvatarSignal.Value);
-
             AnalyticsController.Initialize(new GameAnalyticsSender());
             AnalyticsController.SendEvent(SESSION_START);
             long currentDay = DateTime.Today.Ticks;
@@ -95,8 +108,18 @@ namespace Kalkatos.UnityGame.Rps
             rockCardSignal.OnSignalEmittedWithParam.AddListener(HandleRockCardChanged);
             paperCardSignal.OnSignalEmittedWithParam.AddListener(HandlePaperCardChanged);
             scissorsCardSignal.OnSignalEmittedWithParam.AddListener(HandleScissorsCardChanged);
+            onPlayButtonClicked.OnSignalEmitted.AddListener(HandlePlayButtonClicked);
+            onReconnectButtonClicked.OnSignalEmitted.AddListener(HandleReconnectButtonClicked);
+            onCancelButtonClicked.OnSignalEmitted.AddListener(HandleCancelButtonClicked);
+            onMatchFoundSuccess.OnSignalEmitted.AddListener(HandleMatchFound);
+            onGameSceneLoaded.OnSignalEmitted.AddListener(HandleGameSceneLoaded);
+            onWaitingOpponent.OnSignalEmittedWithParam.AddListener(HandleWaitingOpponent);
+            onOpponentLeft.OnSignalEmittedWithParam.AddListener(HandleOpponentLeft);
+            onMatchStarted.OnSignalEmittedWithParam.AddListener(HandleMatchStarted);
+            onMatchEnded.OnSignalEmittedWithParam.AddListener(HandleMatchEnded);
+            onSendButtonClicked.OnSignalEmitted.AddListener(HandleSendButtonClicked);
+            onLeaveButtonClicked.OnSignalEmitted.AddListener(HandleLeaveButtonClicked);
         }
-
         private void UnsubscribeToSignals ()
         {
             onConnectionSuccessSignal.OnSignalEmitted.RemoveListener(HandleConnectionSuccess);
@@ -110,6 +133,17 @@ namespace Kalkatos.UnityGame.Rps
             rockCardSignal.OnSignalEmittedWithParam.RemoveListener(HandleRockCardChanged);
             paperCardSignal.OnSignalEmittedWithParam.RemoveListener(HandlePaperCardChanged);
             scissorsCardSignal.OnSignalEmittedWithParam.RemoveListener(HandleScissorsCardChanged);
+            onPlayButtonClicked.OnSignalEmitted.RemoveListener(HandlePlayButtonClicked);
+            onReconnectButtonClicked.OnSignalEmitted.RemoveListener(HandleReconnectButtonClicked);
+            onCancelButtonClicked.OnSignalEmitted.RemoveListener(HandleCancelButtonClicked);
+            onMatchFoundSuccess.OnSignalEmitted.RemoveListener(HandleMatchFound);
+            onGameSceneLoaded.OnSignalEmitted.RemoveListener(HandleGameSceneLoaded);
+            onWaitingOpponent.OnSignalEmittedWithParam.RemoveListener(HandleWaitingOpponent);
+            onOpponentLeft.OnSignalEmittedWithParam.RemoveListener(HandleOpponentLeft);
+            onMatchStarted.OnSignalEmittedWithParam.RemoveListener(HandleMatchStarted);
+            onMatchEnded.OnSignalEmittedWithParam.RemoveListener(HandleMatchEnded);
+            onSendButtonClicked.OnSignalEmitted.RemoveListener(HandleSendButtonClicked);
+            onLeaveButtonClicked.OnSignalEmitted.RemoveListener(HandleLeaveButtonClicked);
         }
 
         private void HandleConnectionSuccess ()
@@ -169,6 +203,74 @@ namespace Kalkatos.UnityGame.Rps
         {
             if (onChangeScissorsScreenOpened.Value)
                 AnalyticsController.SendEventWithNumber(SELECTED_SCISSORS, index);
+        }
+
+        private void HandlePlayButtonClicked ()
+        {
+            int totalPlayButtonClicks = Storage.Load(TOTAL_CLICKS_PLAY, 0) + 1;
+            Storage.Save(TOTAL_CLICKS_PLAY, totalPlayButtonClicks);
+            AnalyticsController.SendEventWithNumber(BTN_PLAY, totalPlayButtonClicks);
+            int sessionPlayButtonClicks = Storage.Load(SESSION_CLICKS_PLAY, 0) + 1;
+            Storage.Save(SESSION_CLICKS_PLAY, sessionPlayButtonClicks);
+            AnalyticsController.SendEventWithNumber(BTN_PLAY_SESSION, sessionPlayButtonClicks);
+        }
+
+        private void HandleReconnectButtonClicked ()
+        {
+            AnalyticsController.SendEvent(BTN_RECONNECT);
+        }
+
+        private void HandleCancelButtonClicked ()
+        {
+            AnalyticsController.SendEvent(BTN_CANCEL);
+        }
+
+        private void HandleMatchFound ()
+        {
+            AnalyticsController.SendEvent(MATCH_FOUND);
+        }
+
+        private void HandleGameSceneLoaded ()
+        {
+            AnalyticsController.SendEvent(GAME_SCENE_LOADED);
+        }
+
+        private void HandleWaitingOpponent (bool active)
+        {
+            if (active)
+                AnalyticsController.SendEvent(WAITING_PLAYER);
+        }
+
+        private void HandleOpponentLeft (bool active)
+        {
+            if (active)
+                AnalyticsController.SendEvent(OPPONENT_LEFT);
+        }
+
+        private void HandleMatchStarted (bool active)
+        {
+            if (active)
+            {
+                int totalMatches = Storage.Load(TOTAL_MATCHES, 0) + 1;
+                Storage.Save(TOTAL_MATCHES, totalMatches);
+                AnalyticsController.SendEventWithNumber(MATCH_STARTED, totalMatches);
+            }
+        }
+
+        private void HandleMatchEnded (bool active)
+        {
+            if (active)
+                AnalyticsController.SendEventWithString(MATCH_ENDED, matchWinner.Value);
+        }
+
+        private void HandleSendButtonClicked ()
+        {
+            AnalyticsController.SendEventWithString(BTN_SEND, myMove.Value);
+        }
+
+        private void HandleLeaveButtonClicked ()
+        {
+            AnalyticsController.SendEventWithString(BTN_LEAVE, $"{myScore.Value}-{opponentScore.Value}");
         }
     }
 }
