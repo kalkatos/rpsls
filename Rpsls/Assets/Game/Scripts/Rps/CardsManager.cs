@@ -1,6 +1,5 @@
 using Kalkatos.Firecard.Unity;
 using Kalkatos.UnityGame.Scriptable;
-using Kalkatos.UnityGame.Scriptable.Network;
 using UnityEngine;
 
 namespace Kalkatos.UnityGame.Rps
