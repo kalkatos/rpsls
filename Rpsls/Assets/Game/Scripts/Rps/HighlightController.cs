@@ -1,21 +1,35 @@
 ﻿using Kalkatos.Firecard.Unity;
 using Kalkatos.UnityGame.Scriptable;
 using UnityEngine;
-using Sirenix.OdinInspector;
+#if ODIN_INSPECTOR
+using Sirenix.OdinInspector;  
+#endif
 using UnityEngine.Events;
 
 namespace Kalkatos.UnityGame.Rps
 {
 	public class HighlightController : MonoBehaviour
     {
-        [PropertyOrder(99)] public UnityEvent OnHighlightOn;
-        [PropertyOrder(99)] public UnityEvent OnHighlightOff;
+#if ODIN_INSPECTOR
+		[PropertyOrder(99)]  
+#endif
+        public UnityEvent OnHighlightOn;
+#if ODIN_INSPECTOR
+		[PropertyOrder(99)]  
+#endif
+        public UnityEvent OnHighlightOff;
 
         [Header("Config")]
         [SerializeField] private SignalBool canPlaySignal;
         [Header("References")]
-        [SerializeField, ChildGameObjectsOnly] private CardBehaviour cardBehaviour;
-        [SerializeField, ChildGameObjectsOnly] private MovementBehaviour movementBehaviour;
+#if ODIN_INSPECTOR
+		[ChildGameObjectsOnly] 
+#endif
+        [SerializeField] private CardBehaviour cardBehaviour;
+#if ODIN_INSPECTOR
+		[ChildGameObjectsOnly] 
+#endif
+        [SerializeField] private MovementBehaviour movementBehaviour;
 
 		private bool isHighlighted;
 

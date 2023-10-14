@@ -1,6 +1,8 @@
 using Kalkatos.Firecard.Unity;
 using Kalkatos.UnityGame.Scriptable;
-using Sirenix.OdinInspector;
+#if ODIN_INSPECTOR
+using Sirenix.OdinInspector;  
+#endif
 using UnityEngine;
 
 namespace Kalkatos.UnityGame.Rps
@@ -16,8 +18,14 @@ namespace Kalkatos.UnityGame.Rps
         [SerializeField] private SignalState winnerState;
         [SerializeField] private string winnerToPlayAnimation;
 		[Header("References")]
-		[SerializeField, ChildGameObjectsOnly] private Animator animator;
-		[SerializeField, ChildGameObjectsOnly] private CardBehaviour cardBehaviour;
+#if ODIN_INSPECTOR
+        [ChildGameObjectsOnly] 
+#endif
+        [SerializeField] private Animator animator;
+#if ODIN_INSPECTOR
+        [ChildGameObjectsOnly] 
+#endif
+        [SerializeField] private CardBehaviour cardBehaviour;
 
         private bool sendingAttack;
 
