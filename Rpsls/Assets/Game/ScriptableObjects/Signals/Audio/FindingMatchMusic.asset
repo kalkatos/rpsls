@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e39094a614e316a448432a45193aec58, type: 3}
+  m_Name: FindingMatchMusic
+  m_EditorClassIdentifier: 
+  IsRandomMusic: 0
+  SingleMusic:
+    Clip: {fileID: 8300000, guid: 2f5e9cdc051cd8d4a9d140d47c50c8f1, type: 3}
+    Volume: 0.5
+    Loop: 1
+  RandomMusic: []
+  Delay:
+    Type: 0
+    SimpleValue: 1
+    RandomValue: {x: 0, y: 0}
+    ScriptableValue: {fileID: 0}
+  FadeInTime:
+    Type: 0
+    SimpleValue: 1
+    RandomValue: {x: 0, y: 0}
+    ScriptableValue: {fileID: 0}
+  FadeOutTime:
+    Type: 0
+    SimpleValue: 1
+    RandomValue: {x: 0, y: 0}
+    ScriptableValue: {fileID: 0}
