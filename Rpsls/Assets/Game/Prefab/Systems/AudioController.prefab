@@ -859,18 +859,6 @@ MonoBehaviour:
       Event:
         m_PersistentCalls:
           m_Calls:
-          - m_Target: {fileID: 11400000, guid: df7f7c0abdc0e8445b2d93677181c0ae, type: 2}
-            m_TargetAssemblyTypeName: Kalkatos.UnityGame.Audio.SignalMusic, Assembly-CSharp
-            m_MethodName: Stop
-            m_Mode: 1
-            m_Arguments:
-              m_ObjectArgument: {fileID: 0}
-              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-              m_IntArgument: 0
-              m_FloatArgument: 0
-              m_StringArgument: 
-              m_BoolArgument: 0
-            m_CallState: 2
           - m_Target: {fileID: 11400000, guid: c1c1e18915029494aaf2e3cd30f3821b, type: 2}
             m_TargetAssemblyTypeName: Kalkatos.UnityGame.Audio.MusicEvent, Assembly-CSharp
             m_MethodName: Play
@@ -904,6 +892,36 @@ MonoBehaviour:
           - m_Target: {fileID: 11400000, guid: 55f767cb4979ce64bbde2ab93bbdc927, type: 2}
             m_TargetAssemblyTypeName: Kalkatos.UnityGame.Audio.MusicEvent, Assembly-CSharp
             m_MethodName: Play
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+    IntValueBindings: []
+    StringValueBindings: []
+    FloatValueBindings: []
+    isAnyOtherTypedSignal: 1
+    isBoolSignal: 1
+    isIntSignal: 0
+    isStringSignal: 0
+    isFloatSignal: 0
+  - signal: {fileID: 11400000, guid: dadce2462eb2d344bb3e7370252df4e7, type: 2}
+    action:
+      m_PersistentCalls:
+        m_Calls: []
+    BoolValueBindings:
+    - Equality: 1
+      ExpectedValue: 1
+      Event:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 11400000, guid: 55f767cb4979ce64bbde2ab93bbdc927, type: 2}
+            m_TargetAssemblyTypeName: Kalkatos.UnityGame.Audio.MusicEvent, Assembly-CSharp
+            m_MethodName: Stop
             m_Mode: 1
             m_Arguments:
               m_ObjectArgument: {fileID: 0}
