@@ -191,10 +191,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   receivers:
-  - signal: {fileID: 11400000, guid: f9200ed6e847d10418f13dbf44949291, type: 2}
+  - signal: {fileID: 11400000, guid: 848941bdf5b5d18408a3d2005259ad33, type: 2}
     action:
       m_PersistentCalls:
-        m_Calls: []
+        m_Calls:
+        - m_Target: {fileID: 8942909188813271721}
+          m_TargetAssemblyTypeName: Kalkatos.UnityGame.ObjectCluster, Assembly-CSharp
+          m_MethodName: Activate
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 1940564205870910247}
+          m_TargetAssemblyTypeName: DG.Tweening.DOTweenAnimation, Assembly-CSharp-firstpass
+          m_MethodName: DOPlay
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
     BoolValueBindings: []
     IntValueBindings: []
     StringValueBindings:
@@ -228,15 +252,51 @@ MonoBehaviour:
               m_BoolArgument: 0
             m_CallState: 2
     FloatValueBindings: []
-    isAnyOtherTypedSignal: 1
+    isAnyOtherTypedSignal: 0
     isBoolSignal: 0
     isIntSignal: 0
-    isStringSignal: 1
+    isStringSignal: 0
     isFloatSignal: 0
-  - signal: {fileID: 11400000, guid: f9200ed6e847d10418f13dbf44949291, type: 2}
+  - signal: {fileID: 11400000, guid: b38f973ad49da3549a10f83a28706b8f, type: 2}
     action:
       m_PersistentCalls:
-        m_Calls: []
+        m_Calls:
+        - m_Target: {fileID: 8942909188813271721}
+          m_TargetAssemblyTypeName: Kalkatos.UnityGame.ObjectCluster, Assembly-CSharp
+          m_MethodName: Activate
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 1940564205870910247}
+          m_TargetAssemblyTypeName: DG.Tweening.DOTweenAnimation, Assembly-CSharp-firstpass
+          m_MethodName: DOPlay
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 5903995573886999243}
+          m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_MethodName: SetActive
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 1
+          m_CallState: 2
     BoolValueBindings: []
     IntValueBindings: []
     StringValueBindings:
@@ -282,10 +342,10 @@ MonoBehaviour:
               m_BoolArgument: 1
             m_CallState: 2
     FloatValueBindings: []
-    isAnyOtherTypedSignal: 1
+    isAnyOtherTypedSignal: 0
     isBoolSignal: 0
     isIntSignal: 0
-    isStringSignal: 1
+    isStringSignal: 0
     isFloatSignal: 0
 --- !u!114 &8942909188813271721
 MonoBehaviour:
@@ -597,10 +657,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   receivers:
-  - signal: {fileID: 11400000, guid: f9200ed6e847d10418f13dbf44949291, type: 2}
+  - signal: {fileID: 11400000, guid: fb32e4e15d4aa1a4b82b1cdd9206f1fa, type: 2}
     action:
       m_PersistentCalls:
-        m_Calls: []
+        m_Calls:
+        - m_Target: {fileID: 1434310886094058199}
+          m_TargetAssemblyTypeName: Kalkatos.UnityGame.ObjectCluster, Assembly-CSharp
+          m_MethodName: Activate
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 8834159513842456606}
+          m_TargetAssemblyTypeName: DG.Tweening.DOTweenAnimation, Assembly-CSharp-firstpass
+          m_MethodName: DOPlay
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
     BoolValueBindings: []
     IntValueBindings: []
     StringValueBindings:
@@ -634,10 +718,10 @@ MonoBehaviour:
               m_BoolArgument: 0
             m_CallState: 2
     FloatValueBindings: []
-    isAnyOtherTypedSignal: 1
+    isAnyOtherTypedSignal: 0
     isBoolSignal: 0
     isIntSignal: 0
-    isStringSignal: 1
+    isStringSignal: 0
     isFloatSignal: 0
 --- !u!114 &1434310886094058199
 MonoBehaviour:
@@ -890,10 +974,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   receivers:
-  - signal: {fileID: 11400000, guid: f9200ed6e847d10418f13dbf44949291, type: 2}
+  - signal: {fileID: 11400000, guid: 6285da0ada7289a45a49a14f0be387ca, type: 2}
     action:
       m_PersistentCalls:
-        m_Calls: []
+        m_Calls:
+        - m_Target: {fileID: 8450956622839688128}
+          m_TargetAssemblyTypeName: Kalkatos.UnityGame.ObjectCluster, Assembly-CSharp
+          m_MethodName: Activate
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 1625708003347425363}
+          m_TargetAssemblyTypeName: DG.Tweening.DOTweenAnimation, Assembly-CSharp-firstpass
+          m_MethodName: DOPlay
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
     BoolValueBindings: []
     IntValueBindings: []
     StringValueBindings:
@@ -927,10 +1035,10 @@ MonoBehaviour:
               m_BoolArgument: 0
             m_CallState: 2
     FloatValueBindings: []
-    isAnyOtherTypedSignal: 1
+    isAnyOtherTypedSignal: 0
     isBoolSignal: 0
     isIntSignal: 0
-    isStringSignal: 1
+    isStringSignal: 0
     isFloatSignal: 0
 --- !u!114 &8450956622839688128
 MonoBehaviour:
@@ -1897,7 +2005,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7577068631498053084, guid: 957949dabb71b8c45b528f8c41f0008a, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 1536
+      value: 945.2308
       objectReference: {fileID: 0}
     - target: {fileID: 7577068631498053084, guid: 957949dabb71b8c45b528f8c41f0008a, type: 3}
       propertyPath: m_LocalPosition.x

@@ -10,14 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9877619465e81d84891302979804d5a8, type: 3}
-  m_Name: ClickingSfx
+  m_Name: VictorySfx
   m_EditorClassIdentifier: 
   Sfx:
     ClipVariations:
-    - {fileID: 8300000, guid: a8fad0e90eafb45409bac49d313c6643, type: 3}
-    - {fileID: 8300000, guid: d32dbcb19a796294b8a49fc159c95063, type: 3}
-    - {fileID: 8300000, guid: 16529d8021efd574aba2704636d5e274, type: 3}
-    - {fileID: 8300000, guid: a6a3c293908ab9844a20f25052d20f6c, type: 3}
-    - {fileID: 8300000, guid: 8d9fa672f1c209344bd6b078bf200e25, type: 3}
+    - {fileID: 8300000, guid: 7b233ec5bca697b42aad55f1341ff776, type: 3}
     Volume: 0.75
-    Pitch: {x: 0.85, y: 1.15}
+    Pitch: {x: 1, y: 1}

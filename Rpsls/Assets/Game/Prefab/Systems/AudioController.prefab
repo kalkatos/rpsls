@@ -1,80 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &307072732164212108
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1018908996787128852}
-  - component: {fileID: 1741565630163093786}
-  m_Layer: 0
-  m_Name: FindingMatchMusic
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1018908996787128852
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 307072732164212108}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 4986479181366396580}
-  m_RootOrder: 6
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1741565630163093786
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 307072732164212108}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d29bd0bc7060be74598cf2af10944016, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  receivers:
-  - signal: {fileID: 11400000, guid: 36d76a363875b244cb0c2d11b8d727cb, type: 2}
-    action:
-      m_PersistentCalls:
-        m_Calls: []
-    BoolValueBindings:
-    - Equality: 1
-      ExpectedValue: 1
-      Event:
-        m_PersistentCalls:
-          m_Calls:
-          - m_Target: {fileID: 11400000, guid: c1c1e18915029494aaf2e3cd30f3821b, type: 2}
-            m_TargetAssemblyTypeName: Kalkatos.UnityGame.Audio.MusicEvent, Assembly-CSharp
-            m_MethodName: Play
-            m_Mode: 1
-            m_Arguments:
-              m_ObjectArgument: {fileID: 0}
-              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-              m_IntArgument: 0
-              m_FloatArgument: 0
-              m_StringArgument: 
-              m_BoolArgument: 0
-            m_CallState: 2
-    IntValueBindings: []
-    StringValueBindings: []
-    FloatValueBindings: []
-    isAnyOtherTypedSignal: 1
-    isBoolSignal: 1
-    isIntSignal: 0
-    isStringSignal: 0
-    isFloatSignal: 0
 --- !u!1 &334949828690180071
 GameObject:
   m_ObjectHideFlags: 0
@@ -111,9 +36,8 @@ Transform:
   - {fileID: 326294620641167566}
   - {fileID: 7500753854562327802}
   - {fileID: 3728697600651866604}
-  - {fileID: 1018908996787128852}
-  - {fileID: 4719340964675290748}
   - {fileID: 421062356597606046}
+  - {fileID: 2692654135598294594}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -557,7 +481,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4986479181366396580}
-  m_RootOrder: 8
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6069159481356073379
 MonoBehaviour:
@@ -861,7 +785,7 @@ GameObject:
   - component: {fileID: 3728697600651866604}
   - component: {fileID: 7356620007757573403}
   m_Layer: 0
-  m_Name: MenuMusic
+  m_Name: Music
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -938,6 +862,48 @@ MonoBehaviour:
           - m_Target: {fileID: 11400000, guid: df7f7c0abdc0e8445b2d93677181c0ae, type: 2}
             m_TargetAssemblyTypeName: Kalkatos.UnityGame.Audio.SignalMusic, Assembly-CSharp
             m_MethodName: Stop
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+          - m_Target: {fileID: 11400000, guid: c1c1e18915029494aaf2e3cd30f3821b, type: 2}
+            m_TargetAssemblyTypeName: Kalkatos.UnityGame.Audio.MusicEvent, Assembly-CSharp
+            m_MethodName: Play
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+    IntValueBindings: []
+    StringValueBindings: []
+    FloatValueBindings: []
+    isAnyOtherTypedSignal: 1
+    isBoolSignal: 1
+    isIntSignal: 0
+    isStringSignal: 0
+    isFloatSignal: 0
+  - signal: {fileID: 11400000, guid: e3bf37822cb8516429c28aea7a3bb990, type: 2}
+    action:
+      m_PersistentCalls:
+        m_Calls: []
+    BoolValueBindings:
+    - Equality: 1
+      ExpectedValue: 1
+      Event:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 11400000, guid: 55f767cb4979ce64bbde2ab93bbdc927, type: 2}
+            m_TargetAssemblyTypeName: Kalkatos.UnityGame.Audio.MusicEvent, Assembly-CSharp
+            m_MethodName: Play
             m_Mode: 1
             m_Arguments:
               m_ObjectArgument: {fileID: 0}
@@ -1083,7 +1049,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!1 &8739067128073847998
+--- !u!1 &8362806622466053185
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1091,22 +1057,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4719340964675290748}
-  - component: {fileID: 3446540104462170054}
+  - component: {fileID: 2692654135598294594}
+  - component: {fileID: 477331877715751902}
   m_Layer: 0
-  m_Name: BattleMusic
+  m_Name: EndGameSfx
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4719340964675290748
+--- !u!4 &2692654135598294594
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8739067128073847998}
+  m_GameObject: {fileID: 8362806622466053185}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -1115,46 +1081,41 @@ Transform:
   m_Father: {fileID: 4986479181366396580}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3446540104462170054
+--- !u!114 &477331877715751902
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8739067128073847998}
+  m_GameObject: {fileID: 8362806622466053185}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d29bd0bc7060be74598cf2af10944016, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   receivers:
-  - signal: {fileID: 11400000, guid: e3bf37822cb8516429c28aea7a3bb990, type: 2}
+  - signal: {fileID: 11400000, guid: 848941bdf5b5d18408a3d2005259ad33, type: 2}
     action:
       m_PersistentCalls:
-        m_Calls: []
-    BoolValueBindings:
-    - Equality: 1
-      ExpectedValue: 1
-      Event:
-        m_PersistentCalls:
-          m_Calls:
-          - m_Target: {fileID: 11400000, guid: 55f767cb4979ce64bbde2ab93bbdc927, type: 2}
-            m_TargetAssemblyTypeName: Kalkatos.UnityGame.Audio.MusicEvent, Assembly-CSharp
-            m_MethodName: Play
-            m_Mode: 1
-            m_Arguments:
-              m_ObjectArgument: {fileID: 0}
-              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-              m_IntArgument: 0
-              m_FloatArgument: 0
-              m_StringArgument: 
-              m_BoolArgument: 1
-            m_CallState: 2
+        m_Calls:
+        - m_Target: {fileID: 11400000, guid: 9e9a4f0f10859c44fa9bea3af30c3515, type: 2}
+          m_TargetAssemblyTypeName: Kalkatos.UnityGame.Audio.SfxEvent, Assembly-CSharp
+          m_MethodName: Play
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    BoolValueBindings: []
     IntValueBindings: []
     StringValueBindings: []
     FloatValueBindings: []
-    isAnyOtherTypedSignal: 1
-    isBoolSignal: 1
+    isAnyOtherTypedSignal: 0
+    isBoolSignal: 0
     isIntSignal: 0
     isStringSignal: 0
     isFloatSignal: 0
