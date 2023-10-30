@@ -24,7 +24,7 @@ namespace Kalkatos.UnityGame.Rps
         [SerializeField] private Signal onPlayButtonClicked;
         [SerializeField] private Signal onReconnectButtonClicked;
         [SerializeField] private Signal onCancelButtonClicked;
-        [SerializeField] private Signal onMatchFoundSuccess;
+        [SerializeField] private SignalBool onMatchFoundSuccess;
         [SerializeField] private Signal onGameSceneLoaded;
         [SerializeField] private SignalBool onWaitingOpponent;
         [SerializeField] private SignalBool onOpponentLeft;
@@ -111,7 +111,7 @@ namespace Kalkatos.UnityGame.Rps
             onPlayButtonClicked.OnSignalEmitted.AddListener(HandlePlayButtonClicked);
             onReconnectButtonClicked.OnSignalEmitted.AddListener(HandleReconnectButtonClicked);
             onCancelButtonClicked.OnSignalEmitted.AddListener(HandleCancelButtonClicked);
-            onMatchFoundSuccess.OnSignalEmitted.AddListener(HandleMatchFound);
+            onMatchFoundSuccess.OnSignalEmittedWithParam.AddListener(HandleMatchFound);
             onGameSceneLoaded.OnSignalEmitted.AddListener(HandleGameSceneLoaded);
             onWaitingOpponent.OnSignalEmittedWithParam.AddListener(HandleWaitingOpponent);
             onOpponentLeft.OnSignalEmittedWithParam.AddListener(HandleOpponentLeft);
@@ -136,7 +136,7 @@ namespace Kalkatos.UnityGame.Rps
             onPlayButtonClicked.OnSignalEmitted.RemoveListener(HandlePlayButtonClicked);
             onReconnectButtonClicked.OnSignalEmitted.RemoveListener(HandleReconnectButtonClicked);
             onCancelButtonClicked.OnSignalEmitted.RemoveListener(HandleCancelButtonClicked);
-            onMatchFoundSuccess.OnSignalEmitted.RemoveListener(HandleMatchFound);
+            onMatchFoundSuccess.OnSignalEmittedWithParam.RemoveListener(HandleMatchFound);
             onGameSceneLoaded.OnSignalEmitted.RemoveListener(HandleGameSceneLoaded);
             onWaitingOpponent.OnSignalEmittedWithParam.RemoveListener(HandleWaitingOpponent);
             onOpponentLeft.OnSignalEmittedWithParam.RemoveListener(HandleOpponentLeft);
@@ -225,9 +225,10 @@ namespace Kalkatos.UnityGame.Rps
             AnalyticsController.SendEvent(BTN_CANCEL);
         }
 
-        private void HandleMatchFound ()
+        private void HandleMatchFound (bool active)
         {
-            AnalyticsController.SendEvent(MATCH_FOUND);
+            if (active)
+                AnalyticsController.SendEvent(MATCH_FOUND);
         }
 
         private void HandleGameSceneLoaded ()

@@ -9,15 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a257090b3a755374f89a29aeb9a9f2d4, type: 3}
-  m_Name: FoundMatch
+  m_Script: {fileID: 11500000, guid: 9877619465e81d84891302979804d5a8, type: 3}
+  m_Name: DefeatSfx
   m_EditorClassIdentifier: 
-  OnSignalEmitted:
-    m_PersistentCalls:
-      m_Calls: []
-  OnSignalEmittedWithParam:
-    m_PersistentCalls:
-      m_Calls: []
-  Value: 1
-  ValueBindings: []
-  DefaultValue: 0
+  Sfx:
+    ClipVariations:
+    - {fileID: 8300000, guid: 84dbbb8a5556b8549b3e3017067dcaf0, type: 3}
+    Volume: 0.75
+    Pitch: {x: 1, y: 1}

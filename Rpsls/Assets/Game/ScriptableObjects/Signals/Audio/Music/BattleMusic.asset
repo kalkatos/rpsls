@@ -42,6 +42,6 @@ MonoBehaviour:
     ScriptableValue: {fileID: 0}
   FadeOutTime:
     Type: 0
-    SimpleValue: 1
+    SimpleValue: 0.5
     RandomValue: {x: 0, y: 0}
     ScriptableValue: {fileID: 0}
