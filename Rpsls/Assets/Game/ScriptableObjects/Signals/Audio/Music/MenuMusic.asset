@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IsRandomMusic: 0
   SingleMusic:
-    Clip: {fileID: 8300000, guid: 221bd5c3b989e1c48a405224552bbde3, type: 3}
+    Clip: {fileID: 8300000, guid: cad38d11e8313b94e9dc6a4eb562d194, type: 3}
     Volume: 0.5
     Loop: 1
   RandomMusic: []
@@ -30,6 +30,6 @@ MonoBehaviour:
     ScriptableValue: {fileID: 0}
   FadeOutTime:
     Type: 0
-    SimpleValue: 1
+    SimpleValue: 2
     RandomValue: {x: 0, y: 0}
     ScriptableValue: {fileID: 0}
