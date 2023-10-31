@@ -642,6 +642,9 @@ MonoBehaviour:
   attackAnimationName: Default Attack
   receiverAnimationName: Default Receive
   receiveAttackAnimationSignal: {fileID: 11400000, guid: 8c9e3edfb0b257e42812316f55536e80, type: 2}
+  rockHitSignal: {fileID: 11400000, guid: 2a38d48cdc11a344595199b926ddd7ca, type: 2}
+  paperHitSignal: {fileID: 11400000, guid: 44482eb8fc8e10c4b909562b11b88995, type: 2}
+  scissorsHitSignal: {fileID: 11400000, guid: c4ef59a383e311b4eae2fc15b79ad231, type: 2}
   moveState: {fileID: 0}
   winnerState: {fileID: 11400000, guid: e7e58eaede74dbd46b0ae5c092f754b6, type: 2}
   winnerToPlayAnimation: 

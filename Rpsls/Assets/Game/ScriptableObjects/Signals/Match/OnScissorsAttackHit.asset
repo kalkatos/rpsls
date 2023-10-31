@@ -9,15 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 199bd6e455ffc5a4e87dd267bc8b259d, type: 3}
-  m_Name: ReceiveAttackAnimationName
+  m_Script: {fileID: 11500000, guid: c908ebabdd980b64a8e6b3199822e23d, type: 3}
+  m_Name: OnScissorsAttackHit
   m_EditorClassIdentifier: 
   OnSignalEmitted:
     m_PersistentCalls:
       m_Calls: []
-  OnSignalEmittedWithParam:
-    m_PersistentCalls:
-      m_Calls: []
-  Value: 
-  ValueBindings: []
-  DefaultValue: 

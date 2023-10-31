@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9877619465e81d84891302979804d5a8, type: 3}
+  m_Name: AttackHitRockSfx
+  m_EditorClassIdentifier: 
+  Sfx:
+    ClipVariations:
+    - {fileID: 8300000, guid: 14d5e034ebb1b8a4ca827d35d7b39287, type: 3}
+    - {fileID: 8300000, guid: 43359d830a025364685d67eff3e509fd, type: 3}
+    - {fileID: 8300000, guid: 6ac12e5110048844c8ec5fed0933b352, type: 3}
+    Volume: 1
+    Pitch: {x: 0.9, y: 1.1}

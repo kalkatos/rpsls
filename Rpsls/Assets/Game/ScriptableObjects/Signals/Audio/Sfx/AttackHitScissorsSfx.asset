@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9877619465e81d84891302979804d5a8, type: 3}
+  m_Name: AttackHitScissorsSfx
+  m_EditorClassIdentifier: 
+  Sfx:
+    ClipVariations:
+    - {fileID: 8300000, guid: a5c38ad0bfdc55341bcf961f0dd91e8d, type: 3}
+    - {fileID: 8300000, guid: 6cbe170c4b8a2924da75f8058abdb4ce, type: 3}
+    - {fileID: 8300000, guid: 42ca659470d630741970f114682cf4e0, type: 3}
+    Volume: 1
+    Pitch: {x: 0.9, y: 1.1}

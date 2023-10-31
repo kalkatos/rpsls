@@ -14,6 +14,9 @@ namespace Kalkatos.UnityGame.Rps
         public string receiverAnimationName;
 
         [SerializeField] private SignalString receiveAttackAnimationSignal;
+        [SerializeField] private Signal rockHitSignal;
+        [SerializeField] private Signal paperHitSignal;
+        [SerializeField] private Signal scissorsHitSignal;
         [SerializeField] private SignalState moveState;
         [SerializeField] private SignalState winnerState;
         [SerializeField] private string winnerToPlayAnimation;
@@ -75,6 +78,20 @@ namespace Kalkatos.UnityGame.Rps
             sendingAttack = true;
 			receiveAttackAnimationSignal?.EmitWithParam(receiverAnimationName);
             sendingAttack = false;
+            switch (cardBehaviour.CardType)
+            {
+                case "ROCK":
+                    rockHitSignal?.Emit();
+                    break;
+                case "PAPER":
+                    paperHitSignal?.Emit();
+                    break;
+                case "SCISSORS":
+                    scissorsHitSignal?.Emit();
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }

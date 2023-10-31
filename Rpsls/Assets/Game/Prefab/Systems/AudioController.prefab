@@ -271,6 +271,111 @@ MonoBehaviour:
     isIntSignal: 0
     isStringSignal: 0
     isFloatSignal: 0
+  - signal: {fileID: 11400000, guid: e7e58eaede74dbd46b0ae5c092f754b6, type: 2}
+    action:
+      m_PersistentCalls:
+        m_Calls: []
+    BoolValueBindings: []
+    IntValueBindings: []
+    StringValueBindings:
+    - Equality: 2
+      ExpectedValue: 
+      Event:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 11400000, guid: ca84c739e972d15469aaf8cfe7d9030b, type: 2}
+            m_TargetAssemblyTypeName: Kalkatos.UnityGame.Audio.SfxEvent, Assembly-CSharp
+            m_MethodName: Play
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+    FloatValueBindings: []
+    isAnyOtherTypedSignal: 1
+    isBoolSignal: 0
+    isIntSignal: 0
+    isStringSignal: 1
+    isFloatSignal: 0
+  - signal: {fileID: 11400000, guid: 2a38d48cdc11a344595199b926ddd7ca, type: 2}
+    action:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 11400000, guid: f867e76abab912648848437460714345, type: 2}
+          m_TargetAssemblyTypeName: Kalkatos.UnityGame.Audio.SfxEvent, Assembly-CSharp
+          m_MethodName: Play
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    BoolValueBindings: []
+    IntValueBindings: []
+    StringValueBindings: []
+    FloatValueBindings: []
+    isAnyOtherTypedSignal: 0
+    isBoolSignal: 0
+    isIntSignal: 0
+    isStringSignal: 0
+    isFloatSignal: 0
+  - signal: {fileID: 11400000, guid: 44482eb8fc8e10c4b909562b11b88995, type: 2}
+    action:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 11400000, guid: 3c67a9b995bcf1748bcb10522def8afe, type: 2}
+          m_TargetAssemblyTypeName: Kalkatos.UnityGame.Audio.SfxEvent, Assembly-CSharp
+          m_MethodName: Play
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    BoolValueBindings: []
+    IntValueBindings: []
+    StringValueBindings: []
+    FloatValueBindings: []
+    isAnyOtherTypedSignal: 0
+    isBoolSignal: 0
+    isIntSignal: 0
+    isStringSignal: 0
+    isFloatSignal: 0
+  - signal: {fileID: 11400000, guid: c4ef59a383e311b4eae2fc15b79ad231, type: 2}
+    action:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 11400000, guid: b96e8f58a058bc44c8c17464a0e1932f, type: 2}
+          m_TargetAssemblyTypeName: Kalkatos.UnityGame.Audio.SfxEvent, Assembly-CSharp
+          m_MethodName: Play
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    BoolValueBindings: []
+    IntValueBindings: []
+    StringValueBindings: []
+    FloatValueBindings: []
+    isAnyOtherTypedSignal: 0
+    isBoolSignal: 0
+    isIntSignal: 0
+    isStringSignal: 0
+    isFloatSignal: 0
 --- !u!1 &2654253707801686839
 GameObject:
   m_ObjectHideFlags: 0
