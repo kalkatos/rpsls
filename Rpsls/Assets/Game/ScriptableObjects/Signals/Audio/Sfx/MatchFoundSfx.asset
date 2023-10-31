@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9877619465e81d84891302979804d5a8, type: 3}
-  m_Name: LeaveClickingSfx
+  m_Name: MatchFoundSfx
   m_EditorClassIdentifier: 
   Sfx:
     ClipVariations:
-    - {fileID: 8300000, guid: 1d6275ba547279745b30c8aadd59375e, type: 3}
+    - {fileID: 8300000, guid: 82947c1a618a082428f7e2f491576b72, type: 3}
     Volume: 1
-    Pitch: {x: 0.85, y: 1.15}
+    Pitch: {x: 1, y: 1}

@@ -38,6 +38,7 @@ Transform:
   - {fileID: 3728697600651866604}
   - {fileID: 421062356597606046}
   - {fileID: 2692654135598294594}
+  - {fileID: 8219193255404403885}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -195,6 +196,81 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!1 &2512563960998282422
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8219193255404403885}
+  - component: {fileID: 2988537131512393410}
+  m_Layer: 0
+  m_Name: MatchSfx
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8219193255404403885
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2512563960998282422}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4986479181366396580}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2988537131512393410
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2512563960998282422}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d29bd0bc7060be74598cf2af10944016, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  receivers:
+  - signal: {fileID: 11400000, guid: e4f327ae39f86f4439f13a299078a7a6, type: 2}
+    action:
+      m_PersistentCalls:
+        m_Calls: []
+    BoolValueBindings:
+    - Equality: 1
+      ExpectedValue: 1
+      Event:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 11400000, guid: c6d1d4844aae3da4c816848c840e8715, type: 2}
+            m_TargetAssemblyTypeName: Kalkatos.UnityGame.Audio.SfxEvent, Assembly-CSharp
+            m_MethodName: Play
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+    IntValueBindings: []
+    StringValueBindings: []
+    FloatValueBindings: []
+    isAnyOtherTypedSignal: 1
+    isBoolSignal: 1
+    isIntSignal: 0
+    isStringSignal: 0
+    isFloatSignal: 0
 --- !u!1 &2654253707801686839
 GameObject:
   m_ObjectHideFlags: 0
