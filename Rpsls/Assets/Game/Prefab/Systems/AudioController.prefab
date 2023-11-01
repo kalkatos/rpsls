@@ -376,6 +376,73 @@ MonoBehaviour:
     isIntSignal: 0
     isStringSignal: 0
     isFloatSignal: 0
+  - signal: {fileID: 11400000, guid: 325f174291711d04baac9abba0b81426, type: 2}
+    action:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 11400000, guid: 9c057cd66b5772240a866028c4662cd3, type: 2}
+          m_TargetAssemblyTypeName: Kalkatos.UnityGame.Audio.SfxEvent, Assembly-CSharp
+          m_MethodName: Play
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    BoolValueBindings: []
+    IntValueBindings: []
+    StringValueBindings: []
+    FloatValueBindings: []
+    isAnyOtherTypedSignal: 0
+    isBoolSignal: 0
+    isIntSignal: 0
+    isStringSignal: 0
+    isFloatSignal: 0
+  - signal: {fileID: 11400000, guid: 15a5f5df531dbe5428d007e647ac273a, type: 2}
+    action:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 0}
+          m_TargetAssemblyTypeName: 
+          m_MethodName: 
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: 
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    BoolValueBindings:
+    - Equality: 1
+      ExpectedValue: 1
+      Event:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 11400000, guid: 839aa3635b432694c93aa8fcb3326440, type: 2}
+            m_TargetAssemblyTypeName: Kalkatos.UnityGame.Audio.SfxEvent, Assembly-CSharp
+            m_MethodName: Play
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+    IntValueBindings: []
+    StringValueBindings: []
+    FloatValueBindings: []
+    isAnyOtherTypedSignal: 1
+    isBoolSignal: 1
+    isIntSignal: 0
+    isStringSignal: 0
+    isFloatSignal: 0
 --- !u!1 &2654253707801686839
 GameObject:
   m_ObjectHideFlags: 0

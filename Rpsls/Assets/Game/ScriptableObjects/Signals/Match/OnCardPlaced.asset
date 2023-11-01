@@ -9,11 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9877619465e81d84891302979804d5a8, type: 3}
-  m_Name: ClickingSimpleSfx
+  m_Script: {fileID: 11500000, guid: c908ebabdd980b64a8e6b3199822e23d, type: 3}
+  m_Name: OnCardPlaced
   m_EditorClassIdentifier: 
-  Sfx:
-    ClipVariations:
-    - {fileID: 8300000, guid: 61e2dda047351bf48a4ee124fdef325b, type: 3}
-    Volume: 0.75
-    Pitch: {x: 0.85, y: 1.15}
+  OnSignalEmitted:
+    m_PersistentCalls:
+      m_Calls: []

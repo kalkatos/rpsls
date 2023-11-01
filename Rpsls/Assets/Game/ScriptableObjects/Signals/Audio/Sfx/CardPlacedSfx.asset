@@ -10,10 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9877619465e81d84891302979804d5a8, type: 3}
-  m_Name: ClickingSimpleSfx
+  m_Name: CardPlacedSfx
   m_EditorClassIdentifier: 
   Sfx:
     ClipVariations:
-    - {fileID: 8300000, guid: 61e2dda047351bf48a4ee124fdef325b, type: 3}
-    Volume: 0.75
-    Pitch: {x: 0.85, y: 1.15}
+    - {fileID: 8300000, guid: 03c01d7070b6363449c65836cfc30a73, type: 3}
+    - {fileID: 8300000, guid: 466d0ab6a6f138847b4ddb5723e7d436, type: 3}
+    - {fileID: 8300000, guid: 34ddc42dbe788fc439c0ac667875a741, type: 3}
+    Volume: 1
+    Pitch: {x: 0.95, y: 1.05}

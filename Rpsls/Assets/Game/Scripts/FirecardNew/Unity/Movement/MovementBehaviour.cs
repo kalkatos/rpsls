@@ -3,6 +3,7 @@
 
 using Kalkatos.UnityGame;
 using Sirenix.OdinInspector;
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -14,12 +15,14 @@ namespace Kalkatos.Firecard.Unity
 	public class MovementBehaviour : MonoBehaviour
     {
         [PropertyOrder(99)] public UnityEvent<Transform> OnMoved;
+        [PropertyOrder(99)] public UnityEvent OnArrived;
         [PropertyOrder(99)] public UnityEvent OnMovedToOrigin;
 
         [SerializeField] private FloatValueGetter speed;
         [SerializeField] private Transform origin;
         
         private Vector3? targetPosition;
+        private Action<Transform> callback;
 
 		private void Update ()
 		{
@@ -33,6 +36,8 @@ namespace Kalkatos.Firecard.Unity
                 {
                     transform.position = targetPosition.Value;
                     targetPosition = null;
+                    OnArrived?.Invoke();
+                    callback?.Invoke(transform);
                 }
             }
 		}
@@ -45,6 +50,13 @@ namespace Kalkatos.Firecard.Unity
 		public void MoveTo (Transform targetTransform)
         {
 			MoveTo(targetTransform.position);
+            OnMoved?.Invoke(targetTransform);
+        }
+
+        public void MoveTo (Transform targetTransform, Action<Transform> arriveCallback)
+        {
+            callback = arriveCallback;
+            MoveTo(targetTransform.position);
             OnMoved?.Invoke(targetTransform);
         }
 

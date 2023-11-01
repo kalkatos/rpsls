@@ -2,6 +2,7 @@
 // This code is licensed under MIT license (see LICENSE.txt for details)
 
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Kalkatos.Firecard.Unity
 {
@@ -12,6 +13,8 @@ namespace Kalkatos.Firecard.Unity
     {
         [SerializeField] private bool canReceiveMovements = true;
         [SerializeField] private MovementHandling handling;
+
+        public UnityEvent<Transform> OnMovementReceived;
 
         private enum MovementHandling { MoveToCenter, Stack }
 
@@ -24,7 +27,7 @@ namespace Kalkatos.Firecard.Unity
                 switch (handling)
                 {
                     case MovementHandling.MoveToCenter:
-                        movementBehaviour.MoveTo(transform);
+                        movementBehaviour.MoveTo(transform, HandleMovementReceived);
                         break;
                     case MovementHandling.Stack:
                         // TODO Receive movement and stack
@@ -38,5 +41,9 @@ namespace Kalkatos.Firecard.Unity
             canReceiveMovements = b;
         }
 
+        private void HandleMovementReceived (Transform receivedTransform)
+        {
+            OnMovementReceived?.Invoke(receivedTransform);
+        }
     }
 }

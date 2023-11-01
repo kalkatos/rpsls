@@ -499,6 +499,9 @@ MonoBehaviour:
   OnMoved:
     m_PersistentCalls:
       m_Calls: []
+  OnArrived:
+    m_PersistentCalls:
+      m_Calls: []
   OnMovedToOrigin:
     m_PersistentCalls:
       m_Calls: []
