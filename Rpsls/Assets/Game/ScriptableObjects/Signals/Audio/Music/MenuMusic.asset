@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IsRandomMusic: 0
   SingleMusic:
-    Clip: {fileID: 8300000, guid: cad38d11e8313b94e9dc6a4eb562d194, type: 3}
+    Clip: {fileID: 8300000, guid: abfd37fb96e320d4396e89d33b43aec4, type: 3}
     Volume: 0.5
     Loop: 1
   RandomMusic: []
