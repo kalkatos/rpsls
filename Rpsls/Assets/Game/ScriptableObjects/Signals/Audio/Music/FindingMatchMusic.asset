@@ -20,7 +20,7 @@ MonoBehaviour:
   RandomMusic: []
   Delay:
     Type: 0
-    SimpleValue: 2
+    SimpleValue: 0
     RandomValue: {x: 0, y: 0}
     ScriptableValue: {fileID: 0}
   FadeInTime:
