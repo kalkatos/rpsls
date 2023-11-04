@@ -38,6 +38,7 @@ namespace Kalkatos.Firecard.Unity
                     targetPosition = null;
                     OnArrived?.Invoke();
                     callback?.Invoke(transform);
+                    callback = null;
                 }
             }
 		}

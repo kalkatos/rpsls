@@ -59,6 +59,11 @@ MonoBehaviour:
   turnTimer: {fileID: 11400000, guid: 088af6fe21510e848b3166a5e1e3fc03, type: 2}
   turnTimerControl: {fileID: 11400000, guid: 43fa252533d250943b09212da359fc95, type: 2}
   matchEndedScreen: {fileID: 11400000, guid: dadce2462eb2d344bb3e7370252df4e7, type: 2}
+  matchWinner: {fileID: 11400000, guid: f9200ed6e847d10418f13dbf44949291, type: 2}
+  onWinSignal: {fileID: 11400000, guid: 848941bdf5b5d18408a3d2005259ad33, type: 2}
+  onDefeatSignal: {fileID: 11400000, guid: fb32e4e15d4aa1a4b82b1cdd9206f1fa, type: 2}
+  onTieSignal: {fileID: 11400000, guid: 6285da0ada7289a45a49a14f0be387ca, type: 2}
+  onOppRetreatSignal: {fileID: 11400000, guid: b38f973ad49da3549a10f83a28706b8f, type: 2}
   hasSentMove: {fileID: 11400000, guid: eae9c206a6453b94d961e47ce15fe755, type: 2}
   myMove: {fileID: 11400000, guid: 276a560ed99305d4a9740b54b91ad27b, type: 2}
   onLeaveMatchSuccess: {fileID: 11400000, guid: ccf152a02a7eac34e96a3bc36c6e6910, type: 2}

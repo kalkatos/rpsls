@@ -1239,19 +1239,6 @@ MonoBehaviour:
               m_StringArgument: 
               m_BoolArgument: 0
             m_CallState: 2
-          - m_Target: {fileID: 11400000, guid: f9200ed6e847d10418f13dbf44949291, type: 2}
-            m_TargetAssemblyTypeName: Kalkatos.UnityGame.Scriptable.Network.SignalState,
-              Assembly-CSharp
-            m_MethodName: Emit
-            m_Mode: 1
-            m_Arguments:
-              m_ObjectArgument: {fileID: 0}
-              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-              m_IntArgument: 0
-              m_FloatArgument: 0
-              m_StringArgument: 
-              m_BoolArgument: 0
-            m_CallState: 2
     IntValueBindings: []
     StringValueBindings: []
     FloatValueBindings: []
@@ -2029,7 +2016,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7617707627178540261, guid: 957949dabb71b8c45b528f8c41f0008a, type: 3}
       propertyPath: m_PresetInfoIsWorld
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 957949dabb71b8c45b528f8c41f0008a, type: 3}

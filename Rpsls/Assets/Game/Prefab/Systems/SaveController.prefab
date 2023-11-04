@@ -46,6 +46,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Bindings:
   - Key: SfxVolume
+    DefaultValue: 1
     Signal: {fileID: 11400000, guid: e0f7763d438cf6c41863f061e0bc3809, type: 2}
   - Key: MusicVolume
+    DefaultValue: 1
     Signal: {fileID: 11400000, guid: bc61194d9183fef40b0c2abe21780a40, type: 2}

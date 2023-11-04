@@ -31,6 +31,11 @@ namespace Kalkatos.UnityGame.Rps
 		[SerializeField] private SignalFloat turnTimer;
 		[SerializeField] private SignalBool turnTimerControl;
 		[SerializeField] private SignalBool matchEndedScreen;
+		[SerializeField] private SignalState matchWinner;
+		[SerializeField] private Signal onWinSignal;
+		[SerializeField] private Signal onDefeatSignal;
+		[SerializeField] private Signal onTieSignal;
+		[SerializeField] private Signal onOppRetreatSignal;
 		[SerializeField] private SignalBool hasSentMove;
 		[SerializeField] private SignalState myMove;
 		[SerializeField] private Signal onLeaveMatchSuccess;
@@ -184,7 +189,25 @@ namespace Kalkatos.UnityGame.Rps
 			if (waitingOpponentFailedScreen.Value)
 				waitingOpponentFailedScreen.EmitWithParam(false);
 			matchEndedScreen?.EmitWithParam(true);
-			yield return new WaitForSeconds(5);
+            switch (matchWinner.Value)
+            {
+				case "Me":
+					onWinSignal?.Emit();
+					break;
+				case "Opponent":
+					onDefeatSignal?.Emit();
+					break;
+				case "Tie":
+					onTieSignal?.Emit();
+					break;
+				case "OppRetreat":
+					onOppRetreatSignal?.Emit();
+					break;
+				default:
+					Logger.LogWarning("Match winner has an unexpected value.");
+                    break;
+            }
+            yield return new WaitForSeconds(5);
 			menuScreen.EmitWithParam(true);
 		}
 
