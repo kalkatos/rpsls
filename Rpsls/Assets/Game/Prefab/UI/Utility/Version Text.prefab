@@ -149,3 +149,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tmpText: {fileID: 8674931218332424913}
+  prefix: v
+  sufix: ' (beta)'
