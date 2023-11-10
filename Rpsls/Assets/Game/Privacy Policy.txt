@@ -1,0 +1,9 @@
+Rock Paper Scissors Privacy Policy
+
+This is an open source game developed in Unity. The source code is available on GitHub under the MIT license.
+
+I hereby state, to the best of my knowledge and belief, that I have not programmed this app to collect any personally identifiable information. The game uses anonymous device characteristics provided by the Unity Engine to find game-specific data stored on Microsoft's Azure backend. No user data is sent that way.
+
+Check this link for more information: https://docs.unity3d.com/ScriptReference/SystemInfo-deviceUniqueIdentifier.html 
+
+For Android, the permissions requested are for internet access only, as this is a network multiplayer game.
