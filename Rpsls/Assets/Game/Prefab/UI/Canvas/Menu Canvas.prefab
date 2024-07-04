@@ -350,6 +350,7 @@ MonoBehaviour:
   optionalInt0: 0
   optionalRotationMode: 0
   optionalScrambleMode: 0
+  optionalShakeRandomnessMode: 0
   optionalString: 
 --- !u!1 &4100537085427698472
 GameObject:
@@ -682,7 +683,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 1e1bf87c448f14e1cb076f4dc901b14f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 2ceafe50cdd74437897f014f77dc6074, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1394,7 +1395,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7577068631498053084, guid: 957949dabb71b8c45b528f8c41f0008a, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 945.2308
+      value: 1080.1241
       objectReference: {fileID: 0}
     - target: {fileID: 7577068631498053084, guid: 957949dabb71b8c45b528f8c41f0008a, type: 3}
       propertyPath: m_LocalPosition.x

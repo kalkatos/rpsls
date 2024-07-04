@@ -655,6 +655,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3900293324275057960, guid: 8e67033946708294385b6106a6af0f9f, type: 3}
+      propertyPath: worldCanvas
+      value: 
+      objectReference: {fileID: 2546995599475210474}
+    - target: {fileID: 3900293324275057960, guid: 8e67033946708294385b6106a6af0f9f, type: 3}
+      propertyPath: maxAspectRatio.x
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3900293324275057960, guid: 8e67033946708294385b6106a6af0f9f, type: 3}
+      propertyPath: maxAspectRatio.y
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 5386643053324072605, guid: 8e67033946708294385b6106a6af0f9f, type: 3}
       propertyPath: m_Camera
       value: 
@@ -669,7 +681,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7532628025137439237, guid: 8e67033946708294385b6106a6af0f9f, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 945.2308
+      value: 1080.1241
       objectReference: {fileID: 0}
     - target: {fileID: 7532628025137439237, guid: 8e67033946708294385b6106a6af0f9f, type: 3}
       propertyPath: m_LocalPosition.x
@@ -693,6 +705,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8e67033946708294385b6106a6af0f9f, type: 3}
+--- !u!223 &2546995599475210474 stripped
+Canvas:
+  m_CorrespondingSourceObject: {fileID: 5386643053324072605, guid: 8e67033946708294385b6106a6af0f9f, type: 3}
+  m_PrefabInstance: {fileID: 2546995599475210473}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3862459425030899364
 PrefabInstance:
   m_ObjectHideFlags: 0
