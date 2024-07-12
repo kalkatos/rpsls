@@ -1906,6 +1906,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Version Text
       objectReference: {fileID: 0}
+    - target: {fileID: 3510714170016669625, guid: a31a5b4bf76cd3843a8e6b2ae076f50f, type: 3}
+      propertyPath: sufix
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 7749165192084912517, guid: a31a5b4bf76cd3843a8e6b2ae076f50f, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
