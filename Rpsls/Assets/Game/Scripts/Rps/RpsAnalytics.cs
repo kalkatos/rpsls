@@ -28,7 +28,7 @@ namespace Kalkatos.UnityGame.Rps
         [SerializeField] private Signal onGameSceneLoaded;
         [SerializeField] private SignalBool onWaitingOpponent;
         [SerializeField] private SignalBool onOpponentLeft;
-        [SerializeField] private SignalBool onMatchStarted;
+        [SerializeField] private ScreenSignal onMatchStarted;
         [SerializeField] private SignalBool onMatchEnded;
         [SerializeField] private SignalState matchWinner;
         [SerializeField] private Signal onSendButtonClicked;
@@ -72,7 +72,7 @@ namespace Kalkatos.UnityGame.Rps
 
         private void Awake ()
         {
-            AnalyticsController.Initialize(new GameAnalyticsSender());
+            AnalyticsController.Initialize(new NetworkAnalyticsSender(this));
             AnalyticsController.SendEvent(SESSION_START);
             long currentDay = DateTime.Today.Ticks;
             long savedDay = long.Parse(Storage.Load(LAST_PLAYED_DAY, "0"));

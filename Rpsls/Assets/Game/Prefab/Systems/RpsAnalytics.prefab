@@ -63,7 +63,7 @@ MonoBehaviour:
   onGameSceneLoaded: {fileID: 11400000, guid: 2a20fc0b411d4d5478ff6603f01f5d22, type: 2}
   onWaitingOpponent: {fileID: 11400000, guid: 3d834ef0aca4011419ccd54ff1de0af9, type: 2}
   onOpponentLeft: {fileID: 11400000, guid: a5cef06c1d6d86540abe026f771300ae, type: 2}
-  onMatchStarted: {fileID: 11400000, guid: 2df8a555a7b1b78488db4df340b66fad, type: 2}
+  onMatchStarted: {fileID: 11400000, guid: e3bf37822cb8516429c28aea7a3bb990, type: 2}
   onMatchEnded: {fileID: 11400000, guid: dadce2462eb2d344bb3e7370252df4e7, type: 2}
   matchWinner: {fileID: 11400000, guid: f9200ed6e847d10418f13dbf44949291, type: 2}
   onSendButtonClicked: {fileID: 11400000, guid: 3209aead66ab17e4992cf59db4d38b7d, type: 2}
