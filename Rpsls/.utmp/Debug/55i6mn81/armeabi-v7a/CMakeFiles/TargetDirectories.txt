@@ -1,0 +1,5 @@
+D:/_PROJETOS_/rpsls/Rpsls/.utmp/Debug/55i6mn81/armeabi-v7a/CMakeFiles/edit_cache.dir
+D:/_PROJETOS_/rpsls/Rpsls/.utmp/Debug/55i6mn81/armeabi-v7a/CMakeFiles/rebuild_cache.dir
+D:/_PROJETOS_/rpsls/Rpsls/.utmp/Debug/55i6mn81/armeabi-v7a/FramePacing/CMakeFiles/swappywrapper.dir
+D:/_PROJETOS_/rpsls/Rpsls/.utmp/Debug/55i6mn81/armeabi-v7a/FramePacing/CMakeFiles/edit_cache.dir
+D:/_PROJETOS_/rpsls/Rpsls/.utmp/Debug/55i6mn81/armeabi-v7a/FramePacing/CMakeFiles/rebuild_cache.dir
